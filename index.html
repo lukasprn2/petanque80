@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Club de Pétanque</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <style>
+        :root {
+            --vert: #0bff04;
+            --noir: #000000;
+            --gris-fonce: #1a1a1a;
+            --blanc: #000000;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, Helvetica, sans-serif;
+            background-color: var(--gris-clair);
+            color: #111;
+        }
+
+        /* BANNIÈRE LOGO */
+        .banner {
+            background-color: var(--noir);
+            text-align: center;
+            padding: 20px;
+            border-bottom: 4px solid var(--vert);
+        }
+
+        .banner img {
+            max-height: 110px;
+        }
+
+        header {
+    background-image: url("terrain.jpg");
+    background-size: cover;
+    background-position: center;
+    color: rgb(0, 0, 0);
+    text-align: center;
+    padding: 80px 10px;
+}
+
+        header h1 {
+            color: var(--vert);
+            margin-bottom: 5px;
+            font-size: 2.3em;
+        }
+
+        nav {
+            background-color: var(--gris-fonce);
+            padding: 12px;
+            text-align: center;
+        }
+
+        nav a {
+            color: white;
+            margin: 0 15px;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        nav a:hover {
+            color: var(--vert);
+        }
+
+        section {
+            padding: 50px 20px;
+            max-width: 1100px;
+            margin: auto;
+        }
+
+        section:nth-of-type(even) {
+            background-color: rgb(0, 0, 0);
+        }
+
+        h2 {
+            color: white;
+            border-left: 6px solid var(--vert);
+            padding-left: 10px;
+            margin-bottom: 25px;
+        }
+
+        .card {
+            background-color: rgb(255, 255, 255);
+            padding: 20px;
+            margin: 20px 0;
+            border-left: 5px solid var(--vert);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background-color: white;
+        }
+
+     table th, table td {
+border: 1px solid #000000;
+}
+        
+
+        table th {
+            background-color: var(--vert);
+            color: black;
+        }
+
+        /* BUREAU */
+        .bureau {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 25px;
+        }
+
+        .bureau-member {
+            background-color: white;
+            border: 2px solid var(--vert);
+            text-align: center;
+            padding: 20px;
+        }
+
+        .bureau-member img {
+            width: 130px;
+            height: 130px;
+            object-fit: cover;
+            border-radius: 50%;
+            border: 3px solid var(--vert);
+            margin-bottom: 15px;
+        }
+
+        /* FAQ */
+        .faq details {
+            background-color: white;
+            padding: 18px;
+            margin-bottom: 15px;
+            border-left: 5px solid var(--vert);
+        }
+
+        .faq summary {
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        footer {
+            background-color: var(--noir);
+            color: white;
+            text-align: center;
+            padding: 20px;
+            margin-top: 40px;
+        }
+        :root {
+    --vert: #0bff04;
+    --noir: #000000;
+    --gris-fonce: #000000;
+    --gris-clair: #000000;
+    --blanc: #000000;
+}
+.card:hover{
+transform: translateY(-5px);
+transition: 0.2s;
+}
+#btnTop {
+position: fixed;
+bottom: 25px;
+right: 25px;
+display: none;
+background-color: var(--vert);
+color: black;
+border: none;
+padding: 12px 16px;
+font-size: 16px;
+border-radius: 8px;
+cursor: pointer;
+box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+}
+
+#btnTop:hover {
+background-color: #09cc03;
+}
+    </style>
+</head>
+<body>
+
+<!-- BANNIÈRE LOGO -->
+<div class="banner">
+    <img src="logo.png" alt="Logo du club de pétanque">
+    <h3 style="color:#0bff04">Passions • Précision • Bonne humeur </h3>
+</div>
+
+
+<nav>
+    <a href="#accueil">Acceuil</a>
+    <a href="#contact">Contacts</a>
+    <a href="#concoursb">Concours Boves</a>
+    <a href="#concoursautre">Concours Somme</a>
+    <a href="#actualites">Actualités</a>
+    <a href="#championnats">Championnats</a>
+    <a href="#bureau">Bureau</a>
+    <a href="#faq">FAQ</a>
+</nav>
+
+<section id="accueil">
+    <h2>Bienvenue au club de pétanque de Boves</h2>
+
+    <div class="card">
+        <p>
+        Notre club accueille tous les passionnés de pétanque,
+        débutants comme confirmés.  
+        Nous organisons des concours toute l’année et participons
+        aux championnats départementaux.
+        </p>
+    </div>
+</section>
+<section id="contact">
+<h2>Contact</h2>
+
+<div class="card">
+<p>Email : petanque80440@gmail.com</p>
+<p>Téléphone : 06 82 48 92 17</p>
+<p>Facebook : <a href="https://www.facebook.com/petanque.boves/">Pétanque Boves</a></p>
+<p>Tiktok : <a href="https://www.tiktok.com/@petanqueboves80">PétanqueBoves80</a></p>
+<p>Adresse : Chemin du Stade - Boves</p>
+ <img src="adresse.jpg" alt="Adresse petanque boves">
+</div>
+
+</section>
+
+<section id="concoursb">
+    <h2>Concours à boves</h2>
+
+    <div class="card">
+        <h3>Concours Doublette</h3>
+      <ul>
+        <li>14 mars 2026 à 14h jet du but</li>
+        <li>6 septembre 2026 à 14h jet du but</li>
+    </ul> 
+    </div>
+    <div class="card">
+        <h3>Concours Doublette Mixte</h3>
+      <ul>
+        <li>9 mai 2026 à 14h jet du but</li>
+    </ul> 
+    </div>
+
+    <div class="card">
+        <h3>Concours Triplette</h3>
+        <ul>
+        <li>20 juin 2026 à 9h jet du but</li>
+    </ul> 
+    </div>
+</section>
+<section id="concoursautre">
+    <h2>Concours Somme</h2>
+
+    <div class="card">
+        <h3>Concours Doublette</h3>
+      <ul>
+        <li>14 mars 2026 à 14h jet du but</li>
+        <li>6 septembre 2026 à 14h jet du but</li>
+    </ul> 
+    </div>
+    <div class="card">
+        <h3>Concours Doublette Mixte</h3>
+      <ul>
+        <li>9 mai 2026 à 14h jet du but</li>
+    </ul> 
+    </div>
+
+    <div class="card">
+        <h3>Concours Triplette</h3>
+        <ul>
+        <li>20 juin 2026 à 9h jet du but</li>
+    </ul> 
+    </div>
+</section>
+
+<section id="actualites">
+    <h2>Actualités</h2>
+
+    <div class="card">
+        <p>🏆 Victoire de notre équipe au championnat départemental</p>
+    </div>
+
+    <div class="card">
+        <p>📝 Inscriptions ouvertes pour la saison 2026</p>
+    </div>
+</section>
+
+<section id="championnats">
+    <h2>Dates des Championnats</h2>
+
+    <table>
+        <tr>
+            <th>Date</th>
+            <th>Catégorie</th>
+            <th>Lieu</th>
+        </tr>
+        <tr>
+            <td>15 mars 2026</td>
+            <td>Triplette Senior</td>
+            <td>Ville A</td>
+        </tr>
+        <tr>
+            <td>22 avril 2026</td>
+            <td>Doublette Mixte</td>
+            <td>Ville B</td>
+        </tr>
+        <tr>
+            <td>10 juin 2026</td>
+            <td>Tête-à-tête</td>
+            <td>Ville C</td>
+        </tr>
+    </table>
+</section>
+
+<section id="bureau">
+    <h2>Membres du Bureau</h2>
+
+    <div class="bureau">
+        <div class="bureau-member">
+            <img src="president.jpg" alt="Président">
+            <h3>Manu</h3>
+            <p>Président</p>
+        </div>
+
+        <div class="bureau-member">
+            <img src="vice-president.jpg" alt="Vice-président">
+            <h3>Dimitri</h3>
+            <p>Vice-président</p>
+        </div>
+
+        <div class="bureau-member">
+            <img src="secretaire.jpg" alt="Secrétaire">
+            <h3>Clotilde</h3>
+            <p>Secrétaire</p>
+        </div>
+
+        <div class="bureau-member">
+            <img src="tresorier.jpg" alt="Trésorière">
+            <h3>Jean Pierre</h3>
+            <p>Trésorier</p>
+        </div>
+    </div>
+</section>
+
+<section id="faq" class="faq">
+    <h2>Foire Aux Questions</h2>
+
+    <details>
+        <summary>Comment s’inscrire au club ?</summary>
+        <p>Vous pouvez vous inscrire lors des entraînements ou en contactant un membre du bureau.</p>
+    </details>
+
+    <details>
+        <summary>Le club accepte-t-il les débutants ?</summary>
+        <p>Oui, tous les niveaux sont les bienvenus.</p>
+    </details>
+
+    <details>
+        <summary>Quels sont les jours d’entraînement ?</summary>
+        <p>Les entraînements ont lieu les mardis et vendredis à partir de 18h.</p>
+    </details>
+</section>
+
+<footer>
+<p>© 2026 – Club de Pétanque de Boves</p>
+<p>Site officiel du club</p>
+</footer>
+<button onclick="topFunction()" id="btnTop">⬆ Haut</button>
+<script>
+
+let mybutton = document.getElementById("btnTop");
+
+window.onscroll = function() {
+    if (document.body.scrollTop > 200 || document.documentElement.scrollTop > 200) {
+        mybutton.style.display = "block";
+    } else {
+        mybutton.style.display = "none";
+    }
+};
+
+function topFunction() {
+    window.scrollTo({
+        top: 0,
+        behavior: "smooth"
+    });
+}
+
+</script>
+
+</body>
+</html>
