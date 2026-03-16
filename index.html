@@ -2,440 +2,833 @@
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
-    <title>Club de Pétanque</title>
+    <title>Club de Pétanque de Boves</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="icon" type="image/png" href="logo.png">
+    <link rel="apple-touch-icon" href="logo.png">
 
     <style>
         :root {
             --vert: #0bff04;
-            --noir: #000000;
-            --gris-fonce: #1a1a1a;
-            --blanc: #000000;
+            --vert-dark: #09cc03;
+            --noir: #000;
+            --gris-fonce: #111;
+            --gris-card: #161616;
+            --nav-h: 56px;
         }
+
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+        html { scroll-behavior: smooth; }
 
         body {
-            margin: 0;
-            font-family: Arial, Helvetica, sans-serif;
-            background-color: var(--gris-clair);
-            color: #111;
+            font-family: 'Nunito', sans-serif;
+            background: var(--noir);
+            color: #ddd;
+            font-size: 16px;
+            line-height: 1.6;
         }
 
-        /* BANNIÈRE LOGO */
+        /* BANNIÈRE */
         .banner {
-            background-color: var(--noir);
+            background: var(--noir);
             text-align: center;
-            padding: 20px;
-            border-bottom: 4px solid var(--vert);
+            padding: 16px 12px 12px;
+            border-bottom: 3px solid var(--vert);
         }
-
-        .banner img {
-            max-height: 110px;
-        }
-
-        header {
-    background-image: url("terrain.jpg");
-    background-size: cover;
-    background-position: center;
-    color: rgb(0, 0, 0);
-    text-align: center;
-    padding: 80px 10px;
-}
-
-        header h1 {
+        .banner img { max-height: 72px; display: block; margin: 0 auto 8px; }
+        .banner p {
             color: var(--vert);
-            margin-bottom: 5px;
-            font-size: 2.3em;
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 1em;
+            letter-spacing: 2px;
         }
 
-        nav {
-            background-color: var(--gris-fonce);
-            padding: 12px;
-            text-align: center;
+        /* NAV */
+        .nav-wrapper {
+            background: var(--gris-fonce);
+            border-bottom: 2px solid var(--vert);
+            position: sticky;
+            top: 0;
+            z-index: 200;
         }
-
-        nav a {
-            color: white;
-            margin: 0 15px;
+        .nav-bar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            height: var(--nav-h);
+            padding: 0 16px;
+        }
+        .nav-brand {
+            color: var(--vert);
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 1.2em;
+            letter-spacing: 2px;
             text-decoration: none;
-            font-weight: bold;
         }
 
-        nav a:hover {
+        /* Hamburger */
+        .hamburger {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            gap: 5px;
+            width: 42px;
+            height: 42px;
+            cursor: pointer;
+            background: none;
+            border: 2px solid transparent;
+            padding: 6px;
+            border-radius: 8px;
+            transition: border-color 0.2s, background 0.2s;
+        }
+        .hamburger:hover { border-color: var(--vert); background: rgba(11,255,4,0.07); }
+        .hamburger span {
+            display: block;
+            height: 2px;
+            background: white;
+            border-radius: 2px;
+            transition: transform 0.35s cubic-bezier(.77,0,.18,1), opacity 0.2s ease, width 0.25s ease;
+            transform-origin: center;
+        }
+        .hamburger span:nth-child(3) { width: 60%; }
+        .hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+        .hamburger.open span:nth-child(2) { opacity: 0; transform: scaleX(0); }
+        .hamburger.open span:nth-child(3) { width: 100%; transform: translateY(-7px) rotate(-45deg); }
+
+        /* Menu mobile */
+        .nav-menu {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.42s cubic-bezier(.77,0,.18,1);
+            background: #0d0d0d;
+            border-top: 1px solid #1e1e1e;
+        }
+        .nav-menu.open { max-height: 640px; }
+        .nav-menu a {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            color: #bbb;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 1em;
+            padding: 14px 20px;
+            border-bottom: 1px solid #1a1a1a;
+            transition: color 0.2s, background 0.2s, padding-left 0.2s;
+        }
+        .nav-menu a:last-child { border-bottom: none; }
+        .nav-menu a:hover, .nav-menu a:active {
             color: var(--vert);
+            background: rgba(11,255,4,0.05);
+            padding-left: 26px;
+        }
+        .nav-icon { font-size: 1.1em; width: 22px; text-align: center; flex-shrink: 0; }
+
+        /* Desktop nav */
+        @media (min-width: 768px) {
+            .hamburger, .nav-brand, .nav-bar { display: none; }
+            .nav-menu {
+                max-height: none !important;
+                overflow: visible;
+                display: flex;
+                flex-wrap: wrap;
+                justify-content: center;
+                gap: 4px;
+                padding: 8px 16px;
+                background: transparent;
+                border-top: none;
+            }
+            .nav-menu a {
+                padding: 6px 11px;
+                border-bottom: none;
+                border-radius: 6px;
+                font-size: 0.87em;
+                color: #ccc;
+            }
+            .nav-menu a:hover { padding-left: 11px; color: var(--vert); background: rgba(11,255,4,0.08); }
+            .nav-icon { display: none; }
         }
 
+        /* SECTIONS */
         section {
-            padding: 50px 20px;
+            padding: 34px 16px;
             max-width: 1100px;
-            margin: auto;
+            margin: 0 auto;
         }
-
-        section:nth-of-type(even) {
-            background-color: rgb(0, 0, 0);
+        @media (min-width: 768px) {
+            .banner img { max-height: 100px; }
+            .banner p   { font-size: 1.15em; }
+            section     { padding: 52px 24px; }
         }
 
         h2 {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 1.75em;
+            letter-spacing: 1.5px;
             color: white;
-            border-left: 6px solid var(--vert);
-            padding-left: 10px;
-            margin-bottom: 25px;
-        }
-
-        .card {
-            background-color: rgb(255, 255, 255);
-            padding: 20px;
-            margin: 20px 0;
             border-left: 5px solid var(--vert);
-            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            padding-left: 14px;
+            margin-bottom: 20px;
         }
+        @media (min-width: 768px) { h2 { font-size: 2.1em; } }
 
+        /* CARDS */
+        .card {
+            background: var(--gris-card);
+            border-left: 5px solid var(--vert);
+            border-radius: 10px;
+            padding: 16px 15px;
+            margin: 14px 0;
+            box-shadow: 0 4px 14px rgba(0,0,0,0.5);
+            transition: transform 0.25s, box-shadow 0.25s;
+        }
+        @media (min-width: 768px) {
+            .card { padding: 22px 24px; }
+            .card:hover { transform: translateY(-5px); box-shadow: 0 10px 22px rgba(11,255,4,0.15); }
+        }
+        .card h3 {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 1.3em;
+            letter-spacing: 1px;
+            color: var(--vert);
+            margin-bottom: 10px;
+        }
+        .card p, .card li { color: #bbb; font-size: 0.94em; }
+        .card a { color: var(--vert); }
+        .card ul { padding-left: 18px; }
+        .card li { margin: 5px 0; }
+
+        /* TABLE */
+        .table-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; border-radius: 10px; }
         table {
             width: 100%;
+            min-width: 380px;
             border-collapse: collapse;
-            background-color: white;
+            background: var(--gris-card);
+            font-size: 0.9em;
         }
-
-     table th, table td {
-border: 1px solid #000000;
-}
-        
-
+        table th, table td { border: 1px solid #2a2a2a; padding: 10px 12px; color: #ddd; text-align: left; }
         table th {
-            background-color: var(--vert);
+            background: var(--vert);
             color: black;
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 1em;
+            letter-spacing: 1px;
         }
+        table tr:nth-child(even) td { background: #111; }
 
         /* BUREAU */
-        .bureau {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-            gap: 25px;
-        }
-
+        .bureau { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+        @media (min-width: 600px) { .bureau { grid-template-columns: repeat(4,1fr); gap: 20px; } }
         .bureau-member {
-            background-color: white;
+            background: var(--gris-card);
             border: 2px solid var(--vert);
+            border-radius: 10px;
             text-align: center;
-            padding: 20px;
+            padding: 14px 8px;
         }
-
         .bureau-member img {
-            width: 130px;
-            height: 130px;
-            object-fit: cover;
+            width: 68px; height: 68px;
             border-radius: 50%;
+            object-fit: cover;
             border: 3px solid var(--vert);
-            margin-bottom: 15px;
+            margin: 0 auto 10px;
+            display: block;
         }
+        @media (min-width: 600px) { .bureau-member img { width: 110px; height: 110px; } }
+        .bureau-member h3 { color: var(--vert); font-size: 0.95em; margin-bottom: 3px; }
+        .bureau-member p  { color: #999; font-size: 0.82em; }
 
         /* FAQ */
         .faq details {
-            background-color: white;
-            padding: 18px;
-            margin-bottom: 15px;
+            background: var(--gris-card);
             border-left: 5px solid var(--vert);
+            border-radius: 8px;
+            padding: 14px 16px;
+            margin-bottom: 11px;
         }
-
         .faq summary {
-            font-weight: bold;
+            font-weight: 700;
+            color: #eee;
+            cursor: pointer;
+            font-size: 0.94em;
+            list-style: none;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .faq summary::-webkit-details-marker { display: none; }
+        .faq summary::after { content: '＋'; color: var(--vert); font-size: 1.1em; }
+        .faq details[open] summary::after { content: '－'; }
+        .faq p { color: #aaa; margin-top: 10px; font-size: 0.91em; }
+
+        /* COMMANDE */
+        #commande-wrap {
+            background: linear-gradient(160deg,#050505 0%,#0a150a 100%);
+            border-top: 1px solid #1e1e1e;
+            border-bottom: 1px solid #1e1e1e;
+        }
+        .commande-intro {
+            display: flex;
+            gap: 13px;
+            align-items: flex-start;
+            background: #111;
+            border-left: 5px solid var(--vert);
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 16px;
+        }
+        .commande-intro .icon { font-size: 1.9em; flex-shrink: 0; margin-top: 2px; }
+        .commande-intro strong { color: white; font-size: 0.94em; display: block; margin-bottom: 4px; }
+        .commande-intro p { color: #999; font-size: 0.87em; margin: 0; }
+        .commande-intro a { color: var(--vert); font-weight: 700; }
+
+        .prix-banner {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            background: #0d1a0d;
+            border: 2px solid var(--vert);
+            border-radius: 10px;
+            padding: 16px 18px;
+            margin-bottom: 20px;
+        }
+        .prix-banner .prix-icon { font-size: 2em; flex-shrink: 0; }
+        .prix-banner strong { color: white; font-size: 1em; display: block; margin-bottom: 2px; }
+        .prix-banner .montant { color: var(--vert); font-family: 'Bebas Neue', sans-serif; font-size: 1.5em; letter-spacing: 1px; }
+        .prix-banner p { color: #999; font-size: 0.85em; margin: 0; }
+
+        .order-form {
+            background: #0c0c0c;
+            border: 1px solid #252525;
+            border-radius: 14px;
+            padding: 18px 14px;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.6);
+        }
+        @media (min-width: 600px) { .order-form { padding: 30px 26px; } }
+
+        .form-grid { display: grid; grid-template-columns: 1fr; gap: 15px; }
+        @media (min-width: 540px) { .form-grid { grid-template-columns: 1fr 1fr; gap: 16px 22px; } }
+
+        .form-group { display: flex; flex-direction: column; gap: 6px; }
+        .form-group.full-width { grid-column: 1 / -1; }
+        .form-group label {
+            font-size: 0.73em;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1.2px;
+            color: var(--vert);
+        }
+        .form-group input,
+        .form-group select {
+            background: #1a1a1a;
+            border: 1.5px solid #2e2e2e;
+            border-radius: 8px;
+            padding: 13px 14px;
+            color: #eee;
+            font-family: 'Nunito', sans-serif;
+            font-size: 1em;
+            transition: border-color 0.2s, box-shadow 0.2s;
+            outline: none;
+            width: 100%;
+            -webkit-appearance: none;
+            appearance: none;
+        }
+        .form-group select,
+        .taille-item select {
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%230bff04' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 13px center;
+            padding-right: 36px;
+            cursor: pointer;
+        }
+        .form-group select option, .taille-item select option { background: #1a1a1a; color: #eee; }
+        .form-group input:focus,
+        .form-group select:focus,
+        .taille-item select:focus {
+            border-color: var(--vert);
+            box-shadow: 0 0 0 3px rgba(11,255,4,0.13);
+        }
+        .form-group input::placeholder { color: #555; }
+
+        .tailles-section { grid-column: 1 / -1; }
+        .tailles-section h4 {
+            font-size: 0.72em;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: #666;
+            margin-bottom: 13px;
+            padding-bottom: 8px;
+            border-bottom: 1px solid #222;
+        }
+        .tailles-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 13px; }
+        @media (min-width: 540px) { .tailles-grid { grid-template-columns: repeat(4,1fr); } }
+
+        .taille-item { display: flex; flex-direction: column; gap: 6px; }
+        .taille-item label {
+            font-size: 0.78em;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: #999;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        .taille-item select {
+            background: #1a1a1a;
+            border: 1.5px solid #2e2e2e;
+            border-radius: 8px;
+            padding: 12px 32px 12px 12px;
+            color: #eee;
+            font-family: 'Nunito', sans-serif;
+            font-size: 1em;
+            -webkit-appearance: none;
+            appearance: none;
+            outline: none;
+            width: 100%;
+            transition: border-color 0.2s, box-shadow 0.2s;
             cursor: pointer;
         }
 
-        footer {
-            background-color: var(--noir);
-            color: white;
-            text-align: center;
-            padding: 20px;
-            margin-top: 40px;
+        .submit-btn {
+            grid-column: 1 / -1;
+            background: var(--vert);
+            color: #000;
+            border: none;
+            padding: 16px;
+            width: 100%;
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 1.25em;
+            letter-spacing: 2px;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: background 0.2s, transform 0.15s, box-shadow 0.2s;
+            margin-top: 4px;
         }
-        :root {
-    --vert: #0bff04;
-    --noir: #000000;
-    --gris-fonce: #000000;
-    --gris-clair: #000000;
-    --blanc: #000000;
-}
-.card:hover{
-transform: translateY(-5px);
-transition: 0.2s;
-}
-#btnTop {
-position: fixed;
-bottom: 25px;
-right: 25px;
-display: none;
-background-color: var(--vert);
-color: black;
-border: none;
-padding: 12px 16px;
-font-size: 16px;
-border-radius: 8px;
-cursor: pointer;
-box-shadow: 0 4px 10px rgba(0,0,0,0.2);
-}
+        .submit-btn:active { transform: scale(0.97); }
+        .submit-btn:hover  { background: var(--vert-dark); box-shadow: 0 6px 18px rgba(11,255,4,0.25); }
 
-#btnTop:hover {
-background-color: #09cc03;
-}
-/* VERSION TELEPHONE */
-@media screen and (max-width: 768px) {
+        .confirmation {
+            display: none;
+            background: #0a140a;
+            border: 2px solid var(--vert);
+            border-radius: 14px;
+            padding: 26px 18px;
+            text-align: center;
+            margin-top: 16px;
+        }
+        .confirmation .checkmark { font-size: 2.6em; margin-bottom: 10px; }
+        .confirmation h3 { font-family: 'Bebas Neue', sans-serif; font-size: 1.7em; color: var(--vert); margin-bottom: 8px; }
+        .confirmation > p { color: #aaa; font-size: 0.91em; }
+        .confirmation .recap {
+            background: #111;
+            border-radius: 8px;
+            padding: 13px 15px;
+            margin: 15px auto;
+            max-width: 460px;
+            text-align: left;
+        }
+        .confirmation .recap p { margin: 5px 0; font-size: 0.88em; color: #bbb; }
+        .confirmation .recap strong { color: var(--vert); }
+        .new-order-btn {
+            background: transparent;
+            color: var(--vert);
+            border: 2px solid var(--vert);
+            padding: 11px 26px;
+            border-radius: 8px;
+            font-family: 'Bebas Neue', sans-serif;
+            letter-spacing: 2px;
+            font-size: 1.05em;
+            cursor: pointer;
+            margin-top: 14px;
+            transition: background 0.2s, color 0.2s;
+        }
+        .new-order-btn:hover { background: var(--vert); color: black; }
 
-nav{
-display:none;
-}
+        /* CONTACT */
+        .photo-adresse {
+            width: 100%;
+            max-width: 480px;
+            height: auto;
+            display: block;
+            margin: 14px auto 0;
+            border-radius: 8px;
+        }
 
-.banner img{
-max-height:70px;
-}
-
-header h1{
-font-size:1.6em;
-}
-
-section{
-padding:30px 15px;
-}
-
-.card{
-padding:15px;
-}
-
-table{
-font-size:14px;
-}
-
-.bureau{
-grid-template-columns:1fr;
-}
-
-.bureau-member img{
-width:100px;
-height:100px;
-}
-
-h2{
-font-size:1.4em;
-}
-
-}
-.photo-adresse{
-width:100%;
-max-width:500px;
-height:auto;
-display:block;
-margin:auto;
-}
+        /* FOOTER & BTN TOP */
+        footer {
+            background: #080808;
+            border-top: 2px solid #1a1a1a;
+            color: #555;
+            text-align: center;
+            padding: 20px 16px;
+            font-size: 0.87em;
+            margin-top: 24px;
+        }
+        #btnTop {
+            position: fixed;
+            bottom: 18px; right: 14px;
+            display: none;
+            background: var(--vert);
+            color: black;
+            border: none;
+            width: 44px; height: 44px;
+            border-radius: 10px;
+            font-size: 1.2em;
+            font-weight: bold;
+            cursor: pointer;
+            box-shadow: 0 4px 14px rgba(0,0,0,0.5);
+            z-index: 300;
+            transition: background 0.2s, transform 0.15s;
+        }
+        #btnTop:hover { background: var(--vert-dark); transform: translateY(-2px); }
     </style>
 </head>
 <body>
 
-<!-- BANNIÈRE LOGO -->
+<!-- BANNIÈRE -->
 <div class="banner">
-    <img src="logo.png" alt="Logo du club de pétanque">
-    <h3 style="color:#0bff04">Passions • Précision • Bonne humeur </h3>
+    <img src="logo.png" alt="Logo club pétanque Boves">
+    <p>Passions • Précision • Bonne humeur</p>
 </div>
 
+<!-- NAV -->
+<div class="nav-wrapper">
+    <div class="nav-bar">
+        <span class="nav-brand">🎯 Pétanque Boves</span>
+        <button class="hamburger" id="hamburger" aria-label="Ouvrir le menu" aria-expanded="false">
+            <span></span><span></span><span></span>
+        </button>
+    </div>
+    <nav class="nav-menu" id="navMenu" role="navigation">
+        <a href="#accueil"       onclick="closeMenu()"><span class="nav-icon">🏠</span>Accueil</a>
+        <a href="#contact"       onclick="closeMenu()"><span class="nav-icon">📞</span>Contact</a>
+        <a href="#concoursb"     onclick="closeMenu()"><span class="nav-icon">🏆</span>Concours Officiels</a>
+        <a href="#concoursa"     onclick="closeMenu()"><span class="nav-icon">🎯</span>Concours Internes</a>
+        <a href="#concoursv"     onclick="closeMenu()"><span class="nav-icon">👴</span>Concours Vétérans</a>
+        <a href="#championnats"  onclick="closeMenu()"><span class="nav-icon">📅</span>Championnats</a>
+        <a href="#commande-wrap" onclick="closeMenu()"><span class="nav-icon">🎽</span>Commande Vêtements</a>
+        <a href="#bureau"        onclick="closeMenu()"><span class="nav-icon">👥</span>Bureau</a>
+        <a href="#faq"           onclick="closeMenu()"><span class="nav-icon">❓</span>FAQ</a>
+    </nav>
+</div>
 
-<nav>
-    <a href="#accueil">Acceuil</a>
-    <a href="#contact">Contacts</a>
-    <a href="#concoursb">Concours Boves</a>
-    <a href="#concoursautre">Concours Somme</a>
-    <a href="#championnats">Championnats</a>
-    <a href="#actualites">Actualités</a>
-    <a href="#bureau">Bureau</a>
-    <a href="#faq">FAQ</a>
-</nav>
-
+<!-- ACCUEIL -->
 <section id="accueil">
-    <h2>Bienvenue au club de pétanque de Boves</h2>
-
+    <h2>Bienvenue au club de Boves</h2>
     <div class="card">
-        <p>
-        Notre club accueille tous les passionnés de pétanque,
-        débutants comme confirmés.  
-        Nous organisons des concours toute l’année et participons
-        aux championnats départementaux.
-        </p>
+        <p>Notre club accueille tous les passionnés de pétanque, débutants comme confirmés. Nous organisons des concours toute l'année et participons aux championnats départementaux.</p>
     </div>
 </section>
-<section id="contact">
-<h2>Contact</h2>
 
-<div class="card">
-<p>Email : petanque80440@gmail.com</p>
-<p>Téléphone : 06 82 48 92 17</p>
-<p>Facebook : <a href="https://www.facebook.com/petanque.boves/">Pétanque Boves</a></p>
-<p>Tiktok : <a href="https://www.tiktok.com/@petanqueboves80">PétanqueBoves80</a></p>
-<p>Adresse : Chemin du Stade - Boves</p>
- <img src="adresse.jpg" class="photo-adresse" alt="Adresse du club">
+<!-- CONTACT -->
+<section id="contact">
+    <h2>Contact</h2>
+    <div class="card">
+        <p>📧 <a href="mailto:petanque80440@gmail.com">petanque80440@gmail.com</a></p>
+        <p>📞 <a href="tel:0682489217">06 82 48 92 17</a></p>
+        <p>📘 <a href="https://www.facebook.com/petanque.boves/" target="_blank" rel="noopener">Facebook – Pétanque Boves</a></p>
+        <p>🎵 <a href="https://www.tiktok.com/@petanqueboves80" target="_blank" rel="noopener">TikTok – PétanqueBoves80</a></p>
+        <p>📍 <a href="https://www.google.com/maps/place/49%C2%B050'31.5%22N+2%C2%B023'36.6%22E" target="_blank" rel="noopener">Chemin du Stade – Boves</a></p>
+        <img src="adresse.jpg" class="photo-adresse" alt="Adresse du club">
+    </div>
+</section>
+
+<!-- CONCOURS OFFICIELS -->
+<section id="concoursb">
+    <h2>Concours Officiels</h2>
+    <div class="card">
+        <h3>Doublette</h3>
+        <ul>
+            <li>14 mars 2026 à 14h – jet du but</li>
+            <li>6 septembre 2026 à 14h – jet du but</li>
+        </ul>
+    </div>
+    <div class="card">
+        <h3>Doublette Mixte</h3>
+        <ul><li>9 mai 2026 à 14h – jet du but</li></ul>
+    </div>
+    <div class="card">
+        <h3>Triplette</h3>
+        <ul><li>20 juin 2026 à 9h – jet du but</li></ul>
+    </div>
+</section>
+
+<!-- CONCOURS INTERNES -->
+<section id="concoursa">
+    <h2>Concours Internes</h2>
+    <div class="card">
+        <h3>Doublette</h3>
+        <ul>
+            <li>21 novembre 2026 à 13h30 – jet du but</li>
+            <li>5 décembre 2026 à 13h30 – jet du but</li>
+        </ul>
+    </div>
+</section>
+
+<!-- CONCOURS VÉTÉRANS -->
+<section id="concoursv">
+    <h2>Concours Vétérans</h2>
+    <div class="card">
+        <h3>Doublette</h3>
+        <ul>
+            <li>14 avril 2026 à 14h – jet du but</li>
+            <li>19 mai 2026 à 9h – jet du but</li>
+            <li>7 juillet 2026 à 14h – jet du but</li>
+            <li>6 octobre 2026 à 14h – jet du but</li>
+        </ul>
+    </div>
+    <div class="card">
+        <h3>Triplette</h3>
+        <ul><li>19 juin 2026 à 9h – jet du but</li></ul>
+    </div>
+</section>
+
+<!-- CHAMPIONNATS -->
+<section id="championnats">
+    <h2>Championnats</h2>
+    <div class="table-wrap">
+        <table>
+            <tr><th>Date</th><th>Catégorie</th><th>Lieu</th></tr>
+            <tr><td>21 &amp; 22 mars 2026</td><td>Chpt Triplette Promotions</td><td>Flixecourt</td></tr>
+            <tr><td>28 &amp; 29 mars 2026</td><td>Chpt TàT Masculin</td><td>Flixecourt</td></tr>
+            <tr><td>28 &amp; 29 mars 2026</td><td>Chpt Doublette Féminin</td><td>Flixecourt</td></tr>
+        </table>
+    </div>
+</section>
+
+<!-- COMMANDE VÊTEMENTS -->
+<div id="commande-wrap">
+<section style="max-width:1100px; margin:0 auto; padding:34px 16px;">
+
+    <h2>Commande de Vêtements</h2>
+
+    <div class="commande-intro">
+        <span class="icon">🎽</span>
+        <div>
+            <strong>Commandez vos vêtements aux couleurs du club !</strong>
+            <p>Remplissez le formulaire ci-dessous ou envoyez directement votre commande par email à <a href="mailto:petanque80440@gmail.com">petanque80440@gmail.com</a></p>
+        </div>
+    </div>
+
+    <div class="prix-banner">
+        <span class="prix-icon">💶</span>
+        <div>
+            <strong>Montant de la commande : <span class="montant">100 €</span></strong>
+            <p>Le règlement s'effectue auprès d'un membre du bureau après confirmation de votre commande.</p>
+        </div>
+    </div>
+
+    <div class="order-form" id="orderForm">
+        <div class="form-grid">
+
+            <div class="form-group">
+                <label>Nom *</label>
+                <input type="text" id="nom" placeholder="Votre nom" autocomplete="family-name">
+            </div>
+            <div class="form-group">
+                <label>Prénom *</label>
+                <input type="text" id="prenom" placeholder="Votre prénom" autocomplete="given-name">
+            </div>
+            <div class="form-group">
+                <label>Code Postal *</label>
+                <input type="text" id="codepostal" placeholder="Ex : 80440" maxlength="5" inputmode="numeric" pattern="[0-9]{5}">
+            </div>
+            <div class="form-group">
+                <label>Téléphone (optionnel)</label>
+                <input type="tel" id="telephone" placeholder="06 xx xx xx xx" autocomplete="tel">
+            </div>
+            <div class="form-group full-width">
+                <label>Adresse email *</label>
+                <input type="email" id="email" placeholder="exemple@mail.com" autocomplete="email" inputmode="email">
+            </div>
+
+            <div class="tailles-section">
+                <h4>Tailles souhaitées — laisser vide si non commandé</h4>
+                <div class="tailles-grid">
+                    <div class="taille-item">
+                        <label>👖 Pantalon</label>
+                        <select id="taille-pantalon">
+                            <option value="">— Non commandé —</option>
+                            <option>XS</option><option>S</option><option>M</option>
+                            <option>L</option><option>XL</option><option>XXL</option><option>3XL</option>
+                        </select>
+                    </div>
+                    <div class="taille-item">
+                        <label>👕 Polo</label>
+                        <select id="taille-polo">
+                            <option value="">— Non commandé —</option>
+                            <option>XS</option><option>S</option><option>M</option>
+                            <option>L</option><option>XL</option><option>XXL</option><option>3XL</option>
+                        </select>
+                    </div>
+                    <div class="taille-item">
+                        <label>🧥 Veste</label>
+                        <select id="taille-veste">
+                            <option value="">— Non commandé —</option>
+                            <option>XS</option><option>S</option><option>M</option>
+                            <option>L</option><option>XL</option><option>XXL</option><option>3XL</option>
+                        </select>
+                    </div>
+                    <div class="taille-item">
+                        <label>🧣 Manteau</label>
+                        <select id="taille-manteau">
+                            <option value="">— Non commandé —</option>
+                            <option>XS</option><option>S</option><option>M</option>
+                            <option>L</option><option>XL</option><option>XXL</option><option>3XL</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <button class="submit-btn" onclick="submitCommande()">✅ Envoyer ma commande</button>
+        </div>
+    </div>
+
+    <div class="confirmation" id="confirmation">
+        <div class="checkmark">✅</div>
+        <h3>Commande envoyée !</h3>
+        <p>Merci <strong id="conf-prenom" style="color:var(--vert)"></strong>, votre demande est bien enregistrée.<br>
+        Un email de confirmation vous sera envoyé à l'adresse indiquée.<br>
+        <span style="color:var(--vert); font-weight:700;">Montant à régler : 100 €</span> auprès du bureau.</p>
+        <div class="recap" id="conf-recap"></div>
+        <button class="new-order-btn" onclick="nouvelleCommande()">Nouvelle commande</button>
+    </div>
+
+</section>
 </div>
 
-</section>
-
-<section id="concoursb">
-    <h2>Concours à Boves</h2>
-
-    <div class="card">
-        <h3>Concours Doublette</h3>
-      <ul>
-        <li>14 mars 2026 à 14h jet du but</li>
-        <li>6 septembre 2026 à 14h jet du but</li>
-    </ul> 
-    </div>
-    <div class="card">
-        <h3>Concours Doublette Mixte</h3>
-      <ul>
-        <li>9 mai 2026 à 14h jet du but</li>
-    </ul> 
-    </div>
-
-    <div class="card">
-        <h3>Concours Triplette</h3>
-        <ul>
-        <li>20 juin 2026 à 9h jet du but</li>
-    </ul> 
-    </div>
-</section>
-<section id="concoursautre">
-    <h2>Concours Somme</h2>
-
-    <div class="card">
-        <h3>Concours Doublette</h3>
-      <ul>
-        <li>14 mars 2026 à 14h jet du but</li>
-        <li>6 septembre 2026 à 14h jet du but</li>
-    </ul> 
-    </div>
-    <div class="card">
-        <h3>Concours Doublette Mixte</h3>
-      <ul>
-        <li>9 mai 2026 à 14h jet du but</li>
-    </ul> 
-    </div>
-
-    <div class="card">
-        <h3>Concours Triplette</h3>
-        <ul>
-        <li>20 juin 2026 à 9h jet du but</li>
-    </ul> 
-    </div>
-</section>
-<section id="championnats">
-    <h2>Dates des Championnats</h2>
-
-    <table>
-        <tr>
-            <th>Date</th>
-            <th>Catégorie</th>
-            <th>Lieu</th>
-        </tr>
-        <tr>
-            <td>21 & 22 mars 2026</td>
-            <td>Chpt Triplette Promotions</td>
-            <td>Flixecourt</td>
-        </tr>
-        <tr>
-            <td>28 & 29 mars 2026</td>
-            <td>Chpt TàT Masculin</td>
-            <td>Flixecourt</td>
-        </tr>
-        <tr>
-            <td>28 & 29 mars 2026</td>
-            <td>Chpt Doublette Féminin</td>
-            <td>Flixecourt</td>
-        </tr>
-        
-    </table>
-</section>
-
-<section id="actualites">
-    <h2>Actualités</h2>
-
-    <div class="card">
-        <p>🏆 Victoire de notre équipe au championnat départemental</p>
-    </div>
-
-    <div class="card">
-        <p>📝 Inscriptions ouvertes pour la saison 2026</p>
-    </div>
-</section>
-
-
-
+<!-- BUREAU -->
 <section id="bureau">
     <h2>Membres du Bureau</h2>
-
     <div class="bureau">
         <div class="bureau-member">
             <img src="president.jpg" alt="Président">
-            <h3>Manu</h3>
-            <p>Président</p>
+            <h3>Manu</h3><p>Président</p>
         </div>
-
         <div class="bureau-member">
             <img src="vice-president.jpg" alt="Vice-président">
-            <h3>Dimitri</h3>
-            <p>Vice-président</p>
+            <h3>Dimitri</h3><p>Vice-président</p>
         </div>
-
         <div class="bureau-member">
             <img src="secretaire.jpg" alt="Secrétaire">
-            <h3>Clotilde</h3>
-            <p>Secrétaire</p>
+            <h3>Clotilde</h3><p>Secrétaire</p>
         </div>
-
         <div class="bureau-member">
-            <img src="tresorier.jpg" alt="Trésorière">
-            <h3>Jean Pierre</h3>
-            <p>Trésorier</p>
+            <img src="tresorier.jpg" alt="Trésorier">
+            <h3>Jean Pierre</h3><p>Trésorier</p>
         </div>
     </div>
 </section>
 
+<!-- FAQ -->
 <section id="faq" class="faq">
-    <h2>Foire Aux Questions</h2>
-
+    <h2>FAQ</h2>
     <details>
-        <summary>Comment s’inscrire au club ?</summary>
+        <summary>Comment s'inscrire au club ?</summary>
         <p>Vous pouvez vous inscrire lors des entraînements ou en contactant un membre du bureau.</p>
     </details>
-
     <details>
         <summary>Le club accepte-t-il les débutants ?</summary>
         <p>Oui, tous les niveaux sont les bienvenus.</p>
     </details>
-
     <details>
-        <summary>Quels sont les jours d’entraînement ?</summary>
+        <summary>Quels sont les jours d'entraînement ?</summary>
         <p>Les entraînements ont lieu les mardis et vendredis à partir de 18h.</p>
     </details>
 </section>
 
 <footer>
-<p>© 2026 – Club de Pétanque de Boves</p>
-<p>Site officiel du club</p>
+    <p>© 2026 – Club de Pétanque de Boves</p>
+    <p>Site officiel du club</p>
 </footer>
-<button onclick="topFunction()" id="btnTop">⬆ Haut</button>
+
+<button onclick="topFunction()" id="btnTop" title="Retour en haut">↑</button>
+
 <script>
+/* ---- Menu hamburger ---- */
+const hamburger = document.getElementById('hamburger');
+const navMenu   = document.getElementById('navMenu');
 
-let mybutton = document.getElementById("btnTop");
+hamburger.addEventListener('click', () => {
+    const isOpen = navMenu.classList.toggle('open');
+    hamburger.classList.toggle('open', isOpen);
+    hamburger.setAttribute('aria-expanded', String(isOpen));
+    hamburger.setAttribute('aria-label', isOpen ? 'Fermer le menu' : 'Ouvrir le menu');
+});
 
-window.onscroll = function() {
-    if (document.body.scrollTop > 200 || document.documentElement.scrollTop > 200) {
-        mybutton.style.display = "block";
-    } else {
-        mybutton.style.display = "none";
-    }
-};
+document.addEventListener('click', e => {
+    if (!hamburger.contains(e.target) && !navMenu.contains(e.target)) closeMenu();
+});
 
-function topFunction() {
-    window.scrollTo({
-        top: 0,
-        behavior: "smooth"
-    });
+function closeMenu() {
+    navMenu.classList.remove('open');
+    hamburger.classList.remove('open');
+    hamburger.setAttribute('aria-expanded', 'false');
+    hamburger.setAttribute('aria-label', 'Ouvrir le menu');
 }
 
+/* ---- Bouton haut ---- */
+const btnTop = document.getElementById('btnTop');
+window.addEventListener('scroll', () => {
+    btnTop.style.display = window.scrollY > 220 ? 'block' : 'none';
+});
+function topFunction() { window.scrollTo({ top: 0, behavior: 'smooth' }); }
+
+/* ---- Commande vêtements ---- */
+function submitCommande() {
+    const nom      = document.getElementById('nom').value.trim();
+    const prenom   = document.getElementById('prenom').value.trim();
+    const cp       = document.getElementById('codepostal').value.trim();
+    const tel      = document.getElementById('telephone').value.trim();
+    const email    = document.getElementById('email').value.trim();
+    const pantalon = document.getElementById('taille-pantalon').value;
+    const polo     = document.getElementById('taille-polo').value;
+    const veste    = document.getElementById('taille-veste').value;
+    const manteau  = document.getElementById('taille-manteau').value;
+
+    if (!nom || !prenom || !cp) {
+        alert('⚠️ Merci de renseigner votre nom, prénom et code postal.'); return;
+    }
+    if (!/^\d{5}$/.test(cp)) {
+        alert('⚠️ Le code postal doit contenir exactement 5 chiffres.'); return;
+    }
+    if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+        alert('⚠️ Merci de renseigner une adresse email valide.'); return;
+    }
+    if (!pantalon && !polo && !veste && !manteau) {
+        alert('⚠️ Veuillez sélectionner au moins une taille de vêtement.'); return;
+    }
+
+    document.getElementById('conf-prenom').textContent = prenom;
+    let html = `<p><strong>Nom :</strong> ${prenom} ${nom}</p>`;
+    html += `<p><strong>Code postal :</strong> ${cp}</p>`;
+    html += `<p><strong>📧 Email :</strong> ${email}</p>`;
+    if (tel)      html += `<p><strong>Téléphone :</strong> ${tel}</p>`;
+    if (pantalon) html += `<p><strong>👖 Pantalon :</strong> ${pantalon}</p>`;
+    if (polo)     html += `<p><strong>👕 Polo :</strong> ${polo}</p>`;
+    if (veste)    html += `<p><strong>🧥 Veste :</strong> ${veste}</p>`;
+    if (manteau)  html += `<p><strong>🧣 Manteau :</strong> ${manteau}</p>`;
+    html += `<p style="margin-top:10px;padding-top:10px;border-top:1px solid #333;"><strong style="color:var(--vert);">💶 Montant total : 100 €</strong></p>`;
+
+    document.getElementById('conf-recap').innerHTML = html;
+    document.getElementById('orderForm').style.display = 'none';
+    const conf = document.getElementById('confirmation');
+    conf.style.display = 'block';
+    conf.scrollIntoView({ behavior: 'smooth', block: 'center' });
+}
+
+function nouvelleCommande() {
+    document.getElementById('orderForm').style.display = 'block';
+    document.getElementById('confirmation').style.display = 'none';
+    ['nom','prenom','codepostal','telephone','email']
+        .forEach(id => document.getElementById(id).value = '');
+    ['taille-pantalon','taille-polo','taille-veste','taille-manteau']
+        .forEach(id => document.getElementById(id).value = '');
+    document.getElementById('orderForm').scrollIntoView({ behavior: 'smooth' });
+}
 </script>
 
 </body>
