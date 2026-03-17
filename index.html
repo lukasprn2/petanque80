@@ -199,24 +199,80 @@
         .card ul { padding-left: 18px; }
         .card li { margin: 5px 0; }
 
-        /* TABLE */
-        .table-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; border-radius: 10px; }
-        table {
-            width: 100%;
-            min-width: 380px;
-            border-collapse: collapse;
+        /* TABLE — mobile first */
+        .table-wrap { border-radius: 10px; }
+
+        /* Sur mobile : chaque ligne devient une card */
+        table { width: 100%; border-collapse: collapse; background: var(--gris-card); font-size: 0.88em; }
+        table thead { display: none; }
+        table tr {
+            display: block;
             background: var(--gris-card);
-            font-size: 0.9em;
+            border: 1px solid #363636;
+            border-radius: 10px;
+            margin-bottom: 10px;
+            padding: 12px 14px;
         }
-        table th, table td { border: 1px solid #383838; padding: 10px 12px; color: #e0e0e0; text-align: left; }
-        table th {
-            background: var(--vert);
-            color: black;
-            font-family: 'Bebas Neue', sans-serif;
-            font-size: 1em;
+        table tr:nth-child(even) { background: #222; }
+        table td {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 10px;
+            padding: 5px 0;
+            border: none;
+            border-bottom: 1px solid #2e2e2e;
+            color: #e0e0e0;
+            font-size: 0.92em;
+        }
+        table td:last-child { border-bottom: none; }
+        table td::before {
+            content: attr(data-label);
+            font-weight: 700;
+            font-size: 0.78em;
+            text-transform: uppercase;
             letter-spacing: 1px;
+            color: var(--vert);
+            flex-shrink: 0;
+            min-width: 110px;
         }
-        table tr:nth-child(even) td { background: #222; }
+        /* Masquer les td vides sur mobile */
+        table td:empty { display: none; }
+
+        /* Sur desktop : tableau classique */
+        @media (min-width: 640px) {
+            .table-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+            table { min-width: 600px; }
+            table thead { display: table-header-group; }
+            table tr {
+                display: table-row;
+                background: transparent;
+                border: none;
+                border-radius: 0;
+                margin: 0;
+                padding: 0;
+            }
+            table tr:nth-child(even) td { background: #222; }
+            table tr:nth-child(even) { background: transparent; }
+            table td {
+                display: table-cell;
+                padding: 10px 12px;
+                border: 1px solid #383838;
+                font-size: 0.9em;
+            }
+            table td::before { display: none; }
+            table td:empty { display: table-cell; }
+            table th {
+                background: var(--vert);
+                color: black;
+                font-family: 'Bebas Neue', sans-serif;
+                font-size: 1em;
+                letter-spacing: 1px;
+                padding: 10px 12px;
+                border: 1px solid #383838;
+                text-align: left;
+            }
+        }
 
         /* BUREAU */
         .bureau { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
@@ -679,7 +735,7 @@
 <section id="contact">
     <h2>Contact</h2>
     <div class="card">
-        <p>📧 <a href="mailto:petanque80440@gmail.com">petanque80440@gmail.com</a></p>
+        <p>📧 <a href="/cdn-cgi/l/email-protection#daaabfaebbb4abafbfe2eaeeeeea9abdb7bbb3b6f4b9b5b7"><span class="__cf_email__" data-cfemail="58283d2c3936292d3d60686c6c68183f35393134763b3735">[email&#160;protected]</span></a></p>
         <p>📞 <a href="tel:0682489217">06 82 48 92 17</a></p>
         <p>📘 <a href="https://www.facebook.com/petanque.boves/" target="_blank" rel="noopener">Facebook – Pétanque Boves</a></p>
         <p>🎵 <a href="https://www.tiktok.com/@petanqueboves80" target="_blank" rel="noopener">TikTok – PétanqueBoves80</a></p>
@@ -743,40 +799,44 @@
     <h2>Championnats de la Somme 2026</h2>
     <div class="table-wrap">
         <table>
-            <tr>
-                <th>Championnat</th>
-                <th>Heure</th>
-                <th>Date</th>
-                <th>Lieu</th>
-                <th>Date limite inscriptions</th>
-            </tr>
-            <tr><td>Triplette Promotion</td><td>10h00</td><td>21/3</td><td rowspan="2">Flixecourt</td><td>12/3</td></tr>
-            <tr><td>Reprise</td><td>9h00</td><td>22/3</td><td></td></tr>
-            <tr><td>TT Senior Masc.</td><td>10h00</td><td>28/3</td><td rowspan="4">Flixecourt</td><td>19/3</td></tr>
-            <tr><td>Doub Senior Fém.</td><td>14h00</td><td>28/3</td><td>19/3</td></tr>
-            <tr><td>TT (J, C, M, B)</td><td>9h30</td><td>29/3</td><td>Sur place</td></tr>
-            <tr><td>Reprise TT M et Doub. F</td><td>9h00</td><td>29/3</td><td></td></tr>
-            <tr><td>Trip. Jeu Provençal</td><td>8h00</td><td>4/4</td><td rowspan="3">Albert</td><td>26/3</td></tr>
-            <tr><td>Reprise</td><td>9h00</td><td>5/4</td><td>Homogène (ouvert aux juniors)</td></tr>
-            <tr><td>Reprise</td><td>9h00</td><td>6/4</td><td>Poules de trois</td></tr>
-            <tr><td>Triplette Senior M</td><td>10h00</td><td>11/4</td><td rowspan="5">Feuquières</td><td>02/4</td></tr>
-            <tr><td>Triplette Senior F</td><td>14h00</td><td>11/4</td><td>02/4</td></tr>
-            <tr><td>Reprise</td><td>09h00</td><td>12/4</td><td></td></tr>
-            <tr><td>Triplette (J, C, M)</td><td>09h30</td><td>12/4</td><td>Sur place</td></tr>
-            <tr><td>Tir précision J</td><td></td><td>12/4</td><td>Sur place</td></tr>
-            <tr><td>Doublette Mixte</td><td>10h00</td><td>18/4</td><td rowspan="2">Fienvillers-Doullens / A Doullens</td><td>09/4</td></tr>
-            <tr><td>Reprise</td><td>9h00</td><td>19/4</td><td></td></tr>
-            <tr><td>Triplette Vétéran</td><td>10h00</td><td>22/4</td><td rowspan="2">Asptt Amiens</td><td>09/4</td></tr>
-            <tr><td>Reprise</td><td>9h00</td><td>23/4</td><td></td></tr>
-            <tr><td>Doub Senior Masc.</td><td>10h00</td><td>25/4</td><td rowspan="4">Feuquières</td><td>16/4</td></tr>
-            <tr><td>TT Senior Fém.</td><td>14h00</td><td>25/4</td><td></td></tr>
-            <tr><td>Reprise</td><td>09h00</td><td>26/4</td><td>16/4</td></tr>
-            <tr><td>Doub (J, C, M, B)</td><td>09h30</td><td>26/4</td><td>Sur place</td></tr>
-            <tr><td>Triplette Mixte</td><td>10h00</td><td>02/5</td><td rowspan="2">Gamaches</td><td>23/4</td></tr>
-            <tr><td>Reprise</td><td>09h00</td><td>03/5</td><td></td></tr>
-            <tr><td>Doub. Jeu Provençal</td><td>8h00</td><td>08/5</td><td rowspan="3">Fienvillers-Doullens / A Saint Léger-lès-Domart</td><td>31/4</td></tr>
-            <tr><td>Reprise</td><td>9h00</td><td>09/5</td><td>Homogène (ouvert aux juniors)</td></tr>
-            <tr><td>Reprise</td><td>9h00</td><td>10/5</td><td>Poules de trois</td></tr>
+            <thead>
+                <tr>
+                    <th>Championnat</th>
+                    <th>Heure</th>
+                    <th>Date</th>
+                    <th>Lieu</th>
+                    <th>Date limite inscriptions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr><td data-label="Championnat">Triplette Promotion</td><td data-label="Heure">10h00</td><td data-label="Date">21/3</td><td data-label="Lieu">Flixecourt</td><td data-label="Limite inscriptions">12/3</td></tr>
+                <tr><td data-label="Championnat">Reprise</td><td data-label="Heure">9h00</td><td data-label="Date">22/3</td><td data-label="Lieu">Flixecourt</td><td data-label="Limite inscriptions"></td></tr>
+                <tr><td data-label="Championnat">TT Senior Masc.</td><td data-label="Heure">10h00</td><td data-label="Date">28/3</td><td data-label="Lieu">Flixecourt</td><td data-label="Limite inscriptions">19/3</td></tr>
+                <tr><td data-label="Championnat">Doub Senior Fém.</td><td data-label="Heure">14h00</td><td data-label="Date">28/3</td><td data-label="Lieu">Flixecourt</td><td data-label="Limite inscriptions">19/3</td></tr>
+                <tr><td data-label="Championnat">TT (J, C, M, B)</td><td data-label="Heure">9h30</td><td data-label="Date">29/3</td><td data-label="Lieu">Flixecourt</td><td data-label="Limite inscriptions">Sur place</td></tr>
+                <tr><td data-label="Championnat">Reprise TT M et Doub. F</td><td data-label="Heure">9h00</td><td data-label="Date">29/3</td><td data-label="Lieu">Flixecourt</td><td data-label="Limite inscriptions"></td></tr>
+                <tr><td data-label="Championnat">Trip. Jeu Provençal</td><td data-label="Heure">8h00</td><td data-label="Date">4/4</td><td data-label="Lieu">Albert</td><td data-label="Limite inscriptions">26/3</td></tr>
+                <tr><td data-label="Championnat">Reprise</td><td data-label="Heure">9h00</td><td data-label="Date">5/4</td><td data-label="Lieu">Albert</td><td data-label="Limite inscriptions">Homogène (ouvert aux juniors)</td></tr>
+                <tr><td data-label="Championnat">Reprise</td><td data-label="Heure">9h00</td><td data-label="Date">6/4</td><td data-label="Lieu">Albert</td><td data-label="Limite inscriptions">Poules de trois</td></tr>
+                <tr><td data-label="Championnat">Triplette Senior M</td><td data-label="Heure">10h00</td><td data-label="Date">11/4</td><td data-label="Lieu">Feuquières</td><td data-label="Limite inscriptions">02/4</td></tr>
+                <tr><td data-label="Championnat">Triplette Senior F</td><td data-label="Heure">14h00</td><td data-label="Date">11/4</td><td data-label="Lieu">Feuquières</td><td data-label="Limite inscriptions">02/4</td></tr>
+                <tr><td data-label="Championnat">Reprise</td><td data-label="Heure">09h00</td><td data-label="Date">12/4</td><td data-label="Lieu">Feuquières</td><td data-label="Limite inscriptions"></td></tr>
+                <tr><td data-label="Championnat">Triplette (J, C, M)</td><td data-label="Heure">09h30</td><td data-label="Date">12/4</td><td data-label="Lieu">Feuquières</td><td data-label="Limite inscriptions">Sur place</td></tr>
+                <tr><td data-label="Championnat">Tir précision J</td><td data-label="Heure"></td><td data-label="Date">12/4</td><td data-label="Lieu">Feuquières</td><td data-label="Limite inscriptions">Sur place</td></tr>
+                <tr><td data-label="Championnat">Doublette Mixte</td><td data-label="Heure">10h00</td><td data-label="Date">18/4</td><td data-label="Lieu">Fienvillers-Doullens / A Doullens</td><td data-label="Limite inscriptions">09/4</td></tr>
+                <tr><td data-label="Championnat">Reprise</td><td data-label="Heure">9h00</td><td data-label="Date">19/4</td><td data-label="Lieu">Fienvillers-Doullens / A Doullens</td><td data-label="Limite inscriptions"></td></tr>
+                <tr><td data-label="Championnat">Triplette Vétéran</td><td data-label="Heure">10h00</td><td data-label="Date">22/4</td><td data-label="Lieu">Asptt Amiens</td><td data-label="Limite inscriptions">09/4</td></tr>
+                <tr><td data-label="Championnat">Reprise</td><td data-label="Heure">9h00</td><td data-label="Date">23/4</td><td data-label="Lieu">Asptt Amiens</td><td data-label="Limite inscriptions"></td></tr>
+                <tr><td data-label="Championnat">Doub Senior Masc.</td><td data-label="Heure">10h00</td><td data-label="Date">25/4</td><td data-label="Lieu">Feuquières</td><td data-label="Limite inscriptions">16/4</td></tr>
+                <tr><td data-label="Championnat">TT Senior Fém.</td><td data-label="Heure">14h00</td><td data-label="Date">25/4</td><td data-label="Lieu">Feuquières</td><td data-label="Limite inscriptions"></td></tr>
+                <tr><td data-label="Championnat">Reprise</td><td data-label="Heure">09h00</td><td data-label="Date">26/4</td><td data-label="Lieu">Feuquières</td><td data-label="Limite inscriptions">16/4</td></tr>
+                <tr><td data-label="Championnat">Doub (J, C, M, B)</td><td data-label="Heure">09h30</td><td data-label="Date">26/4</td><td data-label="Lieu">Feuquières</td><td data-label="Limite inscriptions">Sur place</td></tr>
+                <tr><td data-label="Championnat">Triplette Mixte</td><td data-label="Heure">10h00</td><td data-label="Date">02/5</td><td data-label="Lieu">Gamaches</td><td data-label="Limite inscriptions">23/4</td></tr>
+                <tr><td data-label="Championnat">Reprise</td><td data-label="Heure">09h00</td><td data-label="Date">03/5</td><td data-label="Lieu">Gamaches</td><td data-label="Limite inscriptions"></td></tr>
+                <tr><td data-label="Championnat">Doub. Jeu Provençal</td><td data-label="Heure">8h00</td><td data-label="Date">08/5</td><td data-label="Lieu">Fienvillers-Doullens / A Saint Léger-lès-Domart</td><td data-label="Limite inscriptions">31/4</td></tr>
+                <tr><td data-label="Championnat">Reprise</td><td data-label="Heure">9h00</td><td data-label="Date">09/5</td><td data-label="Lieu">Fienvillers-Doullens / A Saint Léger-lès-Domart</td><td data-label="Limite inscriptions">Homogène (ouvert aux juniors)</td></tr>
+                <tr><td data-label="Championnat">Reprise</td><td data-label="Heure">9h00</td><td data-label="Date">10/5</td><td data-label="Lieu">Fienvillers-Doullens / A Saint Léger-lès-Domart</td><td data-label="Limite inscriptions">Poules de trois</td></tr>
+            </tbody>
         </table>
     </div>
 </section>
@@ -973,7 +1033,7 @@
 
 <button onclick="topFunction()" id="btnTop" title="Retour en haut">↑</button>
 
-<script>
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
 /* ---- Menu hamburger ---- */
 const hamburger = document.getElementById('hamburger');
 const navMenu   = document.getElementById('navMenu');
@@ -1050,12 +1110,4 @@ function nouvelleCommande() {
     document.getElementById('orderForm').style.display = 'block';
     document.getElementById('confirmation').style.display = 'none';
     ['nom','prenom','codepostal','telephone','email']
-        .forEach(id => document.getElementById(id).value = '');
-    ['taille-pantalon','taille-polo','taille-veste','taille-manteau']
-        .forEach(id => document.getElementById(id).value = '');
-    document.getElementById('orderForm').scrollIntoView({ behavior: 'smooth' });
-}
-</script>
-
-</body>
-</html>
+        .forEach(id => document.getElementById(id).value
