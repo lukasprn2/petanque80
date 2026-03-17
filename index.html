@@ -1,834 +1,627 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-    <meta charset="UTF-8">
-    <title>Club de Pétanque de Boves</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
-    <link rel="icon" type="image/png" href="logo.png">
-    <link rel="apple-touch-icon" href="logo.png">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="google-site-verification" content="GnB-KZuUOlca6yC..." />
+  <title>Auto-École de Longueau | Permis B, AAC, Boîte auto, manuelle</title>
+  <link rel="icon" href="favicon.jpg" type="image/png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <style>
+    :root {
+      --bg:#ffffff; --bg2:#f4f6f8; --bg3:#e8ecf0;
+      --text:#111111; --text-mid:#444444; --text-light:#888888;
+      --blue:#00bfff; --blue-dark:#0095cc;
+      --blue-dim:rgba(0,191,255,0.10); --blue-glow:rgba(0,191,255,0.25);
+      --border:rgba(0,191,255,0.35); --border-grey:#dde2e8; --navy:#0a1628;
+      --font-display:'Syne',sans-serif; --font-body:'DM Sans',sans-serif;
+    }
+    *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+    html{scroll-behavior:smooth}
+    body{font-family:var(--font-body);background:var(--bg);color:var(--text);line-height:1.65;padding-top:64px;overflow-x:hidden}
 
-    <style>
-        :root {
-            --vert: #0bff04;
-            --vert-dark: #09cc03;
-            --noir: #000;
-            --gris-fonce: #111;
-            --gris-card: #161616;
-            --nav-h: 56px;
-        }
+    /* NAV */
+    #menu-bandeau{position:fixed;top:0;left:0;width:100%;background:rgba(255,255,255,0.96);backdrop-filter:blur(14px);border-bottom:1px solid var(--border-grey);display:flex;justify-content:center;align-items:center;gap:4px;padding:0 20px;height:64px;z-index:1000;box-shadow:0 1px 12px rgba(0,0,0,0.06)}
+    #menu-bandeau a{font-family:var(--font-display);font-size:12.5px;font-weight:600;letter-spacing:0.06em;text-transform:uppercase;color:var(--text-mid);text-decoration:none;padding:8px 12px;border-radius:6px;transition:color 0.2s,background 0.2s;white-space:nowrap}
+    #menu-bandeau a:hover{color:var(--blue-dark);background:var(--blue-dim)}
 
-        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-        html { scroll-behavior: smooth; }
+    /* HERO */
+    .hero{width:100%;overflow:hidden}
+    .hero img{width:100%;height:auto;display:block}
 
-        body {
-            font-family: 'Nunito', sans-serif;
-            background: var(--noir);
-            color: #ddd;
-            font-size: 16px;
-            line-height: 1.6;
-        }
+    /* SUB-HERO */
+    .sub-hero{text-align:center;padding:36px 24px;background:var(--bg);border-bottom:1px solid var(--border-grey)}
+    .sub-hero-desc{font-size:1.1rem;color:var(--text-mid);max-width:600px;margin:0 auto 24px;line-height:1.7}
+    .hero-cta{display:inline-flex;align-items:center;gap:10px;background:var(--blue);color:#fff;font-family:var(--font-display);font-weight:700;font-size:14px;letter-spacing:0.06em;text-transform:uppercase;padding:16px 36px;border-radius:8px;text-decoration:none;transition:background 0.2s,transform 0.2s;box-shadow:0 4px 24px var(--blue-glow)}
+    .hero-cta:hover{background:var(--blue-dark);transform:translateY(-2px)}
 
-        /* BANNIÈRE */
-        .banner {
-            background: var(--noir);
-            text-align: center;
-            padding: 16px 12px 12px;
-            border-bottom: 3px solid var(--vert);
-        }
-        .banner img { max-height: 72px; display: block; margin: 0 auto 8px; }
-        .banner p {
-            color: var(--vert);
-            font-family: 'Bebas Neue', sans-serif;
-            font-size: 1em;
-            letter-spacing: 2px;
-        }
+    /* LOGOS */
+    .logos-bar{display:flex;justify-content:center;align-items:center;gap:48px;flex-wrap:nowrap;padding:48px 60px;background:var(--bg);border-bottom:1px solid var(--border-grey)}
+    .logos-bar img{height:130px;width:auto;object-fit:contain;flex-shrink:0;transition:transform 0.3s}
+    .logos-bar img:hover{transform:scale(1.05)}
 
-        /* NAV */
-        .nav-wrapper {
-            background: var(--gris-fonce);
-            border-bottom: 2px solid var(--vert);
-            position: sticky;
-            top: 0;
-            z-index: 200;
-        }
-        .nav-bar {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            height: var(--nav-h);
-            padding: 0 16px;
-        }
-        .nav-brand {
-            color: var(--vert);
-            font-family: 'Bebas Neue', sans-serif;
-            font-size: 1.2em;
-            letter-spacing: 2px;
-            text-decoration: none;
-        }
+    /* MAIN */
+    main{max-width:1200px;margin:0 auto;padding:0 40px 80px}
+    section{padding:70px 0;border-bottom:1px solid var(--border-grey)}
+    section:last-child{border-bottom:none}
+    .section-header{margin-bottom:40px}
+    .section-label{font-family:var(--font-display);font-size:11px;font-weight:700;letter-spacing:0.2em;text-transform:uppercase;color:var(--blue-dark);margin-bottom:10px}
+    h2{font-family:var(--font-display);font-size:clamp(1.7rem,3vw,2.4rem);font-weight:800;letter-spacing:-0.02em;color:var(--text);line-height:1.1}
 
-        /* Hamburger */
-        .hamburger {
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            gap: 5px;
-            width: 42px;
-            height: 42px;
-            cursor: pointer;
-            background: none;
-            border: 2px solid transparent;
-            padding: 6px;
-            border-radius: 8px;
-            transition: border-color 0.2s, background 0.2s;
-        }
-        .hamburger:hover { border-color: var(--vert); background: rgba(11,255,4,0.07); }
-        .hamburger span {
-            display: block;
-            height: 2px;
-            background: white;
-            border-radius: 2px;
-            transition: transform 0.35s cubic-bezier(.77,0,.18,1), opacity 0.2s ease, width 0.25s ease;
-            transform-origin: center;
-        }
-        .hamburger span:nth-child(3) { width: 60%; }
-        .hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
-        .hamburger.open span:nth-child(2) { opacity: 0; transform: scaleX(0); }
-        .hamburger.open span:nth-child(3) { width: 100%; transform: translateY(-7px) rotate(-45deg); }
+    /* HORAIRES */
+    .horaires-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px}
+    .horaire-item{background:var(--bg2);border:1px solid var(--border-grey);border-radius:12px;padding:20px 16px;text-align:center;transition:border-color 0.2s}
+    .horaire-item:hover{border-color:var(--border)}
+    .horaire-item.closed{opacity:0.4}
+    .horaire-day{font-family:var(--font-display);font-size:12px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:var(--blue-dark);margin-bottom:8px}
+    .horaire-time{font-size:14px;color:var(--text-mid);font-weight:500}
 
-        /* Menu mobile */
-        .nav-menu {
-            max-height: 0;
-            overflow: hidden;
-            transition: max-height 0.42s cubic-bezier(.77,0,.18,1);
-            background: #0d0d0d;
-            border-top: 1px solid #1e1e1e;
-        }
-        .nav-menu.open { max-height: 640px; }
-        .nav-menu a {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            color: #bbb;
-            text-decoration: none;
-            font-weight: 700;
-            font-size: 1em;
-            padding: 14px 20px;
-            border-bottom: 1px solid #1a1a1a;
-            transition: color 0.2s, background 0.2s, padding-left 0.2s;
-        }
-        .nav-menu a:last-child { border-bottom: none; }
-        .nav-menu a:hover, .nav-menu a:active {
-            color: var(--vert);
-            background: rgba(11,255,4,0.05);
-            padding-left: 26px;
-        }
-        .nav-icon { font-size: 1.1em; width: 22px; text-align: center; flex-shrink: 0; }
+    /* CONTACTS */
+    .contacts-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px}
+    .contact-card{display:flex;align-items:center;gap:16px;background:var(--bg2);border:1px solid var(--border-grey);border-radius:12px;padding:20px;text-decoration:none;color:inherit;transition:border-color 0.2s}
+    .contact-card:hover{border-color:var(--border)}
+    .contact-icon{width:44px;height:44px;border-radius:10px;background:var(--blue-dim);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;color:var(--blue-dark);font-size:18px;flex-shrink:0}
+    .contact-label{font-size:11px;letter-spacing:0.1em;text-transform:uppercase;color:var(--text-light);margin-bottom:3px}
+    .contact-value{font-size:15px;font-weight:500;color:var(--text);word-break:break-all}
+    .contact-value a{color:var(--blue-dark);text-decoration:none}
 
-        /* Desktop nav */
-        @media (min-width: 768px) {
-            .hamburger, .nav-brand, .nav-bar { display: none; }
-            .nav-menu {
-                max-height: none !important;
-                overflow: visible;
-                display: flex;
-                flex-wrap: wrap;
-                justify-content: center;
-                gap: 4px;
-                padding: 8px 16px;
-                background: transparent;
-                border-top: none;
-            }
-            .nav-menu a {
-                padding: 6px 11px;
-                border-bottom: none;
-                border-radius: 6px;
-                font-size: 0.87em;
-                color: #ccc;
-            }
-            .nav-menu a:hover { padding-left: 11px; color: var(--vert); background: rgba(11,255,4,0.08); }
-            .nav-icon { display: none; }
-        }
+    /* ── TARIFS : radio CSS pur ── */
+    .tarifs-radio{display:none}
+    .tarifs-tabs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:28px}
+    .tab-lbl{font-family:var(--font-display);font-size:12px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;padding:10px 20px;border-radius:8px;border:1px solid var(--border-grey);background:var(--bg2);color:var(--text-light);cursor:pointer;transition:all 0.2s}
+    .tab-lbl:hover{background:var(--blue-dim);border-color:var(--border);color:var(--blue-dark)}
+    .tab-panel{display:none}
+    #tab-r-forfaits:checked ~ .tarifs-tabs .lbl-forfaits,
+    #tab-r-theorique:checked ~ .tarifs-tabs .lbl-theorique,
+    #tab-r-admin:checked ~ .tarifs-tabs .lbl-admin,
+    #tab-r-lecons:checked ~ .tarifs-tabs .lbl-lecons{background:var(--blue-dim);border-color:var(--border);color:var(--blue-dark)}
+    #tab-r-forfaits:checked ~ #tab-forfaits,
+    #tab-r-theorique:checked ~ #tab-theorique,
+    #tab-r-admin:checked ~ #tab-admin,
+    #tab-r-lecons:checked ~ #tab-lecons{display:block}
+    .tarif-list{display:flex;flex-direction:column;gap:10px}
+    .tarif-item{display:flex;justify-content:space-between;align-items:flex-start;gap:20px;background:var(--bg2);border:1px solid var(--border-grey);border-radius:12px;padding:20px 24px;transition:border-color 0.2s}
+    .tarif-item:hover{border-color:var(--border)}
+    .tarif-item.highlight{border-color:var(--border);background:var(--blue-dim)}
+    .tarif-name{font-family:var(--font-display);font-size:15px;font-weight:700;color:var(--text);margin-bottom:5px}
+    .tarif-desc{font-size:13px;color:var(--text-light);line-height:1.5}
+    .tarif-price{font-family:var(--font-display);font-size:22px;font-weight:800;color:var(--blue-dark);white-space:nowrap;flex-shrink:0}
 
-        /* SECTIONS */
-        section {
-            padding: 34px 16px;
-            max-width: 1100px;
-            margin: 0 auto;
-        }
-        @media (min-width: 768px) {
-            .banner img { max-height: 100px; }
-            .banner p   { font-size: 1.15em; }
-            section     { padding: 52px 24px; }
-        }
+    /* VEHICULES */
+    .vehicules-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:24px}
+    .vehicule-card{border-radius:16px;overflow:hidden;border:1px solid var(--border-grey);background:var(--bg2);transition:border-color 0.3s,transform 0.3s}
+    .vehicule-card:hover{border-color:var(--border);transform:translateY(-4px)}
+    .vehicule-card img{width:100%;height:auto;display:block;background:#efefef}
+    .vehicule-info{padding:24px}
+    .vehicule-badge{display:inline-block;font-size:10px;font-family:var(--font-display);font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:var(--blue-dark);background:var(--blue-dim);border:1px solid var(--border);padding:4px 10px;border-radius:100px;margin-bottom:10px}
+    .vehicule-info h3{font-family:var(--font-display);font-size:18px;font-weight:700;color:var(--text);margin-bottom:6px}
+    .vehicule-info p{font-size:14px;color:var(--text-light)}
 
-        h2 {
-            font-family: 'Bebas Neue', sans-serif;
-            font-size: 1.75em;
-            letter-spacing: 1.5px;
-            color: white;
-            border-left: 5px solid var(--vert);
-            padding-left: 14px;
-            margin-bottom: 20px;
-        }
-        @media (min-width: 768px) { h2 { font-size: 2.1em; } }
+    /* EQUIPE */
+    .equipe-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:24px}
+    .membre-card{border-radius:16px;overflow:hidden;border:1px solid var(--border-grey);background:var(--bg2);transition:border-color 0.3s,transform 0.3s}
+    .membre-card:hover{border-color:var(--border);transform:translateY(-4px)}
+    .membre-card img{width:100%;height:auto;display:block;background:#efefef}
+    .membre-info{padding:24px}
+    .membre-info h3{font-family:var(--font-display);font-size:20px;font-weight:800;color:var(--text);margin-bottom:4px}
+    .membre-role{font-size:12px;letter-spacing:0.12em;text-transform:uppercase;color:var(--blue-dark);font-family:var(--font-display);font-weight:700;margin-bottom:10px}
+    .membre-info p{font-size:14px;color:var(--text-light);line-height:1.6}
+    .separator-text{margin-top:36px;padding:24px 28px;background:var(--bg2);border-left:3px solid var(--blue);border-radius:0 12px 12px 0;font-size:15px;color:var(--text-mid);line-height:1.7}
 
-        /* CARDS */
-        .card {
-            background: var(--gris-card);
-            border-left: 5px solid var(--vert);
-            border-radius: 10px;
-            padding: 16px 15px;
-            margin: 14px 0;
-            box-shadow: 0 4px 14px rgba(0,0,0,0.5);
-            transition: transform 0.25s, box-shadow 0.25s;
-        }
-        @media (min-width: 768px) {
-            .card { padding: 22px 24px; }
-            .card:hover { transform: translateY(-5px); box-shadow: 0 10px 22px rgba(11,255,4,0.15); }
-        }
-        .card h3 {
-            font-family: 'Bebas Neue', sans-serif;
-            font-size: 1.3em;
-            letter-spacing: 1px;
-            color: var(--vert);
-            margin-bottom: 10px;
-        }
-        .card p, .card li { color: #bbb; font-size: 0.94em; }
-        .card a { color: var(--vert); }
-        .card ul { padding-left: 18px; }
-        .card li { margin: 5px 0; }
+    /* AVIS */
+    .avis-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:20px;margin-bottom:40px}
+    .avis-card{background:var(--bg2);border:1px solid var(--border-grey);border-radius:14px;padding:28px;position:relative;transition:border-color 0.2s}
+    .avis-card:hover{border-color:var(--border)}
+    .avis-card::before{content:'\201C';font-family:Georgia,serif;font-size:80px;color:var(--blue);opacity:0.18;position:absolute;top:10px;left:20px;line-height:1}
+    .avis-stars-sm{display:flex;gap:3px;margin-bottom:14px}
+    .avis-stars-sm span{color:#f59e0b;font-size:15px}
+    .avis-text{font-size:14px;color:var(--text-mid);line-height:1.7;font-style:italic;position:relative;z-index:1}
+    .avis-google-img{display:block;margin:0 auto;height:100px;width:auto}
 
-        /* TABLE */
-        .table-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; border-radius: 10px; }
-        table {
-            width: 100%;
-            min-width: 380px;
-            border-collapse: collapse;
-            background: var(--gris-card);
-            font-size: 0.9em;
-        }
-        table th, table td { border: 1px solid #2a2a2a; padding: 10px 12px; color: #ddd; text-align: left; }
-        table th {
-            background: var(--vert);
-            color: black;
-            font-family: 'Bebas Neue', sans-serif;
-            font-size: 1em;
-            letter-spacing: 1px;
-        }
-        table tr:nth-child(even) td { background: #111; }
+    /* RDV */
+    .rdv-grid{display:grid;grid-template-columns:1fr 1.4fr;gap:48px;align-items:start}
+    .rdv-info h3{font-family:var(--font-display);font-size:1.3rem;font-weight:700;color:var(--text);margin-bottom:14px}
+    .rdv-info>p{font-size:14px;color:var(--text-light);line-height:1.7;margin-bottom:24px}
+    .rdv-hours{background:var(--bg2);border:1px solid var(--border);border-radius:12px;padding:24px 28px}
+    .rdv-hours-title{font-family:var(--font-display);font-size:13px;font-weight:700;color:var(--blue-dark);letter-spacing:0.1em;text-transform:uppercase;margin-bottom:16px}
+    .rdv-hours-grid{display:flex;flex-direction:column;gap:8px}
+    .rdv-hour-row{display:flex;justify-content:space-between;align-items:center;padding:12px 16px;background:#fff;border:1px solid var(--border-grey);border-radius:8px}
+    .rdv-hour-day{font-family:var(--font-display);font-size:15px;font-weight:700;color:var(--text)}
+    .rdv-hour-time{font-size:15px;font-weight:600;color:var(--blue-dark)}
 
-        /* BUREAU */
-        .bureau { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
-        @media (min-width: 600px) { .bureau { grid-template-columns: repeat(4,1fr); gap: 20px; } }
-        .bureau-member {
-            background: var(--gris-card);
-            border: 2px solid var(--vert);
-            border-radius: 10px;
-            text-align: center;
-            padding: 14px 8px;
-        }
-        .bureau-member img {
-            width: 68px; height: 68px;
-            border-radius: 50%;
-            object-fit: cover;
-            border: 3px solid var(--vert);
-            margin: 0 auto 10px;
-            display: block;
-        }
-        @media (min-width: 600px) { .bureau-member img { width: 110px; height: 110px; } }
-        .bureau-member h3 { color: var(--vert); font-size: 0.95em; margin-bottom: 3px; }
-        .bureau-member p  { color: #999; font-size: 0.82em; }
+    /* FORM */
+    .form-rdv{display:flex;flex-direction:column;gap:14px}
+    .form-row{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+    .form-group{display:flex;flex-direction:column;gap:6px}
+    .form-group label{font-family:var(--font-display);font-size:11px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:var(--text-light)}
+    .form-group input,.form-group select,.form-group textarea{background:var(--bg2);border:1px solid var(--border-grey);border-radius:8px;color:var(--text);font-family:var(--font-body);font-size:15px;padding:14px 16px;outline:none;transition:border-color 0.2s;width:100%}
+    .form-group input:focus,.form-group select:focus,.form-group textarea:focus{border-color:var(--blue)}
+    .form-group textarea{resize:vertical;min-height:100px}
+    .btn-submit{background:var(--blue);color:#fff;font-family:var(--font-display);font-weight:700;font-size:14px;letter-spacing:0.08em;text-transform:uppercase;padding:18px 32px;border:none;border-radius:8px;cursor:pointer;transition:background 0.2s,transform 0.2s;box-shadow:0 4px 20px var(--blue-glow)}
+    .btn-submit:hover{background:var(--blue-dark);transform:translateY(-2px)}
 
-        /* FAQ */
-        .faq details {
-            background: var(--gris-card);
-            border-left: 5px solid var(--vert);
-            border-radius: 8px;
-            padding: 14px 16px;
-            margin-bottom: 11px;
-        }
-        .faq summary {
-            font-weight: 700;
-            color: #eee;
-            cursor: pointer;
-            font-size: 0.94em;
-            list-style: none;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        .faq summary::-webkit-details-marker { display: none; }
-        .faq summary::after { content: '＋'; color: var(--vert); font-size: 1.1em; }
-        .faq details[open] summary::after { content: '－'; }
-        .faq p { color: #aaa; margin-top: 10px; font-size: 0.91em; }
+    /* ── FAQ : details/summary CSS pur ── */
+    .faq-list{display:flex;flex-direction:column;gap:10px}
+    details.faq-item{border:1px solid var(--border-grey);border-radius:12px;overflow:hidden;transition:border-color 0.2s}
+    details.faq-item[open]{border-color:var(--border)}
+    details.faq-item summary{list-style:none;background:var(--bg2);color:var(--text);padding:18px 24px;cursor:pointer;font-family:var(--font-body);font-size:15px;font-weight:500;display:flex;justify-content:space-between;align-items:center;gap:16px;user-select:none}
+    details.faq-item summary::-webkit-details-marker{display:none}
+    details.faq-item summary:hover{background:var(--bg3)}
+    details.faq-item[open] summary{background:var(--bg3)}
+    .faq-icon-wrap{color:var(--blue-dark);font-size:22px;font-weight:700;flex-shrink:0;line-height:1;transition:transform 0.3s;display:inline-block}
+    details.faq-item[open] .faq-icon-wrap{transform:rotate(45deg)}
+    .faq-answer{padding:16px 24px 20px;background:#fff;font-size:14px;color:var(--text-mid);line-height:1.7;border-top:1px solid var(--border-grey)}
 
-        /* COMMANDE */
-        #commande-wrap {
-            background: linear-gradient(160deg,#050505 0%,#0a150a 100%);
-            border-top: 1px solid #1e1e1e;
-            border-bottom: 1px solid #1e1e1e;
-        }
-        .commande-intro {
-            display: flex;
-            gap: 13px;
-            align-items: flex-start;
-            background: #111;
-            border-left: 5px solid var(--vert);
-            border-radius: 10px;
-            padding: 15px;
-            margin-bottom: 16px;
-        }
-        .commande-intro .icon { font-size: 1.9em; flex-shrink: 0; margin-top: 2px; }
-        .commande-intro strong { color: white; font-size: 0.94em; display: block; margin-bottom: 4px; }
-        .commande-intro p { color: #999; font-size: 0.87em; margin: 0; }
-        .commande-intro a { color: var(--vert); font-weight: 700; }
+    /* FOOTER */
+    footer{background:var(--navy);padding:40px;text-align:center}
+    .footer-inner{max-width:1200px;margin:0 auto}
+    .footer-logo{font-family:var(--font-display);font-size:20px;font-weight:800;color:#fff;margin-bottom:8px}
+    .footer-logo span{color:var(--blue)}
+    footer p{font-size:13px;color:rgba(255,255,255,0.45)}
 
-        .prix-banner {
-            display: flex;
-            align-items: center;
-            gap: 14px;
-            background: #0d1a0d;
-            border: 2px solid var(--vert);
-            border-radius: 10px;
-            padding: 16px 18px;
-            margin-bottom: 20px;
-        }
-        .prix-banner .prix-icon { font-size: 2em; flex-shrink: 0; }
-        .prix-banner strong { color: white; font-size: 1em; display: block; margin-bottom: 2px; }
-        .prix-banner .montant { color: var(--vert); font-family: 'Bebas Neue', sans-serif; font-size: 1.5em; letter-spacing: 1px; }
-        .prix-banner p { color: #999; font-size: 0.85em; margin: 0; }
+    /* BACK TO TOP */
+    #backToTop{position:fixed;bottom:32px;right:32px;background:var(--blue);color:#fff;border:none;width:48px;height:48px;border-radius:12px;cursor:pointer;font-size:18px;font-weight:700;display:none;align-items:center;justify-content:center;z-index:500}
+    #backToTop.show{display:flex}
 
-        .order-form {
-            background: #0c0c0c;
-            border: 1px solid #252525;
-            border-radius: 14px;
-            padding: 18px 14px;
-            box-shadow: 0 8px 30px rgba(0,0,0,0.6);
-        }
-        @media (min-width: 600px) { .order-form { padding: 30px 26px; } }
-
-        .form-grid { display: grid; grid-template-columns: 1fr; gap: 15px; }
-        @media (min-width: 540px) { .form-grid { grid-template-columns: 1fr 1fr; gap: 16px 22px; } }
-
-        .form-group { display: flex; flex-direction: column; gap: 6px; }
-        .form-group.full-width { grid-column: 1 / -1; }
-        .form-group label {
-            font-size: 0.73em;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 1.2px;
-            color: var(--vert);
-        }
-        .form-group input,
-        .form-group select {
-            background: #1a1a1a;
-            border: 1.5px solid #2e2e2e;
-            border-radius: 8px;
-            padding: 13px 14px;
-            color: #eee;
-            font-family: 'Nunito', sans-serif;
-            font-size: 1em;
-            transition: border-color 0.2s, box-shadow 0.2s;
-            outline: none;
-            width: 100%;
-            -webkit-appearance: none;
-            appearance: none;
-        }
-        .form-group select,
-        .taille-item select {
-            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%230bff04' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
-            background-repeat: no-repeat;
-            background-position: right 13px center;
-            padding-right: 36px;
-            cursor: pointer;
-        }
-        .form-group select option, .taille-item select option { background: #1a1a1a; color: #eee; }
-        .form-group input:focus,
-        .form-group select:focus,
-        .taille-item select:focus {
-            border-color: var(--vert);
-            box-shadow: 0 0 0 3px rgba(11,255,4,0.13);
-        }
-        .form-group input::placeholder { color: #555; }
-
-        .tailles-section { grid-column: 1 / -1; }
-        .tailles-section h4 {
-            font-size: 0.72em;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            color: #666;
-            margin-bottom: 13px;
-            padding-bottom: 8px;
-            border-bottom: 1px solid #222;
-        }
-        .tailles-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 13px; }
-        @media (min-width: 540px) { .tailles-grid { grid-template-columns: repeat(4,1fr); } }
-
-        .taille-item { display: flex; flex-direction: column; gap: 6px; }
-        .taille-item label {
-            font-size: 0.78em;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            color: #999;
-            display: flex;
-            align-items: center;
-            gap: 5px;
-        }
-        .taille-item select {
-            background: #1a1a1a;
-            border: 1.5px solid #2e2e2e;
-            border-radius: 8px;
-            padding: 12px 32px 12px 12px;
-            color: #eee;
-            font-family: 'Nunito', sans-serif;
-            font-size: 1em;
-            -webkit-appearance: none;
-            appearance: none;
-            outline: none;
-            width: 100%;
-            transition: border-color 0.2s, box-shadow 0.2s;
-            cursor: pointer;
-        }
-
-        .submit-btn {
-            grid-column: 1 / -1;
-            background: var(--vert);
-            color: #000;
-            border: none;
-            padding: 16px;
-            width: 100%;
-            font-family: 'Bebas Neue', sans-serif;
-            font-size: 1.25em;
-            letter-spacing: 2px;
-            border-radius: 10px;
-            cursor: pointer;
-            transition: background 0.2s, transform 0.15s, box-shadow 0.2s;
-            margin-top: 4px;
-        }
-        .submit-btn:active { transform: scale(0.97); }
-        .submit-btn:hover  { background: var(--vert-dark); box-shadow: 0 6px 18px rgba(11,255,4,0.25); }
-
-        .confirmation {
-            display: none;
-            background: #0a140a;
-            border: 2px solid var(--vert);
-            border-radius: 14px;
-            padding: 26px 18px;
-            text-align: center;
-            margin-top: 16px;
-        }
-        .confirmation .checkmark { font-size: 2.6em; margin-bottom: 10px; }
-        .confirmation h3 { font-family: 'Bebas Neue', sans-serif; font-size: 1.7em; color: var(--vert); margin-bottom: 8px; }
-        .confirmation > p { color: #aaa; font-size: 0.91em; }
-        .confirmation .recap {
-            background: #111;
-            border-radius: 8px;
-            padding: 13px 15px;
-            margin: 15px auto;
-            max-width: 460px;
-            text-align: left;
-        }
-        .confirmation .recap p { margin: 5px 0; font-size: 0.88em; color: #bbb; }
-        .confirmation .recap strong { color: var(--vert); }
-        .new-order-btn {
-            background: transparent;
-            color: var(--vert);
-            border: 2px solid var(--vert);
-            padding: 11px 26px;
-            border-radius: 8px;
-            font-family: 'Bebas Neue', sans-serif;
-            letter-spacing: 2px;
-            font-size: 1.05em;
-            cursor: pointer;
-            margin-top: 14px;
-            transition: background 0.2s, color 0.2s;
-        }
-        .new-order-btn:hover { background: var(--vert); color: black; }
-
-        /* CONTACT */
-        .photo-adresse {
-            width: 100%;
-            max-width: 480px;
-            height: auto;
-            display: block;
-            margin: 14px auto 0;
-            border-radius: 8px;
-        }
-
-        /* FOOTER & BTN TOP */
-        footer {
-            background: #080808;
-            border-top: 2px solid #1a1a1a;
-            color: #555;
-            text-align: center;
-            padding: 20px 16px;
-            font-size: 0.87em;
-            margin-top: 24px;
-        }
-        #btnTop {
-            position: fixed;
-            bottom: 18px; right: 14px;
-            display: none;
-            background: var(--vert);
-            color: black;
-            border: none;
-            width: 44px; height: 44px;
-            border-radius: 10px;
-            font-size: 1.2em;
-            font-weight: bold;
-            cursor: pointer;
-            box-shadow: 0 4px 14px rgba(0,0,0,0.5);
-            z-index: 300;
-            transition: background 0.2s, transform 0.15s;
-        }
-        #btnTop:hover { background: var(--vert-dark); transform: translateY(-2px); }
-    </style>
+    /* MOBILE */
+    .rdv-horaires-link{display:none}
+    @media(max-width:768px){
+      body{padding-top:0}
+      #menu-bandeau{display:none}
+      main{padding:0 20px 60px}
+      section{padding:50px 0}
+      .rdv-grid{grid-template-columns:1fr}
+      .form-row{grid-template-columns:1fr}
+      .logos-bar{gap:20px;padding:28px 16px;flex-wrap:wrap}
+      .logos-bar img{height:80px}
+      .tarif-item{flex-direction:column;gap:8px}
+      .rdv-hours{display:none}
+      .rdv-horaires-link{display:inline-flex;align-items:center;gap:8px;margin-bottom:20px;color:var(--blue-dark);font-family:var(--font-display);font-weight:700;font-size:14px;text-decoration:none;background:var(--blue-dim);border:1px solid var(--border);padding:12px 20px;border-radius:8px}
+      .rdv-horaires-link:hover{background:var(--blue);color:#fff}
+    }
+  </style>
 </head>
 <body>
 
-<!-- BANNIÈRE -->
-<div class="banner">
-    <img src="logo.png" alt="Logo club pétanque Boves">
-    <p>Passion • Précision • Bonne humeur</p>
+<nav id="menu-bandeau">
+  <a href="#horaires">Horaires</a>
+  <a href="#contacts">Contacts</a>
+  <a href="#tarifs">Tarifs</a>
+  <a href="#vehicules">Véhicules</a>
+  <a href="#equipe">L'équipe</a>
+  <a href="#avis">Avis</a>
+  <a href="#rendez-vous">Rendez-vous</a>
+  <a href="#faq">FAQ</a>
+</nav>
+
+<div class="hero" id="top">
+  <img src="auto-ecole.jpg" alt="Auto-École de Longueau">
 </div>
 
-<!-- NAV -->
-<div class="nav-wrapper">
-    <div class="nav-bar">
-        <span class="nav-brand">🎯 Pétanque Boves</span>
-        <button class="hamburger" id="hamburger" aria-label="Ouvrir le menu" aria-expanded="false">
-            <span></span><span></span><span></span>
-        </button>
-    </div>
-    <nav class="nav-menu" id="navMenu" role="navigation">
-        <a href="#accueil"       onclick="closeMenu()"><span class="nav-icon">🏠</span>Accueil</a>
-        <a href="#contact"       onclick="closeMenu()"><span class="nav-icon">📞</span>Contacts</a>
-        <a href="#concoursb"     onclick="closeMenu()"><span class="nav-icon">🏆</span>Concours Officiels</a>
-        <a href="#concoursa"     onclick="closeMenu()"><span class="nav-icon">🎯</span>Concours Internes</a>
-        <a href="#concoursv"     onclick="closeMenu()"><span class="nav-icon">👴</span>Concours Vétérans</a>
-        <a href="#championnats"  onclick="closeMenu()"><span class="nav-icon">📅</span>Championnats</a>
-        <a href="#commande-wrap" onclick="closeMenu()"><span class="nav-icon">🎽</span>Commande Vêtements</a>
-        <a href="#bureau"        onclick="closeMenu()"><span class="nav-icon">👥</span>Bureau</a>
-        <a href="#faq"           onclick="closeMenu()"><span class="nav-icon">❓</span>FAQ</a>
-    </nav>
+<div class="sub-hero">
+  <p class="sub-hero-desc">Permis B boîte manuelle &amp; automatique, AAC, conduite supervisée — un accompagnement personnalisé pour chaque élève.</p>
+  <a href="#rendez-vous" class="hero-cta">Prendre rendez-vous →</a>
 </div>
 
-<!-- ACCUEIL -->
-<section id="accueil">
-    <h2>Bienvenue au club de Boves</h2>
-    <div class="card">
-        <p>Notre club accueille tous les passionnés de pétanque, débutants comme confirmés. Nous organisons des concours toute l'année et participons aux championnats départementaux.</p>
-    </div>
-</section>
-
-<!-- CONTACT -->
-<section id="contact">
-    <h2>Contact</h2>
-    <div class="card">
-        <p>📧 <a href="mailto:petanque80440@gmail.com">petanque80440@gmail.com</a></p>
-        <p>📞 <a href="tel:0682489217">06 82 48 92 17</a></p>
-        <p>📘 <a href="https://www.facebook.com/petanque.boves/" target="_blank" rel="noopener">Facebook – Pétanque Boves</a></p>
-        <p>🎵 <a href="https://www.tiktok.com/@petanqueboves80" target="_blank" rel="noopener">TikTok – PétanqueBoves80</a></p>
-        <p>📍 <a href="https://www.google.com/maps/place/49%C2%B050'31.5%22N+2%C2%B023'36.6%22E" target="_blank" rel="noopener">Chemin du Stade – Boves</a></p>
-        <img src="adresse.jpg" class="photo-adresse" alt="Adresse du club">
-    </div>
-</section>
-
-<!-- CONCOURS OFFICIELS -->
-<section id="concoursb">
-    <h2>Concours Officiels</h2>
-    <div class="card">
-        <h3>Doublette</h3>
-        <ul>
-            <li>14 mars 2026 à 14h – jet du but</li>
-            <li>6 septembre 2026 à 14h – jet du but</li>
-        </ul>
-    </div>
-    <div class="card">
-        <h3>Doublette Mixte</h3>
-        <ul><li>9 mai 2026 à 14h – jet du but</li></ul>
-    </div>
-    <div class="card">
-        <h3>Triplette</h3>
-        <ul><li>20 juin 2026 à 9h – jet du but</li></ul>
-    </div>
-</section>
-
-<!-- CONCOURS INTERNES -->
-<section id="concoursa">
-    <h2>Concours Internes</h2>
-    <div class="card">
-        <h3>Doublette</h3>
-        <ul>
-            <li>21 novembre 2026 à 13h30 – jet du but</li>
-            <li>5 décembre 2026 à 13h30 – jet du but</li>
-        </ul>
-    </div>
-</section>
-
-<!-- CONCOURS VÉTÉRANS -->
-<section id="concoursv">
-    <h2>Concours Vétérans</h2>
-    <div class="card">
-        <h3>Doublette</h3>
-        <ul>
-            <li>14 avril 2026 à 14h – jet du but</li>
-            <li>19 mai 2026 à 9h – jet du but</li>
-            <li>7 juillet 2026 à 14h – jet du but</li>
-            <li>6 octobre 2026 à 14h – jet du but</li>
-        </ul>
-    </div>
-    <div class="card">
-        <h3>Triplette</h3>
-        <ul><li>19 juin 2026 à 9h – jet du but</li></ul>
-    </div>
-</section>
-
-<!-- CHAMPIONNATS -->
-<section id="championnats">
-    <h2>Championnats</h2>
-    <div class="table-wrap">
-        <table>
-            <tr><th>Date</th><th>Catégorie</th><th>Lieu</th></tr>
-            <tr><td>21 &amp; 22 mars 2026</td><td>Chpt Triplette Promotions</td><td>Flixecourt</td></tr>
-            <tr><td>28 &amp; 29 mars 2026</td><td>Chpt TàT Masculin</td><td>Flixecourt</td></tr>
-            <tr><td>28 &amp; 29 mars 2026</td><td>Chpt Doublette Féminin</td><td>Flixecourt</td></tr>
-        </table>
-    </div>
-</section>
-
-<!-- COMMANDE VÊTEMENTS -->
-<div id="commande-wrap">
-<section style="max-width:1100px; margin:0 auto; padding:34px 16px;">
-
-    <h2>Commande de Vêtements</h2>
-
-    <div class="commande-intro">
-        <span class="icon">🎽</span>
-        <div>
-            <strong>Commandez vos vêtements aux couleurs du club !</strong>
-            <p>Remplissez le formulaire ci-dessous</p>
-        </div>
-    </div>
-
-    <div class="prix-banner">
-        <span class="prix-icon">💶</span>
-        <div>
-            <strong>Montant de la commande : <span class="montant">100 €</span></strong>
-            <p>Le règlement s'effectue auprès d'un membre du bureau après confirmation de votre commande.</p>
-        </div>
-    </div>
-
-    <div class="order-form" id="orderForm">
-        <div class="form-grid">
-
-            <div class="form-group">
-                <label>Nom *</label>
-                <input type="text" id="nom" placeholder="Votre nom" autocomplete="family-name">
-            </div>
-            <div class="form-group">
-                <label>Prénom *</label>
-                <input type="text" id="prenom" placeholder="Votre prénom" autocomplete="given-name">
-            </div>
-            <div class="form-group">
-                <label>Code Postal *</label>
-                <input type="text" id="codepostal" placeholder="Ex : 80440" maxlength="5" inputmode="numeric" pattern="[0-9]{5}">
-            </div>
-            <div class="form-group">
-                <label>Téléphone (optionnel)</label>
-                <input type="tel" id="telephone" placeholder="06 xx xx xx xx" autocomplete="tel">
-            </div>
-            <div class="form-group full-width">
-                <label>Adresse email *</label>
-                <input type="email" id="email" placeholder="exemple@mail.com" autocomplete="email" inputmode="email">
-            </div>
-
-            <div class="tailles-section">
-                <h4>Tailles souhaitées — laisser vide si non commandé</h4>
-                <div class="tailles-grid">
-                    <div class="taille-item">
-                        <label>Pantalon</label>
-                        <select id="taille-pantalon">
-                            <option value="">— Non commandé —</option>
-                            <option>XS</option><option>S</option><option>M</option>
-                            <option>L</option><option>XL</option><option>XXL</option><option>3XL</option>
-                        </select>
-                    </div>
-                    <div class="taille-item">
-                        <label>Polo</label>
-                        <select id="taille-polo">
-                            <option value="">— Non commandé —</option>
-                            <option>XS</option><option>S</option><option>M</option>
-                            <option>L</option><option>XL</option><option>XXL</option><option>3XL</option>
-                        </select>
-                    </div>
-                    <div class="taille-item">
-                        <label>Veste</label>
-                        <select id="taille-veste">
-                            <option value="">— Non commandé —</option>
-                            <option>XS</option><option>S</option><option>M</option>
-                            <option>L</option><option>XL</option><option>XXL</option><option>3XL</option>
-                        </select>
-                    </div>
-                    <div class="taille-item">
-                        <label>Manteau</label>
-                        <select id="taille-manteau">
-                            <option value="">— Non commandé —</option>
-                            <option>XS</option><option>S</option><option>M</option>
-                            <option>L</option><option>XL</option><option>XXL</option><option>3XL</option>
-                        </select>
-                    </div>
-                </div>
-            </div>
-
-            <button class="submit-btn" onclick="submitCommande()">✅ Envoyer ma commande</button>
-        </div>
-    </div>
-
-    <div class="confirmation" id="confirmation">
-        <div class="checkmark">✅</div>
-        <h3>Commande envoyée !</h3>
-        <p>Merci <strong id="conf-prenom" style="color:var(--vert)"></strong>, votre demande est bien enregistrée.<br>
-        Un email de confirmation vous sera envoyé à l'adresse indiquée.<br>
-        <span style="color:var(--vert); font-weight:700;">Montant à régler : 100 €</span> auprès du bureau.</p>
-        <div class="recap" id="conf-recap"></div>
-        <button class="new-order-btn" onclick="nouvelleCommande()">Nouvelle commande</button>
-    </div>
-
-</section>
+<div class="logos-bar">
+  <img src="affiliation.jpg" alt="Code Rousseau">
+  <img src="label-qualite.jpg" alt="Label qualité">
+  <img src="permis-1e.jpg" alt="Permis 1€">
 </div>
 
-<!-- BUREAU -->
-<section id="bureau">
-    <h2>Membres du Bureau</h2>
-    <div class="bureau">
-        <div class="bureau-member">
-            <img src="president.jpg" alt="Président">
-            <h3>Manu</h3><p>Président</p>
-        </div>
-        <div class="bureau-member">
-            <img src="vice-president.jpg" alt="Vice-président">
-            <h3>Dimitri</h3><p>Vice-président</p>
-        </div>
-        <div class="bureau-member">
-            <img src="secretaire.jpg" alt="Secrétaire">
-            <h3>Clotilde</h3><p>Secrétaire</p>
-        </div>
-        <div class="bureau-member">
-            <img src="tresorier.jpg" alt="Trésorier">
-            <h3>Jean Pierre</h3><p>Trésorier</p>
-        </div>
-    </div>
-</section>
+<main>
 
-<!-- FAQ -->
-<section id="faq" class="faq">
-    <h2>FAQ</h2>
-    <details>
-        <summary>Comment s'inscrire au club ?</summary>
-        <p>Vous pouvez vous inscrire lors des entraînements ou en contactant un membre du bureau.</p>
-    </details>
-    <details>
-        <summary>Le club accepte-t-il les débutants ?</summary>
-        <p>Oui, tous les niveaux sont les bienvenus.</p>
-    </details>
-    <details>
-        <summary>Quels sont les jours d'entraînement ?</summary>
-        <p>Les entraînements ont lieu les mardis et vendredis à partir de 18h.</p>
-    </details>
-</section>
+  <!-- HORAIRES -->
+  <section id="horaires">
+    <div class="section-header">
+      <div class="section-label">Ouverture</div>
+      <h2>Horaires du bureau &amp; sessions code</h2>
+    </div>
+    <div class="horaires-grid">
+      <div class="horaire-item"><div class="horaire-day">Lundi</div><div class="horaire-time">14h00 – 16h00</div></div>
+      <div class="horaire-item"><div class="horaire-day">Mardi</div><div class="horaire-time">17h30 – 19h30</div></div>
+      <div class="horaire-item"><div class="horaire-day">Mercredi</div><div class="horaire-time">16h00 – 18h00</div></div>
+      <div class="horaire-item closed"><div class="horaire-day">Jeudi</div><div class="horaire-time">Fermé</div></div>
+      <div class="horaire-item"><div class="horaire-day">Vendredi</div><div class="horaire-time">17h30 – 19h30</div></div>
+      <div class="horaire-item"><div class="horaire-day">Samedi</div><div class="horaire-time">10h00 – 12h00</div></div>
+      <div class="horaire-item closed"><div class="horaire-day">Dimanche</div><div class="horaire-time">Fermé</div></div>
+    </div>
+  </section>
+
+  <!-- CONTACTS -->
+  <section id="contacts">
+    <div class="section-header">
+      <div class="section-label">Nous joindre</div>
+      <h2>Contacts</h2>
+    </div>
+    <div class="contacts-grid">
+      <div class="contact-card">
+        <div class="contact-icon"><i class="fa-solid fa-phone"></i></div>
+        <div><div class="contact-label">Téléphone fixe</div><div class="contact-value">03 22 53 93 60</div></div>
+      </div>
+      <div class="contact-card">
+        <div class="contact-icon"><i class="fa-solid fa-mobile-screen"></i></div>
+        <div><div class="contact-label">Téléphone portable</div><div class="contact-value">06 07 57 75 33</div></div>
+      </div>
+      <div class="contact-card">
+        <div class="contact-icon"><i class="fa-solid fa-envelope"></i></div>
+        <div><div class="contact-label">Email</div><div class="contact-value">autoecoledelongueau@free.fr</div></div>
+      </div>
+      <div class="contact-card">
+        <div class="contact-icon"><i class="fa-solid fa-location-dot"></i></div>
+        <div><div class="contact-label">Adresse</div><div class="contact-value">115 Avenue Henri Barbusse, 80330 Longueau</div></div>
+      </div>
+      <a class="contact-card" href="https://www.facebook.com/profile.php?id=100054197694817&locale=fr_FR" target="_blank">
+        <div class="contact-icon"><i class="fa-brands fa-facebook-f"></i></div>
+        <div><div class="contact-label">Facebook</div><div class="contact-value" style="color:var(--blue-dark)">Auto-École de Longueau →</div></div>
+      </a>
+    </div>
+  </section>
+
+  <!-- TARIFS — 100% CSS, zéro JS -->
+  <section id="tarifs">
+    <div class="section-header">
+      <div class="section-label">Formation</div>
+      <h2>Tarifs</h2>
+    </div>
+
+    <input type="radio" class="tarifs-radio" name="tarifs" id="tab-r-forfaits" checked>
+    <input type="radio" class="tarifs-radio" name="tarifs" id="tab-r-theorique">
+    <input type="radio" class="tarifs-radio" name="tarifs" id="tab-r-admin">
+    <input type="radio" class="tarifs-radio" name="tarifs" id="tab-r-lecons">
+
+    <div class="tarifs-tabs">
+      <label class="tab-lbl lbl-forfaits" for="tab-r-forfaits">Forfaits complets</label>
+      <label class="tab-lbl lbl-theorique" for="tab-r-theorique">Théorique</label>
+      <label class="tab-lbl lbl-admin" for="tab-r-admin">Frais administratifs</label>
+      <label class="tab-lbl lbl-lecons" for="tab-r-lecons">Leçons à l'unité</label>
+    </div>
+
+    <div class="tab-panel" id="tab-forfaits">
+      <div class="tarif-list">
+        <div class="tarif-item"><div><div class="tarif-name">Formule théorique</div><div class="tarif-desc">Frais administratifs · Formation théorique · 1 Class Rousseau + 1 manuel code</div></div><div class="tarif-price">325 €</div></div>
+        <div class="tarif-item highlight"><div><div class="tarif-name">Permis B – Boîte manuelle 20h</div><div class="tarif-desc">Frais administratifs · Formation théorique · 20h pratiques · 1 accompagnement examen</div></div><div class="tarif-price">1 280 €</div></div>
+        <div class="tarif-item highlight"><div><div class="tarif-name">Permis B – Boîte manuelle 25h</div><div class="tarif-desc">Frais administratifs · Formation théorique · 25h pratiques · 2 accompagnements examen</div></div><div class="tarif-price">1 580 €</div></div>
+        <div class="tarif-item"><div><div class="tarif-name">Permis B – Boîte automatique</div><div class="tarif-desc">Frais administratifs · Formation théorique · 13h pratiques · 1 accompagnement examen</div></div><div class="tarif-price">1 050 €</div></div>
+        <div class="tarif-item"><div><div class="tarif-name">AAC – Boîte manuelle (dès 15 ans)</div><div class="tarif-desc">Frais administratifs · Formation théorique · 20h pratiques · 1 RDV préalable (2h)</div></div><div class="tarif-price">1 150 €</div></div>
+        <div class="tarif-item"><div><div class="tarif-name">AAC – Boîte automatique (dès 15 ans)</div><div class="tarif-desc">Frais administratifs · Formation théorique · 13h pratiques · 1 RDV préalable (2h)</div></div><div class="tarif-price">1 000 €</div></div>
+        <div class="tarif-item"><div><div class="tarif-name">Permis B – Boîte automatique sans code</div><div class="tarif-desc">Frais administratifs · 13h pratiques · 1 accompagnement examen</div></div><div class="tarif-price">850 €</div></div>
+        <div class="tarif-item"><div><div class="tarif-name">Permis B – Boîte manuelle sans code</div><div class="tarif-desc">Frais administratifs · 20h pratiques · 1 accompagnement examen</div></div><div class="tarif-price">1 130 €</div></div>
+        <div class="tarif-item"><div><div class="tarif-name">Formation passerelle (auto → manuelle)</div><div class="tarif-desc">Frais administratifs · 7h pratiques · 1 évaluation de départ</div></div><div class="tarif-price">470 €</div></div>
+      </div>
+    </div>
+
+    <div class="tab-panel" id="tab-theorique">
+      <div class="tarif-list">
+        <div class="tarif-item"><div><div class="tarif-name">Test audio visuel collectif</div><div class="tarif-desc">Session de test en salle</div></div><div class="tarif-price">15 €</div></div>
+        <div class="tarif-item highlight"><div><div class="tarif-name">Forfait code (6 mois)</div><div class="tarif-desc">Accès illimité 6 mois aux sessions de code</div></div><div class="tarif-price">200 €</div></div>
+        <div class="tarif-item"><div><div class="tarif-name">Redevance paiement ETG</div></div><div class="tarif-price">30 €</div></div>
+      </div>
+    </div>
+
+    <div class="tab-panel" id="tab-admin">
+      <div class="tarif-list">
+        <div class="tarif-item"><div><div class="tarif-name">Frais administratifs</div><div class="tarif-desc">Constitution du dossier et inscription à l'examen</div></div><div class="tarif-price">80 €</div></div>
+        <div class="tarif-item"><div><div class="tarif-name">Accompagnement permis B – Boîte manuelle</div></div><div class="tarif-price">50 €</div></div>
+        <div class="tarif-item"><div><div class="tarif-name">Accompagnement permis B – Boîte automatique</div></div><div class="tarif-price">55 €</div></div>
+      </div>
+    </div>
+
+    <div class="tab-panel" id="tab-lecons">
+      <div class="tarif-list">
+        <div class="tarif-item"><div><div class="tarif-name">Évaluation (hors forfait)</div></div><div class="tarif-price">40 €</div></div>
+        <div class="tarif-item"><div><div class="tarif-name">Leçon 1h – Boîte manuelle</div></div><div class="tarif-price">50 €</div></div>
+        <div class="tarif-item"><div><div class="tarif-name">Leçon 1h – Boîte automatique</div></div><div class="tarif-price">55 €</div></div>
+        <div class="tarif-item"><div><div class="tarif-name">Leçon 1h – AAC</div></div><div class="tarif-price">50 €</div></div>
+        <div class="tarif-item"><div><div class="tarif-name">RDV préalable – Boîte manuelle</div></div><div class="tarif-price">50 €</div></div>
+        <div class="tarif-item"><div><div class="tarif-name">RDV préalable – Boîte automatique</div></div><div class="tarif-price">55 €</div></div>
+        <div class="tarif-item"><div><div class="tarif-name">RDV pédagogique – Boîte manuelle</div></div><div class="tarif-price">86 €</div></div>
+        <div class="tarif-item"><div><div class="tarif-name">RDV pédagogique – Boîte automatique</div></div><div class="tarif-price">90 €</div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- VÉHICULES -->
+  <section id="vehicules">
+    <div class="section-header">
+      <div class="section-label">Notre flotte</div>
+      <h2>Nos véhicules</h2>
+    </div>
+    <div class="vehicules-grid">
+      <div class="vehicule-card">
+        <img src="voiture1.jpg" alt="DS 3 Crossback automatique">
+        <div class="vehicule-info">
+          <div class="vehicule-badge">Boîte automatique</div>
+          <h3>DS 3 Crossback</h3>
+          <p>Rouge · Diesel · 2024 — Pour une conduite plus douce et moderne.</p>
+        </div>
+      </div>
+      <div class="vehicule-card">
+        <img src="voiture2.jpg" alt="Citroën C3 manuelle">
+        <div class="vehicule-info">
+          <div class="vehicule-badge">Boîte manuelle</div>
+          <h3>Citroën C3</h3>
+          <p>Bleue · Diesel · 2024 — Idéale pour apprendre les bases de la conduite manuelle.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ÉQUIPE -->
+  <section id="equipe">
+    <div class="section-header">
+      <div class="section-label">Qui sommes-nous</div>
+      <h2>L'équipe</h2>
+    </div>
+    <div class="equipe-grid">
+      <div class="membre-card">
+        <img src="monitrice1.jpg" alt="Sylvie">
+        <div class="membre-info">
+          <h3>Sylvie</h3>
+          <div class="membre-role">Directrice &amp; Monitrice · depuis 1992</div>
+          <p>Plus de 30 ans d'expérience, une passion pour la formation et la sécurité routière.</p>
+        </div>
+      </div>
+      <div class="membre-card">
+        <img src="monitrice2.jpg" alt="Sarah">
+        <div class="membre-info">
+          <h3>Sarah</h3>
+          <div class="membre-role">Monitrice · depuis 2025</div>
+          <p>Une énergie nouvelle et une approche moderne de l'apprentissage de la conduite.</p>
+        </div>
+      </div>
+    </div>
+    <div class="separator-text">
+      Sylvie et Sarah accompagnent les élèves de <strong>Longueau</strong> et des communes voisines dans la réussite du <strong>permis B</strong>, en <strong>boîte manuelle</strong> et <strong>boîte automatique</strong>. Notre auto-école propose également la conduite accompagnée (AAC), la conduite supervisée et la formation passerelle.
+    </div>
+  </section>
+
+  <!-- AVIS -->
+  <section id="avis">
+    <div class="section-header">
+      <div class="section-label">Témoignages</div>
+      <h2>Avis de nos élèves</h2>
+    </div>
+    <div class="avis-grid">
+      <div class="avis-card">
+        <div class="avis-stars-sm"><span>★</span><span>★</span><span>★</span><span>★</span><span>★</span></div>
+        <p class="avis-text">"Merci à Sylvie et Sarah pour ces mois d'apprentissage, pour tous les conseils qui m'ont permis de réussir mon examen du permis de conduire. Avec de la persévérance et de l'espoir, merci d'avoir cru en moi. Deux monitrices toujours très souriantes, dynamiques et dans la bonne humeur."</p>
+      </div>
+      <div class="avis-card">
+        <div class="avis-stars-sm"><span>★</span><span>★</span><span>★</span><span>★</span><span>★</span></div>
+        <p class="avis-text">"Superbe auto-école, Sylvie est très pédagogue. Malgré le fait d'être passée avant dans une autre auto-école, elle a accepté de m'aider et de me conseiller. Elle est très patiente et investie avec tous ses élèves. Je vous la recommande, vous aurez votre permis à coup sûr !"</p>
+      </div>
+      <div class="avis-card">
+        <div class="avis-stars-sm"><span>★</span><span>★</span><span>★</span><span>★</span><span>★</span></div>
+        <p class="avis-text">"Auto-école vivement recommandée ! Sylvie est une monitrice très sympathique, patiente et à l'écoute, mais aussi très professionnelle et pédagogue. Un grand merci pour tous les précieux conseils qu'elle a pu me donner et qui m'ont aidée à obtenir mon permis !!!"</p>
+      </div>
+    </div>
+    <img src="avis-google.jpg" alt="Avis Google 4,9 étoiles" class="avis-google-img">
+  </section>
+
+  <!-- RENDEZ-VOUS -->
+  <section id="rendez-vous">
+    <div class="section-header">
+      <div class="section-label">Inscription</div>
+      <h2>Prise de rendez-vous</h2>
+    </div>
+    <div class="rdv-grid">
+      <div class="rdv-info">
+        <h3>Commencez votre formation</h3>
+        <p>Pour toute demande d'inscription ou de renseignements, remplissez le formulaire. Nous vous recontacterons rapidement pour fixer un rendez-vous. Les rendez-vous se font sur <strong>les heures d'ouverture du bureau</strong>, indiqué sur le site.</p>
+        <a href="#horaires" class="rdv-horaires-link">Voir les horaires d'ouverture ↑</a>
+        <div class="rdv-hours">
+          <div class="rdv-hours-title">Horaires d'ouverture</div>
+          <div class="rdv-hours-grid">
+            <div class="rdv-hour-row"><span class="rdv-hour-day">Lundi</span><span class="rdv-hour-time">14h00 – 16h00</span></div>
+            <div class="rdv-hour-row"><span class="rdv-hour-day">Mardi</span><span class="rdv-hour-time">17h30 – 19h30</span></div>
+            <div class="rdv-hour-row"><span class="rdv-hour-day">Mercredi</span><span class="rdv-hour-time">16h00 – 18h00</span></div>
+            <div class="rdv-hour-row" style="opacity:.45"><span class="rdv-hour-day">Jeudi</span><span class="rdv-hour-time" style="color:var(--text-light)">Fermé</span></div>
+            <div class="rdv-hour-row"><span class="rdv-hour-day">Vendredi</span><span class="rdv-hour-time">17h30 – 19h30</span></div>
+            <div class="rdv-hour-row"><span class="rdv-hour-day">Samedi</span><span class="rdv-hour-time">10h00 – 12h00</span></div>
+            <div class="rdv-hour-row" style="opacity:.45"><span class="rdv-hour-day">Dimanche</span><span class="rdv-hour-time" style="color:var(--text-light)">Fermé</span></div>
+          </div>
+        </div>
+      </div>
+      <form action="https://formspree.io/f/mreaykpj" method="POST" class="form-rdv">
+        <div class="form-row">
+          <div class="form-group"><label>Nom</label><input type="text" name="Nom" placeholder="Votre nom" required></div>
+          <div class="form-group"><label>Prénom</label><input type="text" name="Prenom" placeholder="Votre prénom" required></div>
+        </div>
+        <div class="form-row">
+          <div class="form-group"><label>Email</label><input type="email" name="Email" placeholder="email@exemple.fr" required></div>
+          <div class="form-group"><label>Téléphone</label><input type="tel" name="Telephone" placeholder="06 00 00 00 00" required></div>
+        </div>
+        <div class="form-group"><label>Code postal</label><input type="text" name="CodePostal" placeholder="Votre code postal" required></div>
+        <div class="form-group">
+          <label>Formation demandée</label>
+          <select name="Formation" required>
+            <option value="">-- Sélectionnez une formation --</option>
+            <option>Permis B - Boîte manuelle 20h</option>
+            <option>Permis B - Boîte manuelle 25h</option>
+            <option>Permis B - Boîte automatique</option>
+            <option>Permis B - Boîte automatique sans code</option>
+            <option>Permis B - Boîte manuelle sans code</option>
+            <option>AAC - Boîte manuelle</option>
+            <option>AAC - Boîte automatique</option>
+            <option>Formule théorique</option>
+            <option>Formation passerelle (automatique vers manuelle)</option>
+          </select>
+        </div>
+        <div class="form-group"><label>Informations supplémentaires</label><textarea name="Objet" placeholder="Précisions éventuelles…"></textarea></div>
+        <button type="submit" class="btn-submit">Envoyer la demande →</button>
+      </form>
+    </div>
+  </section>
+
+  <!-- FAQ — 100% CSS avec details/summary, zéro JS -->
+  <section id="faq">
+    <div class="section-header">
+      <div class="section-label">Questions fréquentes</div>
+      <h2>FAQ</h2>
+    </div>
+    <div class="faq-list">
+
+      <details class="faq-item">
+        <summary><span>1. À quel âge puis-je commencer la conduite accompagnée (AAC) ?</span><span class="faq-icon-wrap">+</span></summary>
+        <div class="faq-answer"><p>La conduite accompagnée peut débuter dès 15 ans, après avoir validé le code de la route. Nous organisons la formation théorique et pratique adaptée à votre âge.</p></div>
+      </details>
+
+      <details class="faq-item">
+        <summary><span>2. Combien de temps faut-il pour obtenir le permis B ?</span><span class="faq-icon-wrap">+</span></summary>
+        <div class="faq-answer"><p>La durée varie selon votre progression et le forfait choisi : environ 20 à 25 heures de conduite pour la boîte manuelle et 13 heures pour la boîte automatique.</p></div>
+      </details>
+
+      <details class="faq-item">
+        <summary><span>3. Quels documents dois-je fournir pour m'inscrire ?</span><span class="faq-icon-wrap">+</span></summary>
+        <div class="faq-answer"><p>Un justificatif de domicile de moins de 3 mois, photocopie recto-verso de la carte d'identité, ASSR2, une photo d'identité AGRÉÉE ANTS avec code ephoto, photocopie recensement ou journée d'appel, justificatif de domicile de moins de 6 mois, photocopie d'identité recto-verso du responsable légal + attestation d'hébergement, 2 enveloppes timbrées à 50g (A5)</p></div>
+      </details>
+
+      <details class="faq-item">
+        <summary><span>4. Comment se déroule l'examen du code de la route ?</span><span class="faq-icon-wrap">+</span></summary>
+        <div class="faq-answer"><p>L'examen du code comporte 40 questions à choix multiple. Il faut répondre correctement à au moins 35 questions pour réussir.</p></div>
+      </details>
+
+      <details class="faq-item">
+        <summary><span>5. Quels sont les principaux points à retenir pour réussir le code ?</span><span class="faq-icon-wrap">+</span></summary>
+        <div class="faq-answer"><p>Utilisez les moyens mis à disposition par votre auto-école (le kit pédagogique ainsi que l'application numérique). La pratique dans notre salle spécialisée est très utile.</p></div>
+      </details>
+
+      <details class="faq-item">
+        <summary><span>6. Comment se passe l'examen pratique de conduite ?</span><span class="faq-icon-wrap">+</span></summary>
+        <div class="faq-answer"><p>L'examen pratique dure environ 30 à 40 minutes et évalue votre maîtrise du véhicule, votre respect du code de la route et votre capacité à anticiper les dangers. L'examinateur vous accompagne sur différents types de routes.</p></div>
+      </details>
+
+      <details class="faq-item">
+        <summary><span>7. Que faire en cas d'erreur pendant l'examen de conduite ?</span><span class="faq-icon-wrap">+</span></summary>
+        <div class="faq-answer"><p>Restez calme, corrigez votre erreur si possible et poursuivez la conduite normalement, une erreur n'entraîne pas automatiquement l'échec.</p></div>
+      </details>
+
+      <details class="faq-item">
+        <summary><span>8. Quels conseils pour bien progresser en conduite ?</span><span class="faq-icon-wrap">+</span></summary>
+        <div class="faq-answer"><p>Pratiquez régulièrement, écoutez les conseils de votre moniteur, soyez attentif à la route et à vos réflexes. Notez vos erreurs et travaillez-les à chaque leçon.</p></div>
+      </details>
+
+      <details class="faq-item">
+        <summary><span>9. Quels sont les risques les plus fréquents pour les nouveaux conducteurs ?</span><span class="faq-icon-wrap">+</span></summary>
+        <div class="faq-answer"><p>Les erreurs courantes incluent la mauvaise estimation des distances et des vitesses, les excès de vitesse, les oublis de clignotants, le manque de prise d'informations avant un changement de voie et la prise d'informations aux intersections.</p></div>
+      </details>
+
+      <details class="faq-item">
+        <summary><span>10. Est-il possible de réviser le code en ligne avant les cours ?</span><span class="faq-icon-wrap">+</span></summary>
+        <div class="faq-answer"><p>Oui, il existe une formule qui permet de faire des sessions afin de réviser le code de la route depuis chez soi grâce au Code Rousseau. Cela permet de se familiariser avec les questions et d'arriver mieux preparé à l'examen.</p></div>
+      </details>
+
+      <details class="faq-item">
+        <summary><span>11. Comment savoir si je suis prêt pour l'examen du code de la route ?</span><span class="faq-icon-wrap">+</span></summary>
+        <div class="faq-answer"><p>Procédez à votre auto-évaluation puis demander l'avis de votre formateur, et lorsque vous vous estimez prêt, vous pouvez solliciter une session dans le bureau de poste de votre choix, au plus proche de votre domicile.</p></div>
+      </details>
+
+      <details class="faq-item">
+        <summary><span>12. Que se passe-t-il si j'échoue à l'examen du code ou de la conduite ?</span><span class="faq-icon-wrap">+</span></summary>
+        <div class="faq-answer"><p>Vous pouvez le repasser. Après un échec au code, vous pouvez vous réinscrire. Pour l'examen pratique, parlez-en avec votre formateur.</p></div>
+      </details>
+
+      <details class="faq-item">
+        <summary><span>13. Quels conseils pour gérer le stress le jour de l'examen ?</span><span class="faq-icon-wrap">+</span></summary>
+        <div class="faq-answer"><p>Respirez profondément, restez concentré sur votre conduite, écoutez attentivement l'examinateur et rappelez-vous que vous êtes préparé. Une bonne nuit de sommeil et un repas équilibré aide aussi à se détendre.</p></div>
+      </details>
+
+      <details class="faq-item">
+        <summary><span>14. Quelle est la différence entre la boîte manuelle et la boîte automatique ?</span><span class="faq-icon-wrap">+</span></summary>
+        <div class="faq-answer"><p>La boîte manuelle nécessite de gérer l'embrayage et le passage des vitesses, tandis que la boîte automatique simplifie la conduite en supprimant ces actions. Elle est idéale pour les élèves stressés ou souhaitant un apprentissage plus rapide.</p></div>
+      </details>
+
+      <details class="faq-item">
+        <summary><span>15. Puis-je passer du permis automatique (B78) au permis boîte manuelle ?</span><span class="faq-icon-wrap">+</span></summary>
+        <div class="faq-answer"><p>Oui. Après l'obtention du permis automatique et après une évaluation, une formation complémentaire de minimum 7 heures que l'on appelle passerelle, permet de conduire une boîte manuelle, sans repasser l'examen.</p></div>
+      </details>
+
+      <details class="faq-item">
+        <summary><span>16. Proposez-vous la conduite supervisée après un échec à l'examen ?</span><span class="faq-icon-wrap">+</span></summary>
+        <div class="faq-answer"><p>Oui. La conduite supervisée est une excellente solution pour continuer à s'entraîner, gagner en confiance et améliorer ses chances de réussite lors du prochain passage.</p></div>
+      </details>
+
+      <details class="faq-item">
+        <summary><span>17. Est-il possible de faire un réentraînement après une longue période sans conduire ?</span><span class="faq-icon-wrap">+</span></summary>
+        <div class="faq-answer"><p>Absolument. Le réentraînement permet de reprendre la conduite en douceur, de corriger les mauvaises habitudes et de retrouver assurance et sécurité au volant.</p></div>
+      </details>
+
+      <details class="faq-item">
+        <summary><span>18. La conduite accompagnée permet-elle d'augmenter les chances de réussite au permis ?</span><span class="faq-icon-wrap">+</span></summary>
+        <div class="faq-answer"><p>Oui. Les statistiques montrent que la conduite accompagnée améliore le taux de réussite à l'examen et permet une meilleure maîtrise de la conduite sur le long terme.</p></div>
+      </details>
+
+      <details class="faq-item">
+        <summary><span>19. Combien d'heures de conduite sont obligatoires pour passer l'examen ?</span><span class="faq-icon-wrap">+</span></summary>
+        <div class="faq-answer"><p>Le minimum légal est de 20 heures en boîte manuelle et 13 heures en boîte automatique. Toutefois, le nombre d'heures dépend de chaque élève.</p></div>
+      </details>
+
+      <details class="faq-item">
+        <summary><span>20. À quelle fréquence puis-je prendre des leçons de conduite ?</span><span class="faq-icon-wrap">+</span></summary>
+        <div class="faq-answer"><p>Les leçons peuvent être planifiées selon vos disponibilités, avec une fréquence régulière pour assurer une progression efficace.</p></div>
+      </details>
+
+      <details class="faq-item">
+        <summary><span>21. Quels sont les moyens de paiement acceptés ?</span><span class="faq-icon-wrap">+</span></summary>
+        <div class="faq-answer"><p>Nous acceptons plusieurs moyens de paiement et proposons des facilités afin de rendre la formation accessible au plus grand nombre.</p></div>
+      </details>
+
+      <details class="faq-item">
+        <summary><span>22. Le permis à 1 € par jour est-il accessible à tous ?</span><span class="faq-icon-wrap">+</span></summary>
+        <div class="faq-answer"><p>Il est destiné aux jeunes de 15 à 25 ans sous conditions d'éligibilité. Nous vous accompagnons dans les démarches si vous êtes concerné.</p></div>
+      </details>
+
+      <details class="faq-item">
+        <summary><span>23. L'auto-école s'occupe-t-elle des démarches administratives ANTS ?</span><span class="faq-icon-wrap">+</span></summary>
+        <div class="faq-answer"><p>Oui. Nous prenons en charge l'ensemble des démarches administratives pour vous simplifier la vie.</p></div>
+      </details>
+
+      <details class="faq-item">
+        <summary><span>24. Combien de temps le code est-il valable ?</span><span class="faq-icon-wrap">+</span></summary>
+        <div class="faq-answer"><p>Le code de la route est valable 5 ans à compter de sa réussite.</p></div>
+      </details>
+
+      <details class="faq-item">
+        <summary><span>25. Aidez-vous les élèves stressés ou en manque de confiance ?</span><span class="faq-icon-wrap">+</span></summary>
+        <div class="faq-answer"><p>Oui. Nous adaptons notre pédagogie à chaque élève, avec patience, écoute et bienveillance.</p></div>
+      </details>
+
+      <details class="faq-item">
+        <summary><span>26. Que faire si j'ai peur de conduire ?</span><span class="faq-icon-wrap">+</span></summary>
+        <div class="faq-answer"><p>La peur est fréquente. Grâce à un accompagnement progressif et personnalisé, nous vous aidons à reprendre confiance étape par étape.</p></div>
+      </details>
+
+      <details class="faq-item">
+        <summary><span>27. Quel est votre taux de réussite au permis ?</span><span class="faq-icon-wrap">+</span></summary>
+        <div class="faq-answer"><p>Notre taux de réussite est satisfaisant et reflète la qualité de notre accompagnement et l'implication de nos élèves.</p></div>
+      </details>
+
+      <details class="faq-item">
+        <summary><span>28. Pourquoi choisir votre auto-école plutôt qu'une autre ?</span><span class="faq-icon-wrap">+</span></summary>
+        <div class="faq-answer"><p>Pour notre pédagogie personnalisée, notre écoute, notre sérieux et notre objectif principal : votre réussite et votre sécurité sur la route.</p></div>
+      </details>
+
+    </div>
+  </section>
+
+</main>
 
 <footer>
-    <p>© 2026 – Club de Pétanque de Boves</p>
-    <p>Site officiel du club</p>
+  <div class="footer-inner">
+    <div class="footer-logo">Auto-École <span>de Longueau</span></div>
+    <p>115 Avenue Henri Barbusse, 80330 Longueau &nbsp;·&nbsp; 03 22 53 93 60</p>
+    <p style="margin-top:6px;">© 2026 Auto-École de Longueau</p>
+  </div>
 </footer>
 
-<button onclick="topFunction()" id="btnTop" title="Retour en haut">↑</button>
+<button id="backToTop" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
 
 <script>
-/* ---- Menu hamburger ---- */
-const hamburger = document.getElementById('hamburger');
-const navMenu   = document.getElementById('navMenu');
-
-hamburger.addEventListener('click', () => {
-    const isOpen = navMenu.classList.toggle('open');
-    hamburger.classList.toggle('open', isOpen);
-    hamburger.setAttribute('aria-expanded', String(isOpen));
-    hamburger.setAttribute('aria-label', isOpen ? 'Fermer le menu' : 'Ouvrir le menu');
-});
-
-document.addEventListener('click', e => {
-    if (!hamburger.contains(e.target) && !navMenu.contains(e.target)) closeMenu();
-});
-
-function closeMenu() {
-    navMenu.classList.remove('open');
-    hamburger.classList.remove('open');
-    hamburger.setAttribute('aria-expanded', 'false');
-    hamburger.setAttribute('aria-label', 'Ouvrir le menu');
-}
-
-/* ---- Bouton haut ---- */
-const btnTop = document.getElementById('btnTop');
-window.addEventListener('scroll', () => {
-    btnTop.style.display = window.scrollY > 220 ? 'block' : 'none';
-});
-function topFunction() { window.scrollTo({ top: 0, behavior: 'smooth' }); }
-
-/* ---- Commande vêtements ---- */
-function submitCommande() {
-    const nom      = document.getElementById('nom').value.trim();
-    const prenom   = document.getElementById('prenom').value.trim();
-    const cp       = document.getElementById('codepostal').value.trim();
-    const tel      = document.getElementById('telephone').value.trim();
-    const email    = document.getElementById('email').value.trim();
-    const pantalon = document.getElementById('taille-pantalon').value;
-    const polo     = document.getElementById('taille-polo').value;
-    const veste    = document.getElementById('taille-veste').value;
-    const manteau  = document.getElementById('taille-manteau').value;
-
-    if (!nom || !prenom || !cp) {
-        alert('⚠️ Merci de renseigner votre nom, prénom et code postal.'); return;
-    }
-    if (!/^\d{5}$/.test(cp)) {
-        alert('⚠️ Le code postal doit contenir exactement 5 chiffres.'); return;
-    }
-    if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-        alert('⚠️ Merci de renseigner une adresse email valide.'); return;
-    }
-    if (!pantalon && !polo && !veste && !manteau) {
-        alert('⚠️ Veuillez sélectionner au moins une taille de vêtement.'); return;
-    }
-
-    document.getElementById('conf-prenom').textContent = prenom;
-    let html = `<p><strong>Nom :</strong> ${prenom} ${nom}</p>`;
-    html += `<p><strong>Code postal :</strong> ${cp}</p>`;
-    html += `<p><strong>📧 Email :</strong> ${email}</p>`;
-    if (tel)      html += `<p><strong>Téléphone :</strong> ${tel}</p>`;
-    if (pantalon) html += `<p><strong>👖 Pantalon :</strong> ${pantalon}</p>`;
-    if (polo)     html += `<p><strong>👕 Polo :</strong> ${polo}</p>`;
-    if (veste)    html += `<p><strong>🧥 Veste :</strong> ${veste}</p>`;
-    if (manteau)  html += `<p><strong>🧣 Manteau :</strong> ${manteau}</p>`;
-    html += `<p style="margin-top:10px;padding-top:10px;border-top:1px solid #333;"><strong style="color:var(--vert);">💶 Montant total : 100 €</strong></p>`;
-
-    document.getElementById('conf-recap').innerHTML = html;
-    document.getElementById('orderForm').style.display = 'none';
-    const conf = document.getElementById('confirmation');
-    conf.style.display = 'block';
-    conf.scrollIntoView({ behavior: 'smooth', block: 'center' });
-}
-
-function nouvelleCommande() {
-    document.getElementById('orderForm').style.display = 'block';
-    document.getElementById('confirmation').style.display = 'none';
-    ['nom','prenom','codepostal','telephone','email']
-        .forEach(id => document.getElementById(id).value = '');
-    ['taille-pantalon','taille-polo','taille-veste','taille-manteau']
-        .forEach(id => document.getElementById(id).value = '');
-    document.getElementById('orderForm').scrollIntoView({ behavior: 'smooth' });
-}
+window.onscroll=function(){var b=document.getElementById('backToTop');b.className=window.scrollY>400?'show':''};
 </script>
 
 </body>
