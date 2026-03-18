@@ -1024,15 +1024,15 @@ function submitCommande() {
     btn.disabled = true;
 
     var formData = new FormData();
-    formData.append('nom', prenom + ' ' + nom);
-    formData.append('code_postal', cp);
-    formData.append('email', email);
-    formData.append('telephone', tel);
-    formData.append('pantalon', pantalon || 'Non commandé');
-    formData.append('polo', polo || 'Non commandé');
-    formData.append('veste', veste || 'Non commandé');
-    formData.append('manteau', manteau || 'Non commandé');
-    formData.append('montant', '100 euros');
+    formData.append('01_nom', prenom + ' ' + nom);
+    formData.append('02_email', email);
+    formData.append('03_telephone', tel);
+    formData.append('04_code_postal', cp);
+    formData.append('05_pantalon', pantalon || 'Non commandé');
+    formData.append('06_polo', polo || 'Non commandé');
+    formData.append('07_veste', veste || 'Non commandé');
+    formData.append('08_manteau', manteau || 'Non commandé');
+    formData.append('09_montant', '100 euros');
 
     fetch('https://formspree.io/f/xwvrwwje', {
         method: 'POST',
