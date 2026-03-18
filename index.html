@@ -632,7 +632,7 @@
 <section id="contact">
     <h2>Contacts</h2>
     <div class="card">
-        <p>📧 <a href="mailto:petanque80440@gmail.com">petanque80440@gmail.com</a></p>
+        <p>📧 <a href="/cdn-cgi/l/email-protection#92e2f7e6f3fce3e7f7aaa2a6a6a2d2f5fff3fbfebcf1fdff"><span class="__cf_email__" data-cfemail="8dfde8f9ece3fcf8e8b5bdb9b9bdcdeae0ece4e1a3eee2e0">[email&#160;protected]</span></a></p>
         <p>📞 <a href="tel:0682489217">06 82 48 92 17</a></p>
         <p>📘 <a href="https://www.facebook.com/petanque.boves/" target="_blank" rel="noopener">Facebook – Pétanque Boves</a></p>
         <p>🎵 <a href="https://www.tiktok.com/@petanqueboves80" target="_blank" rel="noopener">TikTok – PétanqueBoves80</a></p>
@@ -760,34 +760,34 @@
         </div>
     </div>
 
-    <div class="order-form" id="orderForm">
+    <form class="order-form" id="orderForm" action="https://formspree.io/f/xwvrwwje" method="POST">
         <div class="form-grid">
             <div class="form-group">
                 <label>Nom *</label>
-                <input type="text" id="nom" placeholder="Votre nom" autocomplete="family-name">
+                <input type="text" name="nom" id="nom" placeholder="Votre nom" autocomplete="family-name">
             </div>
             <div class="form-group">
                 <label>Prénom *</label>
-                <input type="text" id="prenom" placeholder="Votre prénom" autocomplete="given-name">
+                <input type="text" name="prenom" id="prenom" placeholder="Votre prénom" autocomplete="given-name">
             </div>
             <div class="form-group">
                 <label>Code Postal *</label>
-                <input type="text" id="codepostal" placeholder="Ex : 80440" maxlength="5" inputmode="numeric" pattern="[0-9]{5}">
+                <input type="text" name="code_postal" id="codepostal" placeholder="Ex : 80440" maxlength="5" inputmode="numeric" pattern="[0-9]{5}">
             </div>
             <div class="form-group">
                 <label>Téléphone *</label>
-                <input type="tel" id="telephone" placeholder="06 xx xx xx xx" autocomplete="tel">
+                <input type="tel" name="telephone" id="telephone" placeholder="06 xx xx xx xx" autocomplete="tel">
             </div>
             <div class="form-group full-width">
                 <label>Adresse email *</label>
-                <input type="email" id="email" placeholder="exemple@mail.com" autocomplete="email" inputmode="email">
+                <input type="email" name="email" id="email" placeholder="exemple@mail.com" autocomplete="email" inputmode="email">
             </div>
             <div class="tailles-section">
                 <h4>Tailles souhaitées — laisser vide si non commandé</h4>
                 <div class="tailles-grid">
                     <div class="taille-item">
                         <label>👖 Pantalon</label>
-                        <select id="taille-pantalon">
+                        <select name="pantalon" id="taille-pantalon">
                             <option value="">— Non commandé —</option>
                             <option>XS</option><option>S</option><option>M</option>
                             <option>L</option><option>XL</option><option>XXL</option><option>3XL</option>
@@ -795,7 +795,7 @@
                     </div>
                     <div class="taille-item">
                         <label>👕 Polo</label>
-                        <select id="taille-polo">
+                        <select name="polo" id="taille-polo">
                             <option value="">— Non commandé —</option>
                             <option>XS</option><option>S</option><option>M</option>
                             <option>L</option><option>XL</option><option>XXL</option><option>3XL</option>
@@ -803,7 +803,7 @@
                     </div>
                     <div class="taille-item">
                         <label>🧥 Veste</label>
-                        <select id="taille-veste">
+                        <select name="veste" id="taille-veste">
                             <option value="">— Non commandé —</option>
                             <option>XS</option><option>S</option><option>M</option>
                             <option>L</option><option>XL</option><option>XXL</option><option>3XL</option>
@@ -811,7 +811,7 @@
                     </div>
                     <div class="taille-item">
                         <label>🧣 Manteau</label>
-                        <select id="taille-manteau">
+                        <select name="manteau" id="taille-manteau">
                             <option value="">— Non commandé —</option>
                             <option>XS</option><option>S</option><option>M</option>
                             <option>L</option><option>XL</option><option>XXL</option><option>3XL</option>
@@ -819,9 +819,10 @@
                     </div>
                 </div>
             </div>
-            <button class="submit-btn" onclick="submitCommande()">✅ Envoyer ma commande</button>
+            <input type="hidden" name="montant" value="100 euros">
+            <button type="button" class="submit-btn" onclick="submitCommande()">✅ Envoyer ma commande</button>
         </div>
-    </div>
+    </form>
 
     <div class="confirmation" id="confirmation">
         <div class="checkmark">✅</div>
@@ -958,7 +959,7 @@
 
 <button onclick="topFunction()" id="btnTop" title="Retour en haut">↑</button>
 
-<script>
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
 /* ---- Menu hamburger ---- */
 const hamburger = document.getElementById('hamburger');
 const navMenu   = document.getElementById('navMenu');
@@ -1018,27 +1019,25 @@ function submitCommande() {
         alert('⚠️ Veuillez sélectionner au moins une taille de vêtement.'); return;
     }
 
-    /* Envoi vers Formspree */
     var btn = document.querySelector('.submit-btn');
     btn.textContent = 'Envoi en cours...';
     btn.disabled = true;
 
-    var data = {
-        nom: prenom + ' ' + nom,
-        code_postal: cp,
-        email: email,
-        telephone: tel || 'Non renseigné',
-        pantalon: pantalon || 'Non commandé',
-        polo: polo || 'Non commandé',
-        veste: veste || 'Non commandé',
-        manteau: manteau || 'Non commandé',
-        montant: '100 euros'
-    };
+    var formData = new FormData();
+    formData.append('nom', prenom + ' ' + nom);
+    formData.append('code_postal', cp);
+    formData.append('email', email);
+    formData.append('telephone', tel);
+    formData.append('pantalon', pantalon || 'Non commandé');
+    formData.append('polo', polo || 'Non commandé');
+    formData.append('veste', veste || 'Non commandé');
+    formData.append('manteau', manteau || 'Non commandé');
+    formData.append('montant', '100 euros');
 
     fetch('https://formspree.io/f/xwvrwwje', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
-        body: JSON.stringify(data)
+        body: formData,
+        headers: { 'Accept': 'application/json' }
     })
     .then(function(response) {
         btn.textContent = '✅ Envoyer ma commande';
@@ -1046,7 +1045,10 @@ function submitCommande() {
         if (response.ok) {
             afficherConfirmation(prenom, nom, cp, email, tel, pantalon, polo, veste, manteau);
         } else {
-            alert('❌ Une erreur est survenue. Veuillez réessayer ou contacter le club par email.');
+            response.json().then(function(data) {
+                var msg = (data && data.errors) ? data.errors.map(function(e){ return e.message; }).join(', ') : 'Erreur inconnue';
+                alert('❌ Erreur : ' + msg);
+            });
         }
     })
     .catch(function() {
@@ -1082,13 +1084,4 @@ function nouvelleCommande() {
     for (var i = 0; i < ids.length; i++) {
         document.getElementById(ids[i]).value = '';
     }
-    var selects = ['taille-pantalon', 'taille-polo', 'taille-veste', 'taille-manteau'];
-    for (var j = 0; j < selects.length; j++) {
-        document.getElementById(selects[j]).value = '';
-    }
-    document.getElementById('orderForm').scrollIntoView({ behavior: 'smooth' });
-}
-</script>
-
-</body>
-</html>
+    var selects = ['taille-pantalon', 'taille-polo', 't
