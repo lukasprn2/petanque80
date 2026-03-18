@@ -7,7 +7,6 @@
     <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
     <link rel="icon" type="image/png" href="logo.png">
     <link rel="apple-touch-icon" href="logo.png">
-
     <style>
         :root {
             --vert: #0bff04;
@@ -17,163 +16,48 @@
             --gris-card: #272727;
             --nav-h: 56px;
         }
-
         *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
         html { scroll-behavior: smooth; }
-
-        body {
-            font-family: 'Nunito', sans-serif;
-            background: #1a1a1a;
-            color: #e8e8e8;
-            font-size: 16px;
-            line-height: 1.6;
-        }
+        body { font-family: 'Nunito', sans-serif; background: #1a1a1a; color: #e8e8e8; font-size: 16px; line-height: 1.6; }
 
         /* BANNIÈRE */
-        .banner {
-            background: #000000;
-            text-align: center;
-            padding: 16px 12px 12px;
-            border-bottom: 3px solid var(--vert);
-        }
+        .banner { background: #000; text-align: center; padding: 16px 12px 12px; border-bottom: 3px solid var(--vert); }
         .banner img { max-height: 72px; display: block; margin: 0 auto 8px; }
-        .banner p {
-            color: var(--vert);
-            font-family: 'Bebas Neue', sans-serif;
-            font-size: 1em;
-            letter-spacing: 2px;
-        }
+        .banner p { color: var(--vert); font-family: 'Bebas Neue', sans-serif; font-size: 1em; letter-spacing: 2px; }
+        @media (min-width: 768px) { .banner img { max-height: 100px; } .banner p { font-size: 1.15em; } }
 
         /* NAV */
-        .nav-wrapper {
-            background: var(--gris-fonce);
-            border-bottom: 2px solid var(--vert);
-            position: sticky;
-            top: 0;
-            z-index: 200;
-        }
-        .nav-bar {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            height: var(--nav-h);
-            padding: 0 16px;
-        }
-        .nav-brand {
-            color: var(--vert);
-            font-family: 'Bebas Neue', sans-serif;
-            font-size: 1.2em;
-            letter-spacing: 2px;
-            text-decoration: none;
-        }
-
-        /* Hamburger */
-        .hamburger {
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            gap: 5px;
-            width: 42px;
-            height: 42px;
-            cursor: pointer;
-            background: none;
-            border: 2px solid transparent;
-            padding: 6px;
-            border-radius: 8px;
-            transition: border-color 0.2s, background 0.2s;
-        }
+        .nav-wrapper { background: var(--gris-fonce); border-bottom: 2px solid var(--vert); position: sticky; top: 0; z-index: 200; }
+        .nav-bar { display: flex; align-items: center; justify-content: space-between; height: var(--nav-h); padding: 0 16px; }
+        .nav-brand { color: var(--vert); font-family: 'Bebas Neue', sans-serif; font-size: 1.2em; letter-spacing: 2px; text-decoration: none; }
+        .hamburger { display: flex; flex-direction: column; justify-content: center; gap: 5px; width: 42px; height: 42px; cursor: pointer; background: none; border: 2px solid transparent; padding: 6px; border-radius: 8px; transition: border-color 0.2s, background 0.2s; }
         .hamburger:hover { border-color: var(--vert); background: rgba(11,255,4,0.07); }
-        .hamburger span {
-            display: block;
-            height: 2px;
-            background: white;
-            border-radius: 2px;
-            transition: transform 0.35s cubic-bezier(.77,0,.18,1), opacity 0.2s ease, width 0.25s ease;
-            transform-origin: center;
-        }
+        .hamburger span { display: block; height: 2px; background: white; border-radius: 2px; transition: transform 0.35s cubic-bezier(.77,0,.18,1), opacity 0.2s ease, width 0.25s ease; transform-origin: center; }
         .hamburger span:nth-child(3) { width: 60%; }
         .hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
         .hamburger.open span:nth-child(2) { opacity: 0; transform: scaleX(0); }
         .hamburger.open span:nth-child(3) { width: 100%; transform: translateY(-7px) rotate(-45deg); }
-
-        /* Menu mobile */
-        .nav-menu {
-            max-height: 0;
-            overflow: hidden;
-            transition: max-height 0.42s cubic-bezier(.77,0,.18,1);
-            background: #1a1a1a;
-            border-top: 1px solid #333;
-        }
-        .nav-menu.open { max-height: 640px; }
-        .nav-menu a {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            color: #d0d0d0;
-            text-decoration: none;
-            font-weight: 700;
-            font-size: 1em;
-            padding: 14px 20px;
-            border-bottom: 1px solid #2a2a2a;
-            transition: color 0.2s, background 0.2s, padding-left 0.2s;
-        }
+        .nav-menu { max-height: 0; overflow: hidden; transition: max-height 0.42s cubic-bezier(.77,0,.18,1); background: #1a1a1a; border-top: 1px solid #333; }
+        .nav-menu.open { max-height: 700px; }
+        .nav-menu a { display: flex; align-items: center; gap: 12px; color: #d0d0d0; text-decoration: none; font-weight: 700; font-size: 1em; padding: 14px 20px; border-bottom: 1px solid #2a2a2a; transition: color 0.2s, background 0.2s, padding-left 0.2s; }
         .nav-menu a:last-child { border-bottom: none; }
-        .nav-menu a:hover, .nav-menu a:active {
-            color: var(--vert);
-            background: rgba(11,255,4,0.05);
-            padding-left: 26px;
-        }
+        .nav-menu a:hover, .nav-menu a:active { color: var(--vert); background: rgba(11,255,4,0.05); padding-left: 26px; }
         .nav-icon { font-size: 1.1em; width: 22px; text-align: center; flex-shrink: 0; }
-
-        /* Desktop nav */
         @media (min-width: 768px) {
             .hamburger, .nav-brand, .nav-bar { display: none; }
-            .nav-menu {
-                max-height: none !important;
-                overflow: visible;
-                display: flex;
-                flex-wrap: wrap;
-                justify-content: center;
-                gap: 4px;
-                padding: 8px 16px;
-                background: transparent;
-                border-top: none;
-            }
-            .nav-menu a {
-                padding: 6px 11px;
-                border-bottom: none;
-                border-radius: 6px;
-                font-size: 0.87em;
-                color: #ccc;
-            }
+            .nav-menu { max-height: none !important; overflow: visible; display: flex; flex-wrap: wrap; justify-content: center; gap: 4px; padding: 8px 16px; background: transparent; border-top: none; }
+            .nav-menu a { padding: 6px 11px; border-bottom: none; border-radius: 6px; font-size: 0.87em; color: #ccc; }
             .nav-menu a:hover { padding-left: 11px; color: var(--vert); background: rgba(11,255,4,0.08); }
             .nav-icon { display: none; }
         }
 
         /* SECTIONS */
-        section {
-            padding: 34px 16px;
-            max-width: 1100px;
-            margin: 0 auto;
-        }
-        @media (min-width: 768px) {
-            .banner img { max-height: 100px; }
-            .banner p   { font-size: 1.15em; }
-            section     { padding: 52px 24px; }
-        }
-
-        h2 {
-            font-family: 'Bebas Neue', sans-serif;
-            font-size: 1.75em;
-            letter-spacing: 1.5px;
-            color: white;
-            border-left: 5px solid var(--vert);
-            padding-left: 14px;
-            margin-bottom: 20px;
-        }
+        section { padding: 34px 16px; max-width: 1100px; margin: 0 auto; }
+        @media (min-width: 768px) { section { padding: 52px 24px; } }
+        h2 { font-family: 'Bebas Neue', sans-serif; font-size: 1.75em; letter-spacing: 1.5px; color: white; border-left: 5px solid var(--vert); padding-left: 14px; margin-bottom: 20px; }
         @media (min-width: 768px) { h2 { font-size: 2.1em; } }
 
-        /* CARDS */
+        /* CARDS avec glow vert prononcé */
         .card {
             background: var(--gris-card);
             border-left: 5px solid var(--vert);
@@ -183,333 +67,109 @@
             box-shadow: 0 4px 14px rgba(0,0,0,0.5);
             transition: transform 0.25s, box-shadow 0.25s;
         }
-        @media (min-width: 768px) {
-            .card { padding: 22px 24px; }
-            .card:hover { transform: translateY(-5px); box-shadow: 0 10px 22px rgba(11,255,4,0.15); }
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 30px rgba(11,255,4,0.35), 0 0 15px rgba(11,255,4,0.2);
         }
-        .card h3 {
-            font-family: 'Bebas Neue', sans-serif;
-            font-size: 1.3em;
-            letter-spacing: 1px;
-            color: var(--vert);
-            margin-bottom: 10px;
-        }
+        @media (min-width: 768px) { .card { padding: 22px 24px; } }
+        .card h3 { font-family: 'Bebas Neue', sans-serif; font-size: 1.3em; letter-spacing: 1px; color: var(--vert); margin-bottom: 10px; }
         .card p, .card li { color: #ccc; font-size: 0.94em; }
         .card a { color: var(--vert); }
         .card ul { padding-left: 18px; }
         .card li { margin: 5px 0; }
 
-        /* TABLE — mobile first */
+        /* TABLE mobile first */
         .table-wrap { border-radius: 10px; }
         table { width: 100%; border-collapse: collapse; background: var(--gris-card); font-size: 0.88em; }
         table thead { display: none; }
-        table tr {
-            display: block;
-            background: var(--gris-card);
-            border: 1px solid #363636;
-            border-radius: 10px;
-            margin-bottom: 10px;
-            padding: 12px 14px;
-        }
+        table tr { display: block; background: var(--gris-card); border: 1px solid #363636; border-radius: 10px; margin-bottom: 10px; padding: 12px 14px; }
         table tr:nth-child(even) { background: #222; }
-        table td {
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-start;
-            gap: 10px;
-            padding: 5px 0;
-            border: none;
-            border-bottom: 1px solid #2e2e2e;
-            color: #e0e0e0;
-            font-size: 0.92em;
-        }
+        table td { display: flex; justify-content: space-between; align-items: flex-start; gap: 10px; padding: 5px 0; border: none; border-bottom: 1px solid #2e2e2e; color: #e0e0e0; font-size: 0.92em; }
         table td:last-child { border-bottom: none; }
-        table td::before {
-            content: attr(data-label);
-            font-weight: 700;
-            font-size: 0.78em;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            color: #aaa;
-            flex-shrink: 0;
-            min-width: 110px;
-        }
+        table td::before { content: attr(data-label); font-weight: 700; font-size: 0.78em; text-transform: uppercase; letter-spacing: 1px; color: #aaa; flex-shrink: 0; min-width: 110px; }
         table td:empty { display: none; }
-
         @media (min-width: 640px) {
             .table-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; }
             table { min-width: 600px; }
             table thead { display: table-header-group; }
-            table tr {
-                display: table-row;
-                background: transparent;
-                border: none;
-                border-radius: 0;
-                margin: 0;
-                padding: 0;
-            }
+            table tr { display: table-row; background: transparent; border: none; border-radius: 0; margin: 0; padding: 0; }
             table tr:nth-child(even) td { background: #222; }
             table tr:nth-child(even) { background: transparent; }
-            table td {
-                display: table-cell;
-                padding: 10px 12px;
-                border: 1px solid #383838;
-                font-size: 0.9em;
-            }
+            table td { display: table-cell; padding: 10px 12px; border: 1px solid #383838; font-size: 0.9em; }
             table td::before { display: none; }
             table td:empty { display: table-cell; }
-            table th {
-                background: var(--vert);
-                color: black;
-                font-family: 'Bebas Neue', sans-serif;
-                font-size: 1em;
-                letter-spacing: 1px;
-                padding: 10px 12px;
-                border: 1px solid #383838;
-                text-align: left;
-            }
+            table th { background: var(--vert); color: black; font-family: 'Bebas Neue', sans-serif; font-size: 1em; letter-spacing: 1px; padding: 10px 12px; border: 1px solid #383838; text-align: left; }
         }
 
         /* BUREAU */
         .bureau { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
         @media (min-width: 480px) { .bureau { grid-template-columns: repeat(3,1fr); gap: 14px; } }
         @media (min-width: 768px) { .bureau { grid-template-columns: repeat(4,1fr); gap: 20px; } }
-        .bureau-member {
-            background: var(--gris-card);
-            border: 2px solid var(--vert);
-            border-radius: 10px;
-            text-align: center;
-            padding: 14px 8px;
-        }
-        .bureau-member img {
-            width: 68px; height: 68px;
-            border-radius: 50%;
-            object-fit: cover;
-            border: 3px solid var(--vert);
-            margin: 0 auto 10px;
-            display: block;
-        }
+        .bureau-member { background: var(--gris-card); border: 2px solid var(--vert); border-radius: 10px; text-align: center; padding: 14px 8px; transition: box-shadow 0.25s, transform 0.25s; }
+        .bureau-member:hover { transform: translateY(-4px); box-shadow: 0 8px 24px rgba(11,255,4,0.3); }
+        .bureau-member img { width: 68px; height: 68px; border-radius: 50%; object-fit: cover; border: 3px solid var(--vert); margin: 0 auto 10px; display: block; }
         @media (min-width: 600px) { .bureau-member img { width: 110px; height: 110px; } }
         .bureau-member h3 { color: var(--vert); font-size: 0.95em; margin-bottom: 3px; }
-        .bureau-member p  { color: #bbb; font-size: 0.82em; }
+        .bureau-member p { color: #bbb; font-size: 0.82em; }
 
         /* FAQ */
-        .faq details {
-            background: var(--gris-card);
-            border-left: 5px solid var(--vert);
-            border-radius: 8px;
-            padding: 14px 16px;
-            margin-bottom: 11px;
-        }
-        .faq summary {
-            font-weight: 700;
-            color: #f0f0f0;
-            cursor: pointer;
-            font-size: 0.94em;
-            list-style: none;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
+        .faq details { background: var(--gris-card); border-left: 5px solid var(--vert); border-radius: 8px; padding: 14px 16px; margin-bottom: 11px; }
+        .faq summary { font-weight: 700; color: #f0f0f0; cursor: pointer; font-size: 0.94em; list-style: none; display: flex; justify-content: space-between; align-items: center; }
         .faq summary::-webkit-details-marker { display: none; }
         .faq summary::after { content: '＋'; color: var(--vert); font-size: 1.1em; }
         .faq details[open] summary::after { content: '－'; }
         .faq p { color: #c0c0c0; margin-top: 10px; font-size: 0.91em; }
 
         /* COMMANDE */
-        #commande-wrap {
-            background: linear-gradient(160deg, #181818 0%, #1a221a 100%);
-            border-top: 1px solid #333;
-            border-bottom: 1px solid #333;
-        }
-        .commande-intro {
-            position: relative;
-            overflow: hidden;
-            background: #1e1e1e;
-            border-radius: 14px;
-            padding: 22px 20px 22px 24px;
-            margin-bottom: 14px;
-            border: 1px solid #363636;
-            display: flex;
-            gap: 18px;
-            align-items: center;
-        }
-        .commande-intro::before {
-            content: '';
-            position: absolute;
-            top: 0; left: 0;
-            width: 5px; height: 100%;
-            background: linear-gradient(to bottom, var(--vert), #05a802);
-            border-radius: 14px 0 0 14px;
-        }
-        .commande-intro .icon {
-            font-size: 2.2em;
-            flex-shrink: 0;
-            background: rgba(11,255,4,0.08);
-            border-radius: 12px;
-            width: 54px; height: 54px;
-            display: flex; align-items: center; justify-content: center;
-        }
-        .commande-intro-text strong { color: #f2f2f2; font-size: 1em; display: block; margin-bottom: 5px; letter-spacing: 0.3px; }
+        #commande-wrap { background: linear-gradient(160deg, #181818 0%, #1a221a 100%); border-top: 1px solid #333; border-bottom: 1px solid #333; }
+        .commande-intro { position: relative; overflow: hidden; background: #1e1e1e; border-radius: 14px; padding: 22px 20px 22px 24px; margin-bottom: 14px; border: 1px solid #363636; display: flex; gap: 18px; align-items: center; transition: box-shadow 0.25s; }
+        .commande-intro:hover { box-shadow: 0 6px 24px rgba(11,255,4,0.25); }
+        .commande-intro::before { content: ''; position: absolute; top: 0; left: 0; width: 5px; height: 100%; background: linear-gradient(to bottom, var(--vert), #05a802); border-radius: 14px 0 0 14px; }
+        .commande-intro .icon { font-size: 2.2em; flex-shrink: 0; background: rgba(11,255,4,0.08); border-radius: 12px; width: 54px; height: 54px; display: flex; align-items: center; justify-content: center; }
+        .commande-intro-text strong { color: #f2f2f2; font-size: 1em; display: block; margin-bottom: 5px; }
         .commande-intro-text p { color: #b0b0b0; font-size: 0.88em; margin: 0; line-height: 1.5; }
-        .commande-intro a { color: var(--vert); font-weight: 700; text-decoration: none; border-bottom: 1px dashed rgba(11,255,4,0.4); }
-
-        .prix-banner {
-            display: flex;
-            align-items: center;
-            gap: 20px;
-            background: linear-gradient(135deg, #1c2b1c 0%, #1a2a1a 100%);
-            border: 1px solid rgba(11,255,4,0.3);
-            border-radius: 14px;
-            padding: 20px 22px;
-            margin-bottom: 22px;
-            box-shadow: 0 0 0 1px rgba(11,255,4,0.05), inset 0 1px 0 rgba(255,255,255,0.04);
-        }
-        .prix-badge {
-            flex-shrink: 0;
-            background: var(--vert);
-            color: #000;
-            font-family: 'Bebas Neue', sans-serif;
-            font-size: 1.9em;
-            letter-spacing: 2px;
-            padding: 8px 18px;
-            border-radius: 10px;
-            line-height: 1;
-            box-shadow: 0 4px 14px rgba(11,255,4,0.25);
-        }
+        .prix-banner { display: flex; align-items: center; gap: 20px; background: linear-gradient(135deg, #1c2b1c 0%, #1a2a1a 100%); border: 1px solid rgba(11,255,4,0.3); border-radius: 14px; padding: 20px 22px; margin-bottom: 22px; transition: box-shadow 0.25s; }
+        .prix-banner:hover { box-shadow: 0 6px 24px rgba(11,255,4,0.25); }
+        .prix-badge { flex-shrink: 0; background: var(--vert); color: #000; font-family: 'Bebas Neue', sans-serif; font-size: 1.9em; letter-spacing: 2px; padding: 8px 18px; border-radius: 10px; line-height: 1; box-shadow: 0 4px 14px rgba(11,255,4,0.35); }
         .prix-banner-text strong { color: #f0f0f0; font-size: 0.97em; display: block; margin-bottom: 4px; }
-        .prix-banner-text p { color: #aaa; font-size: 0.84em; margin: 0; line-height: 1.5; }
-
-        .order-form {
-            background: #202020;
-            border: 1px solid #383838;
-            border-radius: 14px;
-            padding: 18px 14px;
-            box-shadow: 0 8px 30px rgba(0,0,0,0.3);
-        }
+        .prix-banner-text p { color: #aaa; font-size: 0.84em; margin: 0; }
+        .order-form { background: #202020; border: 1px solid #383838; border-radius: 14px; padding: 18px 14px; box-shadow: 0 8px 30px rgba(0,0,0,0.3); }
         @media (min-width: 600px) { .order-form { padding: 30px 26px; } }
-
         .form-grid { display: grid; grid-template-columns: 1fr; gap: 15px; }
         @media (min-width: 540px) { .form-grid { grid-template-columns: 1fr 1fr; gap: 16px 22px; } }
-
         .form-group { display: flex; flex-direction: column; gap: 6px; }
         .form-group.full-width { grid-column: 1 / -1; }
         .form-group label { font-size: 0.73em; font-weight: 700; text-transform: uppercase; letter-spacing: 1.2px; color: var(--vert); }
-        .form-group input,
-        .form-group select {
-            background: #2a2a2a;
-            border: 1.5px solid #404040;
-            border-radius: 8px;
-            padding: 13px 14px;
-            color: #eee;
-            font-family: 'Nunito', sans-serif;
-            font-size: 1em;
-            transition: border-color 0.2s, box-shadow 0.2s;
-            outline: none;
-            width: 100%;
-            -webkit-appearance: none;
-            appearance: none;
-        }
-        .form-group select,
-        .taille-item select {
-            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%230bff04' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
-            background-repeat: no-repeat;
-            background-position: right 13px center;
-            padding-right: 36px;
-            cursor: pointer;
-        }
+        .form-group input, .form-group select { background: #2a2a2a; border: 1.5px solid #404040; border-radius: 8px; padding: 13px 14px; color: #eee; font-family: 'Nunito', sans-serif; font-size: 1em; transition: border-color 0.2s, box-shadow 0.2s; outline: none; width: 100%; -webkit-appearance: none; appearance: none; }
+        .form-group select, .taille-item select { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%230bff04' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 13px center; padding-right: 36px; cursor: pointer; }
         .form-group select option, .taille-item select option { background: #1a1a1a; color: #eee; }
-        .form-group input:focus,
-        .form-group select:focus,
-        .taille-item select:focus { border-color: var(--vert); box-shadow: 0 0 0 3px rgba(11,255,4,0.13); }
+        .form-group input:focus, .form-group select:focus, .taille-item select:focus { border-color: var(--vert); box-shadow: 0 0 0 3px rgba(11,255,4,0.2); }
         .form-group input::placeholder { color: #777; }
-
         .tailles-section { grid-column: 1 / -1; }
         .tailles-section h4 { font-size: 0.72em; text-transform: uppercase; letter-spacing: 2px; color: #888; margin-bottom: 13px; padding-bottom: 8px; border-bottom: 1px solid #333; }
         .tailles-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 13px; }
         @media (min-width: 540px) { .tailles-grid { grid-template-columns: repeat(4,1fr); } }
-
         .taille-item { display: flex; flex-direction: column; gap: 6px; }
         .taille-item label { font-size: 0.78em; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: #bbb; display: flex; align-items: center; gap: 5px; }
-        .taille-item select {
-            background: #2a2a2a;
-            border: 1.5px solid #404040;
-            border-radius: 8px;
-            padding: 12px 32px 12px 12px;
-            color: #eee;
-            font-family: 'Nunito', sans-serif;
-            font-size: 1em;
-            -webkit-appearance: none;
-            appearance: none;
-            outline: none;
-            width: 100%;
-            transition: border-color 0.2s, box-shadow 0.2s;
-            cursor: pointer;
-        }
-
-        .submit-btn {
-            grid-column: 1 / -1;
-            background: var(--vert);
-            color: #000;
-            border: none;
-            padding: 16px;
-            width: 100%;
-            font-family: 'Bebas Neue', sans-serif;
-            font-size: 1.25em;
-            letter-spacing: 2px;
-            border-radius: 10px;
-            cursor: pointer;
-            transition: background 0.2s, transform 0.15s, box-shadow 0.2s;
-            margin-top: 4px;
-        }
+        .taille-item select { background: #2a2a2a; border: 1.5px solid #404040; border-radius: 8px; padding: 12px 32px 12px 12px; color: #eee; font-family: 'Nunito', sans-serif; font-size: 1em; -webkit-appearance: none; appearance: none; outline: none; width: 100%; transition: border-color 0.2s, box-shadow 0.2s; cursor: pointer; }
+        .submit-btn { grid-column: 1 / -1; background: var(--vert); color: #000; border: none; padding: 16px; width: 100%; font-family: 'Bebas Neue', sans-serif; font-size: 1.25em; letter-spacing: 2px; border-radius: 10px; cursor: pointer; transition: background 0.2s, transform 0.15s, box-shadow 0.2s; margin-top: 4px; }
         .submit-btn:active { transform: scale(0.97); }
-        .submit-btn:hover  { background: var(--vert-dark); box-shadow: 0 6px 18px rgba(11,255,4,0.25); }
-
-        .confirmation {
-            display: none;
-            background: #1a2a1a;
-            border: 2px solid var(--vert);
-            border-radius: 14px;
-            padding: 26px 18px;
-            text-align: center;
-            margin-top: 16px;
-        }
+        .submit-btn:hover { background: var(--vert-dark); box-shadow: 0 6px 22px rgba(11,255,4,0.4); }
+        .confirmation { display: none; background: #1a2a1a; border: 2px solid var(--vert); border-radius: 14px; padding: 26px 18px; text-align: center; margin-top: 16px; }
         .confirmation .checkmark { font-size: 2.6em; margin-bottom: 10px; }
         .confirmation h3 { font-family: 'Bebas Neue', sans-serif; font-size: 1.7em; color: var(--vert); margin-bottom: 8px; }
         .confirmation > p { color: #ccc; font-size: 0.91em; }
         .confirmation .recap { background: #222; border-radius: 8px; padding: 13px 15px; margin: 15px auto; max-width: 460px; text-align: left; }
         .confirmation .recap p { margin: 5px 0; font-size: 0.88em; color: #ccc; }
         .confirmation .recap strong { color: var(--vert); }
-        .new-order-btn {
-            background: transparent;
-            color: var(--vert);
-            border: 2px solid var(--vert);
-            padding: 11px 26px;
-            border-radius: 8px;
-            font-family: 'Bebas Neue', sans-serif;
-            letter-spacing: 2px;
-            font-size: 1.05em;
-            cursor: pointer;
-            margin-top: 14px;
-            transition: background 0.2s, color 0.2s;
-        }
+        .new-order-btn { background: transparent; color: var(--vert); border: 2px solid var(--vert); padding: 11px 26px; border-radius: 8px; font-family: 'Bebas Neue', sans-serif; letter-spacing: 2px; font-size: 1.05em; cursor: pointer; margin-top: 14px; transition: background 0.2s, color 0.2s; }
         .new-order-btn:hover { background: var(--vert); color: black; }
 
         /* DOCS */
         .docs-grid { display: grid; grid-template-columns: 1fr; gap: 14px; }
         @media (min-width: 600px) { .docs-grid { grid-template-columns: 1fr 1fr; } }
-        .doc-card {
-            display: flex;
-            align-items: center;
-            gap: 16px;
-            background: var(--gris-card);
-            border: 1px solid #363636;
-            border-radius: 12px;
-            padding: 18px 16px;
-            text-decoration: none;
-            transition: border-color 0.2s, transform 0.2s, box-shadow 0.2s;
-        }
-        .doc-card:hover { border-color: var(--vert); transform: translateY(-3px); box-shadow: 0 8px 20px rgba(11,255,4,0.1); }
+        .doc-card { display: flex; align-items: center; gap: 16px; background: var(--gris-card); border: 1px solid #363636; border-radius: 12px; padding: 18px 16px; text-decoration: none; transition: border-color 0.2s, transform 0.2s, box-shadow 0.2s; }
+        .doc-card:hover { border-color: var(--vert); transform: translateY(-3px); box-shadow: 0 8px 24px rgba(11,255,4,0.3); }
         .doc-icon { font-size: 2em; flex-shrink: 0; width: 50px; height: 50px; background: rgba(11,255,4,0.08); border-radius: 10px; display: flex; align-items: center; justify-content: center; }
         .doc-info strong { color: #f0f0f0; font-size: 0.95em; display: block; margin-bottom: 3px; }
         .doc-info span { color: #888; font-size: 0.8em; }
@@ -517,52 +177,15 @@
         .doc-card:hover .doc-dl { opacity: 1; }
 
         /* AFFILIATION */
-        .affiliation-card {
-            display: flex;
-            flex-direction: column;
-            gap: 16px;
-            background: var(--gris-card);
-            border: 1px solid #363636;
-            border-radius: 14px;
-            padding: 24px 20px;
-            position: relative;
-            overflow: hidden;
-        }
-        .affiliation-card::after {
-            content: '';
-            position: absolute;
-            top: 0; right: 0;
-            width: 4px; height: 100%;
-            background: linear-gradient(to bottom, var(--vert), #05a802);
-            border-radius: 0 14px 14px 0;
-        }
+        .affiliation-card { display: flex; flex-direction: column; gap: 16px; background: var(--gris-card); border: 1px solid #363636; border-radius: 14px; padding: 24px 20px; position: relative; overflow: hidden; transition: box-shadow 0.25s; }
+        .affiliation-card:hover { box-shadow: 0 8px 28px rgba(11,255,4,0.25); }
+        .affiliation-card::after { content: ''; position: absolute; top: 0; right: 0; width: 4px; height: 100%; background: linear-gradient(to bottom, var(--vert), #05a802); border-radius: 0 14px 14px 0; }
         @media (min-width: 600px) { .affiliation-card { flex-direction: row; align-items: center; gap: 24px; } }
-        .affiliation-years {
-            flex-shrink: 0;
-            text-align: center;
-            background: rgba(11,255,4,0.07);
-            border: 2px solid rgba(11,255,4,0.25);
-            border-radius: 12px;
-            padding: 14px 20px;
-            min-width: 110px;
-        }
+        .affiliation-years { flex-shrink: 0; text-align: center; background: rgba(11,255,4,0.07); border: 2px solid rgba(11,255,4,0.25); border-radius: 12px; padding: 14px 20px; min-width: 110px; }
         .affiliation-years .num { font-family: 'Bebas Neue', sans-serif; font-size: 3em; color: var(--vert); line-height: 1; display: block; }
         .affiliation-years .label { font-size: 0.75em; color: #aaa; text-transform: uppercase; letter-spacing: 1px; }
         .affiliation-text p { color: #c0c0c0; font-size: 0.93em; margin-bottom: 12px; line-height: 1.6; }
-        .affiliation-link {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            background: var(--vert);
-            color: #000;
-            font-family: 'Bebas Neue', sans-serif;
-            font-size: 1em;
-            letter-spacing: 1.5px;
-            padding: 10px 18px;
-            border-radius: 8px;
-            text-decoration: none;
-            transition: background 0.2s, transform 0.15s;
-        }
+        .affiliation-link { display: inline-flex; align-items: center; gap: 8px; background: var(--vert); color: #000; font-family: 'Bebas Neue', sans-serif; font-size: 1em; letter-spacing: 1.5px; padding: 10px 18px; border-radius: 8px; text-decoration: none; transition: background 0.2s, transform 0.15s; }
         .affiliation-link:hover { background: var(--vert-dark); transform: translateY(-2px); }
 
         /* CONTACT */
@@ -570,34 +193,17 @@
 
         /* FOOTER & BTN TOP */
         footer { background: #161616; border-top: 2px solid #2e2e2e; color: #777; text-align: center; padding: 20px 16px; font-size: 0.87em; margin-top: 24px; }
-        #btnTop {
-            position: fixed;
-            bottom: 18px; right: 14px;
-            display: none;
-            background: var(--vert);
-            color: black;
-            border: none;
-            width: 44px; height: 44px;
-            border-radius: 10px;
-            font-size: 1.2em;
-            font-weight: bold;
-            cursor: pointer;
-            box-shadow: 0 4px 14px rgba(0,0,0,0.5);
-            z-index: 300;
-            transition: background 0.2s, transform 0.15s;
-        }
+        #btnTop { position: fixed; bottom: 18px; right: 14px; display: none; background: var(--vert); color: black; border: none; width: 44px; height: 44px; border-radius: 10px; font-size: 1.2em; font-weight: bold; cursor: pointer; box-shadow: 0 4px 14px rgba(0,0,0,0.5); z-index: 300; transition: background 0.2s, transform 0.15s; }
         #btnTop:hover { background: var(--vert-dark); transform: translateY(-2px); }
     </style>
 </head>
 <body>
 
-<!-- BANNIÈRE -->
 <div class="banner">
     <img src="logo.png" alt="Logo club pétanque Boves">
     <p>Passions • Précision • Bonne humeur</p>
 </div>
 
-<!-- NAV -->
 <div class="nav-wrapper">
     <div class="nav-bar">
         <span class="nav-brand">🎯 Pétanque Boves</span>
@@ -620,7 +226,6 @@
     </nav>
 </div>
 
-<!-- ACCUEIL -->
 <section id="accueil">
     <h2>Bienvenue au club de Boves</h2>
     <div class="card">
@@ -628,7 +233,6 @@
     </div>
 </section>
 
-<!-- CONTACT -->
 <section id="contact">
     <h2>Contacts</h2>
     <div class="card">
@@ -641,7 +245,6 @@
     </div>
 </section>
 
-<!-- CONCOURS OFFICIELS -->
 <section id="concoursb">
     <h2>Concours Officiels</h2>
     <div class="card">
@@ -661,7 +264,6 @@
     </div>
 </section>
 
-<!-- CONCOURS INTERNES -->
 <section id="concoursa">
     <h2>Concours Internes</h2>
     <div class="card">
@@ -673,7 +275,6 @@
     </div>
 </section>
 
-<!-- CONCOURS VÉTÉRANS -->
 <section id="concoursv">
     <h2>Concours Vétérans</h2>
     <div class="card">
@@ -691,59 +292,218 @@
     </div>
 </section>
 
-<!-- CHAMPIONNATS -->
 <section id="championnats">
     <h2>Championnats de la Somme 2026</h2>
-    <div class="table-wrap">
-        <table>
-            <thead>
-                <tr>
-                    <th>Championnat</th>
-                    <th>Heure</th>
-                    <th>Date</th>
-                    <th>Lieu</th>
-                    <th>Date limite inscriptions</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr><td data-label="Championnat">Triplette Promotion</td><td data-label="Heure">10h00</td><td data-label="Date">21/3</td><td data-label="Lieu">Flixecourt</td><td data-label="Limite inscriptions">12/3</td></tr>
-                <tr><td data-label="Championnat">Reprise</td><td data-label="Heure">9h00</td><td data-label="Date">22/3</td><td data-label="Lieu">Flixecourt</td><td data-label="Limite inscriptions"></td></tr>
-                <tr><td data-label="Championnat">TT Senior Masc.</td><td data-label="Heure">10h00</td><td data-label="Date">28/3</td><td data-label="Lieu">Flixecourt</td><td data-label="Limite inscriptions">19/3</td></tr>
-                <tr><td data-label="Championnat">Doub Senior Fém.</td><td data-label="Heure">14h00</td><td data-label="Date">28/3</td><td data-label="Lieu">Flixecourt</td><td data-label="Limite inscriptions">19/3</td></tr>
-                <tr><td data-label="Championnat">TT (J, C, M, B)</td><td data-label="Heure">9h30</td><td data-label="Date">29/3</td><td data-label="Lieu">Flixecourt</td><td data-label="Limite inscriptions">Sur place</td></tr>
-                <tr><td data-label="Championnat">Reprise TT M et Doub. F</td><td data-label="Heure">9h00</td><td data-label="Date">29/3</td><td data-label="Lieu">Flixecourt</td><td data-label="Limite inscriptions"></td></tr>
-                <tr><td data-label="Championnat">Trip. Jeu Provençal</td><td data-label="Heure">8h00</td><td data-label="Date">4/4</td><td data-label="Lieu">Albert</td><td data-label="Limite inscriptions">26/3</td></tr>
-                <tr><td data-label="Championnat">Reprise</td><td data-label="Heure">9h00</td><td data-label="Date">5/4</td><td data-label="Lieu">Albert</td><td data-label="Limite inscriptions"></td></tr>
-                <tr><td data-label="Championnat">Reprise</td><td data-label="Heure">9h00</td><td data-label="Date">6/4</td><td data-label="Lieu">Albert</td><td data-label="Limite inscriptions"></td></tr>
-                <tr><td data-label="Championnat">Triplette Senior M</td><td data-label="Heure">10h00</td><td data-label="Date">11/4</td><td data-label="Lieu">Feuquières</td><td data-label="Limite inscriptions">02/4</td></tr>
-                <tr><td data-label="Championnat">Triplette Senior F</td><td data-label="Heure">14h00</td><td data-label="Date">11/4</td><td data-label="Lieu">Feuquières</td><td data-label="Limite inscriptions">02/4</td></tr>
-                <tr><td data-label="Championnat">Reprise</td><td data-label="Heure">09h00</td><td data-label="Date">12/4</td><td data-label="Lieu">Feuquières</td><td data-label="Limite inscriptions"></td></tr>
-                <tr><td data-label="Championnat">Triplette (J, C, M)</td><td data-label="Heure">09h30</td><td data-label="Date">12/4</td><td data-label="Lieu">Feuquières</td><td data-label="Limite inscriptions">Sur place</td></tr>
-                <tr><td data-label="Championnat">Tir précision J</td><td data-label="Heure"></td><td data-label="Date">12/4</td><td data-label="Lieu">Feuquières</td><td data-label="Limite inscriptions">Sur place</td></tr>
-                <tr><td data-label="Championnat">Doublette Mixte</td><td data-label="Heure">10h00</td><td data-label="Date">18/4</td><td data-label="Lieu">Fienvillers-Doullens / A Doullens</td><td data-label="Limite inscriptions">09/4</td></tr>
-                <tr><td data-label="Championnat">Reprise</td><td data-label="Heure">9h00</td><td data-label="Date">19/4</td><td data-label="Lieu">Fienvillers-Doullens / A Doullens</td><td data-label="Limite inscriptions"></td></tr>
-                <tr><td data-label="Championnat">Triplette Vétéran</td><td data-label="Heure">10h00</td><td data-label="Date">22/4</td><td data-label="Lieu">Asptt Amiens</td><td data-label="Limite inscriptions">09/4</td></tr>
-                <tr><td data-label="Championnat">Reprise</td><td data-label="Heure">9h00</td><td data-label="Date">23/4</td><td data-label="Lieu">Asptt Amiens</td><td data-label="Limite inscriptions"></td></tr>
-                <tr><td data-label="Championnat">Doub Senior Masc.</td><td data-label="Heure">10h00</td><td data-label="Date">25/4</td><td data-label="Lieu">Feuquières</td><td data-label="Limite inscriptions">16/4</td></tr>
-                <tr><td data-label="Championnat">TT Senior Fém.</td><td data-label="Heure">14h00</td><td data-label="Date">25/4</td><td data-label="Lieu">Feuquières</td><td data-label="Limite inscriptions"></td></tr>
-                <tr><td data-label="Championnat">Reprise</td><td data-label="Heure">09h00</td><td data-label="Date">26/4</td><td data-label="Lieu">Feuquières</td><td data-label="Limite inscriptions">16/4</td></tr>
-                <tr><td data-label="Championnat">Doub (J, C, M, B)</td><td data-label="Heure">09h30</td><td data-label="Date">26/4</td><td data-label="Lieu">Feuquières</td><td data-label="Limite inscriptions">Sur place</td></tr>
-                <tr><td data-label="Championnat">Triplette Mixte</td><td data-label="Heure">10h00</td><td data-label="Date">02/5</td><td data-label="Lieu">Gamaches</td><td data-label="Limite inscriptions">23/4</td></tr>
-                <tr><td data-label="Championnat">Reprise</td><td data-label="Heure">09h00</td><td data-label="Date">03/5</td><td data-label="Lieu">Gamaches</td><td data-label="Limite inscriptions"></td></tr>
-                <tr><td data-label="Championnat">Doub. Jeu Provençal</td><td data-label="Heure">8h00</td><td data-label="Date">08/5</td><td data-label="Lieu">Fienvillers-Doullens / A Saint Léger-lès-Domart</td><td data-label="Limite inscriptions">31/4</td></tr>
-                <tr><td data-label="Championnat">Reprise</td><td data-label="Heure">9h00</td><td data-label="Date">09/5</td><td data-label="Lieu">Fienvillers-Doullens / A Saint Léger-lès-Domart</td><td data-label="Limite inscriptions"></td></tr>
-                <tr><td data-label="Championnat">Reprise</td><td data-label="Heure">9h00</td><td data-label="Date">10/5</td><td data-label="Lieu">Fienvillers-Doullens / A Saint Léger-lès-Domart</td><td data-label="Limite inscriptions"></td></tr>
-            </tbody>
-        </table>
+
+    <style>
+        .cal-box { background: var(--gris-card); border-radius: 14px; overflow: hidden; border: 1px solid #363636; }
+        .cal-header { display: flex; align-items: center; justify-content: space-between; padding: 14px 18px; background: #1e1e1e; border-bottom: 2px solid var(--vert); }
+        .cal-header h3 { font-family: 'Bebas Neue', sans-serif; font-size: 1.4em; letter-spacing: 2px; color: white; margin: 0; text-transform: uppercase; }
+        .cal-arrow { background: none; border: 2px solid #444; color: #ccc; width: 36px; height: 36px; border-radius: 8px; font-size: 1.1em; cursor: pointer; transition: border-color 0.2s, color 0.2s, background 0.2s; display: flex; align-items: center; justify-content: center; }
+        .cal-arrow:hover { border-color: var(--vert); color: var(--vert); background: rgba(11,255,4,0.07); }
+        .cal-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 0; }
+        .cal-day-name { text-align: center; padding: 8px 4px; font-size: 0.7em; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: #666; border-bottom: 1px solid #2a2a2a; }
+        .cal-day { min-height: 48px; padding: 6px 4px; border: 1px solid #2a2a2a; cursor: default; transition: background 0.15s; position: relative; display: flex; flex-direction: column; align-items: center; }
+        .cal-day.empty { background: #1a1a1a; cursor: default; }
+        .cal-day.has-event { cursor: pointer; }
+        .cal-day.has-event:hover { background: rgba(11,255,4,0.08); }
+        .cal-day.selected { background: rgba(11,255,4,0.15); border-color: var(--vert); }
+        .cal-day-num { font-size: 0.85em; font-weight: 700; color: #bbb; }
+        .cal-day.has-event .cal-day-num { color: white; }
+        .cal-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--vert); margin-top: 4px; box-shadow: 0 0 6px rgba(11,255,4,0.7); }
+        .cal-detail { margin-top: 16px; min-height: 60px; padding: 0 2px 14px; }
+        .cal-detail-title { font-size: 0.75em; text-transform: uppercase; letter-spacing: 1.5px; color: #555; padding: 10px 18px 8px; font-weight: 700; }
+        .cal-empty-msg { text-align: center; color: #555; font-size: 0.88em; padding: 20px; }
+        .cal-event-card { background: #1e1e1e; border-left: 4px solid var(--vert); border-radius: 8px; padding: 10px 14px; margin: 6px 10px; box-shadow: 0 2px 10px rgba(11,255,4,0.1); }
+        .cal-event-card .ev-name { font-weight: 700; color: #f0f0f0; font-size: 0.92em; margin-bottom: 4px; }
+        .cal-event-card .ev-detail { font-size: 0.8em; color: #aaa; display: flex; gap: 6px; align-items: center; margin-top: 2px; }
+        .cal-event-card .ev-detail span { color: #ccc; }
+        @media (min-width: 480px) { .cal-day { min-height: 60px; } .cal-day-num { font-size: 0.95em; } }
+    </style>
+
+    <div class="cal-box">
+        <div class="cal-header">
+            <button class="cal-arrow" id="calPrev">&#8592;</button>
+            <h3 id="calMonthLabel"></h3>
+            <button class="cal-arrow" id="calNext">&#8594;</button>
+        </div>
+        <div class="cal-grid" id="calDayNames"></div>
+        <div class="cal-grid" id="calGrid"></div>
+        <div class="cal-detail" id="calDetail"></div>
     </div>
+
+    <script>
+    (function() {
+        var EVENTS = [
+            {m:3,d:21,nom:'Triplette Promotion',heure:'10h00',lieu:'Flixecourt',limite:'12/3'},
+            {m:3,d:22,nom:'Reprise',heure:'9h00',lieu:'Flixecourt',limite:''},
+            {m:3,d:28,nom:'TT Senior Masc.',heure:'10h00',lieu:'Flixecourt',limite:'19/3'},
+            {m:3,d:28,nom:'Doub Senior Fém.',heure:'14h00',lieu:'Flixecourt',limite:'19/3'},
+            {m:3,d:29,nom:'TT (J, C, M, B)',heure:'9h30',lieu:'Flixecourt',limite:'Sur place'},
+            {m:3,d:29,nom:'Reprise TT M et Doub. F',heure:'9h00',lieu:'Flixecourt',limite:''},
+            {m:4,d:4,nom:'Trip. Jeu Provençal',heure:'8h00',lieu:'Albert',limite:'26/3'},
+            {m:4,d:5,nom:'Reprise',heure:'9h00',lieu:'Albert',limite:''},
+            {m:4,d:6,nom:'Reprise',heure:'9h00',lieu:'Albert',limite:''},
+            {m:4,d:11,nom:'Triplette Senior M',heure:'10h00',lieu:'Feuquières',limite:'02/4'},
+            {m:4,d:11,nom:'Triplette Senior F',heure:'14h00',lieu:'Feuquières',limite:'02/4'},
+            {m:4,d:12,nom:'Reprise',heure:'09h00',lieu:'Feuquières',limite:''},
+            {m:4,d:12,nom:'Triplette (J, C, M)',heure:'09h30',lieu:'Feuquières',limite:'Sur place'},
+            {m:4,d:12,nom:'Tir précision J',heure:'',lieu:'Feuquières',limite:'Sur place'},
+            {m:4,d:18,nom:'Doublette Mixte',heure:'10h00',lieu:'Fienvillers-Doullens',limite:'09/4'},
+            {m:4,d:19,nom:'Reprise',heure:'9h00',lieu:'Fienvillers-Doullens',limite:''},
+            {m:4,d:22,nom:'Triplette Vétéran',heure:'10h00',lieu:'Asptt Amiens',limite:'09/4'},
+            {m:4,d:23,nom:'Reprise',heure:'9h00',lieu:'Asptt Amiens',limite:''},
+            {m:4,d:25,nom:'Doub Senior Masc.',heure:'10h00',lieu:'Feuquières',limite:'16/4'},
+            {m:4,d:25,nom:'TT Senior Fém.',heure:'14h00',lieu:'Feuquières',limite:''},
+            {m:4,d:26,nom:'Reprise',heure:'09h00',lieu:'Feuquières',limite:'16/4'},
+            {m:4,d:26,nom:'Doub (J, C, M, B)',heure:'09h30',lieu:'Feuquières',limite:'Sur place'},
+            {m:5,d:2,nom:'Triplette Mixte',heure:'10h00',lieu:'Gamaches',limite:'23/4'},
+            {m:5,d:3,nom:'Reprise',heure:'09h00',lieu:'Gamaches',limite:''},
+            {m:5,d:8,nom:'Doub. Jeu Provençal',heure:'8h00',lieu:'Fienvillers / St Léger-lès-Domart',limite:'31/4'},
+            {m:5,d:9,nom:'Reprise',heure:'9h00',lieu:'Fienvillers / St Léger-lès-Domart',limite:''},
+            {m:5,d:10,nom:'Reprise',heure:'9h00',lieu:'Fienvillers / St Léger-lès-Domart',limite:''}
+        ];
+
+        var MONTHS = ['Janvier','Février','Mars','Avril','Mai','Juin','Juillet','Août','Septembre','Octobre','Novembre','Décembre'];
+        var DAYS   = ['Lun','Mar','Mer','Jeu','Ven','Sam','Dim'];
+        var curMonth = 2; // 0-based, March = 2
+        var selectedDay = null;
+
+        // Get months that have events
+        var eventMonths = [];
+        EVENTS.forEach(function(e) {
+            if (eventMonths.indexOf(e.m - 1) === -1) eventMonths.push(e.m - 1);
+        });
+        eventMonths.sort(function(a,b){return a-b;});
+
+        function getEventsForDay(month, day) {
+            return EVENTS.filter(function(e){ return e.m - 1 === month && e.d === day; });
+        }
+
+        function getDaysWithEvents(month) {
+            var days = [];
+            EVENTS.forEach(function(e) {
+                if (e.m - 1 === month && days.indexOf(e.d) === -1) days.push(e.d);
+            });
+            return days;
+        }
+
+        function daysInMonth(month, year) {
+            return new Date(year, month + 1, 0).getDate();
+        }
+
+        function firstDayOfMonth(month, year) {
+            var d = new Date(year, month, 1).getDay();
+            return d === 0 ? 6 : d - 1; // Monday-based
+        }
+
+        function renderCalendar() {
+            var year = 2026;
+            var label = document.getElementById('calMonthLabel');
+            label.textContent = MONTHS[curMonth] + ' 2026';
+
+            // Prev/next arrows: disable if no events in that direction
+            var idx = eventMonths.indexOf(curMonth);
+            document.getElementById('calPrev').disabled = idx <= 0;
+            document.getElementById('calPrev').style.opacity = idx <= 0 ? '0.3' : '1';
+            document.getElementById('calNext').disabled = idx >= eventMonths.length - 1;
+            document.getElementById('calNext').style.opacity = idx >= eventMonths.length - 1 ? '0.3' : '1';
+
+            // Day names
+            var namesEl = document.getElementById('calDayNames');
+            namesEl.innerHTML = '';
+            DAYS.forEach(function(d) {
+                var el = document.createElement('div');
+                el.className = 'cal-day-name';
+                el.textContent = d;
+                namesEl.appendChild(el);
+            });
+
+            // Grid
+            var grid = document.getElementById('calGrid');
+            grid.innerHTML = '';
+            var total = daysInMonth(curMonth, year);
+            var firstDay = firstDayOfMonth(curMonth, year);
+            var eventDays = getDaysWithEvents(curMonth);
+
+            // Empty cells before first day
+            for (var i = 0; i < firstDay; i++) {
+                var empty = document.createElement('div');
+                empty.className = 'cal-day empty';
+                grid.appendChild(empty);
+            }
+
+            for (var d = 1; d <= total; d++) {
+                var cell = document.createElement('div');
+                var hasEv = eventDays.indexOf(d) !== -1;
+                cell.className = 'cal-day' + (hasEv ? ' has-event' : '') + (selectedDay === d && hasEv ? ' selected' : '');
+                var num = document.createElement('div');
+                num.className = 'cal-day-num';
+                num.textContent = d;
+                cell.appendChild(num);
+                if (hasEv) {
+                    var dot = document.createElement('div');
+                    dot.className = 'cal-dot';
+                    cell.appendChild(dot);
+                    (function(day) {
+                        cell.addEventListener('click', function() {
+                            selectedDay = day;
+                            renderCalendar();
+                            renderDetail(day);
+                        });
+                    })(d);
+                }
+                grid.appendChild(cell);
+            }
+
+            // Render detail if selectedDay is set and has events this month
+            if (selectedDay && eventDays.indexOf(selectedDay) !== -1) {
+                renderDetail(selectedDay);
+            } else {
+                renderDetail(null);
+            }
+        }
+
+        function renderDetail(day) {
+            var detail = document.getElementById('calDetail');
+            if (!day) {
+                detail.innerHTML = '<p class="cal-empty-msg">Cliquez sur un jour vert pour voir les événements</p>';
+                return;
+            }
+            var evs = getEventsForDay(curMonth, day);
+            if (!evs.length) {
+                detail.innerHTML = '<p class="cal-empty-msg">Aucun événement ce jour</p>';
+                return;
+            }
+            var html = '<div class="cal-detail-title">📅 ' + day + ' ' + MONTHS[curMonth] + ' 2026</div>';
+            evs.forEach(function(e) {
+                html += '<div class="cal-event-card">';
+                html += '<div class="ev-name">🎯 ' + e.nom + '</div>';
+                if (e.heure) html += '<div class="ev-detail">🕐 <span>' + e.heure + '</span></div>';
+                html += '<div class="ev-detail">📍 <span>' + e.lieu + '</span></div>';
+                if (e.limite) html += '<div class="ev-detail">⏰ Limite : <span>' + e.limite + '</span></div>';
+                html += '</div>';
+            });
+            detail.innerHTML = html;
+        }
+
+        document.getElementById('calPrev').addEventListener('click', function() {
+            var idx = eventMonths.indexOf(curMonth);
+            if (idx > 0) { curMonth = eventMonths[idx - 1]; selectedDay = null; renderCalendar(); }
+        });
+        document.getElementById('calNext').addEventListener('click', function() {
+            var idx = eventMonths.indexOf(curMonth);
+            if (idx < eventMonths.length - 1) { curMonth = eventMonths[idx + 1]; selectedDay = null; renderCalendar(); }
+        });
+
+        renderCalendar();
+    })();
+    </script>
 </section>
 
-<!-- COMMANDE VÊTEMENTS -->
 <div id="commande-wrap">
 <section style="max-width:1100px; margin:0 auto; padding:34px 16px;">
-
     <h2>Commande de Vêtements</h2>
-
     <div class="commande-intro">
         <span class="icon">🎽</span>
         <div class="commande-intro-text">
@@ -751,7 +511,6 @@
             <p>Remplissez le formulaire ci-dessous et le bureau vous recontactera pour confirmer votre commande.</p>
         </div>
     </div>
-
     <div class="prix-banner">
         <div class="prix-badge">100 €</div>
         <div class="prix-banner-text">
@@ -759,7 +518,6 @@
             <p>Le règlement s'effectue auprès d'un membre du bureau après confirmation de votre commande.</p>
         </div>
     </div>
-
     <form class="order-form" id="orderForm" action="https://formspree.io/f/xwvrwwje" method="POST">
         <div class="form-grid">
             <div class="form-group">
@@ -772,7 +530,7 @@
             </div>
             <div class="form-group">
                 <label>Code Postal *</label>
-                <input type="text" name="code_postal" id="codepostal" placeholder="Ex : 80440" maxlength="5" inputmode="numeric" pattern="[0-9]{5}">
+                <input type="text" name="code_postal" id="codepostal" placeholder="Ex : 80440" maxlength="5" inputmode="numeric">
             </div>
             <div class="form-group">
                 <label>Téléphone *</label>
@@ -780,7 +538,7 @@
             </div>
             <div class="form-group full-width">
                 <label>Adresse email *</label>
-                <input type="email" name="email" id="email" placeholder="exemple@mail.com" autocomplete="email" inputmode="email">
+                <input type="email" name="email" id="email" placeholder="exemple@mail.com" autocomplete="email">
             </div>
             <div class="tailles-section">
                 <h4>Tailles souhaitées — laisser vide si non commandé</h4>
@@ -820,79 +578,38 @@
                 </div>
             </div>
             <input type="hidden" name="montant" value="100 euros">
-            <button type="button" class="submit-btn" onclick="submitCommande()">✅ Envoyer ma commande</button>
+            <button type="button" class="submit-btn" id="submitBtn" onclick="submitCommande()">✅ Envoyer ma commande</button>
         </div>
     </form>
-
     <div class="confirmation" id="confirmation">
         <div class="checkmark">✅</div>
         <h3>Commande envoyée !</h3>
         <p>Merci <strong id="conf-prenom" style="color:var(--vert)"></strong>, votre demande est bien enregistrée.<br>
-        Un email de confirmation vous sera envoyé à l'adresse indiquée.<br>
         <span style="color:var(--vert); font-weight:700;">Montant à régler : 100 €</span> auprès du bureau.</p>
         <div class="recap" id="conf-recap"></div>
         <button class="new-order-btn" onclick="nouvelleCommande()">Nouvelle commande</button>
     </div>
-
 </section>
 </div>
 
-<!-- BUREAU -->
 <section id="bureau">
     <h2>Membres du Bureau</h2>
     <div class="bureau">
-        <div class="bureau-member">
-            <img src="president.jpg" alt="Président">
-            <h3>Manu</h3><p>Président</p>
-        </div>
-        <div class="bureau-member">
-            <img src="vice-president.jpg" alt="Vice-président">
-            <h3>Dimitri</h3><p>Vice-président</p>
-        </div>
-        <div class="bureau-member">
-            <img src="secretaire.jpg" alt="Secrétaire">
-            <h3>Clotilde</h3><p>Secrétaire</p>
-        </div>
-        <div class="bureau-member">
-            <img src="tresorier.jpg" alt="Trésorier">
-            <h3>Jean Pierre</h3><p>Trésorier</p>
-        </div>
-        <div class="bureau-member">
-            <img src="vincent.jpg" alt="Vincent">
-            <h3>Vincent</h3><p>Membre</p>
-        </div>
-        <div class="bureau-member">
-            <img src="denis.jpg" alt="Denis">
-            <h3>Denis</h3><p>Membre</p>
-        </div>
-        <div class="bureau-member">
-            <img src="virginie.jpg" alt="Virginie">
-            <h3>Virginie</h3><p>Membre</p>
-        </div>
-        <div class="bureau-member">
-            <img src="philippe-d.jpg" alt="Philippe D">
-            <h3>Philippe D.</h3><p>Membre</p>
-        </div>
-        <div class="bureau-member">
-            <img src="eric.jpg" alt="Eric">
-            <h3>Eric</h3><p>Membre</p>
-        </div>
-        <div class="bureau-member">
-            <img src="philippe-m.jpg" alt="Philippe M">
-            <h3>Philippe M.</h3><p>Membre</p>
-        </div>
-        <div class="bureau-member">
-            <img src="benoit.jpg" alt="Benoît">
-            <h3>Benoît</h3><p>Membre</p>
-        </div>
-        <div class="bureau-member">
-            <img src="jean-marie.jpg" alt="Jean Marie">
-            <h3>Jean Marie</h3><p>Membre</p>
-        </div>
+        <div class="bureau-member"><img src="president.jpg" alt="Président"><h3>Manu</h3><p>Président</p></div>
+        <div class="bureau-member"><img src="vice-president.jpg" alt="Vice-président"><h3>Dimitri</h3><p>Vice-président</p></div>
+        <div class="bureau-member"><img src="secretaire.jpg" alt="Secrétaire"><h3>Clotilde</h3><p>Secrétaire</p></div>
+        <div class="bureau-member"><img src="tresorier.jpg" alt="Trésorier"><h3>Jean Pierre</h3><p>Trésorier</p></div>
+        <div class="bureau-member"><img src="vincent.jpg" alt="Vincent"><h3>Vincent</h3><p>Membre</p></div>
+        <div class="bureau-member"><img src="denis.jpg" alt="Denis"><h3>Denis</h3><p>Membre</p></div>
+        <div class="bureau-member"><img src="virginie.jpg" alt="Virginie"><h3>Virginie</h3><p>Membre</p></div>
+        <div class="bureau-member"><img src="philippe-d.jpg" alt="Philippe D"><h3>Philippe D.</h3><p>Membre</p></div>
+        <div class="bureau-member"><img src="eric.jpg" alt="Eric"><h3>Eric</h3><p>Membre</p></div>
+        <div class="bureau-member"><img src="philippe-m.jpg" alt="Philippe M"><h3>Philippe M.</h3><p>Membre</p></div>
+        <div class="bureau-member"><img src="benoit.jpg" alt="Benoît"><h3>Benoît</h3><p>Membre</p></div>
+        <div class="bureau-member"><img src="jean-marie.jpg" alt="Jean Marie"><h3>Jean Marie</h3><p>Membre</p></div>
     </div>
 </section>
 
-<!-- AFFILIATION -->
 <section id="affiliation">
     <h2>Notre Affiliation</h2>
     <div class="affiliation-card">
@@ -901,41 +618,28 @@
             <span class="label">ans de club</span>
         </div>
         <div class="affiliation-text">
-            <p>
-                Le club de pétanque de Boves est affilié à la <strong style="color:var(--vert);">FFPJP</strong> et au <strong style="color:var(--vert);">Comité Départemental de la Somme</strong> depuis sa création il y a 6 ans.
-                Cette affiliation nous permet de participer aux championnats officiels et d'organiser des concours officiels avec notre arbitre, ce qui permet à nos joueurs et à d'autres de venir s'amuser et de gagner des points.
-            </p>
-            <a class="affiliation-link" href="https://comite-de-la-somme-3.e-monsite.com/" target="_blank" rel="noopener">
-                🏅 Comité de la Somme (80) ↗
-            </a>
+            <p>Le club de pétanque de Boves est affilié à la <strong style="color:var(--vert);">FFPJP</strong> et au <strong style="color:var(--vert);">Comité Départemental de la Somme</strong> depuis sa création il y a 6 ans. Cette affiliation nous permet de participer aux championnats officiels et d'organiser des concours officiels avec notre arbitre, ce qui permet à nos joueurs et à d'autres de venir s'amuser et de gagner des points.</p>
+            <a class="affiliation-link" href="https://comite-de-la-somme-3.e-monsite.com/" target="_blank" rel="noopener">🏅 Comité de la Somme (80) ↗</a>
         </div>
     </div>
 </section>
 
-<!-- RÈGLEMENTS / DOCS -->
 <section id="docs">
     <h2>Règlements &amp; Documents</h2>
     <div class="docs-grid">
         <a class="doc-card" href="https://fipjp.org/images/pdf/reglements/REGLEMENT-OFFICIEL-SPORT-PETANQUE.pdf" target="_blank" rel="noopener">
             <div class="doc-icon">📘</div>
-            <div class="doc-info">
-                <strong>Règlement Officiel – Pétanque</strong>
-                <span>Fédération Internationale FIPJP</span>
-            </div>
+            <div class="doc-info"><strong>Règlement Officiel – Pétanque</strong><span>Fédération Internationale FIPJP</span></div>
             <span class="doc-dl">↗</span>
         </a>
         <a class="doc-card" href="https://fipjp.org/images/pdf/reglements/REGLEMENT-OFFICIEL-SPORT-JP.pdf" target="_blank" rel="noopener">
             <div class="doc-icon">📗</div>
-            <div class="doc-info">
-                <strong>Règlement Officiel – Jeu Provençal</strong>
-                <span>Fédération Internationale FIPJP</span>
-            </div>
+            <div class="doc-info"><strong>Règlement Officiel – Jeu Provençal</strong><span>Fédération Internationale FIPJP</span></div>
             <span class="doc-dl">↗</span>
         </a>
     </div>
 </section>
 
-<!-- FAQ -->
 <section id="faq" class="faq">
     <h2>FAQ</h2>
     <details>
@@ -961,11 +665,11 @@
 
 <script>
 /* ---- Menu hamburger ---- */
-const hamburger = document.getElementById('hamburger');
-const navMenu   = document.getElementById('navMenu');
+var hamburger = document.getElementById('hamburger');
+var navMenu = document.getElementById('navMenu');
 
 hamburger.addEventListener('click', function() {
-    const isOpen = navMenu.classList.toggle('open');
+    var isOpen = navMenu.classList.toggle('open');
     hamburger.classList.toggle('open', isOpen);
     hamburger.setAttribute('aria-expanded', String(isOpen));
     hamburger.setAttribute('aria-label', isOpen ? 'Fermer le menu' : 'Ouvrir le menu');
@@ -1003,23 +707,13 @@ function submitCommande() {
     var veste    = document.getElementById('taille-veste').value;
     var manteau  = document.getElementById('taille-manteau').value;
 
-    if (!nom || !prenom || !cp) {
-        alert('⚠️ Merci de renseigner votre nom, prénom et code postal.'); return;
-    }
-    if (!/^\d{5}$/.test(cp)) {
-        alert('⚠️ Le code postal doit contenir exactement 5 chiffres.'); return;
-    }
-    if (!tel) {
-        alert('⚠️ Merci de renseigner votre numéro de téléphone.'); return;
-    }
-    if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-        alert('⚠️ Merci de renseigner une adresse email valide.'); return;
-    }
-    if (!pantalon && !polo && !veste && !manteau) {
-        alert('⚠️ Veuillez sélectionner au moins une taille de vêtement.'); return;
-    }
+    if (!nom || !prenom || !cp) { alert('⚠️ Merci de renseigner votre nom, prénom et code postal.'); return; }
+    if (!/^\d{5}$/.test(cp)) { alert('⚠️ Le code postal doit contenir exactement 5 chiffres.'); return; }
+    if (!tel) { alert('⚠️ Merci de renseigner votre numéro de téléphone.'); return; }
+    if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { alert('⚠️ Merci de renseigner une adresse email valide.'); return; }
+    if (!pantalon && !polo && !veste && !manteau) { alert('⚠️ Veuillez sélectionner au moins une taille de vêtement.'); return; }
 
-    var btn = document.querySelector('.submit-btn');
+    var btn = document.getElementById('submitBtn');
     btn.textContent = 'Envoi en cours...';
     btn.disabled = true;
 
@@ -1050,10 +744,7 @@ function submitCommande() {
         if (response.ok) {
             afficherConfirmation(prenom, nom, cp, email, tel, pantalon, polo, veste, manteau);
         } else {
-            response.json().then(function(data) {
-                var msg = (data && data.errors) ? data.errors.map(function(e){ return e.message; }).join(', ') : 'Erreur inconnue';
-                alert('❌ Erreur : ' + msg);
-            });
+            alert('❌ Une erreur est survenue. Veuillez réessayer ou contacter le club par email.');
         }
     })
     .catch(function() {
@@ -1066,15 +757,14 @@ function submitCommande() {
 function afficherConfirmation(prenom, nom, cp, email, tel, pantalon, polo, veste, manteau) {
     document.getElementById('conf-prenom').textContent = prenom;
     var html = '<p><strong>Nom :</strong> ' + prenom + ' ' + nom + '</p>';
-    html += '<p><strong>Code postal :</strong> ' + cp + '</p>';
     html += '<p><strong>Email :</strong> ' + email + '</p>';
-    if (tel)      html += '<p><strong>Téléphone :</strong> ' + tel + '</p>';
+    html += '<p><strong>Téléphone :</strong> ' + tel + '</p>';
+    html += '<p><strong>Code postal :</strong> ' + cp + '</p>';
     if (pantalon) html += '<p><strong>Pantalon :</strong> ' + pantalon + '</p>';
     if (polo)     html += '<p><strong>Polo :</strong> ' + polo + '</p>';
     if (veste)    html += '<p><strong>Veste :</strong> ' + veste + '</p>';
     if (manteau)  html += '<p><strong>Manteau :</strong> ' + manteau + '</p>';
-    html += '<p style="margin-top:10px;padding-top:10px;border-top:1px solid #333;"><strong style="color:var(--vert);">Montant total : 100 euros</strong></p>';
-
+    html += '<p style="margin-top:10px;padding-top:10px;border-top:1px solid #333;"><strong style="color:var(--vert);">Montant total : 100 €</strong></p>';
     document.getElementById('conf-recap').innerHTML = html;
     document.getElementById('orderForm').style.display = 'none';
     var conf = document.getElementById('confirmation');
@@ -1086,13 +776,9 @@ function nouvelleCommande() {
     document.getElementById('orderForm').style.display = 'block';
     document.getElementById('confirmation').style.display = 'none';
     var ids = ['nom', 'prenom', 'codepostal', 'telephone', 'email'];
-    for (var i = 0; i < ids.length; i++) {
-        document.getElementById(ids[i]).value = '';
-    }
+    for (var i = 0; i < ids.length; i++) { document.getElementById(ids[i]).value = ''; }
     var selects = ['taille-pantalon', 'taille-polo', 'taille-veste', 'taille-manteau'];
-    for (var j = 0; j < selects.length; j++) {
-        document.getElementById(selects[j]).value = '';
-    }
+    for (var j = 0; j < selects.length; j++) { document.getElementById(selects[j]).value = ''; }
     document.getElementById('orderForm').scrollIntoView({ behavior: 'smooth' });
 }
 </script>
