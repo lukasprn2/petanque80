@@ -1024,15 +1024,20 @@ function submitCommande() {
     btn.disabled = true;
 
     var formData = new FormData();
-    formData.append('01_nom', prenom + ' ' + nom);
-    formData.append('02_email', email);
-    formData.append('03_telephone', tel);
-    formData.append('04_code_postal', cp);
-    formData.append('05_pantalon', pantalon || 'Non commandé');
-    formData.append('06_polo', polo || 'Non commandé');
-    formData.append('07_veste', veste || 'Non commandé');
-    formData.append('08_manteau', manteau || 'Non commandé');
-    formData.append('09_montant', '100 euros');
+    formData.append('email', email);
+    formData.append('message',
+        '--- INFORMATIONS ---\n' +
+        'Nom : ' + prenom + ' ' + nom + '\n' +
+        'Email : ' + email + '\n' +
+        'Telephone : ' + tel + '\n' +
+        'Code postal : ' + cp + '\n\n' +
+        '--- COMMANDE ---\n' +
+        'Pantalon : ' + (pantalon || 'Non commande') + '\n' +
+        'Polo : ' + (polo || 'Non commande') + '\n' +
+        'Veste : ' + (veste || 'Non commande') + '\n' +
+        'Manteau : ' + (manteau || 'Non commande') + '\n\n' +
+        'Montant total : 100 euros'
+    );
 
     fetch('https://formspree.io/f/xwvrwwje', {
         method: 'POST',
