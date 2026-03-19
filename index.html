@@ -11,14 +11,14 @@
         :root {
             --vert: #0bff04;
             --vert-dark: #09cc03;
-            --noir: #141414;
-            --gris-fonce: #1e1e1e;
-            --gris-card: #272727;
+            --noir: #000000;
+            --gris-fonce: #0a0a0a;
+            --gris-card: #1c1c1c;
             --nav-h: 56px;
         }
         *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
         html { scroll-behavior: smooth; }
-        body { font-family: 'Nunito', sans-serif; background: #1a1a1a; color: #e8e8e8; font-size: 16px; line-height: 1.6; overflow: hidden; }
+        body { font-family: 'Nunito', sans-serif; background: #000000; color: #e8e8e8; font-size: 16px; line-height: 1.6; overflow: hidden; }
         body.ready { overflow: auto; }
 
         /* BANNIÈRE */
@@ -38,7 +38,7 @@
         .hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
         .hamburger.open span:nth-child(2) { opacity: 0; transform: scaleX(0); }
         .hamburger.open span:nth-child(3) { width: 100%; transform: translateY(-7px) rotate(-45deg); }
-        .nav-menu { max-height: 0; overflow: hidden; transition: max-height 0.42s cubic-bezier(.77,0,.18,1); background: #1a1a1a; border-top: 1px solid #333; }
+        .nav-menu { max-height: 0; overflow: hidden; transition: max-height 0.42s cubic-bezier(.77,0,.18,1); background: #000000; border-top: 1px solid #333; }
         .nav-menu.open { max-height: 700px; }
         .nav-menu a { display: flex; align-items: center; gap: 12px; color: #d0d0d0; text-decoration: none; font-weight: 700; font-size: 1em; padding: 14px 20px; border-bottom: 1px solid #2a2a2a; transition: color 0.2s, background 0.2s, padding-left 0.2s; }
         .nav-menu a:last-child { border-bottom: none; }
@@ -96,10 +96,10 @@
             table tr { display: table-row; background: transparent; border: none; border-radius: 0; margin: 0; padding: 0; }
             table tr:nth-child(even) td { background: #222; }
             table tr:nth-child(even) { background: transparent; }
-            table td { display: table-cell; padding: 10px 12px; border: 1px solid #383838; font-size: 0.9em; }
+            table td { display: table-cell; padding: 10px 12px; border: 1px solid #222; font-size: 0.9em; }
             table td::before { display: none; }
             table td:empty { display: table-cell; }
-            table th { background: var(--vert); color: black; font-family: 'Bebas Neue', sans-serif; font-size: 1em; letter-spacing: 1px; padding: 10px 12px; border: 1px solid #383838; text-align: left; }
+            table th { background: var(--vert); color: black; font-family: 'Bebas Neue', sans-serif; font-size: 1em; letter-spacing: 1px; padding: 10px 12px; border: 1px solid #222; text-align: left; }
         }
 
         /* BUREAU */
@@ -122,28 +122,28 @@
         .faq p { color: #c0c0c0; margin-top: 10px; font-size: 0.91em; }
 
         /* COMMANDE */
-        #commande-wrap { background: linear-gradient(160deg, #181818 0%, #1a221a 100%); border-top: 1px solid #333; border-bottom: 1px solid #333; }
-        .commande-intro { position: relative; overflow: hidden; background: #1e1e1e; border-radius: 14px; padding: 22px 20px 22px 24px; margin-bottom: 14px; border: 1px solid #363636; display: flex; gap: 18px; align-items: center; transition: box-shadow 0.25s; }
+        #commande-wrap { background: linear-gradient(160deg, #0a0a0a 0%, #0e140e 100%); border-top: 1px solid #333; border-bottom: 1px solid #333; }
+        .commande-intro { position: relative; overflow: hidden; background: #181818; border-radius: 14px; padding: 22px 20px 22px 24px; margin-bottom: 14px; border: 1px solid #363636; display: flex; gap: 18px; align-items: center; transition: box-shadow 0.25s; }
         .commande-intro:hover { box-shadow: 0 6px 24px rgba(11,255,4,0.25); }
         .commande-intro::before { content: ''; position: absolute; top: 0; left: 0; width: 5px; height: 100%; background: linear-gradient(to bottom, var(--vert), #05a802); border-radius: 14px 0 0 14px; }
         .commande-intro .icon { font-size: 2.2em; flex-shrink: 0; background: rgba(11,255,4,0.08); border-radius: 12px; width: 54px; height: 54px; display: flex; align-items: center; justify-content: center; }
         .commande-intro-text strong { color: #f2f2f2; font-size: 1em; display: block; margin-bottom: 5px; }
         .commande-intro-text p { color: #b0b0b0; font-size: 0.88em; margin: 0; line-height: 1.5; }
-        .prix-banner { display: flex; align-items: center; gap: 20px; background: linear-gradient(135deg, #1c2b1c 0%, #1a2a1a 100%); border: 1px solid rgba(11,255,4,0.3); border-radius: 14px; padding: 20px 22px; margin-bottom: 22px; transition: box-shadow 0.25s; }
+        .prix-banner { display: flex; align-items: center; gap: 20px; background: linear-gradient(135deg, #101810 0%, #0e160e 100%); border: 1px solid rgba(11,255,4,0.3); border-radius: 14px; padding: 20px 22px; margin-bottom: 22px; transition: box-shadow 0.25s; }
         .prix-banner:hover { box-shadow: 0 6px 24px rgba(11,255,4,0.25); }
         .prix-badge { flex-shrink: 0; background: var(--vert); color: #000; font-family: 'Bebas Neue', sans-serif; font-size: 1.9em; letter-spacing: 2px; padding: 8px 18px; border-radius: 10px; line-height: 1; box-shadow: 0 4px 14px rgba(11,255,4,0.35); }
         .prix-banner-text strong { color: #f0f0f0; font-size: 0.97em; display: block; margin-bottom: 4px; }
         .prix-banner-text p { color: #aaa; font-size: 0.84em; margin: 0; }
-        .order-form { background: #202020; border: 1px solid #383838; border-radius: 14px; padding: 18px 14px; box-shadow: 0 8px 30px rgba(0,0,0,0.3); }
+        .order-form { background: #050505; border: 1px solid #222; border-radius: 14px; padding: 18px 14px; box-shadow: 0 8px 30px rgba(0,0,0,0.3); }
         @media (min-width: 600px) { .order-form { padding: 30px 26px; } }
         .form-grid { display: grid; grid-template-columns: 1fr; gap: 15px; }
         @media (min-width: 540px) { .form-grid { grid-template-columns: 1fr 1fr; gap: 16px 22px; } }
         .form-group { display: flex; flex-direction: column; gap: 6px; }
         .form-group.full-width { grid-column: 1 / -1; }
         .form-group label { font-size: 0.73em; font-weight: 700; text-transform: uppercase; letter-spacing: 1.2px; color: var(--vert); }
-        .form-group input, .form-group select { background: #2a2a2a; border: 1.5px solid #404040; border-radius: 8px; padding: 13px 14px; color: #eee; font-family: 'Nunito', sans-serif; font-size: 1em; transition: border-color 0.2s, box-shadow 0.2s; outline: none; width: 100%; -webkit-appearance: none; appearance: none; }
+        .form-group input, .form-group select { background: #000000; border: 1.5px solid #2a2a2a; border-radius: 8px; padding: 13px 14px; color: #eee; font-family: 'Nunito', sans-serif; font-size: 1em; transition: border-color 0.2s, box-shadow 0.2s; outline: none; width: 100%; -webkit-appearance: none; appearance: none; }
         .form-group select, .taille-item select { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%230bff04' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 13px center; padding-right: 36px; cursor: pointer; }
-        .form-group select option, .taille-item select option { background: #1a1a1a; color: #eee; }
+        .form-group select option, .taille-item select option { background: #000000; color: #eee; }
         .form-group input:focus, .form-group select:focus, .taille-item select:focus { border-color: var(--vert); box-shadow: 0 0 0 3px rgba(11,255,4,0.2); }
         .form-group input::placeholder { color: #777; }
         .tailles-section { grid-column: 1 / -1; }
@@ -152,7 +152,7 @@
         @media (min-width: 540px) { .tailles-grid { grid-template-columns: repeat(4,1fr); } }
         .taille-item { display: flex; flex-direction: column; gap: 6px; }
         .taille-item label { font-size: 0.78em; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: #bbb; display: flex; align-items: center; gap: 5px; }
-        .taille-item select { background: #2a2a2a; border: 1.5px solid #404040; border-radius: 8px; padding: 12px 32px 12px 12px; color: #eee; font-family: 'Nunito', sans-serif; font-size: 1em; -webkit-appearance: none; appearance: none; outline: none; width: 100%; transition: border-color 0.2s, box-shadow 0.2s; cursor: pointer; }
+        .taille-item select { background: #000000; border: 1.5px solid #2a2a2a; border-radius: 8px; padding: 12px 32px 12px 12px; color: #eee; font-family: 'Nunito', sans-serif; font-size: 1em; -webkit-appearance: none; appearance: none; outline: none; width: 100%; transition: border-color 0.2s, box-shadow 0.2s; cursor: pointer; }
         .submit-btn { grid-column: 1 / -1; background: var(--vert); color: #000; border: none; padding: 16px; width: 100%; font-family: 'Bebas Neue', sans-serif; font-size: 1.25em; letter-spacing: 2px; border-radius: 10px; cursor: pointer; transition: background 0.2s, transform 0.15s, box-shadow 0.2s; margin-top: 4px; }
         .submit-btn:active { transform: scale(0.97); }
         .submit-btn:hover { background: var(--vert-dark); box-shadow: 0 6px 22px rgba(11,255,4,0.4); }
@@ -276,7 +276,7 @@
             box-shadow: 0 0 12px rgba(11,255,4,0.8);
         }
         .intro-bar.run {
-            animation: barRun 3.6s linear forwards;
+            animation: barRun 6.0s linear forwards;
         }
         @keyframes barRun {
             to { width: 100%; }
@@ -357,13 +357,13 @@
 
         // Mots
         setTimeout(function() { document.getElementById('iw1').classList.add('show'); }, 1100);
-        setTimeout(function() { var w=document.getElementById('iw1'); w.classList.remove('show'); w.classList.add('out'); }, 1800);
+        setTimeout(function() { var w=document.getElementById('iw1'); w.classList.remove('show'); w.classList.add('out'); }, 2700);
 
-        setTimeout(function() { document.getElementById('iw2').classList.add('show'); }, 2000);
-        setTimeout(function() { var w=document.getElementById('iw2'); w.classList.remove('show'); w.classList.add('out'); }, 2700);
+        setTimeout(function() { document.getElementById('iw2').classList.add('show'); }, 3000);
+        setTimeout(function() { var w=document.getElementById('iw2'); w.classList.remove('show'); w.classList.add('out'); }, 4200);
 
-        setTimeout(function() { document.getElementById('iw3').classList.add('show'); }, 2900);
-        setTimeout(function() { var w=document.getElementById('iw3'); w.classList.remove('show'); w.classList.add('out'); }, 3700);
+        setTimeout(function() { document.getElementById('iw3').classList.add('show'); }, 4500);
+        setTimeout(function() { var w=document.getElementById('iw3'); w.classList.remove('show'); w.classList.add('out'); }, 5900);
 
         // Disparition écran
         setTimeout(function() {
@@ -372,7 +372,7 @@
                 screen.style.display = 'none';
                 document.body.classList.add('ready');
             }, 900);
-        }, 4100);
+        }, 5300);
     };
 })();
 </script>
@@ -401,7 +401,6 @@
         <a href="#affiliation"   onclick="closeMenu()"><span class="nav-icon">🏅</span>Affiliation</a>
         <a href="#docs"          onclick="closeMenu()"><span class="nav-icon">📄</span>Règlements</a>
         <a href="#faq"           onclick="closeMenu()"><span class="nav-icon">❓</span>FAQ</a>
-        <a href="#avis"          onclick="closeMenu()"><span class="nav-icon">⭐</span>Avis</a>
     </nav>
 </div>
 
@@ -415,7 +414,7 @@
 <section id="contact">
     <h2>Contacts</h2>
     <div class="card">
-        <p>📧 <a href="/cdn-cgi/l/email-protection#c5b5a0b1a4abb4b0a0fdf5f1f1f585a2a8a4aca9eba6aaa8"><span class="__cf_email__" data-cfemail="0f7f6a7b6e617e7a6a373f3b3b3f4f68626e6663216c6062">[email&#160;protected]</span></a></p>
+        <p>📧 <a href="mailto:petanque80440@gmail.com">petanque80440@gmail.com</a></p>
         <p>📞 <a href="tel:0682489217">06 82 48 92 17</a></p>
         <p>📘 <a href="https://www.facebook.com/petanque.boves/" target="_blank" rel="noopener">Facebook – Pétanque Boves</a></p>
         <p>🎵 <a href="https://www.tiktok.com/@petanqueboves80" target="_blank" rel="noopener">TikTok – PétanqueBoves80</a></p>
@@ -476,14 +475,14 @@
 
     <style>
         .cal-box { background: var(--gris-card); border-radius: 14px; overflow: hidden; border: 1px solid #363636; }
-        .cal-header { display: flex; align-items: center; justify-content: space-between; padding: 14px 18px; background: #1e1e1e; border-bottom: 2px solid var(--vert); }
+        .cal-header { display: flex; align-items: center; justify-content: space-between; padding: 14px 18px; background: #181818; border-bottom: 2px solid var(--vert); }
         .cal-header h3 { font-family: 'Bebas Neue', sans-serif; font-size: 1.4em; letter-spacing: 2px; color: white; margin: 0; text-transform: uppercase; }
         .cal-arrow { background: none; border: 2px solid #444; color: #ccc; width: 36px; height: 36px; border-radius: 8px; font-size: 1.1em; cursor: pointer; transition: border-color 0.2s, color 0.2s, background 0.2s; display: flex; align-items: center; justify-content: center; }
         .cal-arrow:hover { border-color: var(--vert); color: var(--vert); background: rgba(11,255,4,0.07); }
         .cal-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 0; }
         .cal-day-name { text-align: center; padding: 8px 4px; font-size: 0.7em; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: #666; border-bottom: 1px solid #2a2a2a; }
         .cal-day { min-height: 48px; padding: 6px 4px; border: 1px solid #2a2a2a; cursor: default; transition: background 0.15s; position: relative; display: flex; flex-direction: column; align-items: center; }
-        .cal-day.empty { background: #1a1a1a; cursor: default; }
+        .cal-day.empty { background: #000000; cursor: default; }
         .cal-day.has-event { cursor: pointer; }
         .cal-day.has-event:hover { background: rgba(11,255,4,0.08); }
         .cal-day.selected { background: rgba(11,255,4,0.15); border-color: var(--vert); }
@@ -493,7 +492,7 @@
         .cal-detail { margin-top: 16px; min-height: 60px; padding: 0 2px 14px; }
         .cal-detail-title { font-size: 0.75em; text-transform: uppercase; letter-spacing: 1.5px; color: #555; padding: 10px 18px 8px; font-weight: 700; }
         .cal-empty-msg { text-align: center; color: #555; font-size: 0.88em; padding: 20px; }
-        .cal-event-card { background: #1e1e1e; border-left: 4px solid var(--vert); border-radius: 8px; padding: 10px 14px; margin: 6px 10px; box-shadow: 0 2px 10px rgba(11,255,4,0.1); }
+        .cal-event-card { background: #181818; border-left: 4px solid var(--vert); border-radius: 8px; padding: 10px 14px; margin: 6px 10px; box-shadow: 0 2px 10px rgba(11,255,4,0.1); }
         .cal-event-card .ev-name { font-weight: 700; color: #f0f0f0; font-size: 0.92em; margin-bottom: 4px; }
         .cal-event-card .ev-detail { font-size: 0.8em; color: #aaa; display: flex; gap: 6px; align-items: center; margin-top: 2px; }
         .cal-event-card .ev-detail span { color: #ccc; }
@@ -823,7 +822,7 @@
     <h2>FAQ</h2>
     <details>
         <summary>Comment s'inscrire au club ?</summary>
-        <p>Vous pouvez vous inscrire lors des entraînements ou en contactant un membre du bureau par email à <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="7d0d18091c130c0818454d49494d3d1a101c1411531e1210">[email&#160;protected]</a> ou par téléphone au 06 82 48 92 17.</p>
+        <p>Vous pouvez vous inscrire lors des entraînements ou en contactant un membre du bureau par email à <a href="mailto:petanque80440@gmail.com">petanque80440@gmail.com</a> ou par téléphone au 06 82 48 92 17.</p>
     </details>
     <details>
         <summary>Le club accepte-t-il les débutants ?</summary>
@@ -867,129 +866,6 @@
     </details>
 </section>
 
-<!-- AVIS -->
-<section id="avis">
-<style>
-    .avis-form-wrap {
-        background: var(--gris-card);
-        border-radius: 14px;
-        padding: 22px 18px;
-        border: 1px solid #363636;
-        margin-bottom: 30px;
-    }
-    .avis-form-wrap h3 {
-        font-family: 'Bebas Neue', sans-serif;
-        font-size: 1.3em;
-        letter-spacing: 1px;
-        color: white;
-        margin-bottom: 16px;
-    }
-    .avis-fields { display: grid; grid-template-columns: 1fr; gap: 12px; }
-    @media (min-width: 540px) { .avis-fields { grid-template-columns: 1fr 1fr; } }
-    .avis-field { display: flex; flex-direction: column; gap: 6px; }
-    .avis-field.full { grid-column: 1 / -1; }
-    .avis-field label { font-size: 0.72em; font-weight: 700; text-transform: uppercase; letter-spacing: 1.2px; color: var(--vert); }
-    .avis-field input, .avis-field textarea {
-        background: #2a2a2a; border: 1.5px solid #404040; border-radius: 8px;
-        padding: 12px 14px; color: #eee; font-family: 'Nunito', sans-serif;
-        font-size: 1em; outline: none; width: 100%;
-        transition: border-color 0.2s, box-shadow 0.2s;
-    }
-    .avis-field input:focus, .avis-field textarea:focus {
-        border-color: var(--vert); box-shadow: 0 0 0 3px rgba(11,255,4,0.15);
-    }
-    .avis-field input::placeholder, .avis-field textarea::placeholder { color: #666; }
-    .avis-field textarea { resize: vertical; min-height: 90px; }
-
-    .stars-wrap { display: flex; gap: 6px; flex-direction: row-reverse; justify-content: flex-end; }
-    .stars-wrap input { display: none; }
-    .stars-wrap label {
-        font-size: 1.8em; cursor: pointer; color: #444;
-        transition: color 0.15s, transform 0.15s;
-    }
-    .stars-wrap label:hover,
-    .stars-wrap label:hover ~ label,
-    .stars-wrap input:checked ~ label { color: var(--vert); }
-    .stars-wrap label:hover { transform: scale(1.2); }
-
-    .avis-submit {
-        margin-top: 14px; width: 100%; background: var(--vert); color: #000;
-        border: none; padding: 14px; font-family: 'Bebas Neue', sans-serif;
-        font-size: 1.2em; letter-spacing: 2px; border-radius: 10px;
-        cursor: pointer; transition: background 0.2s, box-shadow 0.2s;
-    }
-    .avis-submit:hover { background: var(--vert-dark); box-shadow: 0 6px 20px rgba(11,255,4,0.35); }
-
-    /* Grille des avis */
-    .avis-grid { display: grid; grid-template-columns: 1fr; gap: 14px; }
-    @media (min-width: 600px) { .avis-grid { grid-template-columns: 1fr 1fr; } }
-    @media (min-width: 900px) { .avis-grid { grid-template-columns: 1fr 1fr 1fr; } }
-
-    .avis-card {
-        background: var(--gris-card);
-        border-radius: 12px;
-        padding: 18px 16px;
-        border: 1px solid #363636;
-        position: relative;
-        animation: avisIn 0.4s ease;
-        transition: box-shadow 0.25s, transform 0.25s;
-    }
-    .avis-card:hover { transform: translateY(-4px); box-shadow: 0 8px 24px rgba(11,255,4,0.18); }
-    @keyframes avisIn {
-        from { opacity: 0; transform: translateY(16px); }
-        to   { opacity: 1; transform: translateY(0); }
-    }
-    .avis-card-header { display: flex; align-items: center; gap: 12px; margin-bottom: 10px; }
-    .avis-avatar {
-        width: 42px; height: 42px; border-radius: 50%;
-        background: linear-gradient(135deg, var(--vert), #05a802);
-        display: flex; align-items: center; justify-content: center;
-        font-family: 'Bebas Neue', sans-serif; font-size: 1.2em;
-        color: #000; font-weight: 700; flex-shrink: 0;
-    }
-    .avis-card-meta { flex: 1; }
-    .avis-card-name { font-weight: 700; color: #f0f0f0; font-size: 0.95em; }
-    .avis-card-date { font-size: 0.75em; color: #666; margin-top: 1px; }
-    .avis-card-stars { color: var(--vert); font-size: 1em; letter-spacing: 1px; margin-bottom: 8px; }
-    .avis-card-text { color: #bbb; font-size: 0.88em; line-height: 1.6; font-style: italic; }
-    .avis-card-text::before { content: '"'; color: var(--vert); font-size: 1.3em; font-style: normal; }
-    .avis-card-text::after  { content: '"'; color: var(--vert); font-size: 1.3em; font-style: normal; }
-    .avis-empty { text-align: center; color: #555; font-size: 0.9em; padding: 30px 0; }
-    .avis-count { font-size: 0.82em; color: #666; margin-bottom: 16px; }
-</style>
-
-    <h2>Avis des Membres</h2>
-
-    <div class="avis-form-wrap">
-        <h3>✍️ Laisser un avis</h3>
-        <div class="avis-fields">
-            <div class="avis-field">
-                <label>Prénom *</label>
-                <input type="text" id="avis-prenom" placeholder="Votre prénom">
-            </div>
-            <div class="avis-field">
-                <label>Note *</label>
-                <div class="stars-wrap">
-                    <input type="radio" name="stars" id="s5" value="5"><label for="s5">★</label>
-                    <input type="radio" name="stars" id="s4" value="4"><label for="s4">★</label>
-                    <input type="radio" name="stars" id="s3" value="3"><label for="s3">★</label>
-                    <input type="radio" name="stars" id="s2" value="2"><label for="s2">★</label>
-                    <input type="radio" name="stars" id="s1" value="1"><label for="s1">★</label>
-                </div>
-            </div>
-            <div class="avis-field full">
-                <label>Votre avis *</label>
-                <textarea id="avis-texte" placeholder="Partagez votre expérience au club..."></textarea>
-            </div>
-        </div>
-        <button class="avis-submit" onclick="posterAvis()">⭐ Publier mon avis</button>
-    </div>
-
-    <div class="avis-count" id="avisCount"></div>
-    <div class="avis-grid" id="avisGrid">
-        <p class="avis-empty">Soyez le premier à laisser un avis !</p>
-    </div>
-</section>
 
 <footer>
     <p>© 2026 – Club de Pétanque de Boves</p>
@@ -1117,103 +993,6 @@ function nouvelleCommande() {
     document.getElementById('orderForm').scrollIntoView({ behavior: 'smooth' });
 }
 
-/* ---- Avis — Supabase ---- */
-var SUPA_URL = 'https://jdjuaeapwnemjlrazcfk.supabase.co';
-var SUPA_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImpkanVhZWFwd25lbWpscmF6Y2ZrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzM4NDg5MzMsImV4cCI6MjA4OTQyNDkzM30.EdG9_LAWeoTx8bRKIVM1nn5WnxUQ0vZWXjPAFH4BAbU';
-
-// Charger les avis au démarrage
-chargerAvis();
-
-function chargerAvis() {
-    fetch(SUPA_URL + '/rest/v1/avis?order=id.desc', {
-        headers: {
-            'apikey': SUPA_KEY,
-            'Authorization': 'Bearer ' + SUPA_KEY
-        }
-    })
-    .then(function(r) { return r.json(); })
-    .then(function(data) {
-        renderAvis(data);
-    })
-    .catch(function() {
-        document.getElementById('avisGrid').innerHTML = '<p class="avis-empty">Impossible de charger les avis.</p>';
-    });
-}
-
-function posterAvis() {
-    var prenom = document.getElementById('avis-prenom').value.trim();
-    var texte  = document.getElementById('avis-texte').value.trim();
-    var starEl = document.querySelector('input[name="stars"]:checked');
-    var stars  = starEl ? parseInt(starEl.value) : 0;
-
-    if (!prenom) { alert('⚠️ Merci de renseigner votre prénom.'); return; }
-    if (!stars)  { alert('⚠️ Merci de donner une note en cliquant sur les étoiles.'); return; }
-    if (!texte)  { alert('⚠️ Merci de rédiger votre avis.'); return; }
-
-    var now = new Date();
-    var date = now.toLocaleDateString('fr-FR', { day: 'numeric', month: 'long', year: 'numeric' });
-
-    var btn = document.querySelector('.avis-submit');
-    btn.textContent = 'Publication...';
-    btn.disabled = true;
-
-    fetch(SUPA_URL + '/rest/v1/avis', {
-        method: 'POST',
-        headers: {
-            'apikey': SUPA_KEY,
-            'Authorization': 'Bearer ' + SUPA_KEY,
-            'Content-Type': 'application/json',
-            'Prefer': 'return=representation'
-        },
-        body: JSON.stringify({ prenom: prenom, stars: stars, texte: texte, date: date })
-    })
-    .then(function(r) {
-        btn.textContent = '⭐ Publier mon avis';
-        btn.disabled = false;
-        if (r.ok) {
-            document.getElementById('avis-prenom').value = '';
-            document.getElementById('avis-texte').value = '';
-            if (starEl) starEl.checked = false;
-            chargerAvis();
-        } else {
-            alert('❌ Erreur lors de la publication. Réessayez.');
-        }
-    })
-    .catch(function() {
-        btn.textContent = '⭐ Publier mon avis';
-        btn.disabled = false;
-        alert('❌ Impossible de publier. Vérifiez votre connexion.');
-    });
-}
-
-function renderAvis(data) {
-    var grid = document.getElementById('avisGrid');
-    var count = document.getElementById('avisCount');
-    if (!data || !data.length) {
-        grid.innerHTML = '<p class="avis-empty">Soyez le premier à laisser un avis !</p>';
-        count.textContent = '';
-        return;
-    }
-    count.textContent = data.length + (data.length > 1 ? ' avis' : ' avis');
-    var html = '';
-    for (var i = 0; i < data.length; i++) {
-        var a = data[i];
-        var initiale = a.prenom.charAt(0).toUpperCase();
-        var etoiles = '';
-        for (var s = 1; s <= 5; s++) { etoiles += s <= a.stars ? '★' : '☆'; }
-        html += '<div class="avis-card">';
-        html += '<div class="avis-card-header">';
-        html += '<div class="avis-avatar">' + initiale + '</div>';
-        html += '<div class="avis-card-meta">';
-        html += '<div class="avis-card-name">' + a.prenom + '</div>';
-        html += '<div class="avis-card-date">' + a.date + '</div>';
-        html += '</div></div>';
-        html += '<div class="avis-card-stars">' + etoiles + '</div>';
-        html += '<div class="avis-card-text">' + a.texte + '</div>';
-        html += '</div>';
-    }
-    grid.innerHTML = html;
-}
 </script>
 
 </body>
