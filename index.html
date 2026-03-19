@@ -285,6 +285,46 @@
 
     <img src="logo.png" alt="Logo" class="intro-logo" id="introLogo">
 
+    <!-- Bouton ENTRER -->
+    <div id="intro-enter-wrap">
+        <button id="intro-enter-btn" onclick="startIntro()">ENTRER</button>
+    </div>
+
+    <style>
+        #intro-enter-wrap {
+            margin-top: 40px;
+        }
+        #intro-enter-btn {
+            background: transparent;
+            border: 2px solid #0bff04;
+            color: #0bff04;
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 1.5em;
+            letter-spacing: 4px;
+            padding: 14px 48px;
+            border-radius: 50px;
+            cursor: pointer;
+            opacity: 0;
+            transform: translateY(20px);
+            animation: btnIn 0.6s ease 1s forwards;
+            transition: background 0.2s, color 0.2s, box-shadow 0.2s;
+        }
+        #intro-enter-btn:hover {
+            background: #0bff04;
+            color: #000;
+            box-shadow: 0 0 30px rgba(11,255,4,0.5);
+        }
+        @keyframes btnIn {
+            to { opacity: 1; transform: translateY(0); }
+        }
+        #intro-enter-wrap.hide-btn {
+            animation: btnFade 0.3s ease forwards;
+        }
+        @keyframes btnFade {
+            to { opacity: 0; }
+        }
+    </style>
+
     <span class="intro-word" id="iw1">PASSION</span>
     <span class="intro-word" id="iw2">PRÉCISION</span>
     <span class="intro-word" id="iw3">BONNE HUMEUR</span>
@@ -294,53 +334,46 @@
 
 <script>
 (function() {
-    var screen  = document.getElementById('intro-screen');
-    var logo    = document.getElementById('introLogo');
-    var bar     = document.getElementById('introBar');
+    window.startIntro = function() {
+        var screen  = document.getElementById('intro-screen');
+        var logo    = document.getElementById('introLogo');
+        var bar     = document.getElementById('introBar');
+        var btnWrap = document.getElementById('intro-enter-wrap');
 
-    // Barre démarre dès le début
-    bar.classList.add('run');
+        // Jouer le son
+        var audio = new Audio('sonintro.mp3');
+        audio.volume = 0.7;
+        audio.play().catch(function(){});
 
-    // Après 1s : logo disparaît
-    setTimeout(function() {
-        logo.classList.add('logo-out');
-    }, 1000);
+        // Cacher le bouton
+        btnWrap.classList.add('hide-btn');
+        setTimeout(function() { btnWrap.style.display = 'none'; }, 300);
 
-    // Après 1.5s : mot 1
-    setTimeout(function() {
-        document.getElementById('iw1').classList.add('show');
-    }, 1500);
-    setTimeout(function() {
-        var w = document.getElementById('iw1');
-        w.classList.remove('show'); w.classList.add('out');
-    }, 2200);
+        // Barre
+        bar.classList.add('run');
 
-    // mot 2
-    setTimeout(function() {
-        document.getElementById('iw2').classList.add('show');
-    }, 2400);
-    setTimeout(function() {
-        var w = document.getElementById('iw2');
-        w.classList.remove('show'); w.classList.add('out');
-    }, 3100);
+        // Logo disparaît après 1s
+        setTimeout(function() { logo.classList.add('logo-out'); }, 800);
 
-    // mot 3
-    setTimeout(function() {
-        document.getElementById('iw3').classList.add('show');
-    }, 3300);
-    setTimeout(function() {
-        var w = document.getElementById('iw3');
-        w.classList.remove('show'); w.classList.add('out');
-    }, 4100);
+        // Mots
+        setTimeout(function() { document.getElementById('iw1').classList.add('show'); }, 1100);
+        setTimeout(function() { var w=document.getElementById('iw1'); w.classList.remove('show'); w.classList.add('out'); }, 1800);
 
-    // Disparition écran
-    setTimeout(function() {
-        screen.classList.add('hide');
+        setTimeout(function() { document.getElementById('iw2').classList.add('show'); }, 2000);
+        setTimeout(function() { var w=document.getElementById('iw2'); w.classList.remove('show'); w.classList.add('out'); }, 2700);
+
+        setTimeout(function() { document.getElementById('iw3').classList.add('show'); }, 2900);
+        setTimeout(function() { var w=document.getElementById('iw3'); w.classList.remove('show'); w.classList.add('out'); }, 3700);
+
+        // Disparition écran
         setTimeout(function() {
-            screen.style.display = 'none';
-            document.body.classList.add('ready');
-        }, 900);
-    }, 4500);
+            screen.classList.add('hide');
+            setTimeout(function() {
+                screen.style.display = 'none';
+                document.body.classList.add('ready');
+            }, 900);
+        }, 4100);
+    };
 })();
 </script>
 
