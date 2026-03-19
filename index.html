@@ -18,7 +18,8 @@
         }
         *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
         html { scroll-behavior: smooth; }
-        body { font-family: 'Nunito', sans-serif; background: #1a1a1a; color: #e8e8e8; font-size: 16px; line-height: 1.6; }
+        body { font-family: 'Nunito', sans-serif; background: #1a1a1a; color: #e8e8e8; font-size: 16px; line-height: 1.6; overflow: hidden; }
+        body.ready { overflow: auto; }
 
         /* BANNIÈRE */
         .banner { background: #000; text-align: center; padding: 16px 12px 12px; border-bottom: 3px solid var(--vert); }
@@ -199,6 +200,150 @@
 </head>
 <body>
 
+<!-- ===================== INTRO ANIMATION ===================== -->
+<div id="intro-screen">
+    <style>
+        #intro-screen {
+            position: fixed;
+            inset: 0;
+            background: #000;
+            z-index: 9999;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+        #intro-screen.hide {
+            animation: introFadeOut 0.8s ease forwards;
+        }
+        @keyframes introFadeOut {
+            to { opacity: 0; pointer-events: none; }
+        }
+
+        /* Logo */
+        .intro-logo {
+            width: 160px;
+            height: 160px;
+            object-fit: contain;
+            opacity: 0;
+            transform: scale(0.6);
+            animation: logoIn 0.7s cubic-bezier(.34,1.56,.64,1) 0.2s forwards;
+        }
+        .intro-logo.logo-out {
+            animation: logoOut 0.5s ease forwards;
+        }
+        @keyframes logoIn {
+            to { opacity: 1; transform: scale(1); }
+        }
+        @keyframes logoOut {
+            to { opacity: 0; transform: scale(1.15); }
+        }
+
+        /* Mots */
+        .intro-word {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: clamp(3.5em, 12vw, 7em);
+            letter-spacing: 6px;
+            color: #0bff04;
+            text-shadow: 0 0 50px rgba(11,255,4,0.5), 0 0 100px rgba(11,255,4,0.2);
+            position: absolute;
+            text-align: center;
+            width: 100%;
+            opacity: 0;
+            transform: translateY(40px);
+            pointer-events: none;
+        }
+        .intro-word.show {
+            animation: wordIn 0.55s cubic-bezier(.34,1.2,.64,1) forwards;
+        }
+        .intro-word.out {
+            animation: wordOut 0.35s ease forwards;
+        }
+        @keyframes wordIn {
+            to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes wordOut {
+            to { opacity: 0; transform: translateY(-40px); }
+        }
+
+        /* Barre progression */
+        .intro-bar {
+            position: absolute;
+            bottom: 0; left: 0;
+            height: 3px;
+            width: 0;
+            background: #0bff04;
+            box-shadow: 0 0 12px rgba(11,255,4,0.8);
+        }
+        .intro-bar.run {
+            animation: barRun 3.6s linear forwards;
+        }
+        @keyframes barRun {
+            to { width: 100%; }
+        }
+    </style>
+
+    <img src="logo.png" alt="Logo" class="intro-logo" id="introLogo">
+
+    <span class="intro-word" id="iw1">PASSION</span>
+    <span class="intro-word" id="iw2">PRÉCISION</span>
+    <span class="intro-word" id="iw3">BONNE HUMEUR</span>
+
+    <div class="intro-bar" id="introBar"></div>
+</div>
+
+<script>
+(function() {
+    var screen  = document.getElementById('intro-screen');
+    var logo    = document.getElementById('introLogo');
+    var bar     = document.getElementById('introBar');
+
+    // Barre démarre dès le début
+    bar.classList.add('run');
+
+    // Après 1s : logo disparaît
+    setTimeout(function() {
+        logo.classList.add('logo-out');
+    }, 1000);
+
+    // Après 1.5s : mot 1
+    setTimeout(function() {
+        document.getElementById('iw1').classList.add('show');
+    }, 1500);
+    setTimeout(function() {
+        var w = document.getElementById('iw1');
+        w.classList.remove('show'); w.classList.add('out');
+    }, 2200);
+
+    // mot 2
+    setTimeout(function() {
+        document.getElementById('iw2').classList.add('show');
+    }, 2400);
+    setTimeout(function() {
+        var w = document.getElementById('iw2');
+        w.classList.remove('show'); w.classList.add('out');
+    }, 3100);
+
+    // mot 3
+    setTimeout(function() {
+        document.getElementById('iw3').classList.add('show');
+    }, 3300);
+    setTimeout(function() {
+        var w = document.getElementById('iw3');
+        w.classList.remove('show'); w.classList.add('out');
+    }, 4100);
+
+    // Disparition écran
+    setTimeout(function() {
+        screen.classList.add('hide');
+        setTimeout(function() {
+            screen.style.display = 'none';
+            document.body.classList.add('ready');
+        }, 900);
+    }, 4500);
+})();
+</script>
+
 <div class="banner">
     <img src="logo.png" alt="Logo club pétanque Boves">
     <p>Passions • Précision • Bonne humeur</p>
@@ -223,6 +368,7 @@
         <a href="#affiliation"   onclick="closeMenu()"><span class="nav-icon">🏅</span>Affiliation</a>
         <a href="#docs"          onclick="closeMenu()"><span class="nav-icon">📄</span>Règlements</a>
         <a href="#faq"           onclick="closeMenu()"><span class="nav-icon">❓</span>FAQ</a>
+        <a href="#avis"          onclick="closeMenu()"><span class="nav-icon">⭐</span>Avis</a>
     </nav>
 </div>
 
@@ -236,7 +382,7 @@
 <section id="contact">
     <h2>Contacts</h2>
     <div class="card">
-        <p>📧 <a href="mailto:petanque80440@gmail.com">petanque80440@gmail.com</a></p>
+        <p>📧 <a href="/cdn-cgi/l/email-protection#c5b5a0b1a4abb4b0a0fdf5f1f1f585a2a8a4aca9eba6aaa8"><span class="__cf_email__" data-cfemail="0f7f6a7b6e617e7a6a373f3b3b3f4f68626e6663216c6062">[email&#160;protected]</span></a></p>
         <p>📞 <a href="tel:0682489217">06 82 48 92 17</a></p>
         <p>📘 <a href="https://www.facebook.com/petanque.boves/" target="_blank" rel="noopener">Facebook – Pétanque Boves</a></p>
         <p>🎵 <a href="https://www.tiktok.com/@petanqueboves80" target="_blank" rel="noopener">TikTok – PétanqueBoves80</a></p>
@@ -568,7 +714,7 @@
                         </select>
                     </div>
                     <div class="taille-item">
-                        <label>🧣 Kway</label>
+                        <label>🧣 Manteau</label>
                         <select name="manteau" id="taille-manteau">
                             <option value="">— Non commandé —</option>
                             <option>XS</option><option>S</option><option>M</option>
@@ -644,7 +790,7 @@
     <h2>FAQ</h2>
     <details>
         <summary>Comment s'inscrire au club ?</summary>
-        <p>Vous pouvez vous inscrire lors des entraînements ou en contactant un membre du bureau par email à petanque80440@gmail.com ou par téléphone au 06 82 48 92 17.</p>
+        <p>Vous pouvez vous inscrire lors des entraînements ou en contactant un membre du bureau par email à <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="7d0d18091c130c0818454d49494d3d1a101c1411531e1210">[email&#160;protected]</a> ou par téléphone au 06 82 48 92 17.</p>
     </details>
     <details>
         <summary>Le club accepte-t-il les débutants ?</summary>
@@ -686,6 +832,130 @@
         <summary>Comment suivre l'actualité du club ?</summary>
         <p>Vous pouvez nous suivre sur Facebook (Pétanque Boves) et TikTok (PétanqueBoves80) pour les dernières nouvelles, résultats et annonces du club.</p>
     </details>
+</section>
+
+<!-- AVIS -->
+<section id="avis">
+<style>
+    .avis-form-wrap {
+        background: var(--gris-card);
+        border-radius: 14px;
+        padding: 22px 18px;
+        border: 1px solid #363636;
+        margin-bottom: 30px;
+    }
+    .avis-form-wrap h3 {
+        font-family: 'Bebas Neue', sans-serif;
+        font-size: 1.3em;
+        letter-spacing: 1px;
+        color: white;
+        margin-bottom: 16px;
+    }
+    .avis-fields { display: grid; grid-template-columns: 1fr; gap: 12px; }
+    @media (min-width: 540px) { .avis-fields { grid-template-columns: 1fr 1fr; } }
+    .avis-field { display: flex; flex-direction: column; gap: 6px; }
+    .avis-field.full { grid-column: 1 / -1; }
+    .avis-field label { font-size: 0.72em; font-weight: 700; text-transform: uppercase; letter-spacing: 1.2px; color: var(--vert); }
+    .avis-field input, .avis-field textarea {
+        background: #2a2a2a; border: 1.5px solid #404040; border-radius: 8px;
+        padding: 12px 14px; color: #eee; font-family: 'Nunito', sans-serif;
+        font-size: 1em; outline: none; width: 100%;
+        transition: border-color 0.2s, box-shadow 0.2s;
+    }
+    .avis-field input:focus, .avis-field textarea:focus {
+        border-color: var(--vert); box-shadow: 0 0 0 3px rgba(11,255,4,0.15);
+    }
+    .avis-field input::placeholder, .avis-field textarea::placeholder { color: #666; }
+    .avis-field textarea { resize: vertical; min-height: 90px; }
+
+    .stars-wrap { display: flex; gap: 6px; flex-direction: row-reverse; justify-content: flex-end; }
+    .stars-wrap input { display: none; }
+    .stars-wrap label {
+        font-size: 1.8em; cursor: pointer; color: #444;
+        transition: color 0.15s, transform 0.15s;
+    }
+    .stars-wrap label:hover,
+    .stars-wrap label:hover ~ label,
+    .stars-wrap input:checked ~ label { color: var(--vert); }
+    .stars-wrap label:hover { transform: scale(1.2); }
+
+    .avis-submit {
+        margin-top: 14px; width: 100%; background: var(--vert); color: #000;
+        border: none; padding: 14px; font-family: 'Bebas Neue', sans-serif;
+        font-size: 1.2em; letter-spacing: 2px; border-radius: 10px;
+        cursor: pointer; transition: background 0.2s, box-shadow 0.2s;
+    }
+    .avis-submit:hover { background: var(--vert-dark); box-shadow: 0 6px 20px rgba(11,255,4,0.35); }
+
+    /* Grille des avis */
+    .avis-grid { display: grid; grid-template-columns: 1fr; gap: 14px; }
+    @media (min-width: 600px) { .avis-grid { grid-template-columns: 1fr 1fr; } }
+    @media (min-width: 900px) { .avis-grid { grid-template-columns: 1fr 1fr 1fr; } }
+
+    .avis-card {
+        background: var(--gris-card);
+        border-radius: 12px;
+        padding: 18px 16px;
+        border: 1px solid #363636;
+        position: relative;
+        animation: avisIn 0.4s ease;
+        transition: box-shadow 0.25s, transform 0.25s;
+    }
+    .avis-card:hover { transform: translateY(-4px); box-shadow: 0 8px 24px rgba(11,255,4,0.18); }
+    @keyframes avisIn {
+        from { opacity: 0; transform: translateY(16px); }
+        to   { opacity: 1; transform: translateY(0); }
+    }
+    .avis-card-header { display: flex; align-items: center; gap: 12px; margin-bottom: 10px; }
+    .avis-avatar {
+        width: 42px; height: 42px; border-radius: 50%;
+        background: linear-gradient(135deg, var(--vert), #05a802);
+        display: flex; align-items: center; justify-content: center;
+        font-family: 'Bebas Neue', sans-serif; font-size: 1.2em;
+        color: #000; font-weight: 700; flex-shrink: 0;
+    }
+    .avis-card-meta { flex: 1; }
+    .avis-card-name { font-weight: 700; color: #f0f0f0; font-size: 0.95em; }
+    .avis-card-date { font-size: 0.75em; color: #666; margin-top: 1px; }
+    .avis-card-stars { color: var(--vert); font-size: 1em; letter-spacing: 1px; margin-bottom: 8px; }
+    .avis-card-text { color: #bbb; font-size: 0.88em; line-height: 1.6; font-style: italic; }
+    .avis-card-text::before { content: '"'; color: var(--vert); font-size: 1.3em; font-style: normal; }
+    .avis-card-text::after  { content: '"'; color: var(--vert); font-size: 1.3em; font-style: normal; }
+    .avis-empty { text-align: center; color: #555; font-size: 0.9em; padding: 30px 0; }
+    .avis-count { font-size: 0.82em; color: #666; margin-bottom: 16px; }
+</style>
+
+    <h2>Avis des Membres</h2>
+
+    <div class="avis-form-wrap">
+        <h3>✍️ Laisser un avis</h3>
+        <div class="avis-fields">
+            <div class="avis-field">
+                <label>Prénom *</label>
+                <input type="text" id="avis-prenom" placeholder="Votre prénom">
+            </div>
+            <div class="avis-field">
+                <label>Note *</label>
+                <div class="stars-wrap">
+                    <input type="radio" name="stars" id="s5" value="5"><label for="s5">★</label>
+                    <input type="radio" name="stars" id="s4" value="4"><label for="s4">★</label>
+                    <input type="radio" name="stars" id="s3" value="3"><label for="s3">★</label>
+                    <input type="radio" name="stars" id="s2" value="2"><label for="s2">★</label>
+                    <input type="radio" name="stars" id="s1" value="1"><label for="s1">★</label>
+                </div>
+            </div>
+            <div class="avis-field full">
+                <label>Votre avis *</label>
+                <textarea id="avis-texte" placeholder="Partagez votre expérience au club..."></textarea>
+            </div>
+        </div>
+        <button class="avis-submit" onclick="posterAvis()">⭐ Publier mon avis</button>
+    </div>
+
+    <div class="avis-count" id="avisCount"></div>
+    <div class="avis-grid" id="avisGrid">
+        <p class="avis-empty">Soyez le premier à laisser un avis !</p>
+    </div>
 </section>
 
 <footer>
@@ -812,6 +1082,104 @@ function nouvelleCommande() {
     var selects = ['taille-pantalon', 'taille-polo', 'taille-veste', 'taille-manteau'];
     for (var j = 0; j < selects.length; j++) { document.getElementById(selects[j]).value = ''; }
     document.getElementById('orderForm').scrollIntoView({ behavior: 'smooth' });
+}
+
+/* ---- Avis — Supabase ---- */
+var SUPA_URL = 'https://jdjuaeapwnemjlrazcfk.supabase.co';
+var SUPA_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImpkanVhZWFwd25lbWpscmF6Y2ZrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzM4NDg5MzMsImV4cCI6MjA4OTQyNDkzM30.EdG9_LAWeoTx8bRKIVM1nn5WnxUQ0vZWXjPAFH4BAbU';
+
+// Charger les avis au démarrage
+chargerAvis();
+
+function chargerAvis() {
+    fetch(SUPA_URL + '/rest/v1/avis?order=id.desc', {
+        headers: {
+            'apikey': SUPA_KEY,
+            'Authorization': 'Bearer ' + SUPA_KEY
+        }
+    })
+    .then(function(r) { return r.json(); })
+    .then(function(data) {
+        renderAvis(data);
+    })
+    .catch(function() {
+        document.getElementById('avisGrid').innerHTML = '<p class="avis-empty">Impossible de charger les avis.</p>';
+    });
+}
+
+function posterAvis() {
+    var prenom = document.getElementById('avis-prenom').value.trim();
+    var texte  = document.getElementById('avis-texte').value.trim();
+    var starEl = document.querySelector('input[name="stars"]:checked');
+    var stars  = starEl ? parseInt(starEl.value) : 0;
+
+    if (!prenom) { alert('⚠️ Merci de renseigner votre prénom.'); return; }
+    if (!stars)  { alert('⚠️ Merci de donner une note en cliquant sur les étoiles.'); return; }
+    if (!texte)  { alert('⚠️ Merci de rédiger votre avis.'); return; }
+
+    var now = new Date();
+    var date = now.toLocaleDateString('fr-FR', { day: 'numeric', month: 'long', year: 'numeric' });
+
+    var btn = document.querySelector('.avis-submit');
+    btn.textContent = 'Publication...';
+    btn.disabled = true;
+
+    fetch(SUPA_URL + '/rest/v1/avis', {
+        method: 'POST',
+        headers: {
+            'apikey': SUPA_KEY,
+            'Authorization': 'Bearer ' + SUPA_KEY,
+            'Content-Type': 'application/json',
+            'Prefer': 'return=representation'
+        },
+        body: JSON.stringify({ prenom: prenom, stars: stars, texte: texte, date: date })
+    })
+    .then(function(r) {
+        btn.textContent = '⭐ Publier mon avis';
+        btn.disabled = false;
+        if (r.ok) {
+            document.getElementById('avis-prenom').value = '';
+            document.getElementById('avis-texte').value = '';
+            if (starEl) starEl.checked = false;
+            chargerAvis();
+        } else {
+            alert('❌ Erreur lors de la publication. Réessayez.');
+        }
+    })
+    .catch(function() {
+        btn.textContent = '⭐ Publier mon avis';
+        btn.disabled = false;
+        alert('❌ Impossible de publier. Vérifiez votre connexion.');
+    });
+}
+
+function renderAvis(data) {
+    var grid = document.getElementById('avisGrid');
+    var count = document.getElementById('avisCount');
+    if (!data || !data.length) {
+        grid.innerHTML = '<p class="avis-empty">Soyez le premier à laisser un avis !</p>';
+        count.textContent = '';
+        return;
+    }
+    count.textContent = data.length + (data.length > 1 ? ' avis' : ' avis');
+    var html = '';
+    for (var i = 0; i < data.length; i++) {
+        var a = data[i];
+        var initiale = a.prenom.charAt(0).toUpperCase();
+        var etoiles = '';
+        for (var s = 1; s <= 5; s++) { etoiles += s <= a.stars ? '★' : '☆'; }
+        html += '<div class="avis-card">';
+        html += '<div class="avis-card-header">';
+        html += '<div class="avis-avatar">' + initiale + '</div>';
+        html += '<div class="avis-card-meta">';
+        html += '<div class="avis-card-name">' + a.prenom + '</div>';
+        html += '<div class="avis-card-date">' + a.date + '</div>';
+        html += '</div></div>';
+        html += '<div class="avis-card-stars">' + etoiles + '</div>';
+        html += '<div class="avis-card-text">' + a.texte + '</div>';
+        html += '</div>';
+    }
+    grid.innerHTML = html;
 }
 </script>
 
