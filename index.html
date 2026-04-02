@@ -58,20 +58,9 @@
         h2 { font-family: 'Bebas Neue', sans-serif; font-size: 1.75em; letter-spacing: 1.5px; color: white; border-left: 5px solid var(--vert); padding-left: 14px; margin-bottom: 20px; }
         @media (min-width: 768px) { h2 { font-size: 2.1em; } }
 
-        /* CARDS avec glow vert prononcé */
-        .card {
-            background: var(--gris-card);
-            border-left: 5px solid var(--vert);
-            border-radius: 10px;
-            padding: 16px 15px;
-            margin: 14px 0;
-            box-shadow: 0 4px 14px rgba(0,0,0,0.5);
-            transition: transform 0.25s, box-shadow 0.25s;
-        }
-        .card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 8px 30px rgba(11,255,4,0.35), 0 0 15px rgba(11,255,4,0.2);
-        }
+        /* CARDS */
+        .card { background: var(--gris-card); border-left: 5px solid var(--vert); border-radius: 10px; padding: 16px 15px; margin: 14px 0; box-shadow: 0 4px 14px rgba(0,0,0,0.5); transition: transform 0.25s, box-shadow 0.25s; }
+        .card:hover { transform: translateY(-5px); box-shadow: 0 8px 30px rgba(11,255,4,0.35), 0 0 15px rgba(11,255,4,0.2); }
         @media (min-width: 768px) { .card { padding: 22px 24px; } }
         .card h3 { font-family: 'Bebas Neue', sans-serif; font-size: 1.3em; letter-spacing: 1px; color: var(--vert); margin-bottom: 10px; }
         .card p, .card li { color: #ccc; font-size: 0.94em; }
@@ -79,7 +68,7 @@
         .card ul { padding-left: 18px; }
         .card li { margin: 5px 0; }
 
-        /* TABLE mobile first */
+        /* TABLE */
         .table-wrap { border-radius: 10px; }
         table { width: 100%; border-collapse: collapse; background: var(--gris-card); font-size: 0.88em; }
         table thead { display: none; }
@@ -102,16 +91,112 @@
             table th { background: var(--vert); color: black; font-family: 'Bebas Neue', sans-serif; font-size: 1em; letter-spacing: 1px; padding: 10px 12px; border: 1px solid #222; text-align: left; }
         }
 
-        /* BUREAU */
-        .bureau { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
-        @media (min-width: 480px) { .bureau { grid-template-columns: repeat(3,1fr); gap: 14px; } }
-        @media (min-width: 768px) { .bureau { grid-template-columns: repeat(4,1fr); gap: 20px; } }
-        .bureau-member { background: var(--gris-card); border: 2px solid var(--vert); border-radius: 10px; text-align: center; padding: 14px 8px; transition: box-shadow 0.25s, transform 0.25s; }
-        .bureau-member:hover { transform: translateY(-4px); box-shadow: 0 8px 24px rgba(11,255,4,0.3); }
-        .bureau-member img { width: 68px; height: 68px; border-radius: 50%; object-fit: cover; border: 3px solid var(--vert); margin: 0 auto 10px; display: block; }
-        @media (min-width: 600px) { .bureau-member img { width: 110px; height: 110px; } }
-        .bureau-member h3 { color: var(--vert); font-size: 0.95em; margin-bottom: 3px; }
-        .bureau-member p { color: #bbb; font-size: 0.82em; }
+        /* ===================== BUREAU — NOUVEAU DESIGN ===================== */
+        .bureau {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 14px;
+        }
+        @media (min-width: 500px) { .bureau { grid-template-columns: repeat(3, 1fr); gap: 16px; } }
+        @media (min-width: 900px) { .bureau { grid-template-columns: repeat(4, 1fr); gap: 20px; } }
+
+        .bureau-member {
+            position: relative;
+            background: #111;
+            border-radius: 14px;
+            overflow: hidden;
+            border: 1px solid #2a2a2a;
+            transition: transform 0.28s, border-color 0.28s, box-shadow 0.28s;
+            cursor: default;
+        }
+        .bureau-member:hover {
+            transform: translateY(-6px) scale(1.02);
+            border-color: var(--vert);
+            box-shadow: 0 10px 32px rgba(11,255,4,0.28), 0 0 0 1px rgba(11,255,4,0.15);
+        }
+
+        /* Bande verte en haut */
+        .bureau-member::before {
+            content: '';
+            display: block;
+            height: 4px;
+            background: linear-gradient(90deg, var(--vert), #09cc03);
+            width: 100%;
+        }
+
+        .bureau-photo-wrap {
+            display: flex;
+            justify-content: center;
+            padding: 18px 0 12px;
+        }
+        .bureau-photo-wrap img {
+            width: 78px;
+            height: 78px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 3px solid var(--vert);
+            box-shadow: 0 0 0 4px rgba(11,255,4,0.12);
+            display: block;
+            transition: box-shadow 0.28s;
+        }
+        @media (min-width: 600px) {
+            .bureau-photo-wrap img { width: 96px; height: 96px; }
+        }
+        .bureau-member:hover .bureau-photo-wrap img {
+            box-shadow: 0 0 0 5px rgba(11,255,4,0.3), 0 0 18px rgba(11,255,4,0.25);
+        }
+
+        /* Pastille rôle en haut à droite */
+        .bureau-role-badge {
+            position: absolute;
+            top: 14px;
+            right: 10px;
+            background: rgba(11,255,4,0.12);
+            border: 1px solid rgba(11,255,4,0.35);
+            color: var(--vert);
+            font-size: 0.62em;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            padding: 3px 8px;
+            border-radius: 20px;
+            line-height: 1.4;
+            white-space: nowrap;
+        }
+        /* Cacher la pastille "Membre" — trop courant */
+        .bureau-role-badge.is-membre { display: none; }
+
+        .bureau-info {
+            padding: 0 12px 18px;
+            text-align: center;
+        }
+        .bureau-info h3 {
+            color: #f0f0f0;
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 1.15em;
+            letter-spacing: 1.5px;
+            margin-bottom: 3px;
+        }
+        .bureau-info p {
+            color: #777;
+            font-size: 0.78em;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-weight: 600;
+        }
+
+        /* Séparateur décoratif */
+        .bureau-sep {
+            width: 32px;
+            height: 2px;
+            background: var(--vert);
+            border-radius: 2px;
+            margin: 8px auto 10px;
+            opacity: 0.5;
+            transition: opacity 0.28s, width 0.28s;
+        }
+        .bureau-member:hover .bureau-sep { opacity: 1; width: 48px; }
+        /* ===================== FIN BUREAU ===================== */
 
         /* FAQ */
         .faq details { background: var(--gris-card); border-left: 5px solid var(--vert); border-radius: 8px; padding: 14px 16px; margin-bottom: 11px; }
@@ -220,7 +305,6 @@
             to { opacity: 0; pointer-events: none; }
         }
 
-        /* Logo */
         .intro-logo {
             width: 160px;
             height: 160px;
@@ -232,14 +316,9 @@
         .intro-logo.logo-out {
             animation: logoOut 0.5s ease forwards;
         }
-        @keyframes logoIn {
-            to { opacity: 1; transform: scale(1); }
-        }
-        @keyframes logoOut {
-            to { opacity: 0; transform: scale(1.15); }
-        }
+        @keyframes logoIn { to { opacity: 1; transform: scale(1); } }
+        @keyframes logoOut { to { opacity: 0; transform: scale(1.15); } }
 
-        /* Mots */
         .intro-word {
             font-family: 'Bebas Neue', sans-serif;
             font-size: clamp(3.5em, 12vw, 7em);
@@ -253,20 +332,11 @@
             transform: translateY(40px);
             pointer-events: none;
         }
-        .intro-word.show {
-            animation: wordIn 0.55s cubic-bezier(.34,1.2,.64,1) forwards;
-        }
-        .intro-word.out {
-            animation: wordOut 0.35s ease forwards;
-        }
-        @keyframes wordIn {
-            to { opacity: 1; transform: translateY(0); }
-        }
-        @keyframes wordOut {
-            to { opacity: 0; transform: translateY(-40px); }
-        }
+        .intro-word.show { animation: wordIn 0.55s cubic-bezier(.34,1.2,.64,1) forwards; }
+        .intro-word.out { animation: wordOut 0.35s ease forwards; }
+        @keyframes wordIn { to { opacity: 1; transform: translateY(0); } }
+        @keyframes wordOut { to { opacity: 0; transform: translateY(-40px); } }
 
-        /* Barre progression */
         .intro-bar {
             position: absolute;
             bottom: 0; left: 0;
@@ -278,22 +348,10 @@
         .intro-bar.run {
             animation: barRun 6.0s linear forwards;
         }
-        @keyframes barRun {
-            to { width: 100%; }
-        }
-    </style>
+        @keyframes barRun { to { width: 100%; } }
 
-    <img src="logo.png" alt="Logo" class="intro-logo" id="introLogo">
-
-    <!-- Bouton ENTRER -->
-    <div id="intro-enter-wrap">
-        <button id="intro-enter-btn" onclick="startIntro()">ENTRER</button>
-    </div>
-
-    <style>
-        #intro-enter-wrap {
-            margin-top: 40px;
-        }
+        /* Bouton ENTRER */
+        #intro-enter-wrap { margin-top: 40px; }
         #intro-enter-btn {
             background: transparent;
             border: 2px solid #0bff04;
@@ -309,21 +367,45 @@
             animation: btnIn 0.6s ease 1s forwards;
             transition: background 0.2s, color 0.2s, box-shadow 0.2s;
         }
-        #intro-enter-btn:hover {
-            background: #0bff04;
-            color: #000;
-            box-shadow: 0 0 30px rgba(11,255,4,0.5);
+        #intro-enter-btn:hover { background: #0bff04; color: #000; box-shadow: 0 0 30px rgba(11,255,4,0.5); }
+        @keyframes btnIn { to { opacity: 1; transform: translateY(0); } }
+        #intro-enter-wrap.hide-btn { animation: btnFade 0.3s ease forwards; }
+        @keyframes btnFade { to { opacity: 0; } }
+
+        /* ===== BOUTON PASSER ===== */
+        #btn-skip {
+            position: absolute;
+            top: 18px;
+            right: 18px;
+            background: transparent;
+            border: 1.5px solid rgba(11,255,4,0.4);
+            color: rgba(11,255,4,0.7);
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 0.95em;
+            letter-spacing: 2px;
+            padding: 7px 18px;
+            border-radius: 30px;
+            cursor: pointer;
+            opacity: 0;
+            animation: btnIn 0.5s ease 1.3s forwards;
+            transition: background 0.2s, color 0.2s, border-color 0.2s;
+            z-index: 10001;
         }
-        @keyframes btnIn {
-            to { opacity: 1; transform: translateY(0); }
-        }
-        #intro-enter-wrap.hide-btn {
-            animation: btnFade 0.3s ease forwards;
-        }
-        @keyframes btnFade {
-            to { opacity: 0; }
+        #btn-skip:hover {
+            background: rgba(11,255,4,0.12);
+            color: #0bff04;
+            border-color: #0bff04;
         }
     </style>
+
+    <!-- Bouton PASSER (skip) -->
+    <button id="btn-skip" onclick="skipIntro()">Passer ⏭</button>
+
+    <img src="https://lukasprn2.github.io/petanque80/logo.png" alt="Logo" class="intro-logo" id="introLogo">
+
+    <div id="intro-enter-wrap">
+        <button id="intro-enter-btn" onclick="startIntro()">ENTRER</button>
+    </div>
 
     <span class="intro-word" id="iw1">PASSION</span>
     <span class="intro-word" id="iw2">PRÉCISION</span>
@@ -334,28 +416,39 @@
 
 <script>
 (function() {
+    var introStarted = false;
+
+    /* ---- Fermer l'écran intro immédiatement ---- */
+    window.skipIntro = function() {
+        var screen = document.getElementById('intro-screen');
+        screen.style.transition = 'opacity 0.4s ease';
+        screen.style.opacity = '0';
+        setTimeout(function() {
+            screen.style.display = 'none';
+            document.body.classList.add('ready');
+        }, 420);
+    };
+
     window.startIntro = function() {
+        if (introStarted) return;
+        introStarted = true;
+
         var screen  = document.getElementById('intro-screen');
         var logo    = document.getElementById('introLogo');
         var bar     = document.getElementById('introBar');
         var btnWrap = document.getElementById('intro-enter-wrap');
 
-        // Jouer le son
         var audio = new Audio('sonintro.mp3');
         audio.volume = 0.7;
         audio.play().catch(function(){});
 
-        // Cacher le bouton
         btnWrap.classList.add('hide-btn');
         setTimeout(function() { btnWrap.style.display = 'none'; }, 300);
 
-        // Barre
         bar.classList.add('run');
 
-        // Logo disparaît après 1s
         setTimeout(function() { logo.classList.add('logo-out'); }, 800);
 
-        // Mots
         setTimeout(function() { document.getElementById('iw1').classList.add('show'); }, 1100);
         setTimeout(function() { var w=document.getElementById('iw1'); w.classList.remove('show'); w.classList.add('out'); }, 2700);
 
@@ -365,7 +458,6 @@
         setTimeout(function() { document.getElementById('iw3').classList.add('show'); }, 4500);
         setTimeout(function() { var w=document.getElementById('iw3'); w.classList.remove('show'); w.classList.add('out'); }, 5900);
 
-        // Disparition écran
         setTimeout(function() {
             screen.classList.add('hide');
             setTimeout(function() {
@@ -378,7 +470,7 @@
 </script>
 
 <div class="banner">
-    <img src="logo.png" alt="Logo club pétanque Boves">
+    <img src="https://lukasprn2.github.io/petanque80/logo.png" alt="Logo club pétanque Boves">
     <p>Passion • Précision • Bonne humeur</p>
 </div>
 
@@ -414,12 +506,13 @@
 <section id="contact">
     <h2>Contacts</h2>
     <div class="card">
-        <p>📧 <a href="mailto:petanque80440@gmail.com">petanque80440@gmail.com</a></p>
+        <p>📧 <a href="/cdn-cgi/l/email-protection#3646534257584743530e0602020676515b575f5a1855595b"><span class="__cf_email__" data-cfemail="95e5f0e1f4fbe4e0f0ada5a1a1a5d5f2f8f4fcf9bbf6faf8">[email&#160;protected]</span></a></p>
         <p>📞 <a href="tel:0682489217">06 82 48 92 17</a></p>
         <p>📘 <a href="https://www.facebook.com/petanque.boves/" target="_blank" rel="noopener">Facebook – Pétanque Boves</a></p>
         <p>🎵 <a href="https://www.tiktok.com/@petanqueboves80" target="_blank" rel="noopener">TikTok – PétanqueBoves80</a></p>
+        <p>📸 <a href="https://www.instagram.com/petanque_de_boves/" target="_blank" rel="noopener">Instagram – petanque_de_boves</a></p>
         <p>📍 <a href="https://www.google.com/maps/place/49%C2%B050'31.5%22N+2%C2%B023'36.6%22E" target="_blank" rel="noopener">Chemin du Stade – Boves</a></p>
-        <img src="adresse.jpg" class="photo-adresse" alt="Adresse du club">
+        <img src="https://lukasprn2.github.io/petanque80/adresse.jpg" class="photo-adresse" alt="Adresse du club">
     </div>
 </section>
 
@@ -510,7 +603,7 @@
         <div class="cal-detail" id="calDetail"></div>
     </div>
 
-    <script>
+    <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
     (function() {
         var EVENTS = [
             {m:3,d:21,nom:'Triplette Promotion',heure:'10h00',lieu:'Flixecourt',limite:'12/3'},
@@ -544,10 +637,9 @@
 
         var MONTHS = ['Janvier','Février','Mars','Avril','Mai','Juin','Juillet','Août','Septembre','Octobre','Novembre','Décembre'];
         var DAYS   = ['Lun','Mar','Mer','Jeu','Ven','Sam','Dim'];
-        var curMonth = 2; // 0-based, March = 2
+        var curMonth = 2;
         var selectedDay = null;
 
-        // Get months that have events
         var eventMonths = [];
         EVENTS.forEach(function(e) {
             if (eventMonths.indexOf(e.m - 1) === -1) eventMonths.push(e.m - 1);
@@ -557,7 +649,6 @@
         function getEventsForDay(month, day) {
             return EVENTS.filter(function(e){ return e.m - 1 === month && e.d === day; });
         }
-
         function getDaysWithEvents(month) {
             var days = [];
             EVENTS.forEach(function(e) {
@@ -565,29 +656,17 @@
             });
             return days;
         }
-
-        function daysInMonth(month, year) {
-            return new Date(year, month + 1, 0).getDate();
-        }
-
-        function firstDayOfMonth(month, year) {
-            var d = new Date(year, month, 1).getDay();
-            return d === 0 ? 6 : d - 1; // Monday-based
-        }
+        function daysInMonth(month, year) { return new Date(year, month + 1, 0).getDate(); }
+        function firstDayOfMonth(month, year) { var d = new Date(year, month, 1).getDay(); return d === 0 ? 6 : d - 1; }
 
         function renderCalendar() {
             var year = 2026;
-            var label = document.getElementById('calMonthLabel');
-            label.textContent = MONTHS[curMonth] + ' 2026';
-
-            // Prev/next arrows: disable if no events in that direction
+            document.getElementById('calMonthLabel').textContent = MONTHS[curMonth] + ' 2026';
             var idx = eventMonths.indexOf(curMonth);
             document.getElementById('calPrev').disabled = idx <= 0;
             document.getElementById('calPrev').style.opacity = idx <= 0 ? '0.3' : '1';
             document.getElementById('calNext').disabled = idx >= eventMonths.length - 1;
             document.getElementById('calNext').style.opacity = idx >= eventMonths.length - 1 ? '0.3' : '1';
-
-            // Day names
             var namesEl = document.getElementById('calDayNames');
             namesEl.innerHTML = '';
             DAYS.forEach(function(d) {
@@ -596,21 +675,16 @@
                 el.textContent = d;
                 namesEl.appendChild(el);
             });
-
-            // Grid
             var grid = document.getElementById('calGrid');
             grid.innerHTML = '';
             var total = daysInMonth(curMonth, year);
             var firstDay = firstDayOfMonth(curMonth, year);
             var eventDays = getDaysWithEvents(curMonth);
-
-            // Empty cells before first day
             for (var i = 0; i < firstDay; i++) {
                 var empty = document.createElement('div');
                 empty.className = 'cal-day empty';
                 grid.appendChild(empty);
             }
-
             for (var d = 1; d <= total; d++) {
                 var cell = document.createElement('div');
                 var hasEv = eventDays.indexOf(d) !== -1;
@@ -633,26 +707,15 @@
                 }
                 grid.appendChild(cell);
             }
-
-            // Render detail if selectedDay is set and has events this month
-            if (selectedDay && eventDays.indexOf(selectedDay) !== -1) {
-                renderDetail(selectedDay);
-            } else {
-                renderDetail(null);
-            }
+            if (selectedDay && eventDays.indexOf(selectedDay) !== -1) { renderDetail(selectedDay); }
+            else { renderDetail(null); }
         }
 
         function renderDetail(day) {
             var detail = document.getElementById('calDetail');
-            if (!day) {
-                detail.innerHTML = '<p class="cal-empty-msg">Cliquez sur un jour vert pour voir les événements</p>';
-                return;
-            }
+            if (!day) { detail.innerHTML = '<p class="cal-empty-msg">Cliquez sur un jour vert pour voir les événements</p>'; return; }
             var evs = getEventsForDay(curMonth, day);
-            if (!evs.length) {
-                detail.innerHTML = '<p class="cal-empty-msg">Aucun événement ce jour</p>';
-                return;
-            }
+            if (!evs.length) { detail.innerHTML = '<p class="cal-empty-msg">Aucun événement ce jour</p>'; return; }
             var html = '<div class="cal-detail-title">📅 ' + day + ' ' + MONTHS[curMonth] + ' 2026</div>';
             evs.forEach(function(e) {
                 html += '<div class="cal-event-card">';
@@ -770,21 +833,155 @@
 </section>
 </div>
 
+<!-- ===================== BUREAU — NOUVEAU DESIGN ===================== -->
 <section id="bureau">
     <h2>Membres du Bureau</h2>
     <div class="bureau">
-        <div class="bureau-member"><img src="president.jpg" alt="Président"><h3>Manu</h3><p>Président</p></div>
-        <div class="bureau-member"><img src="vice-president.jpg" alt="Vice-président"><h3>Dimitri</h3><p>Vice-président</p></div>
-        <div class="bureau-member"><img src="secretaire.jpg" alt="Secrétaire"><h3>Clotilde</h3><p>Secrétaire</p></div>
-        <div class="bureau-member"><img src="tresorier.jpg" alt="Trésorier"><h3>Jean Pierre</h3><p>Trésorier</p></div>
-        <div class="bureau-member"><img src="vincent.jpg" alt="Vincent"><h3>Vincent</h3><p>Membre</p></div>
-        <div class="bureau-member"><img src="denis.jpg" alt="Denis"><h3>Denis</h3><p>Membre</p></div>
-        <div class="bureau-member"><img src="virginie.jpg" alt="Virginie"><h3>Virginie</h3><p>Membre</p></div>
-        <div class="bureau-member"><img src="philippe-d.jpg" alt="Philippe D"><h3>Philippe D.</h3><p>Membre</p></div>
-        <div class="bureau-member"><img src="eric.jpg" alt="Eric"><h3>Eric</h3><p>Membre</p></div>
-        <div class="bureau-member"><img src="philippe-m.jpg" alt="Philippe M"><h3>Philippe M.</h3><p>Membre</p></div>
-        <div class="bureau-member"><img src="benoit.jpg" alt="Benoît"><h3>Benoît</h3><p>Membre</p></div>
-        <div class="bureau-member"><img src="jean-marie.jpg" alt="Jean Marie"><h3>Jean Marie</h3><p>Membre</p></div>
+
+        <div class="bureau-member">
+            <div class="bureau-role-badge">Président</div>
+            <div class="bureau-photo-wrap">
+                <img src="https://lukasprn2.github.io/petanque80/president.jpg" alt="Manu – Président">
+            </div>
+            <div class="bureau-info">
+                <h3>Manu</h3>
+                <div class="bureau-sep"></div>
+                <p>Président</p>
+            </div>
+        </div>
+
+        <div class="bureau-member">
+            <div class="bureau-role-badge">Vice-Président</div>
+            <div class="bureau-photo-wrap">
+                <img src="https://lukasprn2.github.io/petanque80/vice-president.jpg" alt="Dimitri – Vice-président">
+            </div>
+            <div class="bureau-info">
+                <h3>Dimitri</h3>
+                <div class="bureau-sep"></div>
+                <p>Vice-président</p>
+            </div>
+        </div>
+
+        <div class="bureau-member">
+            <div class="bureau-role-badge">Secrétaire</div>
+            <div class="bureau-photo-wrap">
+                <img src="https://lukasprn2.github.io/petanque80/secretaire.jpg" alt="Clotilde – Secrétaire">
+            </div>
+            <div class="bureau-info">
+                <h3>Clotilde</h3>
+                <div class="bureau-sep"></div>
+                <p>Secrétaire</p>
+            </div>
+        </div>
+
+        <div class="bureau-member">
+            <div class="bureau-role-badge">Trésorier</div>
+            <div class="bureau-photo-wrap">
+                <img src="https://lukasprn2.github.io/petanque80/tresorier.jpg" alt="Jean Pierre – Trésorier">
+            </div>
+            <div class="bureau-info">
+                <h3>Jean Pierre</h3>
+                <div class="bureau-sep"></div>
+                <p>Trésorier</p>
+            </div>
+        </div>
+
+        <div class="bureau-member">
+            <div class="bureau-role-badge is-membre">Membre</div>
+            <div class="bureau-photo-wrap">
+                <img src="https://lukasprn2.github.io/petanque80/vincent.jpg" alt="Vincent">
+            </div>
+            <div class="bureau-info">
+                <h3>Vincent</h3>
+                <div class="bureau-sep"></div>
+                <p>Membre</p>
+            </div>
+        </div>
+
+        <div class="bureau-member">
+            <div class="bureau-role-badge is-membre">Membre</div>
+            <div class="bureau-photo-wrap">
+                <img src="https://lukasprn2.github.io/petanque80/denis.jpg" alt="Denis">
+            </div>
+            <div class="bureau-info">
+                <h3>Denis</h3>
+                <div class="bureau-sep"></div>
+                <p>Membre</p>
+            </div>
+        </div>
+
+        <div class="bureau-member">
+            <div class="bureau-role-badge is-membre">Membre</div>
+            <div class="bureau-photo-wrap">
+                <img src="https://lukasprn2.github.io/petanque80/virginie.jpg" alt="Virginie">
+            </div>
+            <div class="bureau-info">
+                <h3>Virginie</h3>
+                <div class="bureau-sep"></div>
+                <p>Membre</p>
+            </div>
+        </div>
+
+        <div class="bureau-member">
+            <div class="bureau-role-badge is-membre">Membre</div>
+            <div class="bureau-photo-wrap">
+                <img src="https://lukasprn2.github.io/petanque80/philippe-d.jpg" alt="Philippe D.">
+            </div>
+            <div class="bureau-info">
+                <h3>Philippe D.</h3>
+                <div class="bureau-sep"></div>
+                <p>Membre</p>
+            </div>
+        </div>
+
+        <div class="bureau-member">
+            <div class="bureau-role-badge is-membre">Membre</div>
+            <div class="bureau-photo-wrap">
+                <img src="https://lukasprn2.github.io/petanque80/eric.jpg" alt="Eric">
+            </div>
+            <div class="bureau-info">
+                <h3>Eric</h3>
+                <div class="bureau-sep"></div>
+                <p>Membre</p>
+            </div>
+        </div>
+
+        <div class="bureau-member">
+            <div class="bureau-role-badge is-membre">Membre</div>
+            <div class="bureau-photo-wrap">
+                <img src="https://lukasprn2.github.io/petanque80/philippe-m.jpg" alt="Philippe M.">
+            </div>
+            <div class="bureau-info">
+                <h3>Philippe M.</h3>
+                <div class="bureau-sep"></div>
+                <p>Membre</p>
+            </div>
+        </div>
+
+        <div class="bureau-member">
+            <div class="bureau-role-badge is-membre">Membre</div>
+            <div class="bureau-photo-wrap">
+                <img src="https://lukasprn2.github.io/petanque80/benoit.jpg" alt="Benoît">
+            </div>
+            <div class="bureau-info">
+                <h3>Benoît</h3>
+                <div class="bureau-sep"></div>
+                <p>Membre</p>
+            </div>
+        </div>
+
+        <div class="bureau-member">
+            <div class="bureau-role-badge is-membre">Membre</div>
+            <div class="bureau-photo-wrap">
+                <img src="https://lukasprn2.github.io/petanque80/jean-marie.jpg" alt="Jean Marie">
+            </div>
+            <div class="bureau-info">
+                <h3>Jean Marie</h3>
+                <div class="bureau-sep"></div>
+                <p>Membre</p>
+            </div>
+        </div>
+
     </div>
 </section>
 
@@ -822,7 +1019,7 @@
     <h2>FAQ</h2>
     <details>
         <summary>Comment s'inscrire au club ?</summary>
-        <p>Vous pouvez vous inscrire lors des entraînements ou en contactant un membre du bureau par email à <a href="mailto:petanque80440@gmail.com">petanque80440@gmail.com</a> ou par téléphone au 06 82 48 92 17.</p>
+        <p>Vous pouvez vous inscrire lors des entraînements ou en contactant un membre du bureau par email à <a href="/cdn-cgi/l/email-protection#2f5f4a5b4e415e5a4a171f1b1b1f6f48424e4643014c4042"><span class="__cf_email__" data-cfemail="e3938697828d929686dbd3d7d7d3a3848e828a8fcd808c8e">[email&#160;protected]</span></a> ou par téléphone au 06 82 48 92 17.</p>
     </details>
     <details>
         <summary>Le club accepte-t-il les débutants ?</summary>
@@ -838,7 +1035,7 @@
     </details>
     <details>
         <summary>Comment participer aux concours officiels ?</summary>
-        <p>Pour participer aux concours officiels, il faut être licencié à la FFPJP. Contactez le bureau pour obtenir votre licence et vous inscrire aux prochains concours. Les dates et lieux sont disponibles dans la section Concours Officiels.</p>
+        <p>Pour participer aux concours officiels, il faut être licencié à la FFPJP. Contactez le bureau pour obtenir votre licence et vous inscrire aux prochains concours.</p>
     </details>
     <details>
         <summary>Le club est-il ouvert aux jeunes ?</summary>
@@ -854,7 +1051,7 @@
     </details>
     <details>
         <summary>Quelle est la différence entre pétanque et jeu provençal ?</summary>
-        <p>En pétanque, les joueurs tirent les pieds joints et dans un cercle. En jeu provençal, les joueurs prennent un élan de 1 à 3 pas avant de lancer. Les deux disciplines sont pratiquées au club et font l'objet de championnats distincts.</p>
+        <p>En pétanque, les joueurs tirent les pieds joints et dans un cercle. En jeu provençal, les joueurs prennent un élan de 1 à 3 pas avant de lancer. Les deux disciplines sont pratiquées au club.</p>
     </details>
     <details>
         <summary>Y a-t-il des compétitions par équipes ?</summary>
@@ -866,7 +1063,6 @@
     </details>
 </section>
 
-
 <footer>
     <p>© 2026 – Club de Pétanque de Boves</p>
     <p>Site officiel du club</p>
@@ -874,8 +1070,7 @@
 
 <button onclick="topFunction()" id="btnTop" title="Retour en haut">↑</button>
 
-<script>
-/* ---- Menu hamburger ---- */
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
 var hamburger = document.getElementById('hamburger');
 var navMenu = document.getElementById('navMenu');
 
@@ -887,9 +1082,7 @@ hamburger.addEventListener('click', function() {
 });
 
 document.addEventListener('click', function(e) {
-    if (!hamburger.contains(e.target) && !navMenu.contains(e.target)) {
-        closeMenu();
-    }
+    if (!hamburger.contains(e.target) && !navMenu.contains(e.target)) { closeMenu(); }
 });
 
 function closeMenu() {
@@ -899,14 +1092,12 @@ function closeMenu() {
     hamburger.setAttribute('aria-label', 'Ouvrir le menu');
 }
 
-/* ---- Bouton haut ---- */
 var btnTop = document.getElementById('btnTop');
 window.addEventListener('scroll', function() {
     btnTop.style.display = window.scrollY > 220 ? 'block' : 'none';
 });
 function topFunction() { window.scrollTo({ top: 0, behavior: 'smooth' }); }
 
-/* ---- Commande vêtements ---- */
 function submitCommande() {
     var nom      = document.getElementById('nom').value.trim();
     var prenom   = document.getElementById('prenom').value.trim();
@@ -992,7 +1183,6 @@ function nouvelleCommande() {
     for (var j = 0; j < selects.length; j++) { document.getElementById(selects[j]).value = ''; }
     document.getElementById('orderForm').scrollIntoView({ behavior: 'smooth' });
 }
-
 </script>
 
 </body>
