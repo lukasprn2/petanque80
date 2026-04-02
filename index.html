@@ -484,10 +484,9 @@
     <nav class="nav-menu" id="navMenu" role="navigation">
         <a href="#accueil"       onclick="closeMenu()"><span class="nav-icon">🏠</span>Accueil</a>
         <a href="#contact"       onclick="closeMenu()"><span class="nav-icon">📞</span>Contacts</a>
-        <a href="#concoursb"     onclick="closeMenu()"><span class="nav-icon">🏆</span>Concours Officiels</a>
-        <a href="#concoursa"     onclick="closeMenu()"><span class="nav-icon">🎯</span>Concours Internes</a>
-        <a href="#concoursv"     onclick="closeMenu()"><span class="nav-icon">👴</span>Concours Vétérans</a>
+        <a href="#concoursb"     onclick="closeMenu()"><span class="nav-icon">🏆</span>Concours</a>
         <a href="#championnats"  onclick="closeMenu()"><span class="nav-icon">📅</span>Championnats</a>
+        <a href="#classement"    onclick="closeMenu()"><span class="nav-icon"></span>Classement</a>
         <a href="#commande-wrap" onclick="closeMenu()"><span class="nav-icon">🎽</span>Commande Vêtements</a>
         <a href="#bureau"        onclick="closeMenu()"><span class="nav-icon">👥</span>Conseil</a>
         <a href="#affiliation"   onclick="closeMenu()"><span class="nav-icon">🏅</span>Affiliation</a>
@@ -741,7 +740,70 @@
     })();
     </script>
 </section>
+<section id="classement">
+  <h2>Classement</h2>
 
+  <input
+    type="text"
+    id="clSearch"
+    placeholder="🔍 Rechercher un joueur…"
+    oninput="filterClassement()"
+    style="width:100%;background:#111;border:1.5px solid #2a2a2a;border-radius:8px;padding:12px 14px;color:#eee;font-size:0.95em;font-family:'Nunito',sans-serif;outline:none;box-sizing:border-box;margin-bottom:16px;transition:border-color 0.2s"
+    onfocus="this.style.borderColor='#0bff04'"
+    onblur="this.style.borderColor='#2a2a2a'"
+  >
+
+  <div class="table-wrap">
+    <table id="clTable">
+      <thead>
+        <tr>
+          <th>Classement</th>
+          <th>Nom</th>
+          <th>Prénom</th>
+          <th>Points</th>
+          <th>Catégorie</th>
+        </tr>
+      </thead>
+      <tbody id="clBody"></tbody>
+    </table>
+  </div>
+</section>
+
+<script>
+var clData = [
+  {rang:1,  nom:'Bore',   prenom:'Sébastien',      pts:5, cat:'Honneur'},
+  {rang:2,  nom:'Briault',  prenom:'Jean Philippe',     pts:3, cat:'Non-classé'},
+  {rang:3,  nom:'Demarquet', prenom:'Kevin',       pts:3, cat:'Promotion'},
+  {rang:4,  nom:'Delattre',   prenom:'Pascal',    pts:3,  cat:'Promotion'},
+  {rang:5,  nom:'Ancelle',  prenom:'Denis', pts:2,  cat:'Promotion'},
+  {rang:6,  nom:'Lozano',   prenom:'Mathis',   pts:2,  cat:'Non-classé'},
+  {rang:7,  nom:'Marquant', prenom:'Philippe',    pts:1,  cat:'Non-classé'},
+  {rang:8,  nom:'Lozano',  prenom:'Frederic',      pts:720,  cat:'Non-classé'},
+];
+
+function buildClRow(d) {
+  var medal = d.rang===1 ? '🥇 ' : d.rang===2 ? '🥈 ' : d.rang===3 ? '🥉 ' : '';
+  return '<tr>' +
+    '<td data-label="Classement" style="color:#0bff04;font-family:\'Bebas Neue\',sans-serif;font-size:1.1em">' + medal + d.rang + '</td>' +
+    '<td data-label="Nom">' + d.nom + '</td>' +
+    '<td data-label="Prénom">' + d.prenom + '</td>' +
+    '<td data-label="Points" style="color:#0bff04;font-weight:700">' + d.pts + '</td>' +
+    '<td data-label="Catégorie">' + d.cat + '</td>' +
+  '</tr>';
+}
+
+function filterClassement() {
+  var q = document.getElementById('clSearch').value.trim().toLowerCase();
+  var rows = clData.filter(function(d) {
+    return !q || (d.nom + ' ' + d.prenom).toLowerCase().indexOf(q) !== -1;
+  });
+  document.getElementById('clBody').innerHTML = rows.length
+    ? rows.map(buildClRow).join('')
+    : '<tr><td colspan="5" style="text-align:center;color:#555;padding:30px">Aucun joueur trouvé</td></tr>';
+}
+
+filterClassement();
+</script>
 <div id="commande-wrap">
 <section style="max-width:1100px; margin:0 auto; padding:34px 16px;">
     <h2>Commande de Vêtements</h2>
