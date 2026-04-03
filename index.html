@@ -7,6 +7,17 @@
     <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
     <link rel="icon" type="image/webp" href="logo.webp">
     <link rel="apple-touch-icon" href="logo.png">
+
+    <!-- PWA -->
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#0bff04">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-title" content="Pétanque Boves">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="application-name" content="Pétanque Boves">
+    <meta name="description" content="Club de Pétanque de Boves – Passion, Précision, Bonne humeur">
+
     <style>
         :root {
             --vert: #0bff04;
@@ -39,11 +50,9 @@
         .hamburger.open span:nth-child(2) { opacity: 0; transform: scaleX(0); }
         .hamburger.open span:nth-child(3) { width: 100%; transform: translateY(-7px) rotate(-45deg); }
 
-        /* ===================== NAV MENU MOBILE — COMPACT GRID ===================== */
         .nav-menu { max-height: 0; overflow: hidden; transition: max-height 0.42s cubic-bezier(.77,0,.18,1); background: #000000; border-top: 1px solid #333; }
         .nav-menu.open { max-height: 700px; }
 
-        /* Mobile : grille 2 colonnes */
         @media (max-width: 767px) {
             .nav-menu.open {
                 display: grid;
@@ -70,13 +79,9 @@
                 color: var(--vert);
                 background: rgba(11,255,4,0.07);
             }
-            .nav-icon {
-                font-size: 1em;
-                flex-shrink: 0;
-            }
+            .nav-icon { font-size: 1em; flex-shrink: 0; }
         }
 
-        /* Desktop nav */
         @media (min-width: 768px) {
             .hamburger, .nav-brand, .nav-bar { display: none; }
             .nav-menu { max-height: none !important; overflow: visible; display: flex; flex-wrap: wrap; justify-content: center; gap: 4px; padding: 8px 16px; background: transparent; border-top: none; }
@@ -101,53 +106,34 @@
         .card ul { padding-left: 18px; }
         .card li { margin: 5px 0; }
 
-        /* TABLE — desktop inchangé */
+        /* TABLE */
         .table-wrap { border-radius: 10px; }
         table { width: 100%; border-collapse: collapse; background: var(--gris-card); font-size: 0.88em; }
 
-        /* ===================== CLASSEMENT MOBILE — COMPACT ===================== */
         @media (max-width: 639px) {
             table thead { display: none; }
             table tbody { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
             table tr {
-                display: flex;
-                flex-direction: column;
-                background: var(--gris-card);
-                border: 1px solid #2a2a2a;
-                border-radius: 10px;
-                padding: 10px 11px;
-                gap: 2px;
-                transition: border-color 0.2s, box-shadow 0.2s;
+                display: flex; flex-direction: column; background: var(--gris-card);
+                border: 1px solid #2a2a2a; border-radius: 10px; padding: 10px 11px;
+                gap: 2px; transition: border-color 0.2s, box-shadow 0.2s;
             }
             table tr:hover { border-color: rgba(11,255,4,0.4); box-shadow: 0 4px 14px rgba(11,255,4,0.15); }
             table td { display: block; padding: 0; border: none; font-size: 0.82em; color: #ccc; }
             table td::before { display: none; }
-            /* Rang */
             table td:nth-child(1) { font-family: 'Bebas Neue', sans-serif; font-size: 1.05em; color: var(--vert); margin-bottom: 3px; }
-            /* Nom */
             table td:nth-child(2) { font-weight: 700; color: #f0f0f0; font-size: 0.88em; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-            /* Prénom */
             table td:nth-child(3) { color: #aaa; font-size: 0.78em; }
-            /* Points */
             table td:nth-child(4) { color: var(--vert); font-weight: 700; font-size: 0.85em; margin-top: 4px; }
             table td:nth-child(4)::before { content: ''; }
-            /* Catégorie */
             table td:nth-child(5) {
-                display: inline-block;
-                margin-top: 5px;
-                font-size: 0.65em;
-                background: rgba(11,255,4,0.08);
-                border: 1px solid rgba(11,255,4,0.2);
-                color: #88dd80;
-                padding: 2px 7px;
-                border-radius: 20px;
-                text-transform: uppercase;
-                letter-spacing: 0.5px;
-                font-weight: 700;
+                display: inline-block; margin-top: 5px; font-size: 0.65em;
+                background: rgba(11,255,4,0.08); border: 1px solid rgba(11,255,4,0.2);
+                color: #88dd80; padding: 2px 7px; border-radius: 20px;
+                text-transform: uppercase; letter-spacing: 0.5px; font-weight: 700;
             }
         }
 
-        /* TABLE desktop */
         @media (min-width: 640px) {
             .table-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; }
             table { min-width: 600px; }
@@ -161,101 +147,23 @@
             table th { background: var(--vert); color: black; font-family: 'Bebas Neue', sans-serif; font-size: 1em; letter-spacing: 1px; padding: 10px 12px; border: 1px solid #222; text-align: left; }
         }
 
-        /* ===================== BUREAU ===================== */
-        .bureau {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 14px;
-        }
+        /* BUREAU */
+        .bureau { display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px; }
         @media (min-width: 500px) { .bureau { grid-template-columns: repeat(3, 1fr); gap: 16px; } }
         @media (min-width: 900px) { .bureau { grid-template-columns: repeat(4, 1fr); gap: 20px; } }
-
-        .bureau-member {
-            position: relative;
-            background: #111;
-            border-radius: 14px;
-            overflow: hidden;
-            border: 1px solid #2a2a2a;
-            transition: transform 0.28s, border-color 0.28s, box-shadow 0.28s;
-            cursor: default;
-        }
-        .bureau-member:hover {
-            transform: translateY(-6px) scale(1.02);
-            border-color: var(--vert);
-            box-shadow: 0 10px 32px rgba(11,255,4,0.28), 0 0 0 1px rgba(11,255,4,0.15);
-        }
-        .bureau-member::before {
-            content: '';
-            display: block;
-            height: 4px;
-            background: linear-gradient(90deg, var(--vert), #09cc03);
-            width: 100%;
-        }
-        .bureau-photo-wrap {
-            display: flex;
-            justify-content: center;
-            padding: 18px 0 12px;
-        }
-        .bureau-photo-wrap img {
-            width: 78px;
-            height: 78px;
-            border-radius: 50%;
-            object-fit: cover;
-            border: 3px solid var(--vert);
-            box-shadow: 0 0 0 4px rgba(11,255,4,0.12);
-            display: block;
-            transition: box-shadow 0.28s;
-        }
-        @media (min-width: 600px) {
-            .bureau-photo-wrap img { width: 96px; height: 96px; }
-        }
-        .bureau-member:hover .bureau-photo-wrap img {
-            box-shadow: 0 0 0 5px rgba(11,255,4,0.3), 0 0 18px rgba(11,255,4,0.25);
-        }
-        .bureau-role-badge {
-            position: absolute;
-            top: 14px;
-            right: 10px;
-            background: rgba(11,255,4,0.12);
-            border: 1px solid rgba(11,255,4,0.35);
-            color: var(--vert);
-            font-size: 0.62em;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            padding: 3px 8px;
-            border-radius: 20px;
-            line-height: 1.4;
-            white-space: nowrap;
-        }
+        .bureau-member { position: relative; background: #111; border-radius: 14px; overflow: hidden; border: 1px solid #2a2a2a; transition: transform 0.28s, border-color 0.28s, box-shadow 0.28s; cursor: default; }
+        .bureau-member:hover { transform: translateY(-6px) scale(1.02); border-color: var(--vert); box-shadow: 0 10px 32px rgba(11,255,4,0.28), 0 0 0 1px rgba(11,255,4,0.15); }
+        .bureau-member::before { content: ''; display: block; height: 4px; background: linear-gradient(90deg, var(--vert), #09cc03); width: 100%; }
+        .bureau-photo-wrap { display: flex; justify-content: center; padding: 18px 0 12px; }
+        .bureau-photo-wrap img { width: 78px; height: 78px; border-radius: 50%; object-fit: cover; border: 3px solid var(--vert); box-shadow: 0 0 0 4px rgba(11,255,4,0.12); display: block; transition: box-shadow 0.28s; }
+        @media (min-width: 600px) { .bureau-photo-wrap img { width: 96px; height: 96px; } }
+        .bureau-member:hover .bureau-photo-wrap img { box-shadow: 0 0 0 5px rgba(11,255,4,0.3), 0 0 18px rgba(11,255,4,0.25); }
+        .bureau-role-badge { position: absolute; top: 14px; right: 10px; background: rgba(11,255,4,0.12); border: 1px solid rgba(11,255,4,0.35); color: var(--vert); font-size: 0.62em; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; padding: 3px 8px; border-radius: 20px; line-height: 1.4; white-space: nowrap; }
         .bureau-role-badge.is-membre { display: none; }
-        .bureau-info {
-            padding: 0 12px 18px;
-            text-align: center;
-        }
-        .bureau-info h3 {
-            color: #f0f0f0;
-            font-family: 'Bebas Neue', sans-serif;
-            font-size: 1.15em;
-            letter-spacing: 1.5px;
-            margin-bottom: 3px;
-        }
-        .bureau-info p {
-            color: #777;
-            font-size: 0.78em;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            font-weight: 600;
-        }
-        .bureau-sep {
-            width: 32px;
-            height: 2px;
-            background: var(--vert);
-            border-radius: 2px;
-            margin: 8px auto 10px;
-            opacity: 0.5;
-            transition: opacity 0.28s, width 0.28s;
-        }
+        .bureau-info { padding: 0 12px 18px; text-align: center; }
+        .bureau-info h3 { color: #f0f0f0; font-family: 'Bebas Neue', sans-serif; font-size: 1.15em; letter-spacing: 1.5px; margin-bottom: 3px; }
+        .bureau-info p { color: #777; font-size: 0.78em; text-transform: uppercase; letter-spacing: 1px; font-weight: 600; }
+        .bureau-sep { width: 32px; height: 2px; background: var(--vert); border-radius: 2px; margin: 8px auto 10px; opacity: 0.5; transition: opacity 0.28s, width 0.28s; }
         .bureau-member:hover .bureau-sep { opacity: 1; width: 48px; }
 
         /* FAQ */
@@ -341,6 +249,34 @@
         footer { background: #161616; border-top: 2px solid #2e2e2e; color: #777; text-align: center; padding: 20px 16px; font-size: 0.87em; margin-top: 24px; }
         #btnTop { position: fixed; bottom: 18px; right: 14px; display: none; background: var(--vert); color: black; border: none; width: 44px; height: 44px; border-radius: 10px; font-size: 1.2em; font-weight: bold; cursor: pointer; box-shadow: 0 4px 14px rgba(0,0,0,0.5); z-index: 300; transition: background 0.2s, transform 0.15s; }
         #btnTop:hover { background: var(--vert-dark); transform: translateY(-2px); }
+
+        /* BANNIÈRE INSTALLATION PWA */
+        #pwa-banner {
+            display: none;
+            position: fixed;
+            bottom: 70px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #1a1a1a;
+            border: 2px solid var(--vert);
+            border-radius: 14px;
+            padding: 14px 18px;
+            z-index: 400;
+            box-shadow: 0 8px 30px rgba(11,255,4,0.3);
+            max-width: 340px;
+            width: calc(100% - 32px);
+            animation: slideUp 0.4s ease;
+        }
+        @keyframes slideUp { from { opacity:0; transform: translateX(-50%) translateY(20px); } to { opacity:1; transform: translateX(-50%) translateY(0); } }
+        #pwa-banner .pwa-content { display: flex; align-items: center; gap: 12px; }
+        #pwa-banner img { width: 44px; height: 44px; border-radius: 10px; border: 2px solid var(--vert); flex-shrink: 0; }
+        #pwa-banner .pwa-text strong { color: #f0f0f0; font-size: 0.9em; display: block; }
+        #pwa-banner .pwa-text span { color: #aaa; font-size: 0.78em; }
+        #pwa-banner .pwa-actions { display: flex; gap: 8px; margin-top: 12px; }
+        #pwa-install-btn { flex: 1; background: var(--vert); color: #000; border: none; padding: 10px; border-radius: 8px; font-family: 'Bebas Neue', sans-serif; font-size: 1em; letter-spacing: 1.5px; cursor: pointer; transition: background 0.2s; }
+        #pwa-install-btn:hover { background: var(--vert-dark); }
+        #pwa-dismiss-btn { background: transparent; color: #777; border: 1px solid #333; padding: 10px 14px; border-radius: 8px; font-size: 0.85em; cursor: pointer; transition: color 0.2s, border-color 0.2s; }
+        #pwa-dismiss-btn:hover { color: #ccc; border-color: #555; }
     </style>
 </head>
 <body>
@@ -348,114 +284,30 @@
 <!-- ===================== INTRO ANIMATION ===================== -->
 <div id="intro-screen">
     <style>
-        #intro-screen {
-            position: fixed;
-            inset: 0;
-            background: #000;
-            z-index: 9999;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-        }
-        #intro-screen.hide {
-            animation: introFadeOut 0.8s ease forwards;
-        }
-        @keyframes introFadeOut {
-            to { opacity: 0; pointer-events: none; }
-        }
-
-        .intro-logo {
-            width: 250px;
-            height: 250px;
-            object-fit: contain;
-            opacity: 0;
-            transform: scale(0.6);
-            animation: logoIn 0.7s cubic-bezier(.34,1.56,.64,1) 0.2s forwards;
-        }
-        .intro-logo.logo-out {
-            animation: logoOut 0.5s ease forwards;
-        }
+        #intro-screen { position: fixed; inset: 0; background: #000; z-index: 9999; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+        #intro-screen.hide { animation: introFadeOut 0.8s ease forwards; }
+        @keyframes introFadeOut { to { opacity: 0; pointer-events: none; } }
+        .intro-logo { width: 250px; height: 250px; object-fit: contain; opacity: 0; transform: scale(0.6); animation: logoIn 0.7s cubic-bezier(.34,1.56,.64,1) 0.2s forwards; }
+        .intro-logo.logo-out { animation: logoOut 0.5s ease forwards; }
         @keyframes logoIn { to { opacity: 1; transform: scale(1); } }
         @keyframes logoOut { to { opacity: 0; transform: scale(1.15); } }
-
-        .intro-word {
-            font-family: 'Bebas Neue', sans-serif;
-            font-size: clamp(3.5em, 12vw, 7em);
-            letter-spacing: 6px;
-            color: #0bff04;
-            text-shadow: 0 0 50px rgba(11,255,4,0.5), 0 0 100px rgba(11,255,4,0.2);
-            position: absolute;
-            text-align: center;
-            width: 100%;
-            opacity: 0;
-            transform: translateY(40px);
-            pointer-events: none;
-        }
+        .intro-word { font-family: 'Bebas Neue', sans-serif; font-size: clamp(3.5em, 12vw, 7em); letter-spacing: 6px; color: #0bff04; text-shadow: 0 0 50px rgba(11,255,4,0.5), 0 0 100px rgba(11,255,4,0.2); position: absolute; text-align: center; width: 100%; opacity: 0; transform: translateY(40px); pointer-events: none; }
         .intro-word.show { animation: wordIn 0.55s cubic-bezier(.34,1.2,.64,1) forwards; }
         .intro-word.out { animation: wordOut 0.35s ease forwards; }
         @keyframes wordIn { to { opacity: 1; transform: translateY(0); } }
         @keyframes wordOut { to { opacity: 0; transform: translateY(-40px); } }
-
-        .intro-bar {
-            position: absolute;
-            bottom: 0; left: 0;
-            height: 3px;
-            width: 0;
-            background: #0bff04;
-            box-shadow: 0 0 12px rgba(11,255,4,0.8);
-        }
-        .intro-bar.run {
-            animation: barRun 6.0s linear forwards;
-        }
+        .intro-bar { position: absolute; bottom: 0; left: 0; height: 3px; width: 0; background: #0bff04; box-shadow: 0 0 12px rgba(11,255,4,0.8); }
+        .intro-bar.run { animation: barRun 6.0s linear forwards; }
         @keyframes barRun { to { width: 100%; } }
-
         #intro-enter-wrap { margin-top: 40px; }
-        #intro-enter-btn {
-            background: transparent;
-            border: 2px solid #0bff04;
-            color: #0bff04;
-            font-family: 'Bebas Neue', sans-serif;
-            font-size: 1.5em;
-            letter-spacing: 4px;
-            padding: 14px 48px;
-            border-radius: 50px;
-            cursor: pointer;
-            opacity: 0;
-            transform: translateY(20px);
-            animation: btnIn 0.6s ease 1s forwards;
-            transition: background 0.2s, color 0.2s, box-shadow 0.2s;
-        }
+        #intro-enter-btn { background: transparent; border: 2px solid #0bff04; color: #0bff04; font-family: 'Bebas Neue', sans-serif; font-size: 1.5em; letter-spacing: 4px; padding: 14px 48px; border-radius: 50px; cursor: pointer; opacity: 0; transform: translateY(20px); animation: btnIn 0.6s ease 1s forwards; transition: background 0.2s, color 0.2s, box-shadow 0.2s; }
         #intro-enter-btn:hover { background: #0bff04; color: #000; box-shadow: 0 0 30px rgba(11,255,4,0.5); }
         @keyframes btnIn { to { opacity: 1; transform: translateY(0); } }
         #intro-enter-wrap.hide-btn { animation: btnFade 0.3s ease forwards; }
         @keyframes btnFade { to { opacity: 0; } }
-
-        #btn-skip {
-            position: absolute;
-            top: 18px;
-            right: 18px;
-            background: transparent;
-            border: 1.5px solid rgba(11,255,4,0.4);
-            color: rgba(11,255,4,0.7);
-            font-family: 'Bebas Neue', sans-serif;
-            font-size: 0.95em;
-            letter-spacing: 2px;
-            padding: 7px 18px;
-            border-radius: 30px;
-            cursor: pointer;
-            opacity: 0;
-            animation: btnIn 0.5s ease 1.3s forwards;
-            transition: background 0.2s, color 0.2s, border-color 0.2s;
-            z-index: 10001;
-        }
-        #btn-skip:hover {
-            background: rgba(11,255,4,0.12);
-            color: #0bff04;
-            border-color: #0bff04;
-        }
+        #btn-skip { position: absolute; top: 18px; right: 18px; background: transparent; border: 1.5px solid rgba(11,255,4,0.4); color: rgba(11,255,4,0.7); font-family: 'Bebas Neue', sans-serif; font-size: 0.95em; letter-spacing: 2px; padding: 7px 18px; border-radius: 30px; cursor: pointer; opacity: 0; animation: btnIn 0.5s ease 1.3s forwards; transition: background 0.2s, color 0.2s, border-color 0.2s; z-index: 10001; }
+        #btn-skip:hover { background: rgba(11,255,4,0.12); color: #0bff04; border-color: #0bff04; }
     </style>
-
     <button id="btn-skip" onclick="skipIntro()">⏭</button>
     <img src="logo.webp" alt="Logo" class="intro-logo" id="introLogo">
     <div id="intro-enter-wrap">
@@ -470,52 +322,35 @@
 <script>
 (function() {
     var introStarted = false;
-
     window.skipIntro = function() {
         var screen = document.getElementById('intro-screen');
         screen.style.transition = 'opacity 0.4s ease';
         screen.style.opacity = '0';
-        setTimeout(function() {
-            screen.style.display = 'none';
-            document.body.classList.add('ready');
-        }, 420);
+        setTimeout(function() { screen.style.display = 'none'; document.body.classList.add('ready'); }, 420);
     };
-
     window.startIntro = function() {
         if (introStarted) return;
         introStarted = true;
-
-        var screen  = document.getElementById('intro-screen');
-        var logo    = document.getElementById('introLogo');
-        var bar     = document.getElementById('introBar');
+        var screen = document.getElementById('intro-screen');
+        var logo = document.getElementById('introLogo');
+        var bar = document.getElementById('introBar');
         var btnWrap = document.getElementById('intro-enter-wrap');
-
         var audio = new Audio('sonintro.mp3');
         audio.volume = 0.7;
         audio.play().catch(function(){});
-
         btnWrap.classList.add('hide-btn');
         setTimeout(function() { btnWrap.style.display = 'none'; }, 300);
-
         bar.classList.add('run');
-
         setTimeout(function() { logo.classList.add('logo-out'); }, 800);
-
         setTimeout(function() { document.getElementById('iw1').classList.add('show'); }, 1100);
         setTimeout(function() { var w=document.getElementById('iw1'); w.classList.remove('show'); w.classList.add('out'); }, 2700);
-
         setTimeout(function() { document.getElementById('iw2').classList.add('show'); }, 3000);
         setTimeout(function() { var w=document.getElementById('iw2'); w.classList.remove('show'); w.classList.add('out'); }, 4200);
-
         setTimeout(function() { document.getElementById('iw3').classList.add('show'); }, 4500);
         setTimeout(function() { var w=document.getElementById('iw3'); w.classList.remove('show'); w.classList.add('out'); }, 5900);
-
         setTimeout(function() {
             screen.classList.add('hide');
-            setTimeout(function() {
-                screen.style.display = 'none';
-                document.body.classList.add('ready');
-            }, 900);
+            setTimeout(function() { screen.style.display = 'none'; document.body.classList.add('ready'); }, 900);
         }, 5300);
     };
 })();
@@ -685,31 +520,17 @@
             {m:5,d:9,nom:'Reprise',heure:'9h00',lieu:'Fienvillers / St Léger-lès-Domart',limite:''},
             {m:5,d:10,nom:'Reprise',heure:'9h00',lieu:'Fienvillers / St Léger-lès-Domart',limite:''}
         ];
-
         var MONTHS = ['Janvier','Février','Mars','Avril','Mai','Juin','Juillet','Août','Septembre','Octobre','Novembre','Décembre'];
-        var DAYS   = ['Lun','Mar','Mer','Jeu','Ven','Sam','Dim'];
+        var DAYS = ['Lun','Mar','Mer','Jeu','Ven','Sam','Dim'];
         var curMonth = 2;
         var selectedDay = null;
-
         var eventMonths = [];
-        EVENTS.forEach(function(e) {
-            if (eventMonths.indexOf(e.m - 1) === -1) eventMonths.push(e.m - 1);
-        });
+        EVENTS.forEach(function(e) { if (eventMonths.indexOf(e.m - 1) === -1) eventMonths.push(e.m - 1); });
         eventMonths.sort(function(a,b){return a-b;});
-
-        function getEventsForDay(month, day) {
-            return EVENTS.filter(function(e){ return e.m - 1 === month && e.d === day; });
-        }
-        function getDaysWithEvents(month) {
-            var days = [];
-            EVENTS.forEach(function(e) {
-                if (e.m - 1 === month && days.indexOf(e.d) === -1) days.push(e.d);
-            });
-            return days;
-        }
+        function getEventsForDay(month, day) { return EVENTS.filter(function(e){ return e.m - 1 === month && e.d === day; }); }
+        function getDaysWithEvents(month) { var days = []; EVENTS.forEach(function(e) { if (e.m - 1 === month && days.indexOf(e.d) === -1) days.push(e.d); }); return days; }
         function daysInMonth(month, year) { return new Date(year, month + 1, 0).getDate(); }
         function firstDayOfMonth(month, year) { var d = new Date(year, month, 1).getDay(); return d === 0 ? 6 : d - 1; }
-
         function renderCalendar() {
             var year = 2026;
             document.getElementById('calMonthLabel').textContent = MONTHS[curMonth] + ' 2026';
@@ -720,48 +541,26 @@
             document.getElementById('calNext').style.opacity = idx >= eventMonths.length - 1 ? '0.3' : '1';
             var namesEl = document.getElementById('calDayNames');
             namesEl.innerHTML = '';
-            DAYS.forEach(function(d) {
-                var el = document.createElement('div');
-                el.className = 'cal-day-name';
-                el.textContent = d;
-                namesEl.appendChild(el);
-            });
+            DAYS.forEach(function(d) { var el = document.createElement('div'); el.className = 'cal-day-name'; el.textContent = d; namesEl.appendChild(el); });
             var grid = document.getElementById('calGrid');
             grid.innerHTML = '';
             var total = daysInMonth(curMonth, year);
             var firstDay = firstDayOfMonth(curMonth, year);
             var eventDays = getDaysWithEvents(curMonth);
-            for (var i = 0; i < firstDay; i++) {
-                var empty = document.createElement('div');
-                empty.className = 'cal-day empty';
-                grid.appendChild(empty);
-            }
+            for (var i = 0; i < firstDay; i++) { var empty = document.createElement('div'); empty.className = 'cal-day empty'; grid.appendChild(empty); }
             for (var d = 1; d <= total; d++) {
                 var cell = document.createElement('div');
                 var hasEv = eventDays.indexOf(d) !== -1;
                 cell.className = 'cal-day' + (hasEv ? ' has-event' : '') + (selectedDay === d && hasEv ? ' selected' : '');
-                var num = document.createElement('div');
-                num.className = 'cal-day-num';
-                num.textContent = d;
-                cell.appendChild(num);
+                var num = document.createElement('div'); num.className = 'cal-day-num'; num.textContent = d; cell.appendChild(num);
                 if (hasEv) {
-                    var dot = document.createElement('div');
-                    dot.className = 'cal-dot';
-                    cell.appendChild(dot);
-                    (function(day) {
-                        cell.addEventListener('click', function() {
-                            selectedDay = day;
-                            renderCalendar();
-                            renderDetail(day);
-                        });
-                    })(d);
+                    var dot = document.createElement('div'); dot.className = 'cal-dot'; cell.appendChild(dot);
+                    (function(day) { cell.addEventListener('click', function() { selectedDay = day; renderCalendar(); renderDetail(day); }); })(d);
                 }
                 grid.appendChild(cell);
             }
-            if (selectedDay && eventDays.indexOf(selectedDay) !== -1) { renderDetail(selectedDay); }
-            else { renderDetail(null); }
+            if (selectedDay && eventDays.indexOf(selectedDay) !== -1) { renderDetail(selectedDay); } else { renderDetail(null); }
         }
-
         function renderDetail(day) {
             var detail = document.getElementById('calDetail');
             if (!day) { detail.innerHTML = '<p class="cal-empty-msg">Cliquez sur un jour vert pour voir les événements</p>'; return; }
@@ -769,8 +568,7 @@
             if (!evs.length) { detail.innerHTML = '<p class="cal-empty-msg">Aucun événement ce jour</p>'; return; }
             var html = '<div class="cal-detail-title">📅 ' + day + ' ' + MONTHS[curMonth] + ' 2026</div>';
             evs.forEach(function(e) {
-                html += '<div class="cal-event-card">';
-                html += '<div class="ev-name">🎯 ' + e.nom + '</div>';
+                html += '<div class="cal-event-card"><div class="ev-name">🎯 ' + e.nom + '</div>';
                 if (e.heure) html += '<div class="ev-detail">🕐 <span>' + e.heure + '</span></div>';
                 html += '<div class="ev-detail">📍 <span>' + e.lieu + '</span></div>';
                 if (e.limite) html += '<div class="ev-detail">⏰ Limite : <span>' + e.limite + '</span></div>';
@@ -778,16 +576,8 @@
             });
             detail.innerHTML = html;
         }
-
-        document.getElementById('calPrev').addEventListener('click', function() {
-            var idx = eventMonths.indexOf(curMonth);
-            if (idx > 0) { curMonth = eventMonths[idx - 1]; selectedDay = null; renderCalendar(); }
-        });
-        document.getElementById('calNext').addEventListener('click', function() {
-            var idx = eventMonths.indexOf(curMonth);
-            if (idx < eventMonths.length - 1) { curMonth = eventMonths[idx + 1]; selectedDay = null; renderCalendar(); }
-        });
-
+        document.getElementById('calPrev').addEventListener('click', function() { var idx = eventMonths.indexOf(curMonth); if (idx > 0) { curMonth = eventMonths[idx - 1]; selectedDay = null; renderCalendar(); } });
+        document.getElementById('calNext').addEventListener('click', function() { var idx = eventMonths.indexOf(curMonth); if (idx < eventMonths.length - 1) { curMonth = eventMonths[idx + 1]; selectedDay = null; renderCalendar(); } });
         renderCalendar();
     })();
     </script>
@@ -795,26 +585,14 @@
 
 <section id="classement">
   <h2>Classement</h2>
-
-  <input
-    type="text"
-    id="clSearch"
-    placeholder="🔍 Rechercher un joueur…"
-    oninput="filterClassement()"
+  <input type="text" id="clSearch" placeholder="🔍 Rechercher un joueur…" oninput="filterClassement()"
     style="width:100%;background:#111;border:1.5px solid #2a2a2a;border-radius:8px;padding:12px 14px;color:#eee;font-size:0.95em;font-family:'Nunito',sans-serif;outline:none;box-sizing:border-box;margin-bottom:16px;transition:border-color 0.2s"
-    onfocus="this.style.borderColor='#0bff04'"
-    onblur="this.style.borderColor='#2a2a2a'"
-  >
-
+    onfocus="this.style.borderColor='#0bff04'" onblur="this.style.borderColor='#2a2a2a'">
   <div class="table-wrap">
     <table id="clTable">
       <thead>
         <tr>
-          <th>Classement</th>
-          <th>Nom</th>
-          <th>Prénom</th>
-          <th>Points</th>
-          <th>Catégorie</th>
+          <th>Classement</th><th>Nom</th><th>Prénom</th><th>Points</th><th>Catégorie</th>
         </tr>
       </thead>
       <tbody id="clBody"></tbody>
@@ -824,25 +602,25 @@
 
 <script>
 var clData = [
- {rang:1,  nom:'Devauchelle',   prenom:'Arnaud',      pts:7 pts, cat:'Promotion'},  
-{rang:2,  nom:'Bore',   prenom:'Sébastien',      pts:5 pts, cat:'Honneur'},
-  {rang:3,  nom:'Briault',  prenom:'Jean Philippe',     pts:3 pts, cat:'Non-classé'},
-  {rang:4,  nom:'Demarquet', prenom:'Kevin',       pts:3 pts, cat:'Promotion'},
-  {rang:5,  nom:'Delattre',   prenom:'Pascal',    pts:3 pts,  cat:'Promotion'},
-  {rang:6,  nom:'Ancelle',  prenom:'Denis', pts:2 pts,  cat:'Promotion'},
-  {rang:7,  nom:'Lozano',   prenom:'Mathis',   pts:2 pts,  cat:'Non-classé'},
-  {rang:8,  nom:'Marquant', prenom:'Philippe',    pts:1 pt,  cat:'Non-classé'},
-  {rang:9,  nom:'Lozano',  prenom:'Frederic',      pts:1 pt,  cat:'Non-classé'},
+  {rang:1, nom:'Devauchelle', prenom:'Arnaud',       pts:7,  cat:'Promotion'},
+  {rang:2, nom:'Bore',        prenom:'Sébastien',    pts:5,  cat:'Honneur'},
+  {rang:3, nom:'Briault',     prenom:'Jean Philippe', pts:3, cat:'Non-classé'},
+  {rang:4, nom:'Demarquet',   prenom:'Kevin',        pts:3,  cat:'Promotion'},
+  {rang:5, nom:'Delattre',    prenom:'Pascal',       pts:3,  cat:'Promotion'},
+  {rang:6, nom:'Ancelle',     prenom:'Denis',        pts:2,  cat:'Promotion'},
+  {rang:7, nom:'Lozano',      prenom:'Mathis',       pts:2,  cat:'Non-classé'},
+  {rang:8, nom:'Marquant',    prenom:'Philippe',     pts:1,  cat:'Non-classé'},
+  {rang:9, nom:'Lozano',      prenom:'Frederic',     pts:1,  cat:'Non-classé'},
 ];
 
 function buildClRow(d) {
   var medal = d.rang===1 ? '🥇 ' : d.rang===2 ? '🥈 ' : d.rang===3 ? '🥉 ' : '';
   return '<tr>' +
-    '<td data-label="Classement" style="color:#0bff04;font-family:\'Bebas Neue\',sans-serif;font-size:1.1em">' + medal + d.rang + '</td>' +
-    '<td data-label="Nom">' + d.nom + '</td>' +
-    '<td data-label="Prénom">' + d.prenom + '</td>' +
-    '<td data-label="Points" style="color:#0bff04;font-weight:700">' + d.pts + '</td>' +
-    '<td data-label="Catégorie">' + d.cat + '</td>' +
+    '<td style="color:#0bff04;font-family:\'Bebas Neue\',sans-serif;font-size:1.1em">' + medal + d.rang + '</td>' +
+    '<td>' + d.nom + '</td>' +
+    '<td>' + d.prenom + '</td>' +
+    '<td style="color:#0bff04;font-weight:700">' + d.pts + '</td>' +
+    '<td>' + d.cat + '</td>' +
   '</tr>';
 }
 
@@ -855,7 +633,6 @@ function filterClassement() {
     ? rows.map(buildClRow).join('')
     : '<tr><td colspan="5" style="text-align:center;color:#555;padding:30px">Aucun joueur trouvé</td></tr>';
 }
-
 filterClassement();
 </script>
 
@@ -950,151 +727,65 @@ filterClassement();
 </section>
 </div>
 
-<!-- ===================== BUREAU ===================== -->
 <section id="bureau">
     <h2>Membres du Conseil</h2>
     <div class="bureau">
-
         <div class="bureau-member">
-            <div class="bureau-photo-wrap">
-                <img src="president.webp" alt="Manu – Président">
-            </div>
-            <div class="bureau-info">
-                <h3>Manu</h3>
-                <div class="bureau-sep"></div>
-                <p>Président</p>
-            </div>
+            <div class="bureau-photo-wrap"><img src="president.webp" alt="Manu – Président"></div>
+            <div class="bureau-info"><h3>Manu</h3><div class="bureau-sep"></div><p>Président</p></div>
         </div>
-
         <div class="bureau-member">
-            <div class="bureau-photo-wrap">
-                <img src="vice-president.webp" alt="Dimitri – Vice-président">
-            </div>
-            <div class="bureau-info">
-                <h3>Dimitri</h3>
-                <div class="bureau-sep"></div>
-                <p>Vice-président</p>
-            </div>
+            <div class="bureau-photo-wrap"><img src="vice-president.webp" alt="Dimitri – Vice-président"></div>
+            <div class="bureau-info"><h3>Dimitri</h3><div class="bureau-sep"></div><p>Vice-président</p></div>
         </div>
-
         <div class="bureau-member">
-            <div class="bureau-photo-wrap">
-                <img src="secretaire.webp" alt="Clotilde – Secrétaire">
-            </div>
-            <div class="bureau-info">
-                <h3>Clotilde</h3>
-                <div class="bureau-sep"></div>
-                <p>Secrétaire</p>
-            </div>
+            <div class="bureau-photo-wrap"><img src="secretaire.webp" alt="Clotilde – Secrétaire"></div>
+            <div class="bureau-info"><h3>Clotilde</h3><div class="bureau-sep"></div><p>Secrétaire</p></div>
         </div>
-
         <div class="bureau-member">
-            <div class="bureau-photo-wrap">
-                <img src="tresorier.webp" alt="Jean Pierre – Trésorier">
-            </div>
-            <div class="bureau-info">
-                <h3>Jean Pierre</h3>
-                <div class="bureau-sep"></div>
-                <p>Trésorier</p>
-            </div>
+            <div class="bureau-photo-wrap"><img src="tresorier.webp" alt="Jean Pierre – Trésorier"></div>
+            <div class="bureau-info"><h3>Jean Pierre</h3><div class="bureau-sep"></div><p>Trésorier</p></div>
         </div>
-
         <div class="bureau-member">
             <div class="bureau-role-badge is-membre">Membre</div>
-            <div class="bureau-photo-wrap">
-                <img src="vincent.webp" alt="Vincent">
-            </div>
-            <div class="bureau-info">
-                <h3>Vincent</h3>
-                <div class="bureau-sep"></div>
-                <p>Membre chargé des licences et inscriptions championnats</p>
-            </div>
+            <div class="bureau-photo-wrap"><img src="vincent.webp" alt="Vincent"></div>
+            <div class="bureau-info"><h3>Vincent</h3><div class="bureau-sep"></div><p>Membre chargé des licences et inscriptions championnats</p></div>
         </div>
-
         <div class="bureau-member">
             <div class="bureau-role-badge is-membre">Membre</div>
-            <div class="bureau-photo-wrap">
-                <img src="denis.webp" alt="Denis">
-            </div>
-            <div class="bureau-info">
-                <h3>Denis</h3>
-                <div class="bureau-sep"></div>
-                <p>Membre chargé des vêtements</p>
-            </div>
+            <div class="bureau-photo-wrap"><img src="denis.webp" alt="Denis"></div>
+            <div class="bureau-info"><h3>Denis</h3><div class="bureau-sep"></div><p>Membre chargé des vêtements</p></div>
         </div>
-
         <div class="bureau-member">
             <div class="bureau-role-badge is-membre">Membre</div>
-            <div class="bureau-photo-wrap">
-                <img src="virginie.webp" alt="Virginie">
-            </div>
-            <div class="bureau-info">
-                <h3>Virginie</h3>
-                <div class="bureau-sep"></div>
-                <p>Membre chargée de la buvette</p>
-            </div>
+            <div class="bureau-photo-wrap"><img src="virginie.webp" alt="Virginie"></div>
+            <div class="bureau-info"><h3>Virginie</h3><div class="bureau-sep"></div><p>Membre chargée de la buvette</p></div>
         </div>
-
         <div class="bureau-member">
             <div class="bureau-role-badge is-membre">Membre</div>
-            <div class="bureau-photo-wrap">
-                <img src="philippe-d.webp" alt="Philippe D.">
-            </div>
-            <div class="bureau-info">
-                <h3>Philippe D.</h3>
-                <div class="bureau-sep"></div>
-                <p>Membre chargé de la buvette</p>
-            </div>
+            <div class="bureau-photo-wrap"><img src="philippe-d.webp" alt="Philippe D."></div>
+            <div class="bureau-info"><h3>Philippe D.</h3><div class="bureau-sep"></div><p>Membre chargé de la buvette</p></div>
         </div>
-
         <div class="bureau-member">
             <div class="bureau-role-badge is-membre">Membre</div>
-            <div class="bureau-photo-wrap">
-                <img src="eric.webp" alt="Eric">
-            </div>
-            <div class="bureau-info">
-                <h3>Eric</h3>
-                <div class="bureau-sep"></div>
-                <p>Membre chargé des inscriptions aux championnats</p>
-            </div>
+            <div class="bureau-photo-wrap"><img src="eric.webp" alt="Eric"></div>
+            <div class="bureau-info"><h3>Eric</h3><div class="bureau-sep"></div><p>Membre chargé des inscriptions aux championnats</p></div>
         </div>
-
         <div class="bureau-member">
             <div class="bureau-role-badge is-membre">Membre</div>
-            <div class="bureau-photo-wrap">
-                <img src="philippe-m.webp" alt="Philippe M.">
-            </div>
-            <div class="bureau-info">
-                <h3>Philippe M.</h3>
-                <div class="bureau-sep"></div>
-                <p>Membre</p>
-            </div>
+            <div class="bureau-photo-wrap"><img src="philippe-m.webp" alt="Philippe M."></div>
+            <div class="bureau-info"><h3>Philippe M.</h3><div class="bureau-sep"></div><p>Membre</p></div>
         </div>
-
         <div class="bureau-member">
             <div class="bureau-role-badge is-membre">Membre</div>
-            <div class="bureau-photo-wrap">
-                <img src="benoit.webp">
-            </div>
-            <div class="bureau-info">
-                <h3>Benoît</h3>
-                <div class="bureau-sep"></div>
-                <p>Membre</p>
-            </div>
+            <div class="bureau-photo-wrap"><img src="benoit.webp" alt="Benoît"></div>
+            <div class="bureau-info"><h3>Benoît</h3><div class="bureau-sep"></div><p>Membre</p></div>
         </div>
-
         <div class="bureau-member">
             <div class="bureau-role-badge is-membre">Membre</div>
-            <div class="bureau-photo-wrap">
-                <img src="jean-marie.webp" alt="Jean Marie">
-            </div>
-            <div class="bureau-info">
-                <h3>Jean Marie</h3>
-                <div class="bureau-sep"></div>
-                <p>Membre chargé de l'entretien des terrains</p>
-            </div>
+            <div class="bureau-photo-wrap"><img src="jean-marie.webp" alt="Jean Marie"></div>
+            <div class="bureau-info"><h3>Jean Marie</h3><div class="bureau-sep"></div><p>Membre chargé de l'entretien des terrains</p></div>
         </div>
-
     </div>
 </section>
 
@@ -1130,50 +821,17 @@ filterClassement();
 
 <section id="faq" class="faq">
     <h2>FAQ</h2>
-    <details>
-        <summary>Comment s'inscrire au club ?</summary>
-        <p>Vous pouvez vous inscrire lors des entraînements ou en contactant un membre du bureau par email à <a href="mailto:petanque80440@gmail.com">petanque80440@gmail.com</a> ou par téléphone au 06 82 48 92 17.</p>
-    </details>
-    <details>
-        <summary>Le club accepte-t-il les débutants ?</summary>
-        <p>Oui, tous les niveaux sont les bienvenus. Nos membres expérimentés sont là pour vous accompagner et vous faire progresser dans la bonne humeur.</p>
-    </details>
-    <details>
-        <summary>Quels sont les jours d'entraînement ?</summary>
-        <p>Les entraînements ont lieu le vendredi après-midi, le samedi après-midi, le dimanche après-midi et le mardi après-midi au Chemin du Stade à Boves.</p>
-    </details>
-    <details>
-        <summary>Quel est le montant de la licence ?</summary>
-        <p>Les tarifs sont les suivants : <strong style="color:var(--vert)">Seniors 45 €</strong> — <strong style="color:var(--vert)">Vétérans 25 €</strong> — <strong style="color:var(--vert)">Jeunes et Femmes gratuit</strong>. L'adhésion au club est de <strong style="color:var(--vert)">15 €</strong> pour tous.</p>
-    </details>
-    <details>
-        <summary>Comment participer aux concours officiels ?</summary>
-        <p>Pour participer aux concours officiels, il faut être licencié à la FFPJP. Contactez le bureau pour obtenir votre licence et vous inscrire aux prochains concours.</p>
-    </details>
-    <details>
-        <summary>Le club est-il ouvert aux jeunes ?</summary>
-        <p>Absolument ! Le club accueille les jeunes joueurs avec plaisir. N'hésitez pas à venir avec vos enfants lors des entraînements pour découvrir la pétanque.</p>
-    </details>
-    <details>
-        <summary>Où se trouve le terrain du club ?</summary>
-        <p>Le terrain est situé Chemin du Stade à Boves (80440). Vous pouvez retrouver l'itinéraire dans la section Contacts.</p>
-    </details>
-    <details>
-        <summary>Comment commander les vêtements du club ?</summary>
-        <p>Rendez-vous dans la section Commande de Vêtements du site. Remplissez le formulaire avec vos tailles et le bureau vous recontactera. Le montant de la commande est de 100 €.</p>
-    </details>
-    <details>
-        <summary>Quelle est la différence entre pétanque et jeu provençal ?</summary>
-        <p>En pétanque, les joueurs tirent les pieds joints et dans un cercle. En jeu provençal, les joueurs prennent un élan de 1 à 3 pas avant de lancer. Les deux disciplines sont pratiquées au club.</p>
-    </details>
-    <details>
-        <summary>Y a-t-il des compétitions par équipes ?</summary>
-        <p>Oui ! Nous participons aux championnats en doublette (2 joueurs), triplette (3 joueurs) et tête-à-tête (1 contre 1). Il y a aussi des catégories mixtes, vétérans et jeunes.</p>
-    </details>
-    <details>
-        <summary>Comment suivre l'actualité du club ?</summary>
-        <p>Vous pouvez nous suivre sur Facebook (Pétanque Boves) et TikTok (PétanqueBoves80) pour les dernières nouvelles, résultats et annonces du club.</p>
-    </details>
+    <details><summary>Comment s'inscrire au club ?</summary><p>Vous pouvez vous inscrire lors des entraînements ou en contactant un membre du bureau par email à <a href="mailto:petanque80440@gmail.com">petanque80440@gmail.com</a> ou par téléphone au 06 82 48 92 17.</p></details>
+    <details><summary>Le club accepte-t-il les débutants ?</summary><p>Oui, tous les niveaux sont les bienvenus. Nos membres expérimentés sont là pour vous accompagner et vous faire progresser dans la bonne humeur.</p></details>
+    <details><summary>Quels sont les jours d'entraînement ?</summary><p>Les entraînements ont lieu le vendredi après-midi, le samedi après-midi, le dimanche après-midi et le mardi après-midi au Chemin du Stade à Boves.</p></details>
+    <details><summary>Quel est le montant de la licence ?</summary><p>Les tarifs sont les suivants : <strong style="color:var(--vert)">Seniors 45 €</strong> — <strong style="color:var(--vert)">Vétérans 25 €</strong> — <strong style="color:var(--vert)">Jeunes et Femmes gratuit</strong>. L'adhésion au club est de <strong style="color:var(--vert)">15 €</strong> pour tous.</p></details>
+    <details><summary>Comment participer aux concours officiels ?</summary><p>Pour participer aux concours officiels, il faut être licencié à la FFPJP. Contactez le bureau pour obtenir votre licence et vous inscrire aux prochains concours.</p></details>
+    <details><summary>Le club est-il ouvert aux jeunes ?</summary><p>Absolument ! Le club accueille les jeunes joueurs avec plaisir. N'hésitez pas à venir avec vos enfants lors des entraînements pour découvrir la pétanque.</p></details>
+    <details><summary>Où se trouve le terrain du club ?</summary><p>Le terrain est situé Chemin du Stade à Boves (80440). Vous pouvez retrouver l'itinéraire dans la section Contacts.</p></details>
+    <details><summary>Comment commander les vêtements du club ?</summary><p>Rendez-vous dans la section Commande de Vêtements du site. Remplissez le formulaire avec vos tailles et le bureau vous recontactera. Le montant de la commande est de 100 €.</p></details>
+    <details><summary>Quelle est la différence entre pétanque et jeu provençal ?</summary><p>En pétanque, les joueurs tirent les pieds joints et dans un cercle. En jeu provençal, les joueurs prennent un élan de 1 à 3 pas avant de lancer. Les deux disciplines sont pratiquées au club.</p></details>
+    <details><summary>Y a-t-il des compétitions par équipes ?</summary><p>Oui ! Nous participons aux championnats en doublette (2 joueurs), triplette (3 joueurs) et tête-à-tête (1 contre 1). Il y a aussi des catégories mixtes, vétérans et jeunes.</p></details>
+    <details><summary>Comment suivre l'actualité du club ?</summary><p>Vous pouvez nous suivre sur Facebook (Pétanque Boves) et TikTok (PétanqueBoves80) pour les dernières nouvelles, résultats et annonces du club.</p></details>
 </section>
 
 <footer>
@@ -1184,21 +842,33 @@ filterClassement();
 
 <button onclick="topFunction()" id="btnTop" title="Retour en haut">↑</button>
 
+<!-- BANNIÈRE INSTALLATION PWA -->
+<div id="pwa-banner">
+    <div class="pwa-content">
+        <img src="logo.webp" alt="Logo Pétanque Boves">
+        <div class="pwa-text">
+            <strong>📲 Installer l'application</strong>
+            <span>Accédez au club depuis votre écran d'accueil</span>
+        </div>
+    </div>
+    <div class="pwa-actions">
+        <button id="pwa-install-btn">INSTALLER</button>
+        <button id="pwa-dismiss-btn">Plus tard</button>
+    </div>
+</div>
+
 <script>
 var hamburger = document.getElementById('hamburger');
 var navMenu = document.getElementById('navMenu');
-
 hamburger.addEventListener('click', function() {
     var isOpen = navMenu.classList.toggle('open');
     hamburger.classList.toggle('open', isOpen);
     hamburger.setAttribute('aria-expanded', String(isOpen));
     hamburger.setAttribute('aria-label', isOpen ? 'Fermer le menu' : 'Ouvrir le menu');
 });
-
 document.addEventListener('click', function(e) {
     if (!hamburger.contains(e.target) && !navMenu.contains(e.target)) { closeMenu(); }
 });
-
 function closeMenu() {
     navMenu.classList.remove('open');
     hamburger.classList.remove('open');
@@ -1207,69 +877,47 @@ function closeMenu() {
 }
 
 var btnTop = document.getElementById('btnTop');
-window.addEventListener('scroll', function() {
-    btnTop.style.display = window.scrollY > 220 ? 'block' : 'none';
-});
+window.addEventListener('scroll', function() { btnTop.style.display = window.scrollY > 220 ? 'block' : 'none'; });
 function topFunction() { window.scrollTo({ top: 0, behavior: 'smooth' }); }
 
 function submitCommande() {
-    var nom      = document.getElementById('nom').value.trim();
-    var prenom   = document.getElementById('prenom').value.trim();
-    var cp       = document.getElementById('codepostal').value.trim();
-    var tel      = document.getElementById('telephone').value.trim();
-    var email    = document.getElementById('email').value.trim();
+    var nom = document.getElementById('nom').value.trim();
+    var prenom = document.getElementById('prenom').value.trim();
+    var cp = document.getElementById('codepostal').value.trim();
+    var tel = document.getElementById('telephone').value.trim();
+    var email = document.getElementById('email').value.trim();
     var pantalon = document.getElementById('taille-pantalon').value;
-    var polo     = document.getElementById('taille-polo').value;
-    var veste    = document.getElementById('taille-veste').value;
-    var manteau  = document.getElementById('taille-manteau').value;
-
+    var polo = document.getElementById('taille-polo').value;
+    var veste = document.getElementById('taille-veste').value;
+    var manteau = document.getElementById('taille-manteau').value;
     if (!nom || !prenom || !cp) { alert('⚠️ Merci de renseigner votre nom, prénom et code postal.'); return; }
     if (!/^\d{5}$/.test(cp)) { alert('⚠️ Le code postal doit contenir exactement 5 chiffres.'); return; }
     if (!tel) { alert('⚠️ Merci de renseigner votre numéro de téléphone.'); return; }
     if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { alert('⚠️ Merci de renseigner une adresse email valide.'); return; }
     if (!pantalon && !polo && !veste && !manteau) { alert('⚠️ Veuillez sélectionner au moins une taille de vêtement.'); return; }
-
     var btn = document.getElementById('submitBtn');
     btn.textContent = 'Envoi en cours...';
     btn.disabled = true;
-
     var formData = new FormData();
     formData.append('email', email);
     formData.append('message',
-        '--- INFORMATIONS ---\n' +
-        'Nom : ' + prenom + ' ' + nom + '\n' +
-        'Email : ' + email + '\n' +
-        'Telephone : ' + tel + '\n' +
-        'Code postal : ' + cp + '\n\n' +
-        '--- COMMANDE ---\n' +
-        'Pantalon : ' + (pantalon || 'Non commande') + '\n' +
-        'Polo : ' + (polo || 'Non commande') + '\n' +
-        'Veste : ' + (veste || 'Non commande') + '\n' +
-        'Manteau : ' + (manteau || 'Non commande') + '\n\n' +
-        'Montant total : 100 euros'
+        '--- INFORMATIONS ---\nNom : ' + prenom + ' ' + nom + '\nEmail : ' + email +
+        '\nTelephone : ' + tel + '\nCode postal : ' + cp +
+        '\n\n--- COMMANDE ---\nPantalon : ' + (pantalon || 'Non commande') +
+        '\nPolo : ' + (polo || 'Non commande') + '\nVeste : ' + (veste || 'Non commande') +
+        '\nManteau : ' + (manteau || 'Non commande') + '\n\nMontant total : 100 euros'
     );
-
-    fetch('https://formspree.io/f/xwvrwwje', {
-        method: 'POST',
-        body: formData,
-        headers: { 'Accept': 'application/json' }
-    })
+    fetch('https://formspree.io/f/xwvrwwje', { method: 'POST', body: formData, headers: { 'Accept': 'application/json' } })
     .then(function(response) {
-        btn.textContent = '✅ Envoyer ma commande';
-        btn.disabled = false;
-        if (response.ok) {
-            afficherConfirmation(prenom, nom, cp, email, tel, pantalon, polo, veste, manteau);
-        } else {
-            alert('❌ Une erreur est survenue. Veuillez réessayer ou contacter le club par email.');
-        }
+        btn.textContent = '✅ Envoyer ma commande'; btn.disabled = false;
+        if (response.ok) { afficherConfirmation(prenom, nom, cp, email, tel, pantalon, polo, veste, manteau); }
+        else { alert('❌ Une erreur est survenue. Veuillez réessayer ou contacter le club par email.'); }
     })
     .catch(function() {
-        btn.textContent = '✅ Envoyer ma commande';
-        btn.disabled = false;
+        btn.textContent = '✅ Envoyer ma commande'; btn.disabled = false;
         alert('❌ Impossible d\'envoyer la commande. Vérifiez votre connexion internet.');
     });
 }
-
 function afficherConfirmation(prenom, nom, cp, email, tel, pantalon, polo, veste, manteau) {
     document.getElementById('conf-prenom').textContent = prenom;
     var html = '<p><strong>Nom :</strong> ' + prenom + ' ' + nom + '</p>';
@@ -1277,9 +925,9 @@ function afficherConfirmation(prenom, nom, cp, email, tel, pantalon, polo, veste
     html += '<p><strong>Téléphone :</strong> ' + tel + '</p>';
     html += '<p><strong>Code postal :</strong> ' + cp + '</p>';
     if (pantalon) html += '<p><strong>Pantalon :</strong> ' + pantalon + '</p>';
-    if (polo)     html += '<p><strong>Polo :</strong> ' + polo + '</p>';
-    if (veste)    html += '<p><strong>Veste :</strong> ' + veste + '</p>';
-    if (manteau)  html += '<p><strong>Manteau :</strong> ' + manteau + '</p>';
+    if (polo) html += '<p><strong>Polo :</strong> ' + polo + '</p>';
+    if (veste) html += '<p><strong>Veste :</strong> ' + veste + '</p>';
+    if (manteau) html += '<p><strong>Manteau :</strong> ' + manteau + '</p>';
     html += '<p style="margin-top:10px;padding-top:10px;border-top:1px solid #333;"><strong style="color:var(--vert);">Montant total : 100 €</strong></p>';
     document.getElementById('conf-recap').innerHTML = html;
     document.getElementById('orderForm').style.display = 'none';
@@ -1287,15 +935,50 @@ function afficherConfirmation(prenom, nom, cp, email, tel, pantalon, polo, veste
     conf.style.display = 'block';
     conf.scrollIntoView({ behavior: 'smooth', block: 'center' });
 }
-
 function nouvelleCommande() {
     document.getElementById('orderForm').style.display = 'block';
     document.getElementById('confirmation').style.display = 'none';
-    var ids = ['nom', 'prenom', 'codepostal', 'telephone', 'email'];
-    for (var i = 0; i < ids.length; i++) { document.getElementById(ids[i]).value = ''; }
-    var selects = ['taille-pantalon', 'taille-polo', 'taille-veste', 'taille-manteau'];
-    for (var j = 0; j < selects.length; j++) { document.getElementById(selects[j]).value = ''; }
+    ['nom','prenom','codepostal','telephone','email'].forEach(function(id) { document.getElementById(id).value = ''; });
+    ['taille-pantalon','taille-polo','taille-veste','taille-manteau'].forEach(function(id) { document.getElementById(id).value = ''; });
     document.getElementById('orderForm').scrollIntoView({ behavior: 'smooth' });
+}
+
+// ===================== PWA =====================
+var deferredPrompt = null;
+window.addEventListener('beforeinstallprompt', function(e) {
+    e.preventDefault();
+    deferredPrompt = e;
+    setTimeout(function() {
+        document.getElementById('pwa-banner').style.display = 'block';
+    }, 3000);
+});
+
+document.getElementById('pwa-install-btn').addEventListener('click', function() {
+    if (!deferredPrompt) return;
+    deferredPrompt.prompt();
+    deferredPrompt.userChoice.then(function(choiceResult) {
+        deferredPrompt = null;
+        document.getElementById('pwa-banner').style.display = 'none';
+    });
+});
+
+document.getElementById('pwa-dismiss-btn').addEventListener('click', function() {
+    document.getElementById('pwa-banner').style.display = 'none';
+});
+
+window.addEventListener('appinstalled', function() {
+    document.getElementById('pwa-banner').style.display = 'none';
+});
+
+// Enregistrement du Service Worker
+if ('serviceWorker' in navigator) {
+    window.addEventListener('load', function() {
+        navigator.serviceWorker.register('sw.js').then(function(reg) {
+            console.log('SW enregistré :', reg.scope);
+        }).catch(function(err) {
+            console.log('SW erreur :', err);
+        });
+    });
 }
 </script>
 
