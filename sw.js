@@ -32,7 +32,9 @@ self.addEventListener('install', function(event) {
   );
   self.skipWaiting();
 });
-
+self.addEventListener('install', function(event) {
+  self.skipWaiting();
+});
 // Activation : suppression des anciens caches
 self.addEventListener('activate', function(event) {
   event.waitUntil(
