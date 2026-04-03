@@ -2,7 +2,7 @@
   "name": "Club de Pétanque de Boves",
   "short_name": "Pétanque Boves",
   "description": "Site officiel du Club de Pétanque de Boves – Passion, Précision, Bonne humeur",
-  "start_url": "/",
+  "start_url": "./",
   "display": "standalone",
   "orientation": "portrait",
   "background_color": "#000000",
