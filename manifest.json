@@ -1,0 +1,27 @@
+{
+  "name": "Club de Pétanque de Boves",
+  "short_name": "Pétanque Boves",
+  "description": "Site officiel du Club de Pétanque de Boves – Passion, Précision, Bonne humeur",
+  "start_url": "/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#000000",
+  "theme_color": "#0bff04",
+  "lang": "fr",
+  "icons": [
+    {
+      "src": "logo.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "logo.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "screenshots": [],
+  "categories": ["sports"]
+}
