@@ -4,6 +4,8 @@
     <meta charset="UTF-8">
     <title>Club de Pétanque de Boves</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="manifest" href="/manifest.json">
+<meta name="theme-color" content="#0bff04">
     <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
     <link rel="icon" type="image/webp" href="logo.webp">
     <link rel="apple-touch-icon" href="logo.png">
@@ -981,6 +983,12 @@ if ('serviceWorker' in navigator) {
     });
 }
 </script>
-
+<script>
+if ('serviceWorker' in navigator) {
+  navigator.serviceWorker.register('/sw.js')
+    .then(() => console.log('Service Worker OK'))
+    .catch(err => console.log('Erreur SW:', err));
+}
+</script>
 </body>
 </html>
