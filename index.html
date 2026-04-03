@@ -38,16 +38,49 @@
         .hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
         .hamburger.open span:nth-child(2) { opacity: 0; transform: scaleX(0); }
         .hamburger.open span:nth-child(3) { width: 100%; transform: translateY(-7px) rotate(-45deg); }
+
+        /* ===================== NAV MENU MOBILE — COMPACT GRID ===================== */
         .nav-menu { max-height: 0; overflow: hidden; transition: max-height 0.42s cubic-bezier(.77,0,.18,1); background: #000000; border-top: 1px solid #333; }
         .nav-menu.open { max-height: 700px; }
-        .nav-menu a { display: flex; align-items: center; gap: 12px; color: #d0d0d0; text-decoration: none; font-weight: 700; font-size: 1em; padding: 14px 20px; border-bottom: 1px solid #2a2a2a; transition: color 0.2s, background 0.2s, padding-left 0.2s; }
-        .nav-menu a:last-child { border-bottom: none; }
-        .nav-menu a:hover, .nav-menu a:active { color: var(--vert); background: rgba(11,255,4,0.05); padding-left: 26px; }
-        .nav-icon { font-size: 1.1em; width: 22px; text-align: center; flex-shrink: 0; }
+
+        /* Mobile : grille 2 colonnes */
+        @media (max-width: 767px) {
+            .nav-menu.open {
+                display: grid;
+                grid-template-columns: 1fr 1fr;
+                gap: 1px;
+                background: #222;
+                max-height: 700px;
+            }
+            .nav-menu a {
+                display: flex;
+                align-items: center;
+                gap: 7px;
+                color: #d0d0d0;
+                text-decoration: none;
+                font-weight: 700;
+                font-size: 0.78em;
+                padding: 10px 12px;
+                background: #0a0a0a;
+                border: none;
+                transition: color 0.2s, background 0.2s;
+                letter-spacing: 0.3px;
+            }
+            .nav-menu a:hover, .nav-menu a:active {
+                color: var(--vert);
+                background: rgba(11,255,4,0.07);
+            }
+            .nav-icon {
+                font-size: 1em;
+                flex-shrink: 0;
+            }
+        }
+
+        /* Desktop nav */
         @media (min-width: 768px) {
             .hamburger, .nav-brand, .nav-bar { display: none; }
             .nav-menu { max-height: none !important; overflow: visible; display: flex; flex-wrap: wrap; justify-content: center; gap: 4px; padding: 8px 16px; background: transparent; border-top: none; }
-            .nav-menu a { padding: 6px 11px; border-bottom: none; border-radius: 6px; font-size: 0.87em; color: #ccc; }
+            .nav-menu a { padding: 6px 11px; border-bottom: none; border-radius: 6px; font-size: 0.87em; color: #ccc; display: flex; align-items: center; gap: 12px; text-decoration: none; font-weight: 700; transition: color 0.2s, background 0.2s, padding-left 0.2s; }
             .nav-menu a:hover { padding-left: 11px; color: var(--vert); background: rgba(11,255,4,0.08); }
             .nav-icon { display: none; }
         }
@@ -68,16 +101,53 @@
         .card ul { padding-left: 18px; }
         .card li { margin: 5px 0; }
 
-        /* TABLE */
+        /* TABLE — desktop inchangé */
         .table-wrap { border-radius: 10px; }
         table { width: 100%; border-collapse: collapse; background: var(--gris-card); font-size: 0.88em; }
-        table thead { display: none; }
-        table tr { display: block; background: var(--gris-card); border: 1px solid #363636; border-radius: 10px; margin-bottom: 10px; padding: 12px 14px; }
-        table tr:nth-child(even) { background: #222; }
-        table td { display: flex; justify-content: space-between; align-items: flex-start; gap: 10px; padding: 5px 0; border: none; border-bottom: 1px solid #2e2e2e; color: #e0e0e0; font-size: 0.92em; }
-        table td:last-child { border-bottom: none; }
-        table td::before { content: attr(data-label); font-weight: 700; font-size: 0.78em; text-transform: uppercase; letter-spacing: 1px; color: #aaa; flex-shrink: 0; min-width: 110px; }
-        table td:empty { display: none; }
+
+        /* ===================== CLASSEMENT MOBILE — COMPACT ===================== */
+        @media (max-width: 639px) {
+            table thead { display: none; }
+            table tbody { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+            table tr {
+                display: flex;
+                flex-direction: column;
+                background: var(--gris-card);
+                border: 1px solid #2a2a2a;
+                border-radius: 10px;
+                padding: 10px 11px;
+                gap: 2px;
+                transition: border-color 0.2s, box-shadow 0.2s;
+            }
+            table tr:hover { border-color: rgba(11,255,4,0.4); box-shadow: 0 4px 14px rgba(11,255,4,0.15); }
+            table td { display: block; padding: 0; border: none; font-size: 0.82em; color: #ccc; }
+            table td::before { display: none; }
+            /* Rang */
+            table td:nth-child(1) { font-family: 'Bebas Neue', sans-serif; font-size: 1.05em; color: var(--vert); margin-bottom: 3px; }
+            /* Nom */
+            table td:nth-child(2) { font-weight: 700; color: #f0f0f0; font-size: 0.88em; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+            /* Prénom */
+            table td:nth-child(3) { color: #aaa; font-size: 0.78em; }
+            /* Points */
+            table td:nth-child(4) { color: var(--vert); font-weight: 700; font-size: 0.85em; margin-top: 4px; }
+            table td:nth-child(4)::before { content: ''; }
+            /* Catégorie */
+            table td:nth-child(5) {
+                display: inline-block;
+                margin-top: 5px;
+                font-size: 0.65em;
+                background: rgba(11,255,4,0.08);
+                border: 1px solid rgba(11,255,4,0.2);
+                color: #88dd80;
+                padding: 2px 7px;
+                border-radius: 20px;
+                text-transform: uppercase;
+                letter-spacing: 0.5px;
+                font-weight: 700;
+            }
+        }
+
+        /* TABLE desktop */
         @media (min-width: 640px) {
             .table-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; }
             table { min-width: 600px; }
@@ -91,7 +161,7 @@
             table th { background: var(--vert); color: black; font-family: 'Bebas Neue', sans-serif; font-size: 1em; letter-spacing: 1px; padding: 10px 12px; border: 1px solid #222; text-align: left; }
         }
 
-        /* ===================== BUREAU — NOUVEAU DESIGN ===================== */
+        /* ===================== BUREAU ===================== */
         .bureau {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
@@ -114,8 +184,6 @@
             border-color: var(--vert);
             box-shadow: 0 10px 32px rgba(11,255,4,0.28), 0 0 0 1px rgba(11,255,4,0.15);
         }
-
-        /* Bande verte en haut */
         .bureau-member::before {
             content: '';
             display: block;
@@ -123,7 +191,6 @@
             background: linear-gradient(90deg, var(--vert), #09cc03);
             width: 100%;
         }
-
         .bureau-photo-wrap {
             display: flex;
             justify-content: center;
@@ -145,8 +212,6 @@
         .bureau-member:hover .bureau-photo-wrap img {
             box-shadow: 0 0 0 5px rgba(11,255,4,0.3), 0 0 18px rgba(11,255,4,0.25);
         }
-
-        /* Pastille rôle en haut à droite */
         .bureau-role-badge {
             position: absolute;
             top: 14px;
@@ -163,9 +228,7 @@
             line-height: 1.4;
             white-space: nowrap;
         }
-        /* Cacher la pastille "Membre" — trop courant */
         .bureau-role-badge.is-membre { display: none; }
-
         .bureau-info {
             padding: 0 12px 18px;
             text-align: center;
@@ -184,8 +247,6 @@
             letter-spacing: 1px;
             font-weight: 600;
         }
-
-        /* Séparateur décoratif */
         .bureau-sep {
             width: 32px;
             height: 2px;
@@ -196,7 +257,6 @@
             transition: opacity 0.28s, width 0.28s;
         }
         .bureau-member:hover .bureau-sep { opacity: 1; width: 48px; }
-        /* ===================== FIN BUREAU ===================== */
 
         /* FAQ */
         .faq details { background: var(--gris-card); border-left: 5px solid var(--vert); border-radius: 8px; padding: 14px 16px; margin-bottom: 11px; }
@@ -350,7 +410,6 @@
         }
         @keyframes barRun { to { width: 100%; } }
 
-        /* Bouton ENTRER */
         #intro-enter-wrap { margin-top: 40px; }
         #intro-enter-btn {
             background: transparent;
@@ -372,7 +431,6 @@
         #intro-enter-wrap.hide-btn { animation: btnFade 0.3s ease forwards; }
         @keyframes btnFade { to { opacity: 0; } }
 
-        /* ===== BOUTON PASSER ===== */
         #btn-skip {
             position: absolute;
             top: 18px;
@@ -398,19 +456,14 @@
         }
     </style>
 
-    <!-- Bouton PASSER (skip) -->
     <button id="btn-skip" onclick="skipIntro()">⏭</button>
-
     <img src="logo.webp" alt="Logo" class="intro-logo" id="introLogo">
-
     <div id="intro-enter-wrap">
         <button id="intro-enter-btn" onclick="startIntro()">ENTRER</button>
     </div>
-
     <span class="intro-word" id="iw1">PASSION</span>
     <span class="intro-word" id="iw2">PRÉCISION</span>
     <span class="intro-word" id="iw3">BONNE HUMEUR</span>
-
     <div class="intro-bar" id="introBar"></div>
 </div>
 
@@ -418,7 +471,6 @@
 (function() {
     var introStarted = false;
 
-    /* ---- Fermer l'écran intro immédiatement ---- */
     window.skipIntro = function() {
         var screen = document.getElementById('intro-screen');
         screen.style.transition = 'opacity 0.4s ease';
@@ -740,6 +792,7 @@
     })();
     </script>
 </section>
+
 <section id="classement">
   <h2>Classement</h2>
 
@@ -805,6 +858,7 @@ function filterClassement() {
 
 filterClassement();
 </script>
+
 <div id="commande-wrap">
 <section style="max-width:1100px; margin:0 auto; padding:34px 16px;">
     <h2>Commande de Vêtements</h2>
@@ -896,13 +950,12 @@ filterClassement();
 </section>
 </div>
 
-<!-- ===================== BUREAU — NOUVEAU DESIGN ===================== -->
+<!-- ===================== BUREAU ===================== -->
 <section id="bureau">
     <h2>Membres du Conseil</h2>
     <div class="bureau">
 
         <div class="bureau-member">
-            
             <div class="bureau-photo-wrap">
                 <img src="president.webp" alt="Manu – Président">
             </div>
@@ -914,7 +967,6 @@ filterClassement();
         </div>
 
         <div class="bureau-member">
-            
             <div class="bureau-photo-wrap">
                 <img src="vice-president.webp" alt="Dimitri – Vice-président">
             </div>
@@ -926,7 +978,6 @@ filterClassement();
         </div>
 
         <div class="bureau-member">
-            
             <div class="bureau-photo-wrap">
                 <img src="secretaire.webp" alt="Clotilde – Secrétaire">
             </div>
@@ -938,7 +989,6 @@ filterClassement();
         </div>
 
         <div class="bureau-member">
-            
             <div class="bureau-photo-wrap">
                 <img src="tresorier.webp" alt="Jean Pierre – Trésorier">
             </div>
