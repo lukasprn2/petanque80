@@ -990,5 +990,10 @@ if ('serviceWorker' in navigator) {
     .catch(err => console.log('Erreur SW:', err));
 }
 </script>
+    <script>
+navigator.serviceWorker.getRegistrations().then(regs => {
+  alert("SW actifs: " + regs.length);
+});
+</script>
 </body>
 </html>
