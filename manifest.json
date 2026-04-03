@@ -1,6 +1,7 @@
 {
   "name": "Club de Pétanque de Boves",
   "short_name": "Pétanque Boves",
+  "id": "./",
   "description": "Site officiel du Club de Pétanque de Boves – Passion, Précision, Bonne humeur",
   "start_url": "./",
   "display": "standalone",
