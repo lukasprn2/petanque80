@@ -1,28 +1,26 @@
 {
-  "name": "Club de Pétanque de Boves",
-  "short_name": "Pétanque Boves",
-  "id": "./",
-  "description": "Site officiel du Club de Pétanque de Boves – Passion, Précision, Bonne humeur",
-  "start_url": "./",
+  "name": "Pétanque Boves",
+  "short_name": "Pétanque",
+  "description": "Application du club de pétanque de Boves",
+  "start_url": "/petanque80/",
+  "scope": "/petanque80/",
   "display": "standalone",
   "orientation": "portrait",
-  "background_color": "#000000",
-  "theme_color": "#0bff04",
+  "background_color": "#ffffff",
+  "theme_color": "#ffffff",
   "lang": "fr",
   "icons": [
     {
-      "src": "logo.png",
+      "src": "/petanque80/logo.png",
       "sizes": "192x192",
       "type": "image/png",
       "purpose": "any maskable"
     },
     {
-      "src": "logo.png",
+      "src": "/petanque80/logo.png",
       "sizes": "512x512",
       "type": "image/png",
       "purpose": "any maskable"
     }
-  ],
-  "screenshots": [],
-  "categories": ["sports"]
+  ]
 }
