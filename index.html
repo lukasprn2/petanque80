@@ -4,8 +4,8 @@
     <meta charset="UTF-8">
     <title>Club de Pétanque de Boves</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="manifest" href="manifest.json">
-<meta name="theme-color" content="#0bff04">
+    <link rel="manifest" href="/petanque80/manifest.json">
+<meta name="theme-color" content="#ffffff">
     <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
     <link rel="icon" type="image/webp" href="logo.webp">
     <link rel="apple-touch-icon" href="logo.png">
@@ -982,13 +982,12 @@ if ('serviceWorker' in navigator) {
         });
     });
 }
-</script>
 <script>
-if ('serviceWorker' in navigator) {
-  navigator.serviceWorker.register('./sw.js')
-    .then(reg => console.log('SW OK', reg.scope))
-    .catch(err => console.log('SW ERREUR', err));
-}
+  if ('serviceWorker' in navigator) {
+    window.addEventListener('load', function() {
+      navigator.serviceWorker.register('/petanque80/sw.js');
+    });
+  }
 </script>
 </body>
 </html>
