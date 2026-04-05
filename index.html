@@ -749,11 +749,13 @@ var clData = [
 ];
 function buildClRow(d) {
   var medal = d.rang===1 ? '🥇 ' : d.rang===2 ? '🥈 ' : d.rang===3 ? '🥉 ' : '';
+  var ptsLabel = d.pts <= 1 ? ' pt' : ' pts';
   return '<tr>' +
-    '<td style="color:#0bff04;font-family:\'Bebas Neue\',sans-serif;font-size:1.1em">' + medal + d.rang + '</td>' +
-    '<td>' + d.nom + '</td><td>' + d.prenom + '</td>' +
-    '<td style="color:#0bff04;font-weight:700">' + d.pts + '<span class="pts-label"> pts</span></td>' +
-    '<td>' + d.cat + '</td></tr>';
+    '<td style="color:#0bff04;font-family:\'Bebas Neue\',sans-serif;font-size:1.3em">' + medal + d.rang + '</td>' +
+    '<td style="font-size:1.05em;font-weight:700;color:#f0f0f0">' + d.nom + '</td>' +
+    '<td style="font-size:1.05em;color:#ddd">' + d.prenom + '</td>' +
+    '<td style="color:#0bff04;font-weight:700;font-size:1.1em">' + d.pts + '<span class="pts-label">' + ptsLabel + '</span></td>' +
+    '<td style="font-size:0.95em">' + d.cat + '</td></tr>';
 }
 function filterClassement() {
   var q = document.getElementById('clSearch').value.trim().toLowerCase();
@@ -949,8 +951,7 @@ document.getElementById('lightbox').addEventListener('click', function(e) {
             <p style="margin-top:10px;">
                 Il est disponible lors de tous nos concours officiels organisés à Boves. N'hésitez pas à le solliciter en cas de litige ou de question sur le règlement.
             </p>
-        
-            </div>
+
         </div>
     </div>
 </section>
