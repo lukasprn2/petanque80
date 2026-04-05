@@ -5,24 +5,17 @@
     <title>Club de Pétanque de Boves</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <!-- PWA de base -->
     <link rel="manifest" href="/petanque80/manifest.json">
     <meta name="theme-color" content="#ffffff">
-
-    <!-- iOS (Safari ne lit pas le manifest) -->
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="default">
     <meta name="apple-mobile-web-app-title" content="Pétanque">
     <link rel="apple-touch-icon" href="/petanque80/logo.png">
     <link rel="apple-touch-icon" sizes="152x152" href="/petanque80/logo.png">
     <link rel="apple-touch-icon" sizes="180x180" href="/petanque80/logo.png">
-
-    <!-- Windows (Edge / épingler sur l'écran d'accueil) -->
     <meta name="msapplication-TileImage" content="/petanque80/logo.png">
     <meta name="msapplication-TileColor" content="#ffffff">
     <meta name="msapplication-tap-highlight" content="no">
-
-    <!-- Android / général -->
     <meta name="mobile-web-app-capable" content="yes">
     <link rel="icon" type="image/png" sizes="192x192" href="/petanque80/logo.png">
     <link rel="shortcut icon" href="/petanque80/logo.png">
@@ -44,13 +37,11 @@
         body { font-family: 'Nunito', sans-serif; background: #000000; color: #e8e8e8; font-size: 16px; line-height: 1.6; overflow: hidden; }
         body.ready { overflow: auto; }
 
-        /* BANNIÈRE */
         .banner { background: #000; text-align: center; padding: 16px 12px 12px; border-bottom: 3px solid var(--vert); }
         .banner img { max-height: 72px; display: block; margin: 0 auto 8px; }
         .banner p { color: var(--vert); font-family: 'Bebas Neue', sans-serif; font-size: 1em; letter-spacing: 2px; }
         @media (min-width: 768px) { .banner img { max-height: 100px; } .banner p { font-size: 1.15em; } }
 
-        /* NAV */
         .nav-wrapper { background: var(--gris-fonce); border-bottom: 2px solid var(--vert); position: sticky; top: 0; z-index: 200; }
         .nav-bar { display: flex; align-items: center; justify-content: space-between; height: var(--nav-h); padding: 0 16px; }
         .nav-brand { color: var(--vert); font-family: 'Bebas Neue', sans-serif; font-size: 1.2em; letter-spacing: 2px; text-decoration: none; }
@@ -78,13 +69,11 @@
             .nav-icon { display: none; }
         }
 
-        /* SECTIONS */
         section { padding: 34px 16px; max-width: 1100px; margin: 0 auto; }
         @media (min-width: 768px) { section { padding: 52px 24px; } }
         h2 { font-family: 'Bebas Neue', sans-serif; font-size: 1.75em; letter-spacing: 1.5px; color: white; border-left: 5px solid var(--vert); padding-left: 14px; margin-bottom: 20px; }
         @media (min-width: 768px) { h2 { font-size: 2.1em; } }
 
-        /* CARDS */
         .card { background: var(--gris-card); border-left: 5px solid var(--vert); border-radius: 10px; padding: 16px 15px; margin: 14px 0; box-shadow: 0 4px 14px rgba(0,0,0,0.5); transition: transform 0.25s, box-shadow 0.25s; }
         .card:hover { transform: translateY(-5px); box-shadow: 0 8px 30px rgba(11,255,4,0.35), 0 0 15px rgba(11,255,4,0.2); }
         @media (min-width: 768px) { .card { padding: 22px 24px; } }
@@ -94,11 +83,28 @@
         .card ul { padding-left: 18px; }
         .card li { margin: 5px 0; }
 
-        /* PTS label mobile only */
+        /* RÉSEAUX SOCIAUX */
+        .social-links { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 18px; }
+        .social-btn { display: inline-flex; align-items: center; gap: 10px; padding: 12px 20px; border-radius: 12px; text-decoration: none; font-family: 'Nunito', sans-serif; font-weight: 700; font-size: 0.92em; border: 2px solid transparent; transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s, opacity 0.2s; }
+        .social-btn:hover { transform: translateY(-3px); opacity: 0.92; }
+        .social-btn svg { width: 22px; height: 22px; flex-shrink: 0; }
+        .social-btn.facebook { background: #1877F2; color: #fff; }
+        .social-btn.facebook:hover { box-shadow: 0 6px 20px rgba(24,119,242,0.5); border-color: #fff2; }
+        .social-btn.tiktok { background: #010101; color: #fff; border-color: #333; }
+        .social-btn.tiktok:hover { box-shadow: 0 6px 20px rgba(255,255,255,0.15); border-color: #fff3; }
+        .social-btn.instagram { background: linear-gradient(135deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%); color: #fff; }
+        .social-btn.instagram:hover { box-shadow: 0 6px 20px rgba(220,39,67,0.5); }
+        .social-btn.maps { background: #fff; color: #222; }
+        .social-btn.maps:hover { box-shadow: 0 6px 20px rgba(255,255,255,0.2); border-color: #ddd; }
+
+        /* CONTACT INFO */
+        .contact-info { display: flex; flex-direction: column; gap: 10px; margin-bottom: 18px; }
+        .contact-info a { color: var(--vert); text-decoration: none; font-weight: 600; }
+        .contact-info a:hover { text-decoration: underline; }
+
         .pts-label { display: none; font-size: 0.75em; font-weight: 600; color: #0bff04; }
         @media (max-width: 639px) { .pts-label { display: inline; } }
 
-        /* TABLE */
         .table-wrap { border-radius: 10px; }
         table { width: 100%; border-collapse: collapse; background: var(--gris-card); font-size: 0.88em; }
 
@@ -129,7 +135,6 @@
             table th { background: var(--vert); color: black; font-family: 'Bebas Neue', sans-serif; font-size: 1em; letter-spacing: 1px; padding: 10px 12px; border: 1px solid #222; text-align: left; }
         }
 
-        /* BUREAU */
         .bureau { display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px; }
         @media (min-width: 500px) { .bureau { grid-template-columns: repeat(3, 1fr); gap: 16px; } }
         @media (min-width: 900px) { .bureau { grid-template-columns: repeat(4, 1fr); gap: 20px; } }
@@ -148,7 +153,24 @@
         .bureau-sep { width: 32px; height: 2px; background: var(--vert); border-radius: 2px; margin: 8px auto 10px; opacity: 0.5; transition: opacity 0.28s, width 0.28s; }
         .bureau-member:hover .bureau-sep { opacity: 1; width: 48px; }
 
-        /* FAQ */
+        /* SECTION ARBITRE */
+        #arbitre { background: linear-gradient(160deg, #0a0a0a 0%, #0e140e 100%); border-top: 1px solid #222; border-bottom: 1px solid #222; }
+        .arbitre-card { display: flex; flex-direction: column; align-items: center; gap: 24px; background: var(--gris-card); border: 1px solid #363636; border-radius: 18px; padding: 32px 24px; position: relative; overflow: hidden; transition: box-shadow 0.25s; }
+        @media (min-width: 600px) { .arbitre-card { flex-direction: row; align-items: flex-start; } }
+        .arbitre-card:hover { box-shadow: 0 8px 28px rgba(11,255,4,0.2); }
+        .arbitre-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 4px; background: linear-gradient(90deg, var(--vert), #09cc03); }
+        .arbitre-photo-wrap { flex-shrink: 0; display: flex; flex-direction: column; align-items: center; gap: 12px; }
+        .arbitre-photo-wrap img { width: 130px; height: 130px; border-radius: 50%; object-fit: cover; border: 4px solid var(--vert); box-shadow: 0 0 0 6px rgba(11,255,4,0.12), 0 8px 24px rgba(0,0,0,0.5); }
+        .arbitre-badge { background: rgba(11,255,4,0.1); border: 1.5px solid rgba(11,255,4,0.4); color: var(--vert); font-family: 'Bebas Neue', sans-serif; font-size: 0.85em; letter-spacing: 2px; padding: 5px 14px; border-radius: 30px; text-align: center; }
+        .arbitre-info { flex: 1; }
+        .arbitre-info h3 { font-family: 'Bebas Neue', sans-serif; font-size: 2em; letter-spacing: 2px; color: #f0f0f0; margin-bottom: 6px; }
+        .arbitre-info .arbitre-subtitle { color: var(--vert); font-weight: 700; font-size: 0.95em; margin-bottom: 14px; }
+        .arbitre-info p { color: #b0b0b0; font-size: 0.92em; line-height: 1.7; }
+        .arbitre-stats { display: flex; gap: 16px; margin-top: 18px; flex-wrap: wrap; }
+        .arbitre-stat { background: rgba(11,255,4,0.06); border: 1px solid rgba(11,255,4,0.2); border-radius: 10px; padding: 10px 16px; text-align: center; }
+        .arbitre-stat .num { font-family: 'Bebas Neue', sans-serif; font-size: 1.8em; color: var(--vert); line-height: 1; display: block; }
+        .arbitre-stat .lbl { font-size: 0.7em; color: #888; text-transform: uppercase; letter-spacing: 1px; }
+
         .faq details { background: var(--gris-card); border-left: 5px solid var(--vert); border-radius: 8px; padding: 14px 16px; margin-bottom: 11px; }
         .faq summary { font-weight: 700; color: #f0f0f0; cursor: pointer; font-size: 0.94em; list-style: none; display: flex; justify-content: space-between; align-items: center; }
         .faq summary::-webkit-details-marker { display: none; }
@@ -156,7 +178,6 @@
         .faq details[open] summary::after { content: '－'; }
         .faq p { color: #c0c0c0; margin-top: 10px; font-size: 0.91em; }
 
-        /* COMMANDE */
         #commande-wrap { background: linear-gradient(160deg, #0a0a0a 0%, #0e140e 100%); border-top: 1px solid #333; border-bottom: 1px solid #333; }
         .commande-intro { position: relative; overflow: hidden; background: #181818; border-radius: 14px; padding: 22px 20px 22px 24px; margin-bottom: 14px; border: 1px solid #363636; display: flex; gap: 18px; align-items: center; transition: box-shadow 0.25s; }
         .commande-intro:hover { box-shadow: 0 6px 24px rgba(11,255,4,0.25); }
@@ -201,7 +222,6 @@
         .new-order-btn { background: transparent; color: var(--vert); border: 2px solid var(--vert); padding: 11px 26px; border-radius: 8px; font-family: 'Bebas Neue', sans-serif; letter-spacing: 2px; font-size: 1.05em; cursor: pointer; margin-top: 14px; transition: background 0.2s, color 0.2s; }
         .new-order-btn:hover { background: var(--vert); color: black; }
 
-        /* DOCS */
         .docs-grid { display: grid; grid-template-columns: 1fr; gap: 14px; }
         @media (min-width: 600px) { .docs-grid { grid-template-columns: 1fr 1fr; } }
         .doc-card { display: flex; align-items: center; gap: 16px; background: var(--gris-card); border: 1px solid #363636; border-radius: 12px; padding: 18px 16px; text-decoration: none; transition: border-color 0.2s, transform 0.2s, box-shadow 0.2s; }
@@ -212,7 +232,6 @@
         .doc-dl { margin-left: auto; flex-shrink: 0; color: var(--vert); font-size: 1.3em; opacity: 0.7; transition: opacity 0.2s; }
         .doc-card:hover .doc-dl { opacity: 1; }
 
-        /* AFFILIATION */
         .affiliation-card { display: flex; flex-direction: column; gap: 16px; background: var(--gris-card); border: 1px solid #363636; border-radius: 14px; padding: 24px 20px; position: relative; overflow: hidden; transition: box-shadow 0.25s; }
         .affiliation-card:hover { box-shadow: 0 8px 28px rgba(11,255,4,0.25); }
         .affiliation-card::after { content: ''; position: absolute; top: 0; right: 0; width: 4px; height: 100%; background: linear-gradient(to bottom, var(--vert), #05a802); border-radius: 0 14px 14px 0; }
@@ -224,31 +243,13 @@
         .affiliation-link { display: inline-flex; align-items: center; gap: 8px; background: var(--vert); color: #000; font-family: 'Bebas Neue', sans-serif; font-size: 1em; letter-spacing: 1.5px; padding: 10px 18px; border-radius: 8px; text-decoration: none; transition: background 0.2s, transform 0.15s; }
         .affiliation-link:hover { background: var(--vert-dark); transform: translateY(-2px); }
 
-        /* CONTACT */
         .photo-adresse { width: 100%; max-width: 480px; height: auto; display: block; margin: 14px auto 0; border-radius: 8px; }
 
-        /* FOOTER & BTN TOP */
         footer { background: #161616; border-top: 2px solid #2e2e2e; color: #777; text-align: center; padding: 20px 16px; font-size: 0.87em; margin-top: 24px; }
         #btnTop { position: fixed; bottom: 18px; right: 14px; display: none; background: var(--vert); color: black; border: none; width: 44px; height: 44px; border-radius: 10px; font-size: 1.2em; font-weight: bold; cursor: pointer; box-shadow: 0 4px 14px rgba(0,0,0,0.5); z-index: 300; transition: background 0.2s, transform 0.15s; }
         #btnTop:hover { background: var(--vert-dark); transform: translateY(-2px); }
 
-        /* BANNIÈRE INSTALLATION PWA */
-        #pwa-banner {
-            display: none;
-            position: fixed;
-            bottom: 70px;
-            left: 50%;
-            transform: translateX(-50%);
-            background: #1a1a1a;
-            border: 2px solid var(--vert);
-            border-radius: 14px;
-            padding: 14px 18px;
-            z-index: 400;
-            box-shadow: 0 8px 30px rgba(11,255,4,0.3);
-            max-width: 340px;
-            width: calc(100% - 32px);
-            animation: slideUp 0.4s ease;
-        }
+        #pwa-banner { display: none; position: fixed; bottom: 70px; left: 50%; transform: translateX(-50%); background: #1a1a1a; border: 2px solid var(--vert); border-radius: 14px; padding: 14px 18px; z-index: 400; box-shadow: 0 8px 30px rgba(11,255,4,0.3); max-width: 340px; width: calc(100% - 32px); animation: slideUp 0.4s ease; }
         @keyframes slideUp { from { opacity:0; transform: translateX(-50%) translateY(20px); } to { opacity:1; transform: translateX(-50%) translateY(0); } }
         #pwa-banner .pwa-content { display: flex; align-items: center; gap: 12px; }
         #pwa-banner img { width: 44px; height: 44px; border-radius: 10px; border: 2px solid var(--vert); flex-shrink: 0; }
@@ -260,7 +261,10 @@
         #pwa-dismiss-btn { background: transparent; color: #777; border: 1px solid #333; padding: 10px 14px; border-radius: 8px; font-size: 0.85em; cursor: pointer; transition: color 0.2s, border-color 0.2s; }
         #pwa-dismiss-btn:hover { color: #ccc; border-color: #555; }
 
-        /* CALENDRIER */
+        /* ==============================
+           CALENDRIER – couleurs inversées
+           Championnats = BLANC / Concours Boves = VERT
+        ============================== */
         .cal-box { background: var(--gris-card); border-radius: 14px; overflow: hidden; border: 1px solid #363636; }
         .cal-header { display: flex; align-items: center; justify-content: space-between; padding: 14px 18px; background: #181818; border-bottom: 2px solid var(--vert); }
         .cal-header h3 { font-family: 'Bebas Neue', sans-serif; font-size: 1.4em; letter-spacing: 2px; color: white; margin: 0; text-transform: uppercase; }
@@ -277,29 +281,32 @@
         .cal-day.has-event .cal-day-num { color: white; }
         .cal-dots { display: flex; gap: 3px; margin-top: 4px; flex-wrap: wrap; justify-content: center; }
         .cal-dot { width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0; }
-        .cal-dot.champ { background: var(--vert); box-shadow: 0 0 6px rgba(11,255,4,0.7); }
-        .cal-dot.concours { background: #ffffff; box-shadow: 0 0 6px rgba(255,255,255,0.5); }
+        /* INVERSÉ : championnats = blanc, concours = vert */
+        .cal-dot.champ    { background: #ffffff; box-shadow: 0 0 6px rgba(255,255,255,0.6); }
+        .cal-dot.concours { background: var(--vert); box-shadow: 0 0 6px rgba(11,255,4,0.7); }
         .cal-detail { margin-top: 16px; min-height: 60px; padding: 0 2px 14px; }
         .cal-detail-title { font-size: 0.75em; text-transform: uppercase; letter-spacing: 1.5px; color: #555; padding: 10px 18px 8px; font-weight: 700; }
         .cal-empty-msg { text-align: center; color: #555; font-size: 0.88em; padding: 20px; }
         .cal-event-card { background: #181818; border-radius: 8px; padding: 10px 14px; margin: 6px 10px; box-shadow: 0 2px 10px rgba(0,0,0,0.2); }
-        .cal-event-card.type-champ { border-left: 4px solid var(--vert); }
-        .cal-event-card.type-concours { border-left: 4px solid #ffffff; }
+        /* INVERSÉ : championnats = blanc, concours = vert */
+        .cal-event-card.type-champ    { border-left: 4px solid #ffffff; }
+        .cal-event-card.type-concours { border-left: 4px solid var(--vert); }
         .cal-event-card .ev-name { font-weight: 700; color: #f0f0f0; font-size: 0.92em; margin-bottom: 4px; }
         .cal-event-card .ev-type { font-size: 0.7em; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; padding: 2px 8px; border-radius: 20px; display: inline-block; margin-bottom: 6px; }
-        .cal-event-card.type-champ .ev-type { background: rgba(11,255,4,0.12); color: var(--vert); border: 1px solid rgba(11,255,4,0.3); }
-        .cal-event-card.type-concours .ev-type { background: rgba(255,255,255,0.08); color: #ddd; border: 1px solid rgba(255,255,255,0.2); }
+        /* INVERSÉ : championnats = blanc, concours = vert */
+        .cal-event-card.type-champ    .ev-type { background: rgba(255,255,255,0.1); color: #eee; border: 1px solid rgba(255,255,255,0.35); }
+        .cal-event-card.type-concours .ev-type { background: rgba(11,255,4,0.12); color: var(--vert); border: 1px solid rgba(11,255,4,0.3); }
         .cal-event-card .ev-detail { font-size: 0.8em; color: #aaa; display: flex; gap: 6px; align-items: center; margin-top: 2px; }
         .cal-event-card .ev-detail span { color: #ccc; }
-        /* LÉGENDE */
-        .cal-legend { display: flex; gap: 20px; padding: 12px 18px; background: #111; border-top: 1px solid #2a2a2a; flex-wrap: wrap; }
-        .cal-legend-item { display: flex; align-items: center; gap: 8px; font-size: 0.8em; color: #aaa; }
-        .cal-legend-dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
-        .cal-legend-dot.champ { background: var(--vert); box-shadow: 0 0 6px rgba(11,255,4,0.7); }
-        .cal-legend-dot.concours { background: #ffffff; box-shadow: 0 0 6px rgba(255,255,255,0.5); }
+        /* LÉGENDE agrandie */
+        .cal-legend { display: flex; gap: 28px; padding: 16px 20px; background: #111; border-top: 1px solid #2a2a2a; flex-wrap: wrap; }
+        .cal-legend-item { display: flex; align-items: center; gap: 10px; font-size: 0.95em; font-weight: 600; color: #ccc; }
+        .cal-legend-dot { width: 14px; height: 14px; border-radius: 50%; flex-shrink: 0; }
+        /* INVERSÉ : championnats = blanc, concours = vert */
+        .cal-legend-dot.champ    { background: #ffffff; box-shadow: 0 0 8px rgba(255,255,255,0.6); }
+        .cal-legend-dot.concours { background: var(--vert); box-shadow: 0 0 8px rgba(11,255,4,0.7); }
         @media (min-width: 480px) { .cal-day { min-height: 60px; } .cal-day-num { font-size: 0.95em; } }
 
-        /* STATS / COMPTEUR */
         .stats-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px; }
         @media (min-width: 600px) { .stats-grid { grid-template-columns: repeat(4, 1fr); } }
         .stat-card { background: var(--gris-card); border: 1px solid #2a2a2a; border-radius: 14px; padding: 22px 16px; text-align: center; transition: transform 0.25s, box-shadow 0.25s, border-color 0.25s; }
@@ -308,22 +315,6 @@
         .stat-num { font-family: 'Bebas Neue', sans-serif; font-size: 2.8em; color: var(--vert); line-height: 1; display: block; }
         .stat-label { font-size: 0.75em; color: #888; text-transform: uppercase; letter-spacing: 1px; margin-top: 4px; }
 
-        /* RÉSULTATS */
-        .result-card { background: var(--gris-card); border: 1px solid #2a2a2a; border-radius: 12px; padding: 16px; margin-bottom: 12px; transition: border-color 0.2s, box-shadow 0.2s; }
-        .result-card:hover { border-color: var(--vert); box-shadow: 0 4px 18px rgba(11,255,4,0.15); }
-        .result-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; flex-wrap: wrap; gap: 8px; }
-        .result-title { font-family: 'Bebas Neue', sans-serif; font-size: 1.1em; letter-spacing: 1px; color: #f0f0f0; }
-        .result-date { font-size: 0.75em; color: #666; background: #111; padding: 3px 10px; border-radius: 20px; }
-        .result-podium { display: flex; flex-direction: column; gap: 6px; }
-        .result-place { display: flex; align-items: center; gap: 10px; padding: 8px 12px; border-radius: 8px; background: #111; }
-        .result-place.gold { border-left: 3px solid #ffd700; }
-        .result-place.silver { border-left: 3px solid #c0c0c0; }
-        .result-place.bronze { border-left: 3px solid #cd7f32; }
-        .result-medal { font-size: 1.2em; flex-shrink: 0; }
-        .result-name { color: #f0f0f0; font-weight: 700; font-size: 0.9em; }
-        .result-detail { color: #888; font-size: 0.78em; margin-left: auto; }
-
-        /* GALERIE */
         .gallery-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; }
         @media (min-width: 500px) { .gallery-grid { grid-template-columns: repeat(3, 1fr); } }
         @media (min-width: 900px) { .gallery-grid { grid-template-columns: repeat(4, 1fr); } }
@@ -334,25 +325,19 @@
         .gallery-item:hover .gallery-overlay { opacity: 1; }
         .gallery-placeholder { width: 100%; height: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center; color: #444; font-size: 0.8em; gap: 8px; }
         .gallery-placeholder span { font-size: 2em; }
-        .gallery-add-btn { display: flex; align-items: center; justify-content: center; gap: 8px; background: rgba(11,255,4,0.06); border: 2px dashed rgba(11,255,4,0.25); color: var(--vert); border-radius: 10px; padding: 14px; margin-top: 12px; font-size: 0.85em; font-weight: 700; cursor: default; }
-        /* LIGHTBOX */
         .lightbox { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.95); z-index: 9000; align-items: center; justify-content: center; }
         .lightbox.open { display: flex; }
         .lightbox img { max-width: 90vw; max-height: 90vh; border-radius: 8px; object-fit: contain; }
         .lightbox-close { position: absolute; top: 16px; right: 20px; color: #fff; font-size: 2em; cursor: pointer; background: none; border: none; line-height: 1; }
 
-        /* PARTENAIRES */
         .partners-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px; }
         @media (min-width: 500px) { .partners-grid { grid-template-columns: repeat(3, 1fr); } }
         @media (min-width: 800px) { .partners-grid { grid-template-columns: repeat(4, 1fr); } }
         .partner-card { background: var(--gris-card); border: 1px solid #2a2a2a; border-radius: 12px; padding: 20px 14px; display: flex; flex-direction: column; align-items: center; gap: 10px; text-align: center; transition: border-color 0.2s, transform 0.2s, box-shadow 0.2s; text-decoration: none; }
         .partner-card:hover { border-color: var(--vert); transform: translateY(-4px); box-shadow: 0 8px 24px rgba(11,255,4,0.2); }
         .partner-logo { width: 70px; height: 70px; border-radius: 10px; object-fit: contain; background: #111; padding: 6px; }
-        .partner-logo-placeholder { width: 70px; height: 70px; border-radius: 10px; background: #111; display: flex; align-items: center; justify-content: center; font-size: 2em; }
         .partner-name { color: #f0f0f0; font-weight: 700; font-size: 0.88em; }
-        .partner-desc { color: #777; font-size: 0.75em; }
 
-        /* NOTIF BANNER */
         #notif-banner { display: none; position: fixed; bottom: 80px; left: 50%; transform: translateX(-50%); background: #1a1a1a; border: 2px solid #ffd700; border-radius: 14px; padding: 14px 18px; z-index: 500; box-shadow: 0 8px 30px rgba(255,215,0,0.2); max-width: 340px; width: calc(100% - 32px); animation: slideUp 0.4s ease; }
         #notif-banner .notif-content { display: flex; align-items: center; gap: 12px; }
         #notif-banner .notif-icon { font-size: 1.8em; flex-shrink: 0; }
@@ -467,12 +452,12 @@
     </nav>
 </div>
 
+<!-- ===================== ACCUEIL ===================== -->
 <section id="accueil">
     <h2>Bienvenue au club de Boves</h2>
     <div class="card">
         <p>Notre club accueille tous les passionnés de pétanque, débutants comme confirmés. Nous organisons des concours toute l'année et participons aux championnats départementaux.</p>
     </div>
-    <!-- COMPTEUR -->
     <div class="stats-grid" style="margin-top:20px;">
         <div class="stat-card">
             <div class="stat-icon">👥</div>
@@ -498,7 +483,6 @@
 </section>
 
 <script>
-// Compteur animé
 (function() {
     function animateCount(el, target, duration) {
         var start = 0;
@@ -522,24 +506,62 @@
 })();
 </script>
 
+<!-- ===================== CONTACT ===================== -->
 <section id="contact">
     <h2>Contacts</h2>
     <div class="card">
-        <p>📧 <a id="mail-contact"></a></p>
-        <script>(function(){var u='petanque80440',d='gmail.com',el=document.getElementById('mail-contact');el.href='mailto:'+u+'@'+d;el.textContent=u+'@'+d;})();</script>
-        <p>📞 <a href="tel:0682489217">06 24 43 12 84</a></p>
-        <p>📘 <a href="https://www.facebook.com/petanque.boves/" target="_blank" rel="noopener">Facebook – Pétanque Boves</a></p>
-        <p>🎵 <a href="https://www.tiktok.com/@petanqueboves80" target="_blank" rel="noopener">TikTok – PétanqueBoves80</a></p>
-        <p>📸 <a href="https://www.instagram.com/petanque_de_boves/" target="_blank" rel="noopener">Instagram – petanque_de_boves</a></p>
-        <p>📍 <a href="https://www.google.com/maps/place/49%C2%B050'31.5%22N+2%C2%B023'36.6%22E" target="_blank" rel="noopener">Chemin du Stade – Boves</a></p>
+        <div class="contact-info">
+            <p>📧 <a id="mail-contact"></a></p>
+            <script>(function(){var u='petanque80440',d='gmail.com',el=document.getElementById('mail-contact');el.href='mailto:'+u+'@'+d;el.textContent=u+'@'+d;})();</script>
+            <p>📞 <a href="tel:0682489217" style="color:var(--vert);font-weight:600;text-decoration:none;">06 24 43 12 84</a></p>
+            <p>📍 <a href="https://www.google.com/maps/place/49%C2%B050'31.5%22N+2%C2%B023'36.6%22E" target="_blank" rel="noopener" style="color:var(--vert);font-weight:600;text-decoration:none;">Chemin du Stade – Boves</a></p>
+        </div>
+
+        <!-- BOUTONS RÉSEAUX SOCIAUX -->
+        <div class="social-links">
+            <!-- Facebook -->
+            <a href="https://www.facebook.com/petanque.boves/" target="_blank" rel="noopener" class="social-btn facebook">
+                <svg viewBox="0 0 24 24" fill="white" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
+                </svg>
+                Facebook
+            </a>
+
+            <!-- TikTok -->
+            <a href="https://www.tiktok.com/@petanqueboves80" target="_blank" rel="noopener" class="social-btn tiktok">
+                <svg viewBox="0 0 24 24" fill="white" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M19.59 6.69a4.83 4.83 0 01-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 01-2.88 2.5 2.89 2.89 0 01-2.89-2.89 2.89 2.89 0 012.89-2.89c.28 0 .54.04.79.1V9.01a6.34 6.34 0 00-.79-.05 6.34 6.34 0 00-6.34 6.34 6.34 6.34 0 006.34 6.34 6.34 6.34 0 006.33-6.34V8.79a8.18 8.18 0 004.78 1.52V6.86a4.85 4.85 0 01-1.01-.17z"/>
+                </svg>
+                TikTok
+            </a>
+
+            <!-- Instagram -->
+            <a href="https://www.instagram.com/petanque_de_boves/" target="_blank" rel="noopener" class="social-btn instagram">
+                <svg viewBox="0 0 24 24" fill="white" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
+                </svg>
+                Instagram
+            </a>
+
+            <!-- Google Maps -->
+            <a href="https://www.google.com/maps/place/49%C2%B050'31.5%22N+2%C2%B023'36.6%22E" target="_blank" rel="noopener" class="social-btn maps">
+                <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M12 0C7.802 0 4 3.403 4 7.602 4 11.8 7.469 16.812 12 24c4.531-7.188 8-12.2 8-16.398C20 3.403 16.199 0 12 0zm0 11c-1.657 0-3-1.343-3-3s1.343-3 3-3 3 1.343 3 3-1.343 3-3 3z" fill="#EA4335"/>
+                    <path d="M12 0C7.802 0 4 3.403 4 7.602c0 .911.12 1.79.343 2.632L12 24l7.657-13.766A8.015 8.015 0 0020 7.602C20 3.403 16.199 0 12 0zm0 11c-1.657 0-3-1.343-3-3s1.343-3 3-3 3 1.343 3 3-1.343 3-3 3z" fill="#EA4335" opacity=".2"/>
+                    <path d="M12 2C8.356 2 5.5 4.956 5.5 8.6c0 3.2 2.754 7.4 6.5 13.2 3.746-5.8 6.5-10 6.5-13.2C18.5 4.956 15.644 2 12 2zm0 9c-1.657 0-3-1.343-3-3s1.343-3 3-3 3 1.343 3 3-1.343 3-3 3z" fill="#C5221F"/>
+                    <circle cx="12" cy="8" r="3" fill="#fff"/>
+                </svg>
+                Itinéraire
+            </a>
+        </div>
+
         <img src="https://lukasprn2.github.io/petanque80/adresse.jpg" class="photo-adresse" alt="Adresse du club">
     </div>
 </section>
 
-<!-- ===================== CALENDRIER UNIFIÉ ===================== -->
+<!-- ===================== CALENDRIER – Commence en avril ===================== -->
 <section id="calendrier">
     <h2>Calendrier 2026</h2>
-
     <div class="cal-box">
         <div class="cal-header">
             <button class="cal-arrow" id="calPrev">&#8592;</button>
@@ -562,147 +584,140 @@
     </div>
 
 <script>
-    (function() {
-        var EVENTS = [
-            /* ── CONCOURS À BOVES ── */
-            {type:'concours', m:3,  d:14, nom:'Doublette Officielle',      heure:'14h00', lieu:'Boves',  limite:'jet du but'},
-            {type:'concours', m:4,  d:14, nom:'Doublette Vétérans',        heure:'14h00', lieu:'Boves',  limite:'jet du but'},
-            {type:'concours', m:5,  d:9,  nom:'Doublette Mixte Officielle',heure:'14h00', lieu:'Boves',  limite:'jet du but'},
-            {type:'concours', m:5,  d:19, nom:'Doublette Vétérans',        heure:'09h00', lieu:'Boves',  limite:'jet du but'},
-            {type:'concours', m:6,  d:19, nom:'Triplette Vétérans',        heure:'09h00', lieu:'Boves',  limite:'jet du but'},
-            {type:'concours', m:6,  d:20, nom:'Triplette Officielle',      heure:'09h00', lieu:'Boves',  limite:'jet du but'},
-            {type:'concours', m:7,  d:7,  nom:'Doublette Vétérans',        heure:'14h00', lieu:'Boves',  limite:'jet du but'},
-            {type:'concours', m:9,  d:6,  nom:'Doublette Officielle',      heure:'14h00', lieu:'Boves',  limite:'jet du but'},
-            {type:'concours', m:10, d:6,  nom:'Doublette Vétérans',        heure:'14h00', lieu:'Boves',  limite:'jet du but'},
-            {type:'concours', m:11, d:21, nom:'Doublette Interne',         heure:'13h30', lieu:'Boves',  limite:'jet du but'},
-            {type:'concours', m:12, d:5,  nom:'Doublette Interne',         heure:'13h30', lieu:'Boves',  limite:'jet du but'},
-            /* ── CHAMPIONNATS DE LA SOMME ── */
-            {type:'champ', m:3, d:21, nom:'Triplette Promotion',      heure:'10h00', lieu:'Flixecourt',                    limite:'12/3'},
-            {type:'champ', m:3, d:22, nom:'Reprise',                  heure:'9h00',  lieu:'Flixecourt',                    limite:''},
-            {type:'champ', m:3, d:28, nom:'TT Senior Masc.',          heure:'10h00', lieu:'Flixecourt',                    limite:'19/3'},
-            {type:'champ', m:3, d:28, nom:'Doub Senior Fém.',         heure:'14h00', lieu:'Flixecourt',                    limite:'19/3'},
-            {type:'champ', m:3, d:29, nom:'TT (J, C, M, B)',          heure:'9h30',  lieu:'Flixecourt',                    limite:'Sur place'},
-            {type:'champ', m:3, d:29, nom:'Reprise TT M et Doub. F',  heure:'9h00',  lieu:'Flixecourt',                    limite:''},
-            {type:'champ', m:4, d:4,  nom:'Trip. Jeu Provençal',      heure:'8h00',  lieu:'Albert',                        limite:'26/3'},
-            {type:'champ', m:4, d:5,  nom:'Reprise',                  heure:'9h00',  lieu:'Albert',                        limite:''},
-            {type:'champ', m:4, d:6,  nom:'Reprise',                  heure:'9h00',  lieu:'Albert',                        limite:''},
-            {type:'champ', m:4, d:11, nom:'Triplette Senior M',       heure:'10h00', lieu:'Feuquières',                    limite:'02/4'},
-            {type:'champ', m:4, d:11, nom:'Triplette Senior F',       heure:'14h00', lieu:'Feuquières',                    limite:'02/4'},
-            {type:'champ', m:4, d:12, nom:'Reprise',                  heure:'09h00', lieu:'Feuquières',                    limite:''},
-            {type:'champ', m:4, d:12, nom:'Triplette (J, C, M)',      heure:'09h30', lieu:'Feuquières',                    limite:'Sur place'},
-            {type:'champ', m:4, d:12, nom:'Tir précision J',          heure:'',      lieu:'Feuquières',                    limite:'Sur place'},
-            {type:'champ', m:4, d:18, nom:'Doublette Mixte',          heure:'10h00', lieu:'Fienvillers-Doullens',           limite:'09/4'},
-            {type:'champ', m:4, d:19, nom:'Reprise',                  heure:'9h00',  lieu:'Fienvillers-Doullens',           limite:''},
-            {type:'champ', m:4, d:22, nom:'Triplette Vétéran',        heure:'10h00', lieu:'Asptt Amiens',                  limite:'09/4'},
-            {type:'champ', m:4, d:23, nom:'Reprise',                  heure:'9h00',  lieu:'Asptt Amiens',                  limite:''},
-            {type:'champ', m:4, d:25, nom:'Doub Senior Masc.',        heure:'10h00', lieu:'Feuquières',                    limite:'16/4'},
-            {type:'champ', m:4, d:25, nom:'TT Senior Fém.',           heure:'14h00', lieu:'Feuquières',                    limite:''},
-            {type:'champ', m:4, d:26, nom:'Reprise',                  heure:'09h00', lieu:'Feuquières',                    limite:'16/4'},
-            {type:'champ', m:4, d:26, nom:'Doub (J, C, M, B)',        heure:'09h30', lieu:'Feuquières',                    limite:'Sur place'},
-            {type:'champ', m:5, d:2,  nom:'Triplette Mixte',          heure:'10h00', lieu:'Gamaches',                      limite:'23/4'},
-            {type:'champ', m:5, d:3,  nom:'Reprise',                  heure:'09h00', lieu:'Gamaches',                      limite:''},
-            {type:'champ', m:5, d:8,  nom:'Doub. Jeu Provençal',      heure:'8h00',  lieu:'Fienvillers / St Léger-lès-Domart', limite:'31/4'},
-            {type:'champ', m:5, d:9,  nom:'Reprise',                  heure:'9h00',  lieu:'Fienvillers / St Léger-lès-Domart', limite:''},
-            {type:'champ', m:5, d:10, nom:'Reprise',                  heure:'9h00',  lieu:'Fienvillers / St Léger-lès-Domart', limite:''}
-        ];
+(function() {
+    var EVENTS = [
+        /* ── CONCOURS À BOVES (mois >= 4) ── */
+        {type:'concours', m:4,  d:14, nom:'Doublette Vétérans',        heure:'14h00', lieu:'Boves',  limite:'jet du but'},
+        {type:'concours', m:5,  d:9,  nom:'Doublette Mixte Officielle',heure:'14h00', lieu:'Boves',  limite:'jet du but'},
+        {type:'concours', m:5,  d:19, nom:'Doublette Vétérans',        heure:'09h00', lieu:'Boves',  limite:'jet du but'},
+        {type:'concours', m:6,  d:19, nom:'Triplette Vétérans',        heure:'09h00', lieu:'Boves',  limite:'jet du but'},
+        {type:'concours', m:6,  d:20, nom:'Triplette Officielle',      heure:'09h00', lieu:'Boves',  limite:'jet du but'},
+        {type:'concours', m:7,  d:7,  nom:'Doublette Vétérans',        heure:'14h00', lieu:'Boves',  limite:'jet du but'},
+        {type:'concours', m:9,  d:6,  nom:'Doublette Officielle',      heure:'14h00', lieu:'Boves',  limite:'jet du but'},
+        {type:'concours', m:10, d:6,  nom:'Doublette Vétérans',        heure:'14h00', lieu:'Boves',  limite:'jet du but'},
+        {type:'concours', m:11, d:21, nom:'Doublette Interne',         heure:'13h30', lieu:'Boves',  limite:'jet du but'},
+        {type:'concours', m:12, d:5,  nom:'Doublette Interne',         heure:'13h30', lieu:'Boves',  limite:'jet du but'},
+        /* ── CHAMPIONNATS DE LA SOMME (mois >= 4) ── */
+        {type:'champ', m:4, d:4,  nom:'Trip. Jeu Provençal',      heure:'8h00',  lieu:'Albert',                        limite:'26/3'},
+        {type:'champ', m:4, d:5,  nom:'Reprise',                  heure:'9h00',  lieu:'Albert',                        limite:''},
+        {type:'champ', m:4, d:6,  nom:'Reprise',                  heure:'9h00',  lieu:'Albert',                        limite:''},
+        {type:'champ', m:4, d:11, nom:'Triplette Senior M',       heure:'10h00', lieu:'Feuquières',                    limite:'02/4'},
+        {type:'champ', m:4, d:11, nom:'Triplette Senior F',       heure:'14h00', lieu:'Feuquières',                    limite:'02/4'},
+        {type:'champ', m:4, d:12, nom:'Reprise',                  heure:'09h00', lieu:'Feuquières',                    limite:''},
+        {type:'champ', m:4, d:12, nom:'Triplette (J, C, M)',      heure:'09h30', lieu:'Feuquières',                    limite:'Sur place'},
+        {type:'champ', m:4, d:12, nom:'Tir précision J',          heure:'',      lieu:'Feuquières',                    limite:'Sur place'},
+        {type:'champ', m:4, d:18, nom:'Doublette Mixte',          heure:'10h00', lieu:'Fienvillers-Doullens',           limite:'09/4'},
+        {type:'champ', m:4, d:19, nom:'Reprise',                  heure:'9h00',  lieu:'Fienvillers-Doullens',           limite:''},
+        {type:'champ', m:4, d:22, nom:'Triplette Vétéran',        heure:'10h00', lieu:'Asptt Amiens',                  limite:'09/4'},
+        {type:'champ', m:4, d:23, nom:'Reprise',                  heure:'9h00',  lieu:'Asptt Amiens',                  limite:''},
+        {type:'champ', m:4, d:25, nom:'Doub Senior Masc.',        heure:'10h00', lieu:'Feuquières',                    limite:'16/4'},
+        {type:'champ', m:4, d:25, nom:'TT Senior Fém.',           heure:'14h00', lieu:'Feuquières',                    limite:''},
+        {type:'champ', m:4, d:26, nom:'Reprise',                  heure:'09h00', lieu:'Feuquières',                    limite:'16/4'},
+        {type:'champ', m:4, d:26, nom:'Doub (J, C, M, B)',        heure:'09h30', lieu:'Feuquières',                    limite:'Sur place'},
+        {type:'champ', m:5, d:2,  nom:'Triplette Mixte',          heure:'10h00', lieu:'Gamaches',                      limite:'23/4'},
+        {type:'champ', m:5, d:3,  nom:'Reprise',                  heure:'09h00', lieu:'Gamaches',                      limite:''},
+        {type:'champ', m:5, d:8,  nom:'Doub. Jeu Provençal',      heure:'8h00',  lieu:'Fienvillers / St Léger-lès-Domart', limite:'31/4'},
+        {type:'champ', m:5, d:9,  nom:'Reprise',                  heure:'9h00',  lieu:'Fienvillers / St Léger-lès-Domart', limite:''},
+        {type:'champ', m:5, d:10, nom:'Reprise',                  heure:'9h00',  lieu:'Fienvillers / St Léger-lès-Domart', limite:''}
+    ];
 
-        var MONTHS = ['Janvier','Février','Mars','Avril','Mai','Juin','Juillet','Août','Septembre','Octobre','Novembre','Décembre'];
-        var DAYS = ['Lun','Mar','Mer','Jeu','Ven','Sam','Dim'];
+    var MONTHS = ['Janvier','Février','Mars','Avril','Mai','Juin','Juillet','Août','Septembre','Octobre','Novembre','Décembre'];
+    var DAYS = ['Lun','Mar','Mer','Jeu','Ven','Sam','Dim'];
 
-        // Tous les mois qui ont au moins un événement
-        var eventMonths = [];
-        EVENTS.forEach(function(e) { if (eventMonths.indexOf(e.m - 1) === -1) eventMonths.push(e.m - 1); });
-        eventMonths.sort(function(a,b){return a-b;});
+    var eventMonths = [];
+    EVENTS.forEach(function(e) { if (eventMonths.indexOf(e.m - 1) === -1) eventMonths.push(e.m - 1); });
+    eventMonths.sort(function(a,b){return a-b;});
 
-        var curMonth = eventMonths[0];
-        var selectedDay = null;
+    var curMonth = eventMonths[0];
+    var selectedDay = null;
 
-        function getEventsForDay(month, day) {
-            return EVENTS.filter(function(e){ return e.m - 1 === month && e.d === day; });
-        }
-        function getDaysWithEvents(month) {
-            var days = {};
-            EVENTS.forEach(function(e) {
-                if (e.m - 1 === month) {
-                    if (!days[e.d]) days[e.d] = { champ: false, concours: false };
-                    days[e.d][e.type] = true;
-                }
-            });
-            return days;
-        }
-        function daysInMonth(month, year) { return new Date(year, month + 1, 0).getDate(); }
-        function firstDayOfMonth(month, year) { var d = new Date(year, month, 1).getDay(); return d === 0 ? 6 : d - 1; }
-
-        function renderCalendar() {
-            var year = 2026;
-            document.getElementById('calMonthLabel').textContent = MONTHS[curMonth] + ' 2026';
-            var idx = eventMonths.indexOf(curMonth);
-            document.getElementById('calPrev').disabled = idx <= 0;
-            document.getElementById('calPrev').style.opacity = idx <= 0 ? '0.3' : '1';
-            document.getElementById('calNext').disabled = idx >= eventMonths.length - 1;
-            document.getElementById('calNext').style.opacity = idx >= eventMonths.length - 1 ? '0.3' : '1';
-
-            var namesEl = document.getElementById('calDayNames');
-            namesEl.innerHTML = '';
-            DAYS.forEach(function(d) { var el = document.createElement('div'); el.className = 'cal-day-name'; el.textContent = d; namesEl.appendChild(el); });
-
-            var grid = document.getElementById('calGrid');
-            grid.innerHTML = '';
-            var total = daysInMonth(curMonth, year);
-            var firstDay = firstDayOfMonth(curMonth, year);
-            var eventDays = getDaysWithEvents(curMonth);
-
-            for (var i = 0; i < firstDay; i++) { var empty = document.createElement('div'); empty.className = 'cal-day empty'; grid.appendChild(empty); }
-
-            for (var d = 1; d <= total; d++) {
-                var cell = document.createElement('div');
-                var hasEv = !!eventDays[d];
-                cell.className = 'cal-day' + (hasEv ? ' has-event' : '') + (selectedDay === d && hasEv ? ' selected' : '');
-                var num = document.createElement('div'); num.className = 'cal-day-num'; num.textContent = d; cell.appendChild(num);
-                if (hasEv) {
-                    var dotsEl = document.createElement('div'); dotsEl.className = 'cal-dots';
-                    if (eventDays[d].champ) { var dot = document.createElement('div'); dot.className = 'cal-dot champ'; dotsEl.appendChild(dot); }
-                    if (eventDays[d].concours) { var dot2 = document.createElement('div'); dot2.className = 'cal-dot concours'; dotsEl.appendChild(dot2); }
-                    cell.appendChild(dotsEl);
-                    (function(day) { cell.addEventListener('click', function() { selectedDay = day; renderCalendar(); renderDetail(day); }); })(d);
-                }
-                grid.appendChild(cell);
+    function getEventsForDay(month, day) {
+        return EVENTS.filter(function(e){ return e.m - 1 === month && e.d === day; });
+    }
+    function getDaysWithEvents(month) {
+        var days = {};
+        EVENTS.forEach(function(e) {
+            if (e.m - 1 === month) {
+                if (!days[e.d]) days[e.d] = { champ: false, concours: false };
+                days[e.d][e.type] = true;
             }
-            if (selectedDay && eventDays[selectedDay]) { renderDetail(selectedDay); } else { renderDetail(null); }
-        }
-
-        function renderDetail(day) {
-            var detail = document.getElementById('calDetail');
-            if (!day) { detail.innerHTML = '<p class="cal-empty-msg">Cliquez sur un jour pour voir les événements</p>'; return; }
-            var evs = getEventsForDay(curMonth, day);
-            if (!evs.length) { detail.innerHTML = '<p class="cal-empty-msg">Aucun événement ce jour</p>'; return; }
-            var html = '<div class="cal-detail-title">📅 ' + day + ' ' + MONTHS[curMonth] + ' 2026</div>';
-            evs.forEach(function(e) {
-                var isChamp = e.type === 'champ';
-                html += '<div class="cal-event-card type-' + e.type + '">';
-                html += '<div class="ev-type">' + (isChamp ? '🏆 Championnat de la Somme' : '🎯 Concours à Boves') + '</div>';
-                html += '<div class="ev-name">' + e.nom + '</div>';
-                if (e.heure) html += '<div class="ev-detail">🕐 <span>' + e.heure + '</span></div>';
-                html += '<div class="ev-detail">📍 <span>' + e.lieu + '</span></div>';
-                if (e.limite) html += '<div class="ev-detail">⏰ Limite : <span>' + e.limite + '</span></div>';
-                html += '</div>';
-            });
-            detail.innerHTML = html;
-        }
-
-        document.getElementById('calPrev').addEventListener('click', function() {
-            var idx = eventMonths.indexOf(curMonth);
-            if (idx > 0) { curMonth = eventMonths[idx - 1]; selectedDay = null; renderCalendar(); }
         });
-        document.getElementById('calNext').addEventListener('click', function() {
-            var idx = eventMonths.indexOf(curMonth);
-            if (idx < eventMonths.length - 1) { curMonth = eventMonths[idx + 1]; selectedDay = null; renderCalendar(); }
+        return days;
+    }
+    function daysInMonth(month, year) { return new Date(year, month + 1, 0).getDate(); }
+    function firstDayOfMonth(month, year) { var d = new Date(year, month, 1).getDay(); return d === 0 ? 6 : d - 1; }
+
+    function renderCalendar() {
+        var year = 2026;
+        document.getElementById('calMonthLabel').textContent = MONTHS[curMonth] + ' 2026';
+        var idx = eventMonths.indexOf(curMonth);
+        document.getElementById('calPrev').disabled = idx <= 0;
+        document.getElementById('calPrev').style.opacity = idx <= 0 ? '0.3' : '1';
+        document.getElementById('calNext').disabled = idx >= eventMonths.length - 1;
+        document.getElementById('calNext').style.opacity = idx >= eventMonths.length - 1 ? '0.3' : '1';
+
+        var namesEl = document.getElementById('calDayNames');
+        namesEl.innerHTML = '';
+        DAYS.forEach(function(d) { var el = document.createElement('div'); el.className = 'cal-day-name'; el.textContent = d; namesEl.appendChild(el); });
+
+        var grid = document.getElementById('calGrid');
+        grid.innerHTML = '';
+        var total = daysInMonth(curMonth, year);
+        var firstDay = firstDayOfMonth(curMonth, year);
+        var eventDays = getDaysWithEvents(curMonth);
+
+        for (var i = 0; i < firstDay; i++) { var empty = document.createElement('div'); empty.className = 'cal-day empty'; grid.appendChild(empty); }
+
+        for (var d = 1; d <= total; d++) {
+            var cell = document.createElement('div');
+            var hasEv = !!eventDays[d];
+            cell.className = 'cal-day' + (hasEv ? ' has-event' : '') + (selectedDay === d && hasEv ? ' selected' : '');
+            var num = document.createElement('div'); num.className = 'cal-day-num'; num.textContent = d; cell.appendChild(num);
+            if (hasEv) {
+                var dotsEl = document.createElement('div'); dotsEl.className = 'cal-dots';
+                if (eventDays[d].champ) { var dot = document.createElement('div'); dot.className = 'cal-dot champ'; dotsEl.appendChild(dot); }
+                if (eventDays[d].concours) { var dot2 = document.createElement('div'); dot2.className = 'cal-dot concours'; dotsEl.appendChild(dot2); }
+                cell.appendChild(dotsEl);
+                (function(day) { cell.addEventListener('click', function() { selectedDay = day; renderCalendar(); renderDetail(day); }); })(d);
+            }
+            grid.appendChild(cell);
+        }
+        if (selectedDay && eventDays[selectedDay]) { renderDetail(selectedDay); } else { renderDetail(null); }
+    }
+
+    function renderDetail(day) {
+        var detail = document.getElementById('calDetail');
+        if (!day) { detail.innerHTML = '<p class="cal-empty-msg">Cliquez sur un jour pour voir les événements</p>'; return; }
+        var evs = getEventsForDay(curMonth, day);
+        if (!evs.length) { detail.innerHTML = '<p class="cal-empty-msg">Aucun événement ce jour</p>'; return; }
+        var html = '<div class="cal-detail-title">📅 ' + day + ' ' + MONTHS[curMonth] + ' 2026</div>';
+        evs.forEach(function(e) {
+            var isChamp = e.type === 'champ';
+            html += '<div class="cal-event-card type-' + e.type + '">';
+            html += '<div class="ev-type">' + (isChamp ? '🏆 Championnat de la Somme' : '🎯 Concours à Boves') + '</div>';
+            html += '<div class="ev-name">' + e.nom + '</div>';
+            if (e.heure) html += '<div class="ev-detail">🕐 <span>' + e.heure + '</span></div>';
+            html += '<div class="ev-detail">📍 <span>' + e.lieu + '</span></div>';
+            if (e.limite) html += '<div class="ev-detail">⏰ Limite : <span>' + e.limite + '</span></div>';
+            html += '</div>';
         });
-        renderCalendar();
-    })();
-    </script>
+        detail.innerHTML = html;
+    }
+
+    document.getElementById('calPrev').addEventListener('click', function() {
+        var idx = eventMonths.indexOf(curMonth);
+        if (idx > 0) { curMonth = eventMonths[idx - 1]; selectedDay = null; renderCalendar(); }
+    });
+    document.getElementById('calNext').addEventListener('click', function() {
+        var idx = eventMonths.indexOf(curMonth);
+        if (idx < eventMonths.length - 1) { curMonth = eventMonths[idx + 1]; selectedDay = null; renderCalendar(); }
+    });
+    renderCalendar();
+})();
+</script>
 </section>
 
+<!-- ===================== CLASSEMENT ===================== -->
 <section id="classement">
   <h2>Classement</h2>
   <input type="text" id="clSearch" placeholder="🔍 Rechercher un joueur…" oninput="filterClassement()"
@@ -750,6 +765,7 @@ function filterClassement() {
 filterClassement();
 </script>
 
+<!-- ===================== COMMANDE VÊTEMENTS ===================== -->
 <div id="commande-wrap">
 <section style="max-width:1100px; margin:0 auto; padding:34px 16px;">
     <h2>Commande de Vêtements</h2>
@@ -824,19 +840,9 @@ filterClassement();
 <!-- ===================== GALERIE ===================== -->
 <section id="galerie">
     <h2>Galerie Photos</h2>
-    <div class="gallery-grid" id="galleryGrid">
-        <!-- Les photos se chargent depuis le tableau PHOTOS ci-dessous -->
-    </div>
-    <!--
-        POUR AJOUTER DES PHOTOS :
-        1. Dépose tes images sur GitHub dans le dossier petanque80/
-        2. Dans le script ci-dessous, ajoute les dans le tableau PHOTOS :
-           { src: 'photo1.jpg', alt: 'Concours mars 2026' },
-           { src: 'photo2.jpg', alt: 'Equipe du club' },
-    -->
+    <div class="gallery-grid" id="galleryGrid"></div>
 </section>
 
-<!-- LIGHTBOX -->
 <div class="lightbox" id="lightbox">
     <button class="lightbox-close" onclick="closeLightbox()">✕</button>
     <img id="lightbox-img" src="" alt="">
@@ -844,16 +850,13 @@ filterClassement();
 
 <script>
 var PHOTOS = [
-    // Ajoute tes photos ici comme ceci :
     { src: 'photo1.webp', alt: 'Photo 1' },
     { src: 'photo2.webp', alt: 'Photo 2' },
     { src: 'photo3.webp', alt: 'Photo 3' },
     { src: 'photo4.webp', alt: 'Photo 4' },
 ];
-
 var grid = document.getElementById('galleryGrid');
 if (PHOTOS.length === 0) {
-    // Affiche des placeholders si pas de photos
     for (var i = 0; i < 4; i++) {
         var item = document.createElement('div');
         item.className = 'gallery-item';
@@ -861,7 +864,7 @@ if (PHOTOS.length === 0) {
         grid.appendChild(item);
     }
 } else {
-    PHOTOS.forEach(function(p, idx) {
+    PHOTOS.forEach(function(p) {
         var item = document.createElement('div');
         item.className = 'gallery-item';
         item.innerHTML = '<img src="' + p.src + '" alt="' + p.alt + '" loading="lazy"><div class="gallery-overlay">🔍</div>';
@@ -869,7 +872,6 @@ if (PHOTOS.length === 0) {
         grid.appendChild(item);
     });
 }
-
 function openLightbox(src, alt) {
     document.getElementById('lightbox-img').src = src;
     document.getElementById('lightbox-img').alt = alt;
@@ -889,22 +891,13 @@ document.getElementById('lightbox').addEventListener('click', function(e) {
 <section id="partenaires">
     <h2>Nos Partenaires</h2>
     <div class="partners-grid">
-        <!--
-            POUR PERSONNALISER LES PARTENAIRES :
-            - Remplace "Partenaire X" par le vrai nom du sponsor
-            - Remplace "À compléter" par une courte description (ex: "Boulangerie locale")
-            - Pour ajouter un logo : remplace <div class="partner-logo-placeholder">🏪</div>
-              par <img class="partner-logo" src="logo-partenaire.png" alt="Nom partenaire">
-        -->
         <div class="partner-card">
             <img class="partner-logo" src="amiens.webp" alt="Amiens Métropole">
             <span class="partner-name">Amiens Métropole</span>
-
         </div>
         <div class="partner-card">
             <img class="partner-logo" src="somme.webp" alt="Conseil départemental de la Somme">
             <span class="partner-name">Conseil départemental de la Somme</span>
-            
         </div>
         <div class="partner-card">
             <img class="partner-logo" src="estaminet.webp" alt="L'Estaminet Boves">
@@ -917,6 +910,7 @@ document.getElementById('lightbox').addEventListener('click', function(e) {
     </div>
 </section>
 
+<!-- ===================== BUREAU ===================== -->
 <section id="bureau">
     <h2>Membres du Conseil</h2>
     <div class="bureau">
@@ -935,6 +929,46 @@ document.getElementById('lightbox').addEventListener('click', function(e) {
     </div>
 </section>
 
+<!-- ===================== NOTRE ARBITRE (hors menu) ===================== -->
+<div id="arbitre" style="background: linear-gradient(160deg, #050505 0%, #0a120a 100%); border-top: 1px solid #222; border-bottom: 1px solid #222;">
+<section style="max-width:1100px; margin:0 auto; padding:34px 16px;">
+    <h2>Notre Arbitre</h2>
+    <div class="arbitre-card">
+        <div class="arbitre-photo-wrap">
+            <img src="arbitre.webp" alt="Notre arbitre officiel" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+            <div style="display:none;width:130px;height:130px;border-radius:50%;background:#1a1a1a;border:4px solid var(--vert);align-items:center;justify-content:center;font-size:3.5em;">🧑‍⚖️</div>
+            <div class="arbitre-badge">⚖️ Arbitre Officiel FFPJP</div>
+        </div>
+        <div class="arbitre-info">
+            <h3>Notre Arbitre</h3>
+            <div class="arbitre-subtitle">Arbitre officiel – Comité de la Somme</div>
+            <p>
+                Notre club a la chance de disposer d'un arbitre officiel agréé par la <strong style="color:var(--vert);">FFPJP</strong> et le <strong style="color:var(--vert);">Comité Départemental de la Somme</strong>. 
+                Sa présence lors de nos concours garantit le bon déroulement des parties dans le strict respect du règlement officiel, et permet à nos joueurs ainsi qu'aux visiteurs de bénéficier d'une compétition équitable et sérieuse.
+            </p>
+            <p style="margin-top:10px;">
+                Il est disponible lors de tous nos concours officiels organisés à Boves. N'hésitez pas à le solliciter en cas de litige ou de question sur le règlement.
+            </p>
+            <div class="arbitre-stats">
+                <div class="arbitre-stat">
+                    <span class="num">✅</span>
+                    <span class="lbl">Agréé FFPJP</span>
+                </div>
+                <div class="arbitre-stat">
+                    <span class="num">11</span>
+                    <span class="lbl">Concours 2026</span>
+                </div>
+                <div class="arbitre-stat">
+                    <span class="num">⚖️</span>
+                    <span class="lbl">Règlement officiel</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+</div>
+
+<!-- ===================== AFFILIATION ===================== -->
 <section id="affiliation">
     <h2>Notre Affiliation</h2>
     <div class="affiliation-card">
@@ -946,6 +980,7 @@ document.getElementById('lightbox').addEventListener('click', function(e) {
     </div>
 </section>
 
+<!-- ===================== RÈGLEMENTS ===================== -->
 <section id="docs">
     <h2>Règlements &amp; Documents</h2>
     <div class="docs-grid">
@@ -962,6 +997,7 @@ document.getElementById('lightbox').addEventListener('click', function(e) {
     </div>
 </section>
 
+<!-- ===================== FAQ ===================== -->
 <section id="faq" class="faq">
     <h2>FAQ</h2>
     <details><summary>Comment s'inscrire au club ?</summary><p>Vous pouvez vous inscrire lors des entraînements ou en contactant un membre du bureau par email à <a id="mail-faq"></a> ou par téléphone au 06 82 48 92 17.</p></details>
@@ -975,7 +1011,7 @@ document.getElementById('lightbox').addEventListener('click', function(e) {
     <details><summary>Comment commander les vêtements du club ?</summary><p>Rendez-vous dans la section Commande de Vêtements du site. Remplissez le formulaire avec vos tailles et le bureau vous recontactera. Le montant de la commande est de 100 €.</p></details>
     <details><summary>Quelle est la différence entre pétanque et jeu provençal ?</summary><p>En pétanque, les joueurs tirent les pieds joints et dans un cercle. En jeu provençal, les joueurs prennent un élan de 1 à 3 pas avant de lancer. Les deux disciplines sont pratiquées au club.</p></details>
     <details><summary>Y a-t-il des compétitions par équipes ?</summary><p>Oui ! Nous participons aux championnats en doublette (2 joueurs), triplette (3 joueurs) et tête-à-tête (1 contre 1). Il y a aussi des catégories mixtes, vétérans et jeunes.</p></details>
-    <details><summary>Comment suivre l'actualité du club ?</summary><p>Vous pouvez nous suivre sur Facebook (Pétanque Boves) et TikTok (PétanqueBoves80) pour les dernières nouvelles, résultats et annonces du club.</p></details>
+    <details><summary>Comment suivre l'actualité du club ?</summary><p>Vous pouvez nous suivre sur Facebook, TikTok et Instagram via les boutons présents dans la section Contacts.</p></details>
 </section>
 
 <footer>
@@ -986,7 +1022,7 @@ document.getElementById('lightbox').addEventListener('click', function(e) {
 
 <button onclick="topFunction()" id="btnTop" title="Retour en haut">↑</button>
 
-<!-- BANNIÈRE INSTALLATION PWA (Android / Desktop) -->
+<!-- BANNIÈRE INSTALLATION PWA -->
 <div id="pwa-banner">
     <div class="pwa-content">
         <img src="logo.webp" alt="Logo Pétanque Boves">
@@ -1001,7 +1037,7 @@ document.getElementById('lightbox').addEventListener('click', function(e) {
     </div>
 </div>
 
-<!-- BANDEAU NOTIFICATIONS PUSH -->
+<!-- NOTIFICATIONS PUSH -->
 <div id="notif-banner">
     <div class="notif-content">
         <div class="notif-icon">🔔</div>
@@ -1016,7 +1052,7 @@ document.getElementById('lightbox').addEventListener('click', function(e) {
     </div>
 </div>
 
-<!-- BANDEAU INSTALLATION iOS -->
+<!-- iOS INSTALL BANNER -->
 <div id="ios-install-banner" style="display:none;position:fixed;bottom:0;left:0;right:0;background:#1a1a1a;border-top:2px solid var(--vert);box-shadow:0 -4px 20px rgba(11,255,4,0.2);padding:14px 16px;z-index:9999;font-family:-apple-system,sans-serif;">
     <button onclick="dismissIosBanner()" style="position:absolute;top:10px;right:14px;background:none;border:none;font-size:20px;color:#888;cursor:pointer;line-height:1;">✕</button>
     <div style="display:flex;align-items:center;gap:12px;padding-right:24px;">
@@ -1066,7 +1102,6 @@ function calculerTotal() {
     });
     document.getElementById('prix-total').textContent = total + ' €';
     document.getElementById('montant-hidden').value = total + ' euros';
-    // Couleur : vert si > 0, gris sinon
     document.getElementById('prix-total').style.opacity = total > 0 ? '1' : '0.4';
 }
 calculerTotal();
@@ -1142,15 +1177,12 @@ function nouvelleCommande() {
     document.getElementById('orderForm').scrollIntoView({ behavior: 'smooth' });
 }
 
-// ===================== NOTIFICATIONS PUSH =====================
+// NOTIFICATIONS
 (function() {
     if (!('Notification' in window)) return;
     var dismissed = localStorage.getItem('notif-dismissed');
     if (Notification.permission === 'granted' || dismissed) return;
-    setTimeout(function() {
-        document.getElementById('notif-banner').style.display = 'block';
-    }, 8000);
-
+    setTimeout(function() { document.getElementById('notif-banner').style.display = 'block'; }, 8000);
     document.getElementById('notif-enable-btn').addEventListener('click', function() {
         Notification.requestPermission().then(function(permission) {
             document.getElementById('notif-banner').style.display = 'none';
@@ -1168,7 +1200,7 @@ function nouvelleCommande() {
     });
 })();
 
-// ===================== PWA – Android / Desktop =====================
+// PWA
 var deferredPrompt = null;
 window.addEventListener('beforeinstallprompt', function(e) {
     e.preventDefault();
@@ -1185,7 +1217,7 @@ document.getElementById('pwa-dismiss-btn').addEventListener('click', function() 
 });
 window.addEventListener('appinstalled', function() { document.getElementById('pwa-banner').style.display = 'none'; });
 
-// ===================== PWA – iOS =====================
+// iOS
 function dismissIosBanner() {
     document.getElementById('ios-install-banner').style.display = 'none';
     localStorage.setItem('ios-banner-dismissed', '1');
@@ -1199,7 +1231,7 @@ function dismissIosBanner() {
     }
 })();
 
-// ===================== SERVICE WORKER =====================
+// SERVICE WORKER
 if ('serviceWorker' in navigator) {
     window.addEventListener('load', function() {
         navigator.serviceWorker.register('/petanque80/sw.js')
