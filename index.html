@@ -459,11 +459,12 @@
         <p>Notre club accueille tous les passionnés de pétanque, débutants comme confirmés. Nous organisons des concours toute l'année et participons aux championnats départementaux.</p>
     </div>
     <div class="stats-grid" style="margin-top:20px;">
-        <div class="stat-card">
-            <div class="stat-icon">👥</div>
-            <span class="stat-num" id="count-membres">0</span>
-            <span class="stat-label">Licenciés</span>
-        </div>
+        <div class="stat-card" id="stat-licencies" onclick="openLicencies()" style="cursor:pointer;">
+    <div class="stat-icon">👥</div>
+    <span class="stat-num" id="count-membres">0</span>
+    <span class="stat-label">Licenciés</span>
+    <span style="font-size:0.7em;color:var(--vert);margin-top:4px;display:block;">Voir la liste</span>
+</div>
         <div class="stat-card">
             <div class="stat-icon">🏆</div>
             <span class="stat-num">6</span>
@@ -1228,6 +1229,79 @@ if ('serviceWorker' in navigator) {
             .catch(function(err) { console.log('SW erreur :', err); });
     });
 }
+<!-- ===================== MODALE LICENCIÉS ===================== -->
+<div id="modal-licencies" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.85);z-index:9999;overflow-y:auto;padding:20px 12px;">
+    <div style="max-width:600px;margin:0 auto;background:#111;border:2px solid var(--vert);border-radius:16px;overflow:hidden;box-shadow:0 0 40px rgba(11,255,4,0.2);">
+        <div style="display:flex;align-items:center;justify-content:space-between;padding:18px 20px;background:#0a0a0a;border-bottom:2px solid var(--vert);">
+            <h3 style="font-family:'Bebas Neue',sans-serif;font-size:1.5em;letter-spacing:2px;color:white;margin:0;">👥 Licenciés <span style="color:var(--vert);">2026</span></h3>
+            <button onclick="closeLicencies()" style="background:transparent;border:2px solid #444;color:#ccc;width:36px;height:36px;border-radius:8px;font-size:1.1em;cursor:pointer;line-height:1;transition:border-color 0.2s,color 0.2s;" onmouseover="this.style.borderColor='#0bff04';this.style.color='#0bff04'" onmouseout="this.style.borderColor='#444';this.style.color='#ccc'">✕</button>
+        </div>
+        <div style="padding:14px 16px 8px;">
+            <input type="text" id="licencies-search" placeholder="🔍 Rechercher…" oninput="filterLicencies()"
+                style="width:100%;background:#000;border:1.5px solid #2a2a2a;border-radius:8px;padding:11px 14px;color:#eee;font-size:0.95em;font-family:'Nunito',sans-serif;outline:none;box-sizing:border-box;transition:border-color 0.2s;"
+                onfocus="this.style.borderColor='#0bff04'" onblur="this.style.borderColor='#2a2a2a'">
+        </div>
+        <div id="licencies-list" style="padding:8px 16px 20px;max-height:60vh;overflow-y:auto;"></div>
+    </div>
+</div>
 
+<script>
+var LICENCIES = [
+    {nom:'Devauchelle', prenom:'Arnaud',        tel:'06 00 00 00 01'},
+    {nom:'Bore',        prenom:'Sébastien',     tel:'06 00 00 00 02'},
+    {nom:'Briault',     prenom:'Jean Philippe', tel:'06 00 00 00 03'},
+    {nom:'Demarquet',   prenom:'Kevin',         tel:'06 00 00 00 04'},
+    {nom:'Delattre',    prenom:'Pascal',        tel:'06 00 00 00 05'},
+    {nom:'Ancelle',     prenom:'Denis',         tel:'06 00 00 00 06'},
+    {nom:'Lozano',      prenom:'Mathis',        tel:'06 00 00 00 07'},
+    {nom:'Marquant',    prenom:'Philippe',      tel:'06 00 00 00 08'},
+    {nom:'Lozano',      prenom:'Frederic',      tel:'06 00 00 00 09'},
+    /* ➡️ Ajoutez ici les autres membres jusqu'à 88 */
+];
+
+function renderLicencies(list) {
+    var container = document.getElementById('licencies-list');
+    if (!list.length) {
+        container.innerHTML = '<p style="text-align:center;color:#555;padding:30px;font-size:0.9em;">Aucun licencié trouvé</p>';
+        return;
+    }
+    container.innerHTML = list.map(function(m, i) {
+        var initials = m.prenom.charAt(0).toUpperCase() + m.nom.charAt(0).toUpperCase();
+        var telRaw = m.tel.replace(/\s/g, '');
+        return '<div style="display:flex;align-items:center;gap:14px;background:#1c1c1c;border:1px solid #2a2a2a;border-radius:10px;padding:12px 14px;margin-bottom:9px;transition:border-color 0.2s;" onmouseover="this.style.borderColor=\'#0bff04\'" onmouseout="this.style.borderColor=\'#2a2a2a\'">'
+            + '<div style="flex-shrink:0;width:40px;height:40px;border-radius:50%;background:rgba(11,255,4,0.1);border:2px solid var(--vert);display:flex;align-items:center;justify-content:center;font-family:\'Bebas Neue\',sans-serif;font-size:1em;color:var(--vert);">' + initials + '</div>'
+            + '<div style="flex:1;min-width:0;">'
+            + '<div style="font-weight:700;color:#f0f0f0;font-size:0.95em;">' + m.prenom + ' ' + m.nom + '</div>'
+            + '</div>'
+            + '<a href="tel:' + telRaw + '" style="display:flex;align-items:center;gap:7px;background:rgba(11,255,4,0.08);border:1.5px solid rgba(11,255,4,0.3);color:var(--vert);text-decoration:none;padding:8px 13px;border-radius:8px;font-size:0.82em;font-weight:700;white-space:nowrap;transition:background 0.2s;" onmouseover="this.style.background=\'rgba(11,255,4,0.18)\'" onmouseout="this.style.background=\'rgba(11,255,4,0.08)\'">'
+            + '📞 ' + m.tel + '</a>'
+            + '</div>';
+    }).join('');
+}
+
+function filterLicencies() {
+    var q = document.getElementById('licencies-search').value.trim().toLowerCase();
+    var filtered = LICENCIES.filter(function(m) {
+        return !q || (m.prenom + ' ' + m.nom).toLowerCase().indexOf(q) !== -1 || m.tel.indexOf(q) !== -1;
+    });
+    renderLicencies(filtered);
+}
+
+function openLicencies() {
+    document.getElementById('modal-licencies').style.display = 'block';
+    document.getElementById('licencies-search').value = '';
+    renderLicencies(LICENCIES);
+    document.body.style.overflow = 'hidden';
+}
+
+function closeLicencies() {
+    document.getElementById('modal-licencies').style.display = 'none';
+    document.body.style.overflow = '';
+}
+
+document.getElementById('modal-licencies').addEventListener('click', function(e) {
+    if (e.target === this) closeLicencies();
+});
+</script>
 </body>
 </html>
