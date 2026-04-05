@@ -1,6 +1,6 @@
 {
   "name": "Pétanque Boves",
-  "short_name": "Pétanque",
+  "short_name": "Pétanque Boves",
   "description": "Application du club de pétanque de Boves",
   "start_url": "/petanque80/",
   "scope": "/petanque80/",
