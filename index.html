@@ -12,7 +12,7 @@
     <!-- iOS (Safari ne lit pas le manifest) -->
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="default">
-    <meta name="apple-mobile-web-app-title" content="Pétanque Boves">
+    <meta name="apple-mobile-web-app-title" content="Pétanque">
     <link rel="apple-touch-icon" href="/petanque80/logo.png">
     <link rel="apple-touch-icon" sizes="152x152" href="/petanque80/logo.png">
     <link rel="apple-touch-icon" sizes="180x180" href="/petanque80/logo.png">
@@ -100,7 +100,7 @@
 
         /* TABLE */
         .table-wrap { border-radius: 10px; }
-        table { width: 100%; border-collapse: collapse; background: var(--gris-card); font-size: 1.05em; }
+        table { width: 100%; border-collapse: collapse; background: var(--gris-card); font-size: 0.88em; }
 
         @media (max-width: 639px) {
             table thead { display: none; }
@@ -123,7 +123,7 @@
             table tr { display: table-row; background: transparent; border: none; border-radius: 0; margin: 0; padding: 0; }
             table tr:nth-child(even) td { background: #222; }
             table tr:nth-child(even) { background: transparent; }
-            table td { display: table-cell; padding: 10px 12px; border: 1px solid #222; font-size: 1em; }
+            table td { display: table-cell; padding: 10px 12px; border: 1px solid #222; font-size: 0.9em; }
             table td::before { display: none; }
             table td:empty { display: table-cell; }
             table th { background: var(--vert); color: black; font-family: 'Bebas Neue', sans-serif; font-size: 1em; letter-spacing: 1px; padding: 10px 12px; border: 1px solid #222; text-align: left; }
@@ -137,8 +137,8 @@
         .bureau-member:hover { transform: translateY(-6px) scale(1.02); border-color: var(--vert); box-shadow: 0 10px 32px rgba(11,255,4,0.28), 0 0 0 1px rgba(11,255,4,0.15); }
         .bureau-member::before { content: ''; display: block; height: 4px; background: linear-gradient(90deg, var(--vert), #09cc03); width: 100%; }
         .bureau-photo-wrap { display: flex; justify-content: center; padding: 18px 0 12px; }
-        .bureau-photo-wrap img { width: 120px; height: 120px; border-radius: 50%; object-fit: cover; border: 3px solid var(--vert); box-shadow: 0 0 0 4px rgba(11,255,4,0.12); display: block; transition: box-shadow 0.28s; }
-        @media (min-width: 600px) { .bureau-photo-wrap img { width: 150px; height: 150px; } }
+        .bureau-photo-wrap img { width: 78px; height: 78px; border-radius: 50%; object-fit: cover; border: 3px solid var(--vert); box-shadow: 0 0 0 4px rgba(11,255,4,0.12); display: block; transition: box-shadow 0.28s; }
+        @media (min-width: 600px) { .bureau-photo-wrap img { width: 96px; height: 96px; } }
         .bureau-member:hover .bureau-photo-wrap img { box-shadow: 0 0 0 5px rgba(11,255,4,0.3), 0 0 18px rgba(11,255,4,0.25); }
         .bureau-role-badge { position: absolute; top: 14px; right: 10px; background: rgba(11,255,4,0.12); border: 1px solid rgba(11,255,4,0.35); color: var(--vert); font-size: 0.62em; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; padding: 3px 8px; border-radius: 20px; line-height: 1.4; white-space: nowrap; }
         .bureau-role-badge.is-membre { display: none; }
@@ -166,7 +166,7 @@
         .commande-intro-text p { color: #b0b0b0; font-size: 0.88em; margin: 0; line-height: 1.5; }
         .prix-banner { display: flex; align-items: center; gap: 20px; background: linear-gradient(135deg, #101810 0%, #0e160e 100%); border: 1px solid rgba(11,255,4,0.3); border-radius: 14px; padding: 20px 22px; margin-bottom: 22px; transition: box-shadow 0.25s; }
         .prix-banner:hover { box-shadow: 0 6px 24px rgba(11,255,4,0.25); }
-        .prix-badge { flex-shrink: 0; background: var(--vert); color: #000; font-family: 'Bebas Neue', sans-serif; font-size: 1.9em; letter-spacing: 2px; padding: 8px 18px; border-radius: 10px; line-height: 1; box-shadow: 0 4px 14px rgba(11,255,4,0.35); transition: all 0.3s ease; }
+        .prix-badge { flex-shrink: 0; background: var(--vert); color: #000; font-family: 'Bebas Neue', sans-serif; font-size: 1.9em; letter-spacing: 2px; padding: 8px 18px; border-radius: 10px; line-height: 1; box-shadow: 0 4px 14px rgba(11,255,4,0.35); }
         .prix-banner-text strong { color: #f0f0f0; font-size: 0.97em; display: block; margin-bottom: 4px; }
         .prix-banner-text p { color: #aaa; font-size: 0.84em; margin: 0; }
         .order-form { background: #050505; border: 1px solid #222; border-radius: 14px; padding: 18px 14px; box-shadow: 0 8px 30px rgba(0,0,0,0.3); }
@@ -298,6 +298,69 @@
         .cal-legend-dot.champ { background: var(--vert); box-shadow: 0 0 6px rgba(11,255,4,0.7); }
         .cal-legend-dot.concours { background: #ffffff; box-shadow: 0 0 6px rgba(255,255,255,0.5); }
         @media (min-width: 480px) { .cal-day { min-height: 60px; } .cal-day-num { font-size: 0.95em; } }
+
+        /* STATS / COMPTEUR */
+        .stats-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px; }
+        @media (min-width: 600px) { .stats-grid { grid-template-columns: repeat(4, 1fr); } }
+        .stat-card { background: var(--gris-card); border: 1px solid #2a2a2a; border-radius: 14px; padding: 22px 16px; text-align: center; transition: transform 0.25s, box-shadow 0.25s, border-color 0.25s; }
+        .stat-card:hover { transform: translateY(-4px); border-color: var(--vert); box-shadow: 0 8px 24px rgba(11,255,4,0.2); }
+        .stat-icon { font-size: 1.8em; margin-bottom: 8px; }
+        .stat-num { font-family: 'Bebas Neue', sans-serif; font-size: 2.8em; color: var(--vert); line-height: 1; display: block; }
+        .stat-label { font-size: 0.75em; color: #888; text-transform: uppercase; letter-spacing: 1px; margin-top: 4px; }
+
+        /* RÉSULTATS */
+        .result-card { background: var(--gris-card); border: 1px solid #2a2a2a; border-radius: 12px; padding: 16px; margin-bottom: 12px; transition: border-color 0.2s, box-shadow 0.2s; }
+        .result-card:hover { border-color: var(--vert); box-shadow: 0 4px 18px rgba(11,255,4,0.15); }
+        .result-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; flex-wrap: wrap; gap: 8px; }
+        .result-title { font-family: 'Bebas Neue', sans-serif; font-size: 1.1em; letter-spacing: 1px; color: #f0f0f0; }
+        .result-date { font-size: 0.75em; color: #666; background: #111; padding: 3px 10px; border-radius: 20px; }
+        .result-podium { display: flex; flex-direction: column; gap: 6px; }
+        .result-place { display: flex; align-items: center; gap: 10px; padding: 8px 12px; border-radius: 8px; background: #111; }
+        .result-place.gold { border-left: 3px solid #ffd700; }
+        .result-place.silver { border-left: 3px solid #c0c0c0; }
+        .result-place.bronze { border-left: 3px solid #cd7f32; }
+        .result-medal { font-size: 1.2em; flex-shrink: 0; }
+        .result-name { color: #f0f0f0; font-weight: 700; font-size: 0.9em; }
+        .result-detail { color: #888; font-size: 0.78em; margin-left: auto; }
+
+        /* GALERIE */
+        .gallery-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; }
+        @media (min-width: 500px) { .gallery-grid { grid-template-columns: repeat(3, 1fr); } }
+        @media (min-width: 900px) { .gallery-grid { grid-template-columns: repeat(4, 1fr); } }
+        .gallery-item { position: relative; border-radius: 10px; overflow: hidden; aspect-ratio: 1; cursor: pointer; background: #1a1a1a; border: 1px solid #2a2a2a; transition: transform 0.25s, box-shadow 0.25s; }
+        .gallery-item:hover { transform: scale(1.03); box-shadow: 0 8px 24px rgba(11,255,4,0.25); }
+        .gallery-item img { width: 100%; height: 100%; object-fit: cover; display: block; transition: opacity 0.3s; }
+        .gallery-item .gallery-overlay { position: absolute; inset: 0; background: rgba(0,0,0,0.5); display: flex; align-items: center; justify-content: center; opacity: 0; transition: opacity 0.2s; }
+        .gallery-item:hover .gallery-overlay { opacity: 1; }
+        .gallery-placeholder { width: 100%; height: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center; color: #444; font-size: 0.8em; gap: 8px; }
+        .gallery-placeholder span { font-size: 2em; }
+        .gallery-add-btn { display: flex; align-items: center; justify-content: center; gap: 8px; background: rgba(11,255,4,0.06); border: 2px dashed rgba(11,255,4,0.25); color: var(--vert); border-radius: 10px; padding: 14px; margin-top: 12px; font-size: 0.85em; font-weight: 700; cursor: default; }
+        /* LIGHTBOX */
+        .lightbox { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.95); z-index: 9000; align-items: center; justify-content: center; }
+        .lightbox.open { display: flex; }
+        .lightbox img { max-width: 90vw; max-height: 90vh; border-radius: 8px; object-fit: contain; }
+        .lightbox-close { position: absolute; top: 16px; right: 20px; color: #fff; font-size: 2em; cursor: pointer; background: none; border: none; line-height: 1; }
+
+        /* PARTENAIRES */
+        .partners-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px; }
+        @media (min-width: 500px) { .partners-grid { grid-template-columns: repeat(3, 1fr); } }
+        @media (min-width: 800px) { .partners-grid { grid-template-columns: repeat(4, 1fr); } }
+        .partner-card { background: var(--gris-card); border: 1px solid #2a2a2a; border-radius: 12px; padding: 20px 14px; display: flex; flex-direction: column; align-items: center; gap: 10px; text-align: center; transition: border-color 0.2s, transform 0.2s, box-shadow 0.2s; text-decoration: none; }
+        .partner-card:hover { border-color: var(--vert); transform: translateY(-4px); box-shadow: 0 8px 24px rgba(11,255,4,0.2); }
+        .partner-logo { width: 70px; height: 70px; border-radius: 10px; object-fit: contain; background: #111; padding: 6px; }
+        .partner-logo-placeholder { width: 70px; height: 70px; border-radius: 10px; background: #111; display: flex; align-items: center; justify-content: center; font-size: 2em; }
+        .partner-name { color: #f0f0f0; font-weight: 700; font-size: 0.88em; }
+        .partner-desc { color: #777; font-size: 0.75em; }
+
+        /* NOTIF BANNER */
+        #notif-banner { display: none; position: fixed; bottom: 80px; left: 50%; transform: translateX(-50%); background: #1a1a1a; border: 2px solid #ffd700; border-radius: 14px; padding: 14px 18px; z-index: 500; box-shadow: 0 8px 30px rgba(255,215,0,0.2); max-width: 340px; width: calc(100% - 32px); animation: slideUp 0.4s ease; }
+        #notif-banner .notif-content { display: flex; align-items: center; gap: 12px; }
+        #notif-banner .notif-icon { font-size: 1.8em; flex-shrink: 0; }
+        #notif-banner .notif-text strong { color: #f0f0f0; font-size: 0.9em; display: block; }
+        #notif-banner .notif-text span { color: #aaa; font-size: 0.78em; }
+        #notif-banner .notif-actions { display: flex; gap: 8px; margin-top: 12px; }
+        #notif-enable-btn { flex: 1; background: #ffd700; color: #000; border: none; padding: 10px; border-radius: 8px; font-family: 'Bebas Neue', sans-serif; font-size: 1em; letter-spacing: 1.5px; cursor: pointer; }
+        #notif-dismiss-btn { background: transparent; color: #777; border: 1px solid #333; padding: 10px 14px; border-radius: 8px; font-size: 0.85em; cursor: pointer; }
     </style>
 </head>
 <body>
@@ -393,10 +456,12 @@
         <a href="#accueil"       onclick="closeMenu()"><span class="nav-icon">🏠</span>Accueil</a>
         <a href="#contact"       onclick="closeMenu()"><span class="nav-icon">📞</span>Contacts</a>
         <a href="#calendrier"    onclick="closeMenu()"><span class="nav-icon">📅</span>Calendrier</a>
+        <a href="#galerie"       onclick="closeMenu()"><span class="nav-icon">📸</span>Galerie</a>
         <a href="#classement"    onclick="closeMenu()"><span class="nav-icon">🥇</span>Classement</a>
         <a href="#commande-wrap" onclick="closeMenu()"><span class="nav-icon">🎽</span>Commande Vêtements</a>
         <a href="#bureau"        onclick="closeMenu()"><span class="nav-icon">👥</span>Conseil</a>
-        <a href="#affiliation"   onclick="closeMenu()"><span class="nav-icon">🤝</span>Affiliation</a>
+        <a href="#partenaires"   onclick="closeMenu()"><span class="nav-icon">🤝</span>Partenaires</a>
+        <a href="#affiliation"   onclick="closeMenu()"><span class="nav-icon">🏅</span>Affiliation</a>
         <a href="#docs"          onclick="closeMenu()"><span class="nav-icon">📄</span>Règlements</a>
         <a href="#faq"           onclick="closeMenu()"><span class="nav-icon">❓</span>FAQ</a>
     </nav>
@@ -407,14 +472,62 @@
     <div class="card">
         <p>Notre club accueille tous les passionnés de pétanque, débutants comme confirmés. Nous organisons des concours toute l'année et participons aux championnats départementaux.</p>
     </div>
+    <!-- COMPTEUR -->
+    <div class="stats-grid" style="margin-top:20px;">
+        <div class="stat-card">
+            <div class="stat-icon">👥</div>
+            <span class="stat-num" id="count-membres">0</span>
+            <span class="stat-label">Membres</span>
+        </div>
+        <div class="stat-card">
+            <div class="stat-icon">🏆</div>
+            <span class="stat-num">6</span>
+            <span class="stat-label">Ans de club</span>
+        </div>
+        <div class="stat-card">
+            <div class="stat-icon">🎯</div>
+            <span class="stat-num">11</span>
+            <span class="stat-label">Concours 2026</span>
+        </div>
+        <div class="stat-card">
+            <div class="stat-icon">📅</div>
+            <span class="stat-num">4</span>
+            <span class="stat-label">Jours d'entraîn.</span>
+        </div>
+    </div>
 </section>
+
+<script>
+// Compteur animé
+(function() {
+    function animateCount(el, target, duration) {
+        var start = 0;
+        var step = target / (duration / 16);
+        var timer = setInterval(function() {
+            start += step;
+            if (start >= target) { start = target; clearInterval(timer); }
+            el.textContent = Math.floor(start);
+        }, 16);
+    }
+    var observer = new IntersectionObserver(function(entries) {
+        entries.forEach(function(entry) {
+            if (entry.isIntersecting) {
+                animateCount(document.getElementById('count-membres'), 78, 1200);
+                observer.disconnect();
+            }
+        });
+    }, { threshold: 0.3 });
+    var el = document.getElementById('count-membres');
+    if (el) observer.observe(el);
+})();
+</script>
 
 <section id="contact">
     <h2>Contacts</h2>
     <div class="card">
         <p>📧 <a id="mail-contact"></a></p>
         <script>(function(){var u='petanque80440',d='gmail.com',el=document.getElementById('mail-contact');el.href='mailto:'+u+'@'+d;el.textContent=u+'@'+d;})();</script>
-        <p>📞 <a href="tel:0682489217">06 24 43 12 84</a></p>
+        <p>📞 <a href="tel:0682489217">06 82 48 92 17</a></p>
         <p>📘 <a href="https://www.facebook.com/petanque.boves/" target="_blank" rel="noopener">Facebook – Pétanque Boves</a></p>
         <p>🎵 <a href="https://www.tiktok.com/@petanqueboves80" target="_blank" rel="noopener">TikTok – PétanqueBoves80</a></p>
         <p>📸 <a href="https://www.instagram.com/petanque_de_boves/" target="_blank" rel="noopener">Instagram – petanque_de_boves</a></p>
@@ -496,6 +609,7 @@
         var MONTHS = ['Janvier','Février','Mars','Avril','Mai','Juin','Juillet','Août','Septembre','Octobre','Novembre','Décembre'];
         var DAYS = ['Lun','Mar','Mer','Jeu','Ven','Sam','Dim'];
 
+        // Tous les mois qui ont au moins un événement
         var eventMonths = [];
         EVENTS.forEach(function(e) { if (eventMonths.indexOf(e.m - 1) === -1) eventMonths.push(e.m - 1); });
         eventMonths.sort(function(a,b){return a-b;});
@@ -623,7 +737,7 @@ function buildClRow(d) {
   return '<tr>' +
     '<td style="color:#0bff04;font-family:\'Bebas Neue\',sans-serif;font-size:1.1em">' + medal + d.rang + '</td>' +
     '<td>' + d.nom + '</td><td>' + d.prenom + '</td>' +
-    '<td style="color:#0bff04;font-weight:700">' + d.pts + '<span class="pts-label"> ' + (d.pts > 1 ? 'pts' : 'pt') + '</span></td>' +
+    '<td style="color:#0bff04;font-weight:700">' + d.pts + '<span class="pts-label"> pts</span></td>' +
     '<td>' + d.cat + '</td></tr>';
 }
 function filterClassement() {
@@ -646,12 +760,11 @@ filterClassement();
             <p>Remplissez le formulaire ci-dessous et le bureau vous recontactera pour confirmer votre commande.</p>
         </div>
     </div>
-    <!-- BANDEAU PRIX DYNAMIQUE -->
     <div class="prix-banner">
-        <div class="prix-badge" id="prix-badge">— €</div>
+        <div class="prix-badge" id="prix-total">0 €</div>
         <div class="prix-banner-text">
-            <strong id="prix-label">Sélectionnez vos vêtements</strong>
-            <p>1 vêtement = 30 € • 2 = 60 € • 3 = 90 € • Pack complet (4) = 100 €</p>
+            <strong>Total de votre commande</strong>
+            <p>30 € par vêtement — Le règlement s'effectue auprès d'un membre du bureau.</p>
         </div>
     </div>
     <form class="order-form" id="orderForm" action="https://formspree.io/f/mzdjlbkq" method="POST">
@@ -680,20 +793,20 @@ filterClassement();
                 <h4>Tailles souhaitées — laisser vide si non commandé</h4>
                 <div class="tailles-grid">
                     <div class="taille-item"><label>👖 Pantalon</label>
-                        <select name="pantalon" id="taille-pantalon" onchange="calculerPrix()"><option value="">— Non commandé —</option><option>XS</option><option>S</option><option>M</option><option>L</option><option>XL</option><option>XXL</option><option>3XL</option></select>
+                        <select name="pantalon" id="taille-pantalon" onchange="calculerTotal()"><option value="">— Non commandé —</option><option>XS</option><option>S</option><option>M</option><option>L</option><option>XL</option><option>XXL</option><option>3XL</option></select>
                     </div>
                     <div class="taille-item"><label>👕 Polo</label>
-                        <select name="polo" id="taille-polo" onchange="calculerPrix()"><option value="">— Non commandé —</option><option>XS</option><option>S</option><option>M</option><option>L</option><option>XL</option><option>XXL</option><option>3XL</option></select>
+                        <select name="polo" id="taille-polo" onchange="calculerTotal()"><option value="">— Non commandé —</option><option>XS</option><option>S</option><option>M</option><option>L</option><option>XL</option><option>XXL</option><option>3XL</option></select>
                     </div>
                     <div class="taille-item"><label>🧥 Veste</label>
-                        <select name="veste" id="taille-veste" onchange="calculerPrix()"><option value="">— Non commandé —</option><option>XS</option><option>S</option><option>M</option><option>L</option><option>XL</option><option>XXL</option><option>3XL</option></select>
+                        <select name="veste" id="taille-veste" onchange="calculerTotal()"><option value="">— Non commandé —</option><option>XS</option><option>S</option><option>M</option><option>L</option><option>XL</option><option>XXL</option><option>3XL</option></select>
                     </div>
                     <div class="taille-item"><label>🧣 Kway</label>
-                        <select name="manteau" id="taille-manteau" onchange="calculerPrix()"><option value="">— Non commandé —</option><option>XS</option><option>S</option><option>M</option><option>L</option><option>XL</option><option>XXL</option><option>3XL</option></select>
+                        <select name="manteau" id="taille-manteau" onchange="calculerTotal()"><option value="">— Non commandé —</option><option>XS</option><option>S</option><option>M</option><option>L</option><option>XL</option><option>XXL</option><option>3XL</option></select>
                     </div>
                 </div>
             </div>
-            <input type="hidden" name="montant" id="montant-hidden" value="">
+            <input type="hidden" name="montant" id="montant-hidden" value="0 euros">
             <button type="button" class="submit-btn" id="submitBtn" onclick="submitCommande()">✅ Envoyer ma commande</button>
         </div>
     </form>
@@ -701,12 +814,101 @@ filterClassement();
         <div class="checkmark">✅</div>
         <h3>Commande envoyée !</h3>
         <p>Merci <strong id="conf-prenom" style="color:var(--vert)"></strong>, votre demande est bien enregistrée.<br>
-        <span style="color:var(--vert); font-weight:700;">Montant à régler : <span id="conf-montant"></span> €</span> auprès du bureau.</p>
+        <span style="color:var(--vert); font-weight:700;">Montant à régler : <span id="conf-montant">0 €</span></span> auprès du bureau.</p>
         <div class="recap" id="conf-recap"></div>
         <button class="new-order-btn" onclick="nouvelleCommande()">Nouvelle commande</button>
     </div>
 </section>
 </div>
+
+<!-- ===================== GALERIE ===================== -->
+<section id="galerie">
+    <h2>Galerie Photos</h2>
+    <div class="gallery-grid" id="galleryGrid">
+        <!-- Les photos se chargent depuis le tableau PHOTOS ci-dessous -->
+    </div>
+    <div class="gallery-add-btn">
+        📁 Pour ajouter des photos : dépose tes images sur GitHub et ajoute leur nom dans le tableau PHOTOS du script
+    </div>
+</section>
+
+<!-- LIGHTBOX -->
+<div class="lightbox" id="lightbox">
+    <button class="lightbox-close" onclick="closeLightbox()">✕</button>
+    <img id="lightbox-img" src="" alt="">
+</div>
+
+<script>
+var PHOTOS = [
+    // Ajoute tes photos ici comme ceci :
+    // { src: 'photo1.jpg', alt: 'Concours mars 2026' },
+    // { src: 'photo2.jpg', alt: 'Equipe du club' },
+];
+
+var grid = document.getElementById('galleryGrid');
+if (PHOTOS.length === 0) {
+    // Affiche des placeholders si pas de photos
+    for (var i = 0; i < 8; i++) {
+        var item = document.createElement('div');
+        item.className = 'gallery-item';
+        item.innerHTML = '<div class="gallery-placeholder"><span>📷</span><span>Photo à venir</span></div>';
+        grid.appendChild(item);
+    }
+} else {
+    PHOTOS.forEach(function(p, idx) {
+        var item = document.createElement('div');
+        item.className = 'gallery-item';
+        item.innerHTML = '<img src="' + p.src + '" alt="' + p.alt + '" loading="lazy"><div class="gallery-overlay">🔍</div>';
+        item.addEventListener('click', function() { openLightbox(p.src, p.alt); });
+        grid.appendChild(item);
+    });
+}
+
+function openLightbox(src, alt) {
+    document.getElementById('lightbox-img').src = src;
+    document.getElementById('lightbox-img').alt = alt;
+    document.getElementById('lightbox').classList.add('open');
+    document.body.style.overflow = 'hidden';
+}
+function closeLightbox() {
+    document.getElementById('lightbox').classList.remove('open');
+    document.body.style.overflow = '';
+}
+document.getElementById('lightbox').addEventListener('click', function(e) {
+    if (e.target === this) closeLightbox();
+});
+</script>
+
+<!-- ===================== PARTENAIRES ===================== -->
+<section id="partenaires">
+    <h2>Nos Partenaires</h2>
+    <div class="partners-grid">
+        <!-- Partenaire 1 — remplace le nom, la description et ajoute un logo si tu en as un -->
+        <div class="partner-card">
+            <div class="partner-logo-placeholder">🏪</div>
+            <span class="partner-name">Partenaire 1</span>
+            <span class="partner-desc">À compléter</span>
+        </div>
+        <div class="partner-card">
+            <div class="partner-logo-placeholder">🏪</div>
+            <span class="partner-name">Partenaire 2</span>
+            <span class="partner-desc">À compléter</span>
+        </div>
+        <div class="partner-card">
+            <div class="partner-logo-placeholder">🏪</div>
+            <span class="partner-name">Partenaire 3</span>
+            <span class="partner-desc">À compléter</span>
+        </div>
+        <div class="partner-card">
+            <div class="partner-logo-placeholder">🏪</div>
+            <span class="partner-name">Partenaire 4</span>
+            <span class="partner-desc">À compléter</span>
+        </div>
+    </div>
+    <div class="card" style="margin-top:16px; text-align:center; color:#555; font-size:0.88em;">
+        💡 Pour personnaliser : remplace "Partenaire X" par le vrai nom, et ajoute <strong style="color:#666">&lt;img class="partner-logo" src="logo-partenaire.png"&gt;</strong> à la place du placeholder
+    </div>
+</section>
 
 <section id="bureau">
     <h2>Membres du Conseil</h2>
@@ -763,7 +965,7 @@ filterClassement();
     <details><summary>Comment participer aux concours officiels ?</summary><p>Pour participer aux concours officiels, il faut être licencié à la FFPJP. Contactez le bureau pour obtenir votre licence et vous inscrire aux prochains concours.</p></details>
     <details><summary>Le club est-il ouvert aux jeunes ?</summary><p>Absolument ! Le club accueille les jeunes joueurs avec plaisir. N'hésitez pas à venir avec vos enfants lors des entraînements pour découvrir la pétanque.</p></details>
     <details><summary>Où se trouve le terrain du club ?</summary><p>Le terrain est situé Chemin du Stade à Boves (80440). Vous pouvez retrouver l'itinéraire dans la section Contacts.</p></details>
-    <details><summary>Comment commander les vêtements du club ?</summary><p>Rendez-vous dans la section Commande de Vêtements du site. Remplissez le formulaire avec vos tailles et le bureau vous recontactera.</p></details>
+    <details><summary>Comment commander les vêtements du club ?</summary><p>Rendez-vous dans la section Commande de Vêtements du site. Remplissez le formulaire avec vos tailles et le bureau vous recontactera. Le montant de la commande est de 100 €.</p></details>
     <details><summary>Quelle est la différence entre pétanque et jeu provençal ?</summary><p>En pétanque, les joueurs tirent les pieds joints et dans un cercle. En jeu provençal, les joueurs prennent un élan de 1 à 3 pas avant de lancer. Les deux disciplines sont pratiquées au club.</p></details>
     <details><summary>Y a-t-il des compétitions par équipes ?</summary><p>Oui ! Nous participons aux championnats en doublette (2 joueurs), triplette (3 joueurs) et tête-à-tête (1 contre 1). Il y a aussi des catégories mixtes, vétérans et jeunes.</p></details>
     <details><summary>Comment suivre l'actualité du club ?</summary><p>Vous pouvez nous suivre sur Facebook (Pétanque Boves) et TikTok (PétanqueBoves80) pour les dernières nouvelles, résultats et annonces du club.</p></details>
@@ -789,6 +991,21 @@ filterClassement();
     <div class="pwa-actions">
         <button id="pwa-install-btn">INSTALLER</button>
         <button id="pwa-dismiss-btn">Plus tard</button>
+    </div>
+</div>
+
+<!-- BANDEAU NOTIFICATIONS PUSH -->
+<div id="notif-banner">
+    <div class="notif-content">
+        <div class="notif-icon">🔔</div>
+        <div class="notif-text">
+            <strong>Activer les notifications</strong>
+            <span>Soyez alerté des concours et annulations</span>
+        </div>
+    </div>
+    <div class="notif-actions">
+        <button id="notif-enable-btn">ACTIVER</button>
+        <button id="notif-dismiss-btn">Plus tard</button>
     </div>
 </div>
 
@@ -835,28 +1052,17 @@ var btnTop = document.getElementById('btnTop');
 window.addEventListener('scroll', function() { btnTop.style.display = window.scrollY > 220 ? 'block' : 'none'; });
 function topFunction() { window.scrollTo({ top: 0, behavior: 'smooth' }); }
 
-// ===================== CALCUL PRIX DYNAMIQUE =====================
-function calculerPrix() {
-    var pantalon = document.getElementById('taille-pantalon').value;
-    var polo     = document.getElementById('taille-polo').value;
-    var veste    = document.getElementById('taille-veste').value;
-    var manteau  = document.getElementById('taille-manteau').value;
-    var nb = [pantalon, polo, veste, manteau].filter(function(v) { return v !== ''; }).length;
-    var prix = 0;
-    var label = '';
-    if (nb === 0) {
-        document.getElementById('prix-badge').textContent = '— €';
-        document.getElementById('prix-label').textContent = 'Sélectionnez vos vêtements';
-        document.getElementById('montant-hidden').value = '';
-        return;
-    } else if (nb === 1) { prix = 30; label = '1 vêtement'; }
-    else if (nb === 2) { prix = 60; label = '2 vêtements'; }
-    else if (nb === 3) { prix = 90; label = '3 vêtements'; }
-    else              { prix = 100; label = 'Pack complet (4 vêtements)'; }
-    document.getElementById('prix-badge').textContent = prix + ' €';
-    document.getElementById('prix-label').textContent = 'Montant pour ' + label;
-    document.getElementById('montant-hidden').value = prix + ' euros';
+function calculerTotal() {
+    var total = 0;
+    ['taille-pantalon','taille-polo','taille-veste','taille-manteau'].forEach(function(id) {
+        if (document.getElementById(id).value) total += 30;
+    });
+    document.getElementById('prix-total').textContent = total + ' €';
+    document.getElementById('montant-hidden').value = total + ' euros';
+    // Couleur : vert si > 0, gris sinon
+    document.getElementById('prix-total').style.opacity = total > 0 ? '1' : '0.4';
 }
+calculerTotal();
 
 function submitCommande() {
     var nom = document.getElementById('nom').value.trim();
@@ -873,16 +1079,13 @@ function submitCommande() {
     if (!tel) { alert('⚠️ Merci de renseigner votre numéro de téléphone.'); return; }
     if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { alert('⚠️ Merci de renseigner une adresse email valide.'); return; }
     if (!pantalon && !polo && !veste && !manteau) { alert('⚠️ Veuillez sélectionner au moins une taille de vêtement.'); return; }
-
-    // Calcul du montant final
-    var nb = [pantalon, polo, veste, manteau].filter(function(v) { return v !== ''; }).length;
-    var montant = nb === 1 ? 30 : nb === 2 ? 60 : nb === 3 ? 90 : 100;
-
+    var nbVetements = [pantalon, polo, veste, manteau].filter(Boolean).length;
+    var montantTotal = nbVetements * 30;
     var btn = document.getElementById('submitBtn');
     btn.textContent = 'Envoi en cours...'; btn.disabled = true;
     var formData = new FormData();
     formData.append('access_key', '132fc66b-24a9-4fc1-8d3e-6d2816dc978c');
-    formData.append('subject', 'Nouvelle commande vêtements – ' + prenom + ' ' + nom);
+    formData.append('subject', 'Nouvelle commande vêtements – ' + prenom + ' ' + nom + ' (' + montantTotal + ' €)');
     formData.append('from_name', 'Site Pétanque Boves');
     formData.append('email', email);
     formData.append('message',
@@ -890,12 +1093,14 @@ function submitCommande() {
         '\nTelephone : ' + tel + '\nCode postal : ' + cp +
         '\n\n--- COMMANDE ---\nPantalon : ' + (pantalon || 'Non commande') +
         '\nPolo : ' + (polo || 'Non commande') + '\nVeste : ' + (veste || 'Non commande') +
-        '\nManteau : ' + (manteau || 'Non commande') + '\n\nMontant total : ' + montant + ' euros'
+        '\nManteau : ' + (manteau || 'Non commande') +
+        '\n\nNombre de vêtements : ' + nbVetements +
+        '\nMontant total : ' + montantTotal + ' euros (30 € x ' + nbVetements + ')'
     );
     fetch('https://api.web3forms.com/submit', { method: 'POST', body: formData, headers: { 'Accept': 'application/json' } })
     .then(function(response) {
         btn.textContent = '✅ Envoyer ma commande'; btn.disabled = false;
-        if (response.ok) { afficherConfirmation(prenom, nom, cp, email, tel, pantalon, polo, veste, manteau, montant); }
+        if (response.ok) { afficherConfirmation(prenom, nom, cp, email, tel, pantalon, polo, veste, manteau, montantTotal); }
         else { alert('❌ Une erreur est survenue. Veuillez réessayer ou contacter le club par email.'); }
     })
     .catch(function() {
@@ -903,34 +1108,58 @@ function submitCommande() {
         alert('❌ Impossible d\'envoyer la commande. Vérifiez votre connexion internet.');
     });
 }
-
-function afficherConfirmation(prenom, nom, cp, email, tel, pantalon, polo, veste, manteau, montant) {
+function afficherConfirmation(prenom, nom, cp, email, tel, pantalon, polo, veste, manteau, montantTotal) {
     document.getElementById('conf-prenom').textContent = prenom;
-    document.getElementById('conf-montant').textContent = montant;
+    document.getElementById('conf-montant').textContent = montantTotal + ' €';
     var html = '<p><strong>Nom :</strong> ' + prenom + ' ' + nom + '</p>';
     html += '<p><strong>Email :</strong> ' + email + '</p>';
     html += '<p><strong>Téléphone :</strong> ' + tel + '</p>';
     html += '<p><strong>Code postal :</strong> ' + cp + '</p>';
-    if (pantalon) html += '<p><strong>Pantalon :</strong> ' + pantalon + '</p>';
-    if (polo) html += '<p><strong>Polo :</strong> ' + polo + '</p>';
-    if (veste) html += '<p><strong>Veste :</strong> ' + veste + '</p>';
-    if (manteau) html += '<p><strong>Manteau :</strong> ' + manteau + '</p>';
-    html += '<p style="margin-top:10px;padding-top:10px;border-top:1px solid #333;"><strong style="color:var(--vert);">Montant total : ' + montant + ' €</strong></p>';
+    if (pantalon) html += '<p><strong>👖 Pantalon :</strong> ' + pantalon + ' — 30 €</p>';
+    if (polo) html += '<p><strong>👕 Polo :</strong> ' + polo + ' — 30 €</p>';
+    if (veste) html += '<p><strong>🧥 Veste :</strong> ' + veste + ' — 30 €</p>';
+    if (manteau) html += '<p><strong>🧣 Kway :</strong> ' + manteau + ' — 30 €</p>';
+    html += '<p style="margin-top:10px;padding-top:10px;border-top:1px solid #333;"><strong style="color:var(--vert);">Total : ' + montantTotal + ' € (' + [pantalon,polo,veste,manteau].filter(Boolean).length + ' vêtement(s) × 30 €)</strong></p>';
     document.getElementById('conf-recap').innerHTML = html;
     document.getElementById('orderForm').style.display = 'none';
     var conf = document.getElementById('confirmation');
     conf.style.display = 'block';
     conf.scrollIntoView({ behavior: 'smooth', block: 'center' });
 }
-
 function nouvelleCommande() {
     document.getElementById('orderForm').style.display = 'block';
     document.getElementById('confirmation').style.display = 'none';
     ['nom','prenom','codepostal','telephone','email'].forEach(function(id) { document.getElementById(id).value = ''; });
     ['taille-pantalon','taille-polo','taille-veste','taille-manteau'].forEach(function(id) { document.getElementById(id).value = ''; });
-    calculerPrix();
+    calculerTotal();
     document.getElementById('orderForm').scrollIntoView({ behavior: 'smooth' });
 }
+
+// ===================== NOTIFICATIONS PUSH =====================
+(function() {
+    if (!('Notification' in window)) return;
+    var dismissed = localStorage.getItem('notif-dismissed');
+    if (Notification.permission === 'granted' || dismissed) return;
+    setTimeout(function() {
+        document.getElementById('notif-banner').style.display = 'block';
+    }, 8000);
+
+    document.getElementById('notif-enable-btn').addEventListener('click', function() {
+        Notification.requestPermission().then(function(permission) {
+            document.getElementById('notif-banner').style.display = 'none';
+            if (permission === 'granted') {
+                new Notification('🎯 Pétanque Boves', {
+                    body: 'Notifications activées ! Vous serez informé des concours et événements.',
+                    icon: '/petanque80/logo.png'
+                });
+            }
+        });
+    });
+    document.getElementById('notif-dismiss-btn').addEventListener('click', function() {
+        document.getElementById('notif-banner').style.display = 'none';
+        localStorage.setItem('notif-dismissed', '1');
+    });
+})();
 
 // ===================== PWA – Android / Desktop =====================
 var deferredPrompt = null;
