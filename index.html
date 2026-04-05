@@ -458,12 +458,11 @@
     <div class="card">
         <p>Notre club accueille tous les passionnés de pétanque, débutants comme confirmés. Nous organisons des concours toute l'année et participons aux championnats départementaux.</p>
     </div>
-    <div class="stats-grid" style="margin-top:20px;">
-        <div class="stat-card" id="stat-licencies" onclick="openLicencies()" style="cursor:pointer;">
+<div class="stat-card" id="stat-licencies" style="cursor:pointer;">
     <div class="stat-icon">👥</div>
     <span class="stat-num" id="count-membres">0</span>
     <span class="stat-label">Licenciés</span>
-    <span style="font-size:0.7em;color:var(--vert);margin-top:4px;display:block;">Voir la liste</span>
+    <span style="font-size:0.9em;color:var(--vert);margin-top:4px;display:block;">Voir la liste</span>
 </div>
         <div class="stat-card">
             <div class="stat-icon">🏆</div>
@@ -1256,7 +1255,7 @@ var LICENCIES = [
     {nom:'Lozano',      prenom:'Mathis',        tel:'06 00 00 00 07'},
     {nom:'Marquant',    prenom:'Philippe',      tel:'06 00 00 00 08'},
     {nom:'Lozano',      prenom:'Frederic',      tel:'06 00 00 00 09'},
-    /* ➡️ Ajoutez ici les autres membres jusqu'à 88 */
+    /* ➡️ Ajoutez les autres membres ici */
 ];
 
 function renderLicencies(list) {
@@ -1265,7 +1264,7 @@ function renderLicencies(list) {
         container.innerHTML = '<p style="text-align:center;color:#555;padding:30px;font-size:0.9em;">Aucun licencié trouvé</p>';
         return;
     }
-    container.innerHTML = list.map(function(m, i) {
+    container.innerHTML = list.map(function(m) {
         var initials = m.prenom.charAt(0).toUpperCase() + m.nom.charAt(0).toUpperCase();
         var telRaw = m.tel.replace(/\s/g, '');
         return '<div style="display:flex;align-items:center;gap:14px;background:#1c1c1c;border:1px solid #2a2a2a;border-radius:10px;padding:12px 14px;margin-bottom:9px;transition:border-color 0.2s;" onmouseover="this.style.borderColor=\'#0bff04\'" onmouseout="this.style.borderColor=\'#2a2a2a\'">'
@@ -1288,19 +1287,32 @@ function filterLicencies() {
 }
 
 function openLicencies() {
-    document.getElementById('modal-licencies').style.display = 'block';
+    var modal = document.getElementById('modal-licencies');
+    modal.style.display = 'block';
     document.getElementById('licencies-search').value = '';
     renderLicencies(LICENCIES);
-    document.body.style.overflow = 'hidden';
+    /* PAS de overflow:hidden sur body — ça casse le menu hamburger */
 }
 
 function closeLicencies() {
     document.getElementById('modal-licencies').style.display = 'none';
-    document.body.style.overflow = '';
 }
 
-document.getElementById('modal-licencies').addEventListener('click', function(e) {
-    if (e.target === this) closeLicencies();
+/* Attacher les events une fois le DOM prêt */
+document.addEventListener('DOMContentLoaded', function() {
+    /* Click sur la stat-card */
+    var statCard = document.getElementById('stat-licencies');
+    if (statCard) statCard.addEventListener('click', openLicencies);
+
+    /* Click en dehors de la modale pour fermer */
+    document.getElementById('modal-licencies').addEventListener('click', function(e) {
+        if (e.target === this) closeLicencies();
+    });
+
+    /* Touche Échap pour fermer */
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape') closeLicencies();
+    });
 });
 </script>
 </body>
