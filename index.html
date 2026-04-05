@@ -686,6 +686,11 @@ function filterLicencies() {
 }
 
 function openLicencies() {
+    var mdp = prompt('🔒 Mot de passe membres :');
+    if (mdp !== 'Boves2026') {
+        alert('❌ Accès refusé');
+        return;
+    }
     document.getElementById('modal-licencies').style.display = 'block';
     document.getElementById('licencies-search').value = '';
     renderLicencies(LICENCIES);
