@@ -4,7 +4,7 @@
 // ============================================================
 
 // Change cette valeur à chaque déploiement pour déclencher la MAJ
-const CACHE_VERSION = '2026-04-05-04';
+const CACHE_VERSION = '2026-04-05-05';
 const CACHE_NAME = 'petanque-boves-' + CACHE_VERSION;
 
 const ASSETS = [
