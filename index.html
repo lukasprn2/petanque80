@@ -458,7 +458,7 @@
     <div class="card">
         <p>Notre club accueille tous les passionnés de pétanque, débutants comme confirmés. Nous organisons des concours toute l'année et participons aux championnats départementaux.</p>
     </div>
-<div class="stat-card" id="stat-licencies" style="cursor:pointer;">
+<div class="stat-card" id="stat-licencies">
     <div class="stat-icon">👥</div>
     <span class="stat-num" id="count-membres">0</span>
     <span class="stat-label">Licenciés</span>
@@ -1243,7 +1243,6 @@ if ('serviceWorker' in navigator) {
         <div id="licencies-list" style="padding:8px 16px 20px;max-height:60vh;overflow-y:auto;"></div>
     </div>
 </div>
-
 <script>
 var LICENCIES = [
     {nom:'Devauchelle', prenom:'Arnaud',        tel:'06 00 00 00 01'},
@@ -1255,24 +1254,23 @@ var LICENCIES = [
     {nom:'Lozano',      prenom:'Mathis',        tel:'06 00 00 00 07'},
     {nom:'Marquant',    prenom:'Philippe',      tel:'06 00 00 00 08'},
     {nom:'Lozano',      prenom:'Frederic',      tel:'06 00 00 00 09'},
-    /* ➡️ Ajoutez les autres membres ici */
 ];
 
 function renderLicencies(list) {
     var container = document.getElementById('licencies-list');
     if (!list.length) {
-        container.innerHTML = '<p style="text-align:center;color:#555;padding:30px;font-size:0.9em;">Aucun licencié trouvé</p>';
+        container.innerHTML = '<p style="text-align:center;color:#555;padding:30px;">Aucun licencié trouvé</p>';
         return;
     }
     container.innerHTML = list.map(function(m) {
         var initials = m.prenom.charAt(0).toUpperCase() + m.nom.charAt(0).toUpperCase();
         var telRaw = m.tel.replace(/\s/g, '');
-        return '<div style="display:flex;align-items:center;gap:14px;background:#1c1c1c;border:1px solid #2a2a2a;border-radius:10px;padding:12px 14px;margin-bottom:9px;transition:border-color 0.2s;" onmouseover="this.style.borderColor=\'#0bff04\'" onmouseout="this.style.borderColor=\'#2a2a2a\'">'
-            + '<div style="flex-shrink:0;width:40px;height:40px;border-radius:50%;background:rgba(11,255,4,0.1);border:2px solid var(--vert);display:flex;align-items:center;justify-content:center;font-family:\'Bebas Neue\',sans-serif;font-size:1em;color:var(--vert);">' + initials + '</div>'
-            + '<div style="flex:1;min-width:0;">'
+        return '<div style="display:flex;align-items:center;gap:14px;background:#1c1c1c;border:1px solid #2a2a2a;border-radius:10px;padding:12px 14px;margin-bottom:9px;">'
+            + '<div style="flex-shrink:0;width:40px;height:40px;border-radius:50%;background:rgba(11,255,4,0.1);border:2px solid #0bff04;display:flex;align-items:center;justify-content:center;font-family:Bebas Neue,sans-serif;font-size:1em;color:#0bff04;">' + initials + '</div>'
+            + '<div style="flex:1;">'
             + '<div style="font-weight:700;color:#f0f0f0;font-size:0.95em;">' + m.prenom + ' ' + m.nom + '</div>'
             + '</div>'
-            + '<a href="tel:' + telRaw + '" style="display:flex;align-items:center;gap:7px;background:rgba(11,255,4,0.08);border:1.5px solid rgba(11,255,4,0.3);color:var(--vert);text-decoration:none;padding:8px 13px;border-radius:8px;font-size:0.82em;font-weight:700;white-space:nowrap;transition:background 0.2s;" onmouseover="this.style.background=\'rgba(11,255,4,0.18)\'" onmouseout="this.style.background=\'rgba(11,255,4,0.08)\'">'
+            + '<a href="tel:' + telRaw + '" style="background:rgba(11,255,4,0.08);border:1.5px solid rgba(11,255,4,0.3);color:#0bff04;text-decoration:none;padding:8px 13px;border-radius:8px;font-size:0.82em;font-weight:700;white-space:nowrap;">'
             + '📞 ' + m.tel + '</a>'
             + '</div>';
     }).join('');
@@ -1280,40 +1278,44 @@ function renderLicencies(list) {
 
 function filterLicencies() {
     var q = document.getElementById('licencies-search').value.trim().toLowerCase();
-    var filtered = LICENCIES.filter(function(m) {
-        return !q || (m.prenom + ' ' + m.nom).toLowerCase().indexOf(q) !== -1 || m.tel.indexOf(q) !== -1;
-    });
-    renderLicencies(filtered);
+    renderLicencies(LICENCIES.filter(function(m) {
+        return !q || (m.prenom + ' ' + m.nom).toLowerCase().indexOf(q) !== -1;
+    }));
 }
 
 function openLicencies() {
-    var modal = document.getElementById('modal-licencies');
-    modal.style.display = 'block';
+    document.getElementById('modal-licencies').style.display = 'block';
     document.getElementById('licencies-search').value = '';
     renderLicencies(LICENCIES);
-    /* PAS de overflow:hidden sur body — ça casse le menu hamburger */
 }
 
 function closeLicencies() {
     document.getElementById('modal-licencies').style.display = 'none';
 }
 
-/* Attacher les events une fois le DOM prêt */
-document.addEventListener('DOMContentLoaded', function() {
-    /* Click sur la stat-card */
-    var statCard = document.getElementById('stat-licencies');
-    if (statCard) statCard.addEventListener('click', openLicencies);
-
-    /* Click en dehors de la modale pour fermer */
-    document.getElementById('modal-licencies').addEventListener('click', function(e) {
-        if (e.target === this) closeLicencies();
-    });
-
-    /* Touche Échap pour fermer */
+/* Attache le click une fois le DOM chargé, avec fallback si déjà prêt */
+function attachLicencies() {
+    var card = document.getElementById('stat-licencies');
+    var modal = document.getElementById('modal-licencies');
+    if (card) {
+        card.style.cursor = 'pointer';
+        card.onclick = openLicencies;
+    }
+    if (modal) {
+        modal.addEventListener('click', function(e) {
+            if (e.target === this) closeLicencies();
+        });
+    }
     document.addEventListener('keydown', function(e) {
         if (e.key === 'Escape') closeLicencies();
     });
-});
+}
+
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', attachLicencies);
+} else {
+    attachLicencies();
+}
 </script>
 </body>
 </html>
