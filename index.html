@@ -12,7 +12,7 @@
     <!-- iOS (Safari ne lit pas le manifest) -->
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="default">
-    <meta name="apple-mobile-web-app-title" content="Pétanque">
+    <meta name="apple-mobile-web-app-title" content="Pétanque Boves">
     <link rel="apple-touch-icon" href="/petanque80/logo.png">
     <link rel="apple-touch-icon" sizes="152x152" href="/petanque80/logo.png">
     <link rel="apple-touch-icon" sizes="180x180" href="/petanque80/logo.png">
@@ -166,7 +166,7 @@
         .commande-intro-text p { color: #b0b0b0; font-size: 0.88em; margin: 0; line-height: 1.5; }
         .prix-banner { display: flex; align-items: center; gap: 20px; background: linear-gradient(135deg, #101810 0%, #0e160e 100%); border: 1px solid rgba(11,255,4,0.3); border-radius: 14px; padding: 20px 22px; margin-bottom: 22px; transition: box-shadow 0.25s; }
         .prix-banner:hover { box-shadow: 0 6px 24px rgba(11,255,4,0.25); }
-        .prix-badge { flex-shrink: 0; background: var(--vert); color: #000; font-family: 'Bebas Neue', sans-serif; font-size: 1.9em; letter-spacing: 2px; padding: 8px 18px; border-radius: 10px; line-height: 1; box-shadow: 0 4px 14px rgba(11,255,4,0.35); }
+        .prix-badge { flex-shrink: 0; background: var(--vert); color: #000; font-family: 'Bebas Neue', sans-serif; font-size: 1.9em; letter-spacing: 2px; padding: 8px 18px; border-radius: 10px; line-height: 1; box-shadow: 0 4px 14px rgba(11,255,4,0.35); transition: all 0.3s ease; }
         .prix-banner-text strong { color: #f0f0f0; font-size: 0.97em; display: block; margin-bottom: 4px; }
         .prix-banner-text p { color: #aaa; font-size: 0.84em; margin: 0; }
         .order-form { background: #050505; border: 1px solid #222; border-radius: 14px; padding: 18px 14px; box-shadow: 0 8px 30px rgba(0,0,0,0.3); }
@@ -496,7 +496,6 @@
         var MONTHS = ['Janvier','Février','Mars','Avril','Mai','Juin','Juillet','Août','Septembre','Octobre','Novembre','Décembre'];
         var DAYS = ['Lun','Mar','Mer','Jeu','Ven','Sam','Dim'];
 
-        // Tous les mois qui ont au moins un événement
         var eventMonths = [];
         EVENTS.forEach(function(e) { if (eventMonths.indexOf(e.m - 1) === -1) eventMonths.push(e.m - 1); });
         eventMonths.sort(function(a,b){return a-b;});
@@ -647,11 +646,12 @@ filterClassement();
             <p>Remplissez le formulaire ci-dessous et le bureau vous recontactera pour confirmer votre commande.</p>
         </div>
     </div>
+    <!-- BANDEAU PRIX DYNAMIQUE -->
     <div class="prix-banner">
-        <div class="prix-badge">100 €</div>
+        <div class="prix-badge" id="prix-badge">— €</div>
         <div class="prix-banner-text">
-            <strong>Montant de la commande</strong>
-            <p>Le règlement s'effectue auprès d'un membre du bureau après confirmation de votre commande.</p>
+            <strong id="prix-label">Sélectionnez vos vêtements</strong>
+            <p>1 vêtement = 30 € • 2 = 60 € • 3 = 90 € • Pack complet (4) = 100 €</p>
         </div>
     </div>
     <form class="order-form" id="orderForm" action="https://formspree.io/f/mzdjlbkq" method="POST">
@@ -680,20 +680,20 @@ filterClassement();
                 <h4>Tailles souhaitées — laisser vide si non commandé</h4>
                 <div class="tailles-grid">
                     <div class="taille-item"><label>👖 Pantalon</label>
-                        <select name="pantalon" id="taille-pantalon"><option value="">— Non commandé —</option><option>XS</option><option>S</option><option>M</option><option>L</option><option>XL</option><option>XXL</option><option>3XL</option></select>
+                        <select name="pantalon" id="taille-pantalon" onchange="calculerPrix()"><option value="">— Non commandé —</option><option>XS</option><option>S</option><option>M</option><option>L</option><option>XL</option><option>XXL</option><option>3XL</option></select>
                     </div>
                     <div class="taille-item"><label>👕 Polo</label>
-                        <select name="polo" id="taille-polo"><option value="">— Non commandé —</option><option>XS</option><option>S</option><option>M</option><option>L</option><option>XL</option><option>XXL</option><option>3XL</option></select>
+                        <select name="polo" id="taille-polo" onchange="calculerPrix()"><option value="">— Non commandé —</option><option>XS</option><option>S</option><option>M</option><option>L</option><option>XL</option><option>XXL</option><option>3XL</option></select>
                     </div>
                     <div class="taille-item"><label>🧥 Veste</label>
-                        <select name="veste" id="taille-veste"><option value="">— Non commandé —</option><option>XS</option><option>S</option><option>M</option><option>L</option><option>XL</option><option>XXL</option><option>3XL</option></select>
+                        <select name="veste" id="taille-veste" onchange="calculerPrix()"><option value="">— Non commandé —</option><option>XS</option><option>S</option><option>M</option><option>L</option><option>XL</option><option>XXL</option><option>3XL</option></select>
                     </div>
                     <div class="taille-item"><label>🧣 Kway</label>
-                        <select name="manteau" id="taille-manteau"><option value="">— Non commandé —</option><option>XS</option><option>S</option><option>M</option><option>L</option><option>XL</option><option>XXL</option><option>3XL</option></select>
+                        <select name="manteau" id="taille-manteau" onchange="calculerPrix()"><option value="">— Non commandé —</option><option>XS</option><option>S</option><option>M</option><option>L</option><option>XL</option><option>XXL</option><option>3XL</option></select>
                     </div>
                 </div>
             </div>
-            <input type="hidden" name="montant" value="100 euros">
+            <input type="hidden" name="montant" id="montant-hidden" value="">
             <button type="button" class="submit-btn" id="submitBtn" onclick="submitCommande()">✅ Envoyer ma commande</button>
         </div>
     </form>
@@ -701,7 +701,7 @@ filterClassement();
         <div class="checkmark">✅</div>
         <h3>Commande envoyée !</h3>
         <p>Merci <strong id="conf-prenom" style="color:var(--vert)"></strong>, votre demande est bien enregistrée.<br>
-        <span style="color:var(--vert); font-weight:700;">Montant à régler : 100 €</span> auprès du bureau.</p>
+        <span style="color:var(--vert); font-weight:700;">Montant à régler : <span id="conf-montant"></span> €</span> auprès du bureau.</p>
         <div class="recap" id="conf-recap"></div>
         <button class="new-order-btn" onclick="nouvelleCommande()">Nouvelle commande</button>
     </div>
@@ -763,7 +763,7 @@ filterClassement();
     <details><summary>Comment participer aux concours officiels ?</summary><p>Pour participer aux concours officiels, il faut être licencié à la FFPJP. Contactez le bureau pour obtenir votre licence et vous inscrire aux prochains concours.</p></details>
     <details><summary>Le club est-il ouvert aux jeunes ?</summary><p>Absolument ! Le club accueille les jeunes joueurs avec plaisir. N'hésitez pas à venir avec vos enfants lors des entraînements pour découvrir la pétanque.</p></details>
     <details><summary>Où se trouve le terrain du club ?</summary><p>Le terrain est situé Chemin du Stade à Boves (80440). Vous pouvez retrouver l'itinéraire dans la section Contacts.</p></details>
-    <details><summary>Comment commander les vêtements du club ?</summary><p>Rendez-vous dans la section Commande de Vêtements du site. Remplissez le formulaire avec vos tailles et le bureau vous recontactera. Le montant de la commande est de 100 €.</p></details>
+    <details><summary>Comment commander les vêtements du club ?</summary><p>Rendez-vous dans la section Commande de Vêtements du site. Remplissez le formulaire avec vos tailles et le bureau vous recontactera.</p></details>
     <details><summary>Quelle est la différence entre pétanque et jeu provençal ?</summary><p>En pétanque, les joueurs tirent les pieds joints et dans un cercle. En jeu provençal, les joueurs prennent un élan de 1 à 3 pas avant de lancer. Les deux disciplines sont pratiquées au club.</p></details>
     <details><summary>Y a-t-il des compétitions par équipes ?</summary><p>Oui ! Nous participons aux championnats en doublette (2 joueurs), triplette (3 joueurs) et tête-à-tête (1 contre 1). Il y a aussi des catégories mixtes, vétérans et jeunes.</p></details>
     <details><summary>Comment suivre l'actualité du club ?</summary><p>Vous pouvez nous suivre sur Facebook (Pétanque Boves) et TikTok (PétanqueBoves80) pour les dernières nouvelles, résultats et annonces du club.</p></details>
@@ -835,6 +835,29 @@ var btnTop = document.getElementById('btnTop');
 window.addEventListener('scroll', function() { btnTop.style.display = window.scrollY > 220 ? 'block' : 'none'; });
 function topFunction() { window.scrollTo({ top: 0, behavior: 'smooth' }); }
 
+// ===================== CALCUL PRIX DYNAMIQUE =====================
+function calculerPrix() {
+    var pantalon = document.getElementById('taille-pantalon').value;
+    var polo     = document.getElementById('taille-polo').value;
+    var veste    = document.getElementById('taille-veste').value;
+    var manteau  = document.getElementById('taille-manteau').value;
+    var nb = [pantalon, polo, veste, manteau].filter(function(v) { return v !== ''; }).length;
+    var prix = 0;
+    var label = '';
+    if (nb === 0) {
+        document.getElementById('prix-badge').textContent = '— €';
+        document.getElementById('prix-label').textContent = 'Sélectionnez vos vêtements';
+        document.getElementById('montant-hidden').value = '';
+        return;
+    } else if (nb === 1) { prix = 30; label = '1 vêtement'; }
+    else if (nb === 2) { prix = 60; label = '2 vêtements'; }
+    else if (nb === 3) { prix = 90; label = '3 vêtements'; }
+    else              { prix = 100; label = 'Pack complet (4 vêtements)'; }
+    document.getElementById('prix-badge').textContent = prix + ' €';
+    document.getElementById('prix-label').textContent = 'Montant pour ' + label;
+    document.getElementById('montant-hidden').value = prix + ' euros';
+}
+
 function submitCommande() {
     var nom = document.getElementById('nom').value.trim();
     var prenom = document.getElementById('prenom').value.trim();
@@ -850,6 +873,11 @@ function submitCommande() {
     if (!tel) { alert('⚠️ Merci de renseigner votre numéro de téléphone.'); return; }
     if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { alert('⚠️ Merci de renseigner une adresse email valide.'); return; }
     if (!pantalon && !polo && !veste && !manteau) { alert('⚠️ Veuillez sélectionner au moins une taille de vêtement.'); return; }
+
+    // Calcul du montant final
+    var nb = [pantalon, polo, veste, manteau].filter(function(v) { return v !== ''; }).length;
+    var montant = nb === 1 ? 30 : nb === 2 ? 60 : nb === 3 ? 90 : 100;
+
     var btn = document.getElementById('submitBtn');
     btn.textContent = 'Envoi en cours...'; btn.disabled = true;
     var formData = new FormData();
@@ -862,12 +890,12 @@ function submitCommande() {
         '\nTelephone : ' + tel + '\nCode postal : ' + cp +
         '\n\n--- COMMANDE ---\nPantalon : ' + (pantalon || 'Non commande') +
         '\nPolo : ' + (polo || 'Non commande') + '\nVeste : ' + (veste || 'Non commande') +
-        '\nManteau : ' + (manteau || 'Non commande') + '\n\nMontant total : 100 euros'
+        '\nManteau : ' + (manteau || 'Non commande') + '\n\nMontant total : ' + montant + ' euros'
     );
     fetch('https://api.web3forms.com/submit', { method: 'POST', body: formData, headers: { 'Accept': 'application/json' } })
     .then(function(response) {
         btn.textContent = '✅ Envoyer ma commande'; btn.disabled = false;
-        if (response.ok) { afficherConfirmation(prenom, nom, cp, email, tel, pantalon, polo, veste, manteau); }
+        if (response.ok) { afficherConfirmation(prenom, nom, cp, email, tel, pantalon, polo, veste, manteau, montant); }
         else { alert('❌ Une erreur est survenue. Veuillez réessayer ou contacter le club par email.'); }
     })
     .catch(function() {
@@ -875,8 +903,10 @@ function submitCommande() {
         alert('❌ Impossible d\'envoyer la commande. Vérifiez votre connexion internet.');
     });
 }
-function afficherConfirmation(prenom, nom, cp, email, tel, pantalon, polo, veste, manteau) {
+
+function afficherConfirmation(prenom, nom, cp, email, tel, pantalon, polo, veste, manteau, montant) {
     document.getElementById('conf-prenom').textContent = prenom;
+    document.getElementById('conf-montant').textContent = montant;
     var html = '<p><strong>Nom :</strong> ' + prenom + ' ' + nom + '</p>';
     html += '<p><strong>Email :</strong> ' + email + '</p>';
     html += '<p><strong>Téléphone :</strong> ' + tel + '</p>';
@@ -885,18 +915,20 @@ function afficherConfirmation(prenom, nom, cp, email, tel, pantalon, polo, veste
     if (polo) html += '<p><strong>Polo :</strong> ' + polo + '</p>';
     if (veste) html += '<p><strong>Veste :</strong> ' + veste + '</p>';
     if (manteau) html += '<p><strong>Manteau :</strong> ' + manteau + '</p>';
-    html += '<p style="margin-top:10px;padding-top:10px;border-top:1px solid #333;"><strong style="color:var(--vert);">Montant total : 100 €</strong></p>';
+    html += '<p style="margin-top:10px;padding-top:10px;border-top:1px solid #333;"><strong style="color:var(--vert);">Montant total : ' + montant + ' €</strong></p>';
     document.getElementById('conf-recap').innerHTML = html;
     document.getElementById('orderForm').style.display = 'none';
     var conf = document.getElementById('confirmation');
     conf.style.display = 'block';
     conf.scrollIntoView({ behavior: 'smooth', block: 'center' });
 }
+
 function nouvelleCommande() {
     document.getElementById('orderForm').style.display = 'block';
     document.getElementById('confirmation').style.display = 'none';
     ['nom','prenom','codepostal','telephone','email'].forEach(function(id) { document.getElementById(id).value = ''; });
     ['taille-pantalon','taille-polo','taille-veste','taille-manteau'].forEach(function(id) { document.getElementById(id).value = ''; });
+    calculerPrix();
     document.getElementById('orderForm').scrollIntoView({ behavior: 'smooth' });
 }
 
