@@ -827,9 +827,13 @@ filterClassement();
     <div class="gallery-grid" id="galleryGrid">
         <!-- Les photos se chargent depuis le tableau PHOTOS ci-dessous -->
     </div>
-    <div class="gallery-add-btn">
-        📁 Pour ajouter des photos : dépose tes images sur GitHub et ajoute leur nom dans le tableau PHOTOS du script
-    </div>
+    <!--
+        POUR AJOUTER DES PHOTOS :
+        1. Dépose tes images sur GitHub dans le dossier petanque80/
+        2. Dans le script ci-dessous, ajoute les dans le tableau PHOTOS :
+           { src: 'photo1.jpg', alt: 'Concours mars 2026' },
+           { src: 'photo2.jpg', alt: 'Equipe du club' },
+    -->
 </section>
 
 <!-- LIGHTBOX -->
@@ -841,14 +845,16 @@ filterClassement();
 <script>
 var PHOTOS = [
     // Ajoute tes photos ici comme ceci :
-    // { src: 'photo1.jpg', alt: 'Concours mars 2026' },
-    // { src: 'photo2.jpg', alt: 'Equipe du club' },
+    { src: 'photo1.webp', alt: 'Photo 1' },
+    { src: 'photo2.webp', alt: 'Photo 2' },
+    { src: 'photo3.webp', alt: 'Photo 3' },
+    { src: 'photo4.webp', alt: 'Photo 4' },
 ];
 
 var grid = document.getElementById('galleryGrid');
 if (PHOTOS.length === 0) {
     // Affiche des placeholders si pas de photos
-    for (var i = 0; i < 8; i++) {
+    for (var i = 0; i < 4; i++) {
         var item = document.createElement('div');
         item.className = 'gallery-item';
         item.innerHTML = '<div class="gallery-placeholder"><span>📷</span><span>Photo à venir</span></div>';
@@ -883,30 +889,31 @@ document.getElementById('lightbox').addEventListener('click', function(e) {
 <section id="partenaires">
     <h2>Nos Partenaires</h2>
     <div class="partners-grid">
-        <!-- Partenaire 1 — remplace le nom, la description et ajoute un logo si tu en as un -->
+        <!--
+            POUR PERSONNALISER LES PARTENAIRES :
+            - Remplace "Partenaire X" par le vrai nom du sponsor
+            - Remplace "À compléter" par une courte description (ex: "Boulangerie locale")
+            - Pour ajouter un logo : remplace <div class="partner-logo-placeholder">🏪</div>
+              par <img class="partner-logo" src="logo-partenaire.png" alt="Nom partenaire">
+        -->
         <div class="partner-card">
-            <div class="partner-logo-placeholder">🏪</div>
-            <span class="partner-name">Partenaire 1</span>
-            <span class="partner-desc">À compléter</span>
+            <img class="partner-logo" src="amiens.webp" alt="Amiens Métropole">
+            <span class="partner-name">Amiens Métropole</span>
+
         </div>
         <div class="partner-card">
-            <div class="partner-logo-placeholder">🏪</div>
-            <span class="partner-name">Partenaire 2</span>
-            <span class="partner-desc">À compléter</span>
+            <img class="partner-logo" src="somme.webp" alt="Conseil départemental de la Somme">
+            <span class="partner-name">Conseil départemental de la Somme</span>
+            
         </div>
         <div class="partner-card">
-            <div class="partner-logo-placeholder">🏪</div>
-            <span class="partner-name">Partenaire 3</span>
-            <span class="partner-desc">À compléter</span>
+            <img class="partner-logo" src="estaminet.webp" alt="L'Estaminet Boves">
+            <span class="partner-name">L'Estaminet</span>
         </div>
         <div class="partner-card">
-            <div class="partner-logo-placeholder">🏪</div>
-            <span class="partner-name">Partenaire 4</span>
-            <span class="partner-desc">À compléter</span>
+            <img class="partner-logo" src="clarins.webp" alt="Clarins">
+            <span class="partner-name">Clarins</span>
         </div>
-    </div>
-    <div class="card" style="margin-top:16px; text-align:center; color:#555; font-size:0.88em;">
-        💡 Pour personnaliser : remplace "Partenaire X" par le vrai nom, et ajoute <strong style="color:#666">&lt;img class="partner-logo" src="logo-partenaire.png"&gt;</strong> à la place du placeholder
     </div>
 </section>
 
