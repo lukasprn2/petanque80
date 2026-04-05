@@ -4,8 +4,27 @@
     <meta charset="UTF-8">
     <title>Club de Pétanque de Boves</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="manifest" href="/petanque80/manifest.json">
+  <!-- PWA de base -->
+<link rel="manifest" href="/petanque80/manifest.json">
 <meta name="theme-color" content="#ffffff">
+
+<!-- iOS (Safari ne lit pas le manifest) -->
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="Pétanque">
+<link rel="apple-touch-icon" href="/petanque80/logo.png">
+<link rel="apple-touch-icon" sizes="152x152" href="/petanque80/logo.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/petanque80/logo.png">
+
+<!-- Windows (Edge / épingler sur l'écran d'accueil) -->
+<meta name="msapplication-TileImage" content="/petanque80/logo.png">
+<meta name="msapplication-TileColor" content="#ffffff">
+<meta name="msapplication-tap-highlight" content="no">
+
+<!-- Android / général -->
+<meta name="mobile-web-app-capable" content="yes">
+<link rel="icon" type="image/png" sizes="192x192" href="/petanque80/logo.png">
+<link rel="shortcut icon" href="/petanque80/logo.png">
     <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
     <link rel="icon" type="image/webp" href="logo.webp">
     <link rel="apple-touch-icon" href="logo.png">
@@ -988,6 +1007,74 @@ if ('serviceWorker' in navigator) {
       navigator.serviceWorker.register('/petanque80/sw.js');
     });
   }
+</script>
+    <script>
+  if ('serviceWorker' in navigator) {
+    window.addEventListener('load', function() {
+      navigator.serviceWorker.register('/petanque80/sw.js')
+        .then(function(reg) { console.log('SW enregistré:', reg.scope); })
+        .catch(function(err) { console.log('SW erreur:', err); });
+    });
+  }
+</script>
+    <!-- Bandeau installation iOS -->
+<div id="ios-install-banner" style="
+  display: none;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: #ffffff;
+  border-top: 1px solid #e0e0e0;
+  box-shadow: 0 -2px 10px rgba(0,0,0,0.15);
+  padding: 14px 16px;
+  z-index: 9999;
+  font-family: -apple-system, sans-serif;
+">
+  <button onclick="document.getElementById('ios-install-banner').style.display='none'" style="
+    position: absolute;
+    top: 10px;
+    right: 14px;
+    background: none;
+    border: none;
+    font-size: 20px;
+    color: #888;
+    cursor: pointer;
+    line-height: 1;
+  ">✕</button>
+
+  <div style="display: flex; align-items: center; gap: 12px; padding-right: 24px;">
+    <img src="/petanque80/logo.png" style="width: 48px; height: 48px; border-radius: 10px;">
+    <div>
+      <div style="font-weight: 600; font-size: 15px; color: #111;">Installer l'application</div>
+      <div style="font-size: 13px; color: #555; margin-top: 3px;">
+        Appuyez sur
+        <svg style="display:inline;vertical-align:middle;margin:0 2px;" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#007aff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"/>
+          <polyline points="16 6 12 2 8 6"/>
+          <line x1="12" y1="2" x2="12" y2="15"/>
+        </svg>
+        puis <strong>« Sur l'écran d'accueil »</strong>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  // Affiche le bandeau uniquement sur iOS, si pas déjà installé, et pas déjà fermé
+  (function() {
+    var isIos = /iphone|ipad|ipod/i.test(navigator.userAgent);
+    var isStandalone = window.navigator.standalone === true;
+    var dismissed = localStorage.getItem('ios-banner-dismissed');
+
+    if (isIos && !isStandalone && !dismissed) {
+      document.getElementById('ios-install-banner').style.display = 'block';
+    }
+
+    document.querySelector('#ios-install-banner button').addEventListener('click', function() {
+      localStorage.setItem('ios-banner-dismissed', '1');
+    });
+  })();
 </script>
 </body>
 </html>
