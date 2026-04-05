@@ -1,4 +1,4 @@
-const CACHE_NAME = 'petanque-boves-v10';
+const CACHE_NAME = 'petanque-boves-v11';
 
 const ASSETS = [
   '/petanque80/',
