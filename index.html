@@ -851,6 +851,9 @@ function submitCommande() {
     var btn = document.getElementById('submitBtn');
     btn.textContent = 'Envoi en cours...'; btn.disabled = true;
     var formData = new FormData();
+    formData.append('access_key', '132fc66b-24a9-4fc1-8d3e-6d2816dc978c');
+    formData.append('subject', 'Nouvelle commande vêtements – ' + prenom + ' ' + nom);
+    formData.append('from_name', 'Site Pétanque Boves');
     formData.append('email', email);
     formData.append('message',
         '--- INFORMATIONS ---\nNom : ' + prenom + ' ' + nom + '\nEmail : ' + email +
@@ -859,7 +862,7 @@ function submitCommande() {
         '\nPolo : ' + (polo || 'Non commande') + '\nVeste : ' + (veste || 'Non commande') +
         '\nManteau : ' + (manteau || 'Non commande') + '\n\nMontant total : 100 euros'
     );
-    fetch('https://formspree.io/f/xwvrwwje', { method: 'POST', body: formData, headers: { 'Accept': 'application/json' } })
+    fetch('https://api.web3forms.com/submit', { method: 'POST', body: formData, headers: { 'Accept': 'application/json' } })
     .then(function(response) {
         btn.textContent = '✅ Envoyer ma commande'; btn.disabled = false;
         if (response.ok) { afficherConfirmation(prenom, nom, cp, email, tel, pantalon, polo, veste, manteau); }
