@@ -1,5 +1,4 @@
-const CACHE_NAME = 'petanque-boves-v14';
-
+const CACHE_NAME = 'petanque-boves-v15';
 const ASSETS = [
   '/petanque80/',
   '/petanque80/index.html',
@@ -22,38 +21,38 @@ const ASSETS = [
   '/petanque80/jean-marie.webp'
 ];
 
-// Installation
 self.addEventListener('install', function(event) {
   event.waitUntil(
     caches.open(CACHE_NAME).then(function(cache) {
       return cache.addAll(ASSETS);
     })
   );
-  self.skipWaiting(); // Active immédiatement la nouvelle version
+  self.skipWaiting();
 });
 
-// Activation : supprime les anciens caches automatiquement
 self.addEventListener('activate', function(event) {
   event.waitUntil(
     caches.keys().then(function(keys) {
       return Promise.all(
         keys.filter(function(key) { return key !== CACHE_NAME; })
-            .map(function(key) {
-              console.log('Ancien cache supprimé :', key);
-              return caches.delete(key);
-            })
+            .map(function(key) { return caches.delete(key); })
       );
+    }).then(function() {
+      // Force le rechargement de toutes les fenêtres ouvertes
+      return self.clients.matchAll({ type: 'window' }).then(function(clients) {
+        clients.forEach(function(client) {
+          client.navigate(client.url);
+        });
+      });
     })
   );
-  self.clients.claim(); // Prend le contrôle immédiatement
+  self.clients.claim();
 });
 
-// Fetch : réseau en priorité, cache en fallback
 self.addEventListener('fetch', function(event) {
   event.respondWith(
     fetch(event.request)
       .then(function(networkResponse) {
-        // Met à jour le cache avec la version réseau
         var responseClone = networkResponse.clone();
         caches.open(CACHE_NAME).then(function(cache) {
           cache.put(event.request, responseClone);
@@ -61,7 +60,6 @@ self.addEventListener('fetch', function(event) {
         return networkResponse;
       })
       .catch(function() {
-        // Hors ligne : on sert depuis le cache
         return caches.match(event.request).then(function(cached) {
           if (cached) return cached;
           if (event.request.mode === 'navigate') {
