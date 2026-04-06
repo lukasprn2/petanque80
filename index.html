@@ -22,7 +22,7 @@
 
     <meta name="description" content="Club de Pétanque de Boves – Passion, Précision, Bonne humeur">
     <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
-
+<script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
     <style>
         :root {
             --vert: #0bff04;
@@ -647,21 +647,8 @@
 </div>
 
 <script>
-var LICENCIES = [
-    {nom:'Cadart', prenom:'Lilou',        tel:'06 81 34 49 61'},
-    {nom:'Cadart',     prenom:'Joel', tel:'06 81 34 49 61'},
-    {nom:'Bore',        prenom:'Sébastien',     tel:'06 51 38 23 32'},
-    {nom:'Celos',   prenom:'Charles',         tel:'06 28 75 39 93'},
-    {nom:'Lozano',      prenom:'Mathis',        tel:'06 07 71 37 83'},
-    {nom:'Subitte',      prenom:'Jean-Marc',        tel:'06 10 67 13 61'},
-    {nom:'Langlois',      prenom:'Emmanuel',        tel:'06 24 43 12 84'},
-    {nom:'Legris',      prenom:'Daniel',        tel:'06 73 43 37 91'},
-    {nom:'Dos Santos',      prenom:'Maya',        tel:'06 34 09 89 83'},
-    {nom:'Demarquet',      prenom:'Kevin',        tel:'07 82 38 71 65'},
-    {nom:'Trioux',      prenom:'Sebastien',        tel:'07 83 26 04 33'},
-
-    /* Ajoutez les autres membres ici */
-];
+var LICENCIES = [];
+var LICENCIES_CHIFFRE = "U2FsdGVkX1/fD0iMjkcZ+VFcJMw8z7C+GQ5E4z+InMAsoOa8K2w2ZFezZQDV/EzuZD1/ijnKsJJ/A+55DZ4e8jb7MrNoNdocab5uLsy8ziuxHKi240Sz7Qfi2USJcCpjY70R/HN74kGDA9DKryOobOJ9B9vY3G4mFxyIQELoRmY/46XSAsXSEwjH9CgmTEkh7Rj6fDdOuNvEF6JTGFlXvXk+sZKcXgdAukl3D4qyg5lX8cG2ZfhEcWLIopzmXqTu4XFTR51MB0b0rKZ5fS7wWJD2jWsanW48wB2IrSinmBnEWGdE2ZhJ4+7BC7U7nTOZaGgRhRzdjLcS/IBTBJCnAKPPMv6LwlCitmJBXoHkFBf8qYtDm+htU7byplnux6EhhritGNXkDKIBmazSBqZ/RVHlE8t418UjP6NUBzJiD5qyUaOi+qViteuc8HBKGuZnR4tPW+kW6nLIjmsDMzbfmvLLBvsMAHzpniaeLlMNhPhCb3nRcXSIuc3ns/n0Y6M+I+c6RihriK58jro8LUgVW/Lyp9I37x+l1RtfOOhmSbCbbuyEmqdcIxaOMsRHjSUZyWbtM2CFYZeihZMxP3ObPymq7kfqcOlaW5sjre+HYGVpixpXbU0f3F++72qaQMN2z8+jbkFCR8AyZkuMQ89ZGOtw9dPat/IAXJO94iFX1y54HkoOmj8br7+BDg8Rt6rxXBCry9hWUKWUFWTmC7uBlPXQ/0lRllbQInP/lbjae9nk6AhSkg8Bpkk4mTVkA/WpMUgF1rxF0E92GfiFJ49eSywyIATl8LhMzhJ0xLRCL5HVfaXnMf3Na5tzZBPs286BRSdVv2UheDu/+PWgrrnje2RVuc70440TWoSg1SlW+PvV++Usw6wSHBudhbgrD7n5";
 
 function renderLicencies(list) {
     var container = document.getElementById('licencies-list');
@@ -691,20 +678,24 @@ function filterLicencies() {
 
 function openLicencies() {
     var mdp = prompt('🔒 Mot de passe membres :');
-    if (mdp !== 'Boves2026') {
-        alert('❌ Accès refusé');
-        return;
+    if (!mdp) return;
+    try {
+        var bytes = CryptoJS.AES.decrypt(LICENCIES_CHIFFRE, mdp);
+        var data = JSON.parse(bytes.toString(CryptoJS.enc.Utf8));
+        if (!data || !data.length) throw new Error();
+        LICENCIES = data;
+        document.getElementById('modal-licencies').style.display = 'block';
+        document.getElementById('licencies-search').value = '';
+        renderLicencies(LICENCIES);
+    } catch(e) {
+        alert('❌ Mot de passe incorrect');
     }
-    document.getElementById('modal-licencies').style.display = 'block';
-    document.getElementById('licencies-search').value = '';
-    renderLicencies(LICENCIES);
 }
 
 function closeLicencies() {
     document.getElementById('modal-licencies').style.display = 'none';
 }
 
-/* Attache tous les événements */
 document.getElementById('stat-licencies').addEventListener('click', openLicencies);
 document.getElementById('modal-close-btn').addEventListener('click', closeLicencies);
 document.getElementById('licencies-search').addEventListener('input', filterLicencies);
