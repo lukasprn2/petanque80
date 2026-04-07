@@ -5,7 +5,6 @@
     <title>Club de Pétanque de Boves</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <!-- CSP CORRIGÉE : suppression du nonce non remplacé qui bloquait tous les scripts inline -->
     <meta http-equiv="Content-Security-Policy"
           content="
             default-src 'self';
@@ -44,7 +43,6 @@
 
     <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
 
-    <!-- CryptoJS : SRI corrigé (hash SHA-384 valide) -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"
             integrity="sha512-E8QSvWZ0eCLGk4km3hxSsNmGWbLtSCSUcewDQPQWZF6pEU8GlT8a5fF32wOl1i8ftdMhssTrF/OhyGWwonTcXA=="
             crossorigin="anonymous"
@@ -109,6 +107,27 @@
         .card a { color: var(--vert); }
         .card ul { padding-left: 18px; }
         .card li { margin: 5px 0; }
+
+        /* === ACTUALITÉS IMAGE === */
+        #actualites .card {
+            padding: 0;
+            overflow: hidden;
+            border-left: none;
+            border: 1px solid #363636;
+            display: flex;
+            justify-content: center;
+        }
+        #actualites .card img {
+            width: 100%;
+            height: auto;
+            display: block;
+            border-radius: 10px;
+        }
+        @media (min-width: 768px) {
+            #actualites .card img {
+                width: 480px;
+            }
+        }
 
         .social-links { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 18px; }
         .social-btn { display: inline-flex; align-items: center; gap: 10px; padding: 12px 20px; border-radius: 12px; text-decoration: none; font-family: 'Nunito', sans-serif; font-weight: 700; font-size: 0.92em; border: 2px solid transparent; transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s, opacity 0.2s; }
@@ -222,10 +241,8 @@
         .form-group select option, .taille-item select option { background: #000000; color: #eee; }
         .form-group input:focus, .form-group select:focus, .taille-item select:focus { border-color: var(--vert); box-shadow: 0 0 0 3px rgba(11,255,4,0.2); }
         .form-group input::placeholder { color: #777; }
-
         .field-error { color: #ff4444; font-size: 0.78em; margin-top: 2px; display: none; }
         .field-error.show { display: block; }
-
         .tailles-section { grid-column: 1 / -1; }
         .tailles-section h4 { font-size: 0.72em; text-transform: uppercase; letter-spacing: 2px; color: #888; margin-bottom: 13px; padding-bottom: 8px; border-bottom: 1px solid #333; }
         .tailles-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 13px; }
@@ -387,7 +404,6 @@
         .modal-empty { text-align: center; color: #555; font-size: 0.9em; padding: 30px; }
         .lockout-msg { text-align: center; padding: 20px; color: #ff6666; font-weight: 700; font-size: 0.9em; }
 
-        /* === MODALE MOT DE PASSE (remplace prompt() natif) === */
         #pwd-modal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.85); z-index: 10000; align-items: center; justify-content: center; padding: 20px; }
         #pwd-modal.open { display: flex; }
         .pwd-modal-box { background: #111; border: 2px solid var(--vert); border-radius: 16px; padding: 28px 24px; max-width: 380px; width: 100%; box-shadow: 0 0 40px rgba(11,255,4,0.2); }
@@ -402,16 +418,11 @@
         .pwd-btn-ok:hover { background: var(--vert-dark); }
         .pwd-btn-cancel { background: transparent; color: #888; border: 1.5px solid #333 !important; }
         .pwd-btn-cancel:hover { color: #ccc; border-color: #666 !important; }
-        @media (min-width: 768px) {
-    #actualites .card img {
-        width: 480px;
-    }
-}
     </style>
 </head>
 <body>
 
-<!-- ===================== UTILITAIRES DE SÉCURITÉ (en tête, avant tout usage) ===================== -->
+<!-- ===================== UTILITAIRES DE SÉCURITÉ ===================== -->
 <script>
 function escapeHTML(str) {
     if (typeof str !== 'string') return '';
@@ -462,7 +473,6 @@ var CsrfToken = (function() {
 </script>
 
 <!-- ===================== INTRO ANIMATION ===================== -->
-<!-- CORRECTION : le script est placé AVANT les boutons qui l'utilisent -->
 <script>
 (function() {
     var introStarted = false;
@@ -486,7 +496,6 @@ var CsrfToken = (function() {
         var bar     = document.getElementById('introBar');
         var btnWrap = document.getElementById('intro-enter-wrap');
 
-        /* Tentative de lecture audio (peut être bloquée par le navigateur) */
         try {
             var audio = new Audio('sonintro.mp3');
             audio.volume = 0.7;
@@ -501,23 +510,11 @@ var CsrfToken = (function() {
 
         setTimeout(function() { logo.classList.add('logo-out'); }, 800);
         setTimeout(function() { document.getElementById('iw1').classList.add('show'); }, 1100);
-        setTimeout(function() {
-            var w = document.getElementById('iw1');
-            w.classList.remove('show');
-            w.classList.add('out');
-        }, 2700);
+        setTimeout(function() { var w = document.getElementById('iw1'); w.classList.remove('show'); w.classList.add('out'); }, 2700);
         setTimeout(function() { document.getElementById('iw2').classList.add('show'); }, 3000);
-        setTimeout(function() {
-            var w = document.getElementById('iw2');
-            w.classList.remove('show');
-            w.classList.add('out');
-        }, 4200);
+        setTimeout(function() { var w = document.getElementById('iw2'); w.classList.remove('show'); w.classList.add('out'); }, 4200);
         setTimeout(function() { document.getElementById('iw3').classList.add('show'); }, 4500);
-        setTimeout(function() {
-            var w = document.getElementById('iw3');
-            w.classList.remove('show');
-            w.classList.add('out');
-        }, 5900);
+        setTimeout(function() { var w = document.getElementById('iw3'); w.classList.remove('show'); w.classList.add('out'); }, 5900);
         setTimeout(function() {
             screen.classList.add('hide');
             setTimeout(function() {
@@ -552,10 +549,7 @@ var CsrfToken = (function() {
         @keyframes btnIn { to { opacity: 1; transform: translateY(0); } }
         #btn-skip { position: absolute; top: 18px; right: 18px; background: transparent; border: 1.5px solid rgba(11,255,4,0.4); color: rgba(11,255,4,0.7); font-family: 'Bebas Neue', sans-serif; font-size: 0.95em; letter-spacing: 2px; padding: 7px 18px; border-radius: 30px; cursor: pointer; opacity: 0; animation: btnIn 0.5s ease 1.3s forwards; transition: background 0.2s, color 0.2s, border-color 0.2s; z-index: 10001; }
         #btn-skip:hover { background: rgba(11,255,4,0.12); color: #0bff04; border-color: #0bff04; }
-        
     </style>
-
-    <!-- CORRECTION : utilisation de addEventListener au lieu de onclick inline -->
     <button id="btn-skip">⏭ Passer</button>
     <img src="logo.webp" alt="Logo" class="intro-logo" id="introLogo">
     <div id="intro-enter-wrap">
@@ -567,7 +561,6 @@ var CsrfToken = (function() {
     <div class="intro-bar" id="introBar"></div>
 </div>
 
-<!-- CORRECTION : les addEventListener sont après le DOM de l'intro -->
 <script>
 document.getElementById('btn-skip').addEventListener('click', function() { window.skipIntro(); });
 document.getElementById('intro-enter-btn').addEventListener('click', function() { window.startIntro(); });
@@ -587,7 +580,7 @@ document.getElementById('intro-enter-btn').addEventListener('click', function() 
     </div>
     <nav class="nav-menu" id="navMenu" role="navigation">
         <a href="#accueil"       ><span class="nav-icon">🏠</span>Accueil</a>
-        <a href="#actualites"    ><span class="nav-icon"></span>Actualités</a>
+        <a href="#actualites"    ><span class="nav-icon">📰</span>Actualités</a>
         <a href="#contact"       ><span class="nav-icon">📞</span>Contacts</a>
         <a href="#calendrier"    ><span class="nav-icon">📅</span>Calendrier</a>
         <a href="#galerie"       ><span class="nav-icon">📸</span>Galerie</a>
@@ -658,7 +651,7 @@ document.getElementById('intro-enter-btn').addEventListener('click', function() 
 })();
 </script>
 
-<!-- ===================== MODALE MOT DE PASSE (remplace prompt() natif) ===================== -->
+<!-- ===================== MODALE MOT DE PASSE ===================== -->
 <div id="pwd-modal" role="dialog" aria-modal="true" aria-label="Saisie du mot de passe">
     <div class="pwd-modal-box">
         <h3>🔒 Accès Membres</h3>
@@ -747,12 +740,10 @@ function filterLicencies() {
     }));
 }
 
-/* === Modale mot de passe sécurisée (remplace prompt() natif) === */
 var _loginFailCount  = 0;
 var _loginLockedUntil = 0;
 
 function openPwdModal() {
-    /* Rate limiting : 5 tentatives / 10 minutes */
     if (!RateLimit.check('licencies-login', 5, 10 * 60 * 1000)) {
         showPwdError('⛔ Trop de tentatives. Réessayez dans quelques minutes.');
         return;
@@ -779,46 +770,36 @@ function showPwdError(msg) {
 }
 
 function tryLogin() {
-    /* Vérification du blocage temporaire */
     if (Date.now() < _loginLockedUntil) {
         var wait = Math.ceil((_loginLockedUntil - Date.now()) / 1000);
         showPwdError('⛔ Accès bloqué. Réessayez dans ' + wait + 's.');
         return;
     }
-
     var mdp = document.getElementById('pwd-input').value;
     if (!mdp) return;
     if (mdp.length > 128) { showPwdError('❌ Mot de passe invalide.'); return; }
-
-    /* CryptoJS doit être chargé */
     if (typeof CryptoJS === 'undefined') {
         showPwdError('❌ Erreur : bibliothèque de chiffrement non chargée.');
         return;
     }
-
     try {
         var bytes = CryptoJS.AES.decrypt(LICENCIES_CHIFFRE, mdp);
         var plain = bytes.toString(CryptoJS.enc.Utf8);
         if (!plain) throw new Error('empty');
         var data = JSON.parse(plain);
         if (!Array.isArray(data) || !data.length) throw new Error('invalid');
-
-        /* Succès */
         _loginFailCount   = 0;
         _loginLockedUntil = 0;
         LICENCIES = data;
-
         closePwdModal();
         document.getElementById('modal-licencies').style.display = 'block';
         document.getElementById('licencies-search').value = '';
         document.getElementById('modal-close-btn').focus();
         renderLicencies(LICENCIES);
-
     } catch(e) {
         _loginFailCount++;
         var delay = Math.min(2000 * Math.pow(2, _loginFailCount - 1), 60000);
         _loginLockedUntil = Date.now() + delay;
-
         var msg = '❌ Mot de passe incorrect.';
         if (_loginFailCount >= 3) {
             msg += ' Prochain essai dans ' + Math.ceil(delay / 1000) + 's.';
@@ -836,15 +817,12 @@ function closeLicencies() {
     LICENCIES = [];
 }
 
-/* Événements */
 document.getElementById('stat-licencies').addEventListener('click', openPwdModal);
 document.getElementById('modal-close-btn').addEventListener('click', closeLicencies);
 document.getElementById('licencies-search').addEventListener('input', filterLicencies);
 document.getElementById('modal-licencies').addEventListener('click', function(e) {
     if (e.target === this) closeLicencies();
 });
-
-/* Modale mot de passe */
 document.getElementById('pwd-btn-ok').addEventListener('click', tryLogin);
 document.getElementById('pwd-btn-cancel').addEventListener('click', closePwdModal);
 document.getElementById('pwd-input').addEventListener('keydown', function(e) {
@@ -857,16 +835,18 @@ document.addEventListener('keydown', function(e) {
         closePwdModal();
     }
 });
+</script>
+
 <!-- ===================== ACTUALITÉS ===================== -->
 <section id="actualites">
     <h2>Actualités</h2>
-    <div class="card" style="padding:0;overflow:hidden;border-left:none;border:1px solid #363636;display:flex;justify-content:center;">
+    <div class="card">
         <img src="actualite.webp"
              alt="Actualité du club de pétanque de Boves"
-             loading="lazy"
-             style="width:100%;height:auto;display:block;border-radius:10px;">
+             loading="lazy">
     </div>
 </section>
+
 <!-- ===================== CONTACT ===================== -->
 <section id="contact">
     <h2>Contacts</h2>
@@ -906,7 +886,6 @@ document.addEventListener('keydown', function(e) {
 </section>
 
 <script>
-/* Révélation email au clic */
 (function() {
     var el = document.getElementById('mail-contact');
     if (!el) return;
@@ -951,27 +930,27 @@ document.addEventListener('keydown', function(e) {
         {type:'concours', m:10, d:6,  nom:'Doublette Vétérans',         heure:'14h00', lieu:'Boves', limite:'jet du but'},
         {type:'concours', m:11, d:21, nom:'Doublette Interne',          heure:'13h30', lieu:'Boves', limite:'jet du but'},
         {type:'concours', m:12, d:5,  nom:'Doublette Interne',          heure:'13h30', lieu:'Boves', limite:'jet du but'},
-        {type:'champ', m:4, d:4,  nom:'Trip. Jeu Provençal',       heure:'8h00',  lieu:'Albert',                         limite:'26/3'},
-        {type:'champ', m:4, d:5,  nom:'Reprise',                   heure:'9h00',  lieu:'Albert',                         limite:''},
-        {type:'champ', m:4, d:6,  nom:'Reprise',                   heure:'9h00',  lieu:'Albert',                         limite:''},
-        {type:'champ', m:4, d:11, nom:'Triplette Senior M',        heure:'10h00', lieu:'Feuquières',                     limite:'02/4'},
-        {type:'champ', m:4, d:11, nom:'Triplette Senior F',        heure:'14h00', lieu:'Feuquières',                     limite:'02/4'},
-        {type:'champ', m:4, d:12, nom:'Reprise',                   heure:'09h00', lieu:'Feuquières',                     limite:''},
-        {type:'champ', m:4, d:12, nom:'Triplette (J, C, M)',       heure:'09h30', lieu:'Feuquières',                     limite:'Sur place'},
-        {type:'champ', m:4, d:12, nom:'Tir précision J',           heure:'',      lieu:'Feuquières',                     limite:'Sur place'},
-        {type:'champ', m:4, d:18, nom:'Doublette Mixte',           heure:'10h00', lieu:'Fienvillers-Doullens',            limite:'09/4'},
-        {type:'champ', m:4, d:19, nom:'Reprise',                   heure:'9h00',  lieu:'Fienvillers-Doullens',            limite:''},
-        {type:'champ', m:4, d:22, nom:'Triplette Vétéran',         heure:'10h00', lieu:'Asptt Amiens',                   limite:'09/4'},
-        {type:'champ', m:4, d:23, nom:'Reprise',                   heure:'9h00',  lieu:'Asptt Amiens',                   limite:''},
-        {type:'champ', m:4, d:25, nom:'Doub Senior Masc.',         heure:'10h00', lieu:'Feuquières',                     limite:'16/4'},
-        {type:'champ', m:4, d:25, nom:'TT Senior Fém.',            heure:'14h00', lieu:'Feuquières',                     limite:''},
-        {type:'champ', m:4, d:26, nom:'Reprise',                   heure:'09h00', lieu:'Feuquières',                     limite:'16/4'},
-        {type:'champ', m:4, d:26, nom:'Doub (J, C, M, B)',        heure:'09h30', lieu:'Feuquières',                     limite:'Sur place'},
-        {type:'champ', m:5, d:2,  nom:'Triplette Mixte',           heure:'10h00', lieu:'Gamaches',                       limite:'23/4'},
-        {type:'champ', m:5, d:3,  nom:'Reprise',                   heure:'09h00', lieu:'Gamaches',                       limite:''},
-        {type:'champ', m:5, d:8,  nom:'Doub. Jeu Provençal',       heure:'8h00',  lieu:'Fienvillers / St Léger-lès-Domart', limite:'31/4'},
-        {type:'champ', m:5, d:9,  nom:'Reprise',                   heure:'9h00',  lieu:'Fienvillers / St Léger-lès-Domart', limite:''},
-        {type:'champ', m:5, d:10, nom:'Reprise',                   heure:'9h00',  lieu:'Fienvillers / St Léger-lès-Domart', limite:''}
+        {type:'champ', m:4, d:4,  nom:'Trip. Jeu Provençal',       heure:'8h00',  lieu:'Albert',                             limite:'26/3'},
+        {type:'champ', m:4, d:5,  nom:'Reprise',                   heure:'9h00',  lieu:'Albert',                             limite:''},
+        {type:'champ', m:4, d:6,  nom:'Reprise',                   heure:'9h00',  lieu:'Albert',                             limite:''},
+        {type:'champ', m:4, d:11, nom:'Triplette Senior M',        heure:'10h00', lieu:'Feuquières',                         limite:'02/4'},
+        {type:'champ', m:4, d:11, nom:'Triplette Senior F',        heure:'14h00', lieu:'Feuquières',                         limite:'02/4'},
+        {type:'champ', m:4, d:12, nom:'Reprise',                   heure:'09h00', lieu:'Feuquières',                         limite:''},
+        {type:'champ', m:4, d:12, nom:'Triplette (J, C, M)',       heure:'09h30', lieu:'Feuquières',                         limite:'Sur place'},
+        {type:'champ', m:4, d:12, nom:'Tir précision J',           heure:'',      lieu:'Feuquières',                         limite:'Sur place'},
+        {type:'champ', m:4, d:18, nom:'Doublette Mixte',           heure:'10h00', lieu:'Fienvillers-Doullens',                limite:'09/4'},
+        {type:'champ', m:4, d:19, nom:'Reprise',                   heure:'9h00',  lieu:'Fienvillers-Doullens',                limite:''},
+        {type:'champ', m:4, d:22, nom:'Triplette Vétéran',         heure:'10h00', lieu:'Asptt Amiens',                       limite:'09/4'},
+        {type:'champ', m:4, d:23, nom:'Reprise',                   heure:'9h00',  lieu:'Asptt Amiens',                       limite:''},
+        {type:'champ', m:4, d:25, nom:'Doub Senior Masc.',         heure:'10h00', lieu:'Feuquières',                         limite:'16/4'},
+        {type:'champ', m:4, d:25, nom:'TT Senior Fém.',            heure:'14h00', lieu:'Feuquières',                         limite:''},
+        {type:'champ', m:4, d:26, nom:'Reprise',                   heure:'09h00', lieu:'Feuquières',                         limite:'16/4'},
+        {type:'champ', m:4, d:26, nom:'Doub (J, C, M, B)',        heure:'09h30', lieu:'Feuquières',                         limite:'Sur place'},
+        {type:'champ', m:5, d:2,  nom:'Triplette Mixte',           heure:'10h00', lieu:'Gamaches',                           limite:'23/4'},
+        {type:'champ', m:5, d:3,  nom:'Reprise',                   heure:'09h00', lieu:'Gamaches',                           limite:''},
+        {type:'champ', m:5, d:8,  nom:'Doub. Jeu Provençal',       heure:'8h00',  lieu:'Fienvillers / St Léger-lès-Domart',  limite:'31/4'},
+        {type:'champ', m:5, d:9,  nom:'Reprise',                   heure:'9h00',  lieu:'Fienvillers / St Léger-lès-Domart',  limite:''},
+        {type:'champ', m:5, d:10, nom:'Reprise',                   heure:'9h00',  lieu:'Fienvillers / St Léger-lès-Domart',  limite:''}
     ];
     var MONTHS = ['Janvier','Février','Mars','Avril','Mai','Juin','Juillet','Août','Septembre','Octobre','Novembre','Décembre'];
     var DAYS   = ['Lun','Mar','Mer','Jeu','Ven','Sam','Dim'];
@@ -1132,6 +1111,7 @@ document.addEventListener('keydown', function(e) {
         </table>
     </div>
 </section>
+
 <script>
 var clData = [
     {rang:1, nom:'Devauchelle', prenom:'Arnaud',        pts:7, cat:'Promotion'},
@@ -1292,7 +1272,6 @@ filterClassement();
 </div>
 
 <script>
-/* Initialiser le token CSRF une fois le DOM prêt */
 document.getElementById('csrf_token').value = CsrfToken.get();
 
 function calculerTotal() {
@@ -1308,7 +1287,6 @@ function calculerTotal() {
     document.getElementById('montant-hidden').value = total + ' euros';
 }
 
-/* Écouter les changements sur les selects */
 ['taille-pantalon','taille-polo','taille-veste','taille-manteau'].forEach(function(id) {
     document.getElementById(id).addEventListener('change', calculerTotal);
 });
@@ -1468,6 +1446,7 @@ document.getElementById('newOrderBtn').addEventListener('click', function() {
     <button class="lightbox-close" id="lightboxClose" aria-label="Fermer">✕</button>
     <img id="lightbox-img" src="" alt="">
 </div>
+
 <script>
 (function() {
     var ALLOWED_IMG_PATTERN = /^[a-zA-Z0-9_\-]+\.webp$/;
@@ -1480,7 +1459,6 @@ document.getElementById('newOrderBtn').addEventListener('click', function() {
 
     var grid = document.getElementById('galleryGrid');
 
-    /* Tester si les images existent, sinon afficher placeholders */
     function tryLoadPhoto(p, callback) {
         if (!ALLOWED_IMG_PATTERN.test(p.src)) { callback(false); return; }
         var img = new Image();
@@ -1519,15 +1497,12 @@ document.getElementById('newOrderBtn').addEventListener('click', function() {
         grid.appendChild(item);
     }
 
-    var loaded = 0;
     PHOTOS.forEach(function(p) {
         tryLoadPhoto(p, function(ok) {
             if (ok) { addPhoto(p); } else { addPlaceholder(); }
-            loaded++;
         });
     });
 
-    /* Si aucune photo, afficher 4 placeholders directement */
     setTimeout(function() {
         if (grid.children.length === 0) {
             for (var i = 0; i < 4; i++) addPlaceholder();
@@ -1720,7 +1695,6 @@ document.addEventListener('click', function(e) {
     }
 });
 
-/* CORRECTION : fermeture du menu via addEventListener au lieu de onclick inline */
 navMenu.querySelectorAll('a').forEach(function(a) {
     a.addEventListener('click', function() { closeMenu(); });
 });
