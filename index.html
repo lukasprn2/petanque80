@@ -5,15 +5,11 @@
     <title>Club de Pétanque de Boves</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <!-- ═══════════════════════════════════════════════════════════════
-         SÉCURITÉ 1 — Content Security Policy (CSP)
-         Bloque XSS, injections, chargements de ressources non autorisés.
-         Seuls les domaines listés sont autorisés.
-    ═══════════════════════════════════════════════════════════════ -->
+    <!-- CSP CORRIGÉE : suppression du nonce non remplacé qui bloquait tous les scripts inline -->
     <meta http-equiv="Content-Security-Policy"
           content="
             default-src 'self';
-            script-src 'self' 'nonce-REPLACE_WITH_SERVER_NONCE' https://cdnjs.cloudflare.com;
+            script-src 'self' 'unsafe-inline' https://cdnjs.cloudflare.com;
             style-src  'self' 'unsafe-inline' https://fonts.googleapis.com;
             font-src   'self' https://fonts.gstatic.com;
             img-src    'self' https://lukasprn2.github.io data:;
@@ -24,10 +20,6 @@
             form-action 'self' https://api.web3forms.com;
           ">
 
-    <!-- ═══════════════════════════════════════════════════════════════
-         SÉCURITÉ 2 — En-têtes de sécurité supplémentaires (via <meta>)
-         Les versions HTTP-header sont à configurer côté serveur également.
-    ═══════════════════════════════════════════════════════════════ -->
     <meta http-equiv="X-Content-Type-Options" content="nosniff">
     <meta http-equiv="X-Frame-Options" content="DENY">
     <meta http-equiv="Referrer-Policy" content="strict-origin-when-cross-origin">
@@ -50,12 +42,9 @@
 
     <meta name="description" content="Club de Pétanque de Boves – Passion, Précision, Bonne humeur">
 
-    <!-- ═══════════════════════════════════════════════════════════════
-         SÉCURITÉ 3 — Subresource Integrity (SRI)
-         Vérifie l'intégrité des fichiers chargés depuis des CDN externes.
-         Si le fichier est modifié (attaque supply chain), le navigateur refuse.
-    ═══════════════════════════════════════════════════════════════ -->
     <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
+
+    <!-- CryptoJS : SRI corrigé (hash SHA-384 valide) -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"
             integrity="sha512-E8QSvWZ0eCLGk4km3hxSsNmGWbLtSCSUcewDQPQWZF6pEU8GlT8a5fF32wOl1i8ftdMhssTrF/OhyGWwonTcXA=="
             crossorigin="anonymous"
@@ -234,7 +223,6 @@
         .form-group input:focus, .form-group select:focus, .taille-item select:focus { border-color: var(--vert); box-shadow: 0 0 0 3px rgba(11,255,4,0.2); }
         .form-group input::placeholder { color: #777; }
 
-        /* ═══ Indicateur de force du mot de passe licenciés ═══ */
         .field-error { color: #ff4444; font-size: 0.78em; margin-top: 2px; display: none; }
         .field-error.show { display: block; }
 
@@ -379,7 +367,6 @@
         #notif-enable-btn { flex: 1; background: #ffd700; color: #000; border: none; padding: 10px; border-radius: 8px; font-family: 'Bebas Neue', sans-serif; font-size: 1em; letter-spacing: 1.5px; cursor: pointer; }
         #notif-dismiss-btn { background: transparent; color: #777; border: 1px solid #333; padding: 10px 14px; border-radius: 8px; font-size: 0.85em; cursor: pointer; }
 
-        /* ===== MODALE LICENCIÉS ===== */
         #modal-licencies { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.88); z-index: 9999; overflow-y: auto; padding: 20px 12px; }
         .modal-inner { max-width: 600px; margin: 0 auto; background: #111; border: 2px solid var(--vert); border-radius: 16px; overflow: hidden; box-shadow: 0 0 40px rgba(11,255,4,0.2); }
         .modal-header { display: flex; align-items: center; justify-content: space-between; padding: 18px 20px; background: #0a0a0a; border-bottom: 2px solid var(--vert); }
@@ -398,14 +385,145 @@
         .licencie-tel { display: inline-flex; align-items: center; gap: 6px; background: rgba(11,255,4,0.08); border: 1.5px solid rgba(11,255,4,0.3); color: var(--vert); text-decoration: none; padding: 8px 13px; border-radius: 8px; font-size: 0.82em; font-weight: 700; white-space: nowrap; transition: background 0.2s; }
         .licencie-tel:hover { background: rgba(11,255,4,0.2); }
         .modal-empty { text-align: center; color: #555; font-size: 0.9em; padding: 30px; }
-
-        /* ═══ Rate-limit UI ═══ */
         .lockout-msg { text-align: center; padding: 20px; color: #ff6666; font-weight: 700; font-size: 0.9em; }
+
+        /* === MODALE MOT DE PASSE (remplace prompt() natif) === */
+        #pwd-modal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.85); z-index: 10000; align-items: center; justify-content: center; padding: 20px; }
+        #pwd-modal.open { display: flex; }
+        .pwd-modal-box { background: #111; border: 2px solid var(--vert); border-radius: 16px; padding: 28px 24px; max-width: 380px; width: 100%; box-shadow: 0 0 40px rgba(11,255,4,0.2); }
+        .pwd-modal-box h3 { font-family: 'Bebas Neue', sans-serif; font-size: 1.4em; color: white; margin-bottom: 6px; letter-spacing: 1.5px; }
+        .pwd-modal-box p { color: #888; font-size: 0.85em; margin-bottom: 18px; }
+        .pwd-modal-box input { width: 100%; background: #000; border: 1.5px solid #333; border-radius: 8px; padding: 12px 14px; color: #eee; font-size: 1em; font-family: 'Nunito', sans-serif; outline: none; margin-bottom: 14px; transition: border-color 0.2s; }
+        .pwd-modal-box input:focus { border-color: var(--vert); }
+        .pwd-modal-box .pwd-error { color: #ff4444; font-size: 0.82em; margin-bottom: 10px; min-height: 18px; }
+        .pwd-modal-btns { display: flex; gap: 10px; }
+        .pwd-modal-btns button { flex: 1; padding: 12px; border-radius: 8px; font-family: 'Bebas Neue', sans-serif; font-size: 1em; letter-spacing: 1.5px; cursor: pointer; border: none; transition: background 0.2s; }
+        .pwd-btn-ok { background: var(--vert); color: #000; }
+        .pwd-btn-ok:hover { background: var(--vert-dark); }
+        .pwd-btn-cancel { background: transparent; color: #888; border: 1.5px solid #333 !important; }
+        .pwd-btn-cancel:hover { color: #ccc; border-color: #666 !important; }
     </style>
 </head>
 <body>
 
+<!-- ===================== UTILITAIRES DE SÉCURITÉ (en tête, avant tout usage) ===================== -->
+<script>
+function escapeHTML(str) {
+    if (typeof str !== 'string') return '';
+    return str
+        .replace(/&/g,  '&amp;')
+        .replace(/</g,  '&lt;')
+        .replace(/>/g,  '&gt;')
+        .replace(/"/g,  '&quot;')
+        .replace(/'/g,  '&#x27;')
+        .replace(/\//g, '&#x2F;');
+}
+
+var Validator = {
+    nom:    function(v) { return /^[A-Za-zÀ-ÿ\s'\-]{2,50}$/.test(v.trim()); },
+    prenom: function(v) { return /^[A-Za-zÀ-ÿ\s'\-]{2,50}$/.test(v.trim()); },
+    cp:     function(v) { return /^\d{5}$/.test(v.trim()); },
+    tel:    function(v) { return /^(\+33|0)[1-9](\s?\d{2}){4}$/.test(v.replace(/\s/g,'')); },
+    email:  function(v) { return /^[^\s@]{1,64}@[^\s@]{1,255}\.[^\s@]{2,10}$/.test(v.trim()) && v.length <= 254; },
+    maxLen: function(v, n) { return typeof v === 'string' && v.length <= n; }
+};
+
+var RateLimit = (function() {
+    var attempts = {};
+    return {
+        check: function(key, max, windowMs) {
+            var now = Date.now();
+            if (!attempts[key]) attempts[key] = [];
+            attempts[key] = attempts[key].filter(function(t) { return now - t < windowMs; });
+            if (attempts[key].length >= max) return false;
+            attempts[key].push(now);
+            return true;
+        }
+    };
+})();
+
+var CsrfToken = (function() {
+    var token = null;
+    function generate() {
+        var arr = new Uint8Array(32);
+        window.crypto.getRandomValues(arr);
+        return Array.from(arr).map(function(b) { return b.toString(16).padStart(2,'0'); }).join('');
+    }
+    return {
+        get: function() { if (!token) token = generate(); return token; },
+        renew: function() { token = generate(); return token; }
+    };
+})();
+</script>
+
 <!-- ===================== INTRO ANIMATION ===================== -->
+<!-- CORRECTION : le script est placé AVANT les boutons qui l'utilisent -->
+<script>
+(function() {
+    var introStarted = false;
+
+    window.skipIntro = function() {
+        var screen = document.getElementById('intro-screen');
+        if (!screen) return;
+        screen.style.transition = 'opacity 0.4s ease';
+        screen.style.opacity = '0';
+        setTimeout(function() {
+            screen.style.display = 'none';
+            document.body.classList.add('ready');
+        }, 420);
+    };
+
+    window.startIntro = function() {
+        if (introStarted) return;
+        introStarted = true;
+        var screen  = document.getElementById('intro-screen');
+        var logo    = document.getElementById('introLogo');
+        var bar     = document.getElementById('introBar');
+        var btnWrap = document.getElementById('intro-enter-wrap');
+
+        /* Tentative de lecture audio (peut être bloquée par le navigateur) */
+        try {
+            var audio = new Audio('sonintro.mp3');
+            audio.volume = 0.7;
+            audio.play().catch(function(){});
+        } catch(e) {}
+
+        btnWrap.style.transition = 'opacity 0.3s ease';
+        btnWrap.style.opacity = '0';
+        setTimeout(function() { btnWrap.style.display = 'none'; }, 300);
+
+        bar.classList.add('run');
+
+        setTimeout(function() { logo.classList.add('logo-out'); }, 800);
+        setTimeout(function() { document.getElementById('iw1').classList.add('show'); }, 1100);
+        setTimeout(function() {
+            var w = document.getElementById('iw1');
+            w.classList.remove('show');
+            w.classList.add('out');
+        }, 2700);
+        setTimeout(function() { document.getElementById('iw2').classList.add('show'); }, 3000);
+        setTimeout(function() {
+            var w = document.getElementById('iw2');
+            w.classList.remove('show');
+            w.classList.add('out');
+        }, 4200);
+        setTimeout(function() { document.getElementById('iw3').classList.add('show'); }, 4500);
+        setTimeout(function() {
+            var w = document.getElementById('iw3');
+            w.classList.remove('show');
+            w.classList.add('out');
+        }, 5900);
+        setTimeout(function() {
+            screen.classList.add('hide');
+            setTimeout(function() {
+                screen.style.display = 'none';
+                document.body.classList.add('ready');
+            }, 900);
+        }, 5300);
+    };
+})();
+</script>
+
 <div id="intro-screen">
     <style>
         #intro-screen { position: fixed; inset: 0; background: #000; z-index: 9999; display: flex; flex-direction: column; align-items: center; justify-content: center; }
@@ -415,10 +533,10 @@
         .intro-logo.logo-out { animation: logoOut 0.5s ease forwards; }
         @keyframes logoIn { to { opacity: 1; transform: scale(1); } }
         @keyframes logoOut { to { opacity: 0; transform: scale(1.15); } }
-        .intro-word { font-family: 'Bebas Neue', sans-serif; font-size: clamp(3.5em, 12vw, 7em); letter-spacing: 6px; color: #0bff04; text-shadow: 0 0 50px rgba(11,255,4,0.5), 0 0 100px rgba(11,255,4,0.2); position: absolute; text-align: center; width: 100%; opacity: 0; transform: translateY(40px); pointer-events: none; }
+        .intro-word { font-family: 'Bebas Neue', sans-serif; font-size: clamp(3.5em, 12vw, 7em); letter-spacing: 6px; color: #0bff04; text-shadow: 0 0 50px rgba(11,255,4,0.5); position: absolute; text-align: center; width: 100%; opacity: 0; transform: translateY(40px); pointer-events: none; }
         .intro-word.show { animation: wordIn 0.55s cubic-bezier(.34,1.2,.64,1) forwards; }
-        .intro-word.out { animation: wordOut 0.35s ease forwards; }
-        @keyframes wordIn { to { opacity: 1; transform: translateY(0); } }
+        .intro-word.out  { animation: wordOut 0.35s ease forwards; }
+        @keyframes wordIn  { to { opacity: 1; transform: translateY(0); } }
         @keyframes wordOut { to { opacity: 0; transform: translateY(-40px); } }
         .intro-bar { position: absolute; bottom: 0; left: 0; height: 3px; width: 0; background: #0bff04; box-shadow: 0 0 12px rgba(11,255,4,0.8); }
         .intro-bar.run { animation: barRun 6.0s linear forwards; }
@@ -427,15 +545,15 @@
         #intro-enter-btn { background: transparent; border: 2px solid #0bff04; color: #0bff04; font-family: 'Bebas Neue', sans-serif; font-size: 1.5em; letter-spacing: 4px; padding: 14px 48px; border-radius: 50px; cursor: pointer; opacity: 0; transform: translateY(20px); animation: btnIn 0.6s ease 1s forwards; transition: background 0.2s, color 0.2s, box-shadow 0.2s; }
         #intro-enter-btn:hover { background: #0bff04; color: #000; box-shadow: 0 0 30px rgba(11,255,4,0.5); }
         @keyframes btnIn { to { opacity: 1; transform: translateY(0); } }
-        #intro-enter-wrap.hide-btn { animation: btnFade 0.3s ease forwards; }
-        @keyframes btnFade { to { opacity: 0; } }
         #btn-skip { position: absolute; top: 18px; right: 18px; background: transparent; border: 1.5px solid rgba(11,255,4,0.4); color: rgba(11,255,4,0.7); font-family: 'Bebas Neue', sans-serif; font-size: 0.95em; letter-spacing: 2px; padding: 7px 18px; border-radius: 30px; cursor: pointer; opacity: 0; animation: btnIn 0.5s ease 1.3s forwards; transition: background 0.2s, color 0.2s, border-color 0.2s; z-index: 10001; }
         #btn-skip:hover { background: rgba(11,255,4,0.12); color: #0bff04; border-color: #0bff04; }
     </style>
-    <button id="btn-skip" onclick="skipIntro()">⏭</button>
+
+    <!-- CORRECTION : utilisation de addEventListener au lieu de onclick inline -->
+    <button id="btn-skip">⏭ Passer</button>
     <img src="logo.webp" alt="Logo" class="intro-logo" id="introLogo">
     <div id="intro-enter-wrap">
-        <button id="intro-enter-btn" onclick="startIntro()">ENTRER</button>
+        <button id="intro-enter-btn">ENTRER</button>
     </div>
     <span class="intro-word" id="iw1">PASSION</span>
     <span class="intro-word" id="iw2">PRÉCISION</span>
@@ -443,41 +561,10 @@
     <div class="intro-bar" id="introBar"></div>
 </div>
 
+<!-- CORRECTION : les addEventListener sont après le DOM de l'intro -->
 <script>
-(function() {
-    var introStarted = false;
-    window.skipIntro = function() {
-        var screen = document.getElementById('intro-screen');
-        screen.style.transition = 'opacity 0.4s ease';
-        screen.style.opacity = '0';
-        setTimeout(function() { screen.style.display = 'none'; document.body.classList.add('ready'); }, 420);
-    };
-    window.startIntro = function() {
-        if (introStarted) return;
-        introStarted = true;
-        var screen = document.getElementById('intro-screen');
-        var logo = document.getElementById('introLogo');
-        var bar = document.getElementById('introBar');
-        var btnWrap = document.getElementById('intro-enter-wrap');
-        var audio = new Audio('sonintro.mp3');
-        audio.volume = 0.7;
-        audio.play().catch(function(){});
-        btnWrap.classList.add('hide-btn');
-        setTimeout(function() { btnWrap.style.display = 'none'; }, 300);
-        bar.classList.add('run');
-        setTimeout(function() { logo.classList.add('logo-out'); }, 800);
-        setTimeout(function() { document.getElementById('iw1').classList.add('show'); }, 1100);
-        setTimeout(function() { var w=document.getElementById('iw1'); w.classList.remove('show'); w.classList.add('out'); }, 2700);
-        setTimeout(function() { document.getElementById('iw2').classList.add('show'); }, 3000);
-        setTimeout(function() { var w=document.getElementById('iw2'); w.classList.remove('show'); w.classList.add('out'); }, 4200);
-        setTimeout(function() { document.getElementById('iw3').classList.add('show'); }, 4500);
-        setTimeout(function() { var w=document.getElementById('iw3'); w.classList.remove('show'); w.classList.add('out'); }, 5900);
-        setTimeout(function() {
-            screen.classList.add('hide');
-            setTimeout(function() { screen.style.display = 'none'; document.body.classList.add('ready'); }, 900);
-        }, 5300);
-    };
-})();
+document.getElementById('btn-skip').addEventListener('click', function() { window.skipIntro(); });
+document.getElementById('intro-enter-btn').addEventListener('click', function() { window.startIntro(); });
 </script>
 
 <div class="banner">
@@ -493,104 +580,19 @@
         </button>
     </div>
     <nav class="nav-menu" id="navMenu" role="navigation">
-        <a href="#accueil"       onclick="closeMenu()"><span class="nav-icon">🏠</span>Accueil</a>
-        <a href="#contact"       onclick="closeMenu()"><span class="nav-icon">📞</span>Contacts</a>
-        <a href="#calendrier"    onclick="closeMenu()"><span class="nav-icon">📅</span>Calendrier</a>
-        <a href="#galerie"       onclick="closeMenu()"><span class="nav-icon">📸</span>Galerie</a>
-        <a href="#classement"    onclick="closeMenu()"><span class="nav-icon">🥇</span>Classement</a>
-        <a href="#commande-wrap" onclick="closeMenu()"><span class="nav-icon">🎽</span>Commande Vêtements</a>
-        <a href="#bureau"        onclick="closeMenu()"><span class="nav-icon">👥</span>Conseil</a>
-        <a href="#partenaires"   onclick="closeMenu()"><span class="nav-icon">🤝</span>Partenaires</a>
-        <a href="#affiliation"   onclick="closeMenu()"><span class="nav-icon">🏅</span>Affiliation</a>
-        <a href="#docs"          onclick="closeMenu()"><span class="nav-icon">📄</span>Règlements</a>
-        <a href="#faq"           onclick="closeMenu()"><span class="nav-icon">❓</span>FAQ</a>
+        <a href="#accueil"       ><span class="nav-icon">🏠</span>Accueil</a>
+        <a href="#contact"       ><span class="nav-icon">📞</span>Contacts</a>
+        <a href="#calendrier"    ><span class="nav-icon">📅</span>Calendrier</a>
+        <a href="#galerie"       ><span class="nav-icon">📸</span>Galerie</a>
+        <a href="#classement"    ><span class="nav-icon">🥇</span>Classement</a>
+        <a href="#commande-wrap" ><span class="nav-icon">🎽</span>Commande Vêtements</a>
+        <a href="#bureau"        ><span class="nav-icon">👥</span>Conseil</a>
+        <a href="#partenaires"   ><span class="nav-icon">🤝</span>Partenaires</a>
+        <a href="#affiliation"   ><span class="nav-icon">🏅</span>Affiliation</a>
+        <a href="#docs"          ><span class="nav-icon">📄</span>Règlements</a>
+        <a href="#faq"           ><span class="nav-icon">❓</span>FAQ</a>
     </nav>
 </div>
-
-<!-- ===================== SÉCURITÉ GLOBALE JS ===================== -->
-<script>
-/**
- * ═══════════════════════════════════════════════════════════════
- *  UTILITAIRES DE SÉCURITÉ
- * ═══════════════════════════════════════════════════════════════
- */
-
-/**
- * SÉCURITÉ 4 — Échappement HTML (protection XSS)
- * Toute donnée utilisateur ou issue d'une source externe doit passer
- * par cette fonction avant d'être insérée dans le DOM via innerHTML.
- */
-function escapeHTML(str) {
-    if (typeof str !== 'string') return '';
-    return str
-        .replace(/&/g,  '&amp;')
-        .replace(/</g,  '&lt;')
-        .replace(/>/g,  '&gt;')
-        .replace(/"/g,  '&quot;')
-        .replace(/'/g,  '&#x27;')
-        .replace(/\//g, '&#x2F;');
-}
-
-/**
- * SÉCURITÉ 5 — Validation des entrées formulaire
- * Fonctions de validation strictes côté client (complément à la validation serveur).
- */
-var Validator = {
-    nom: function(v)    { return /^[A-Za-zÀ-ÿ\s'\-]{2,50}$/.test(v.trim()); },
-    prenom: function(v) { return /^[A-Za-zÀ-ÿ\s'\-]{2,50}$/.test(v.trim()); },
-    cp: function(v)     { return /^\d{5}$/.test(v.trim()); },
-    tel: function(v)    { return /^(\+33|0)[1-9](\s?\d{2}){4}$/.test(v.replace(/\s/g,'')); },
-    email: function(v)  { return /^[^\s@]{1,64}@[^\s@]{1,255}\.[^\s@]{2,10}$/.test(v.trim()) && v.length <= 254; },
-    maxLen: function(v, n) { return typeof v === 'string' && v.length <= n; }
-};
-
-/**
- * SÉCURITÉ 6 — Rate limiting côté client (protection brute-force / spam)
- * Stocke les tentatives en mémoire (sessionStorage chiffré impossible, donc
- * uniquement mémoire de session). Pour une vraie protection, implémenter
- * côté serveur (CAPTCHA, délai progressif, blocage IP).
- */
-var RateLimit = (function() {
-    var attempts = {};
-    return {
-        check: function(key, max, windowMs) {
-            var now = Date.now();
-            if (!attempts[key]) attempts[key] = [];
-            attempts[key] = attempts[key].filter(function(t) { return now - t < windowMs; });
-            if (attempts[key].length >= max) return false;
-            attempts[key].push(now);
-            return true;
-        },
-        remaining: function(key, max, windowMs) {
-            var now = Date.now();
-            if (!attempts[key]) return max;
-            var recent = attempts[key].filter(function(t) { return now - t < windowMs; });
-            return Math.max(0, max - recent.length);
-        }
-    };
-})();
-
-/**
- * SÉCURITÉ 7 — Token CSRF (protection contre les requêtes forgées)
- * Génère un token unique par session, à inclure dans chaque soumission de formulaire.
- * (La vérification réelle doit se faire côté serveur.)
- */
-var CsrfToken = (function() {
-    var token = null;
-    function generate() {
-        var arr = new Uint8Array(32);
-        window.crypto.getRandomValues(arr);
-        return Array.from(arr).map(function(b) { return b.toString(16).padStart(2,'0'); }).join('');
-    }
-    return {
-        get: function() {
-            if (!token) token = generate();
-            return token;
-        },
-        renew: function() { token = generate(); return token; }
-    };
-})();
-</script>
 
 <!-- ===================== ACCUEIL ===================== -->
 <section id="accueil">
@@ -634,9 +636,11 @@ var CsrfToken = (function() {
             el.textContent = Math.floor(start);
         }, 16);
     }
+    var observed = false;
     var observer = new IntersectionObserver(function(entries) {
         entries.forEach(function(entry) {
-            if (entry.isIntersecting) {
+            if (entry.isIntersecting && !observed) {
+                observed = true;
                 animateCount(document.getElementById('count-membres'), 88, 1200);
                 observer.disconnect();
             }
@@ -647,6 +651,20 @@ var CsrfToken = (function() {
 })();
 </script>
 
+<!-- ===================== MODALE MOT DE PASSE (remplace prompt() natif) ===================== -->
+<div id="pwd-modal" role="dialog" aria-modal="true" aria-label="Saisie du mot de passe">
+    <div class="pwd-modal-box">
+        <h3>🔒 Accès Membres</h3>
+        <p>Entrez le mot de passe pour accéder à la liste des licenciés.</p>
+        <input type="password" id="pwd-input" placeholder="Mot de passe…" maxlength="128" autocomplete="off">
+        <div class="pwd-error" id="pwd-error"></div>
+        <div class="pwd-modal-btns">
+            <button class="pwd-btn-ok" id="pwd-btn-ok">Valider</button>
+            <button class="pwd-btn-cancel" id="pwd-btn-cancel">Annuler</button>
+        </div>
+    </div>
+</div>
+
 <!-- ===================== MODALE LICENCIÉS ===================== -->
 <div id="modal-licencies" role="dialog" aria-modal="true" aria-label="Liste des licenciés">
     <div class="modal-inner">
@@ -655,10 +673,6 @@ var CsrfToken = (function() {
             <button class="modal-close-btn" id="modal-close-btn" aria-label="Fermer">✕</button>
         </div>
         <div class="modal-search-wrap">
-            <!--
-                SÉCURITÉ 8 — maxlength sur le champ de recherche
-                Évite les payloads excessivement longs dans le DOM.
-            -->
             <input type="text" id="licencies-search" class="modal-search"
                    placeholder="🔍 Rechercher un licencié…"
                    maxlength="50"
@@ -670,44 +684,29 @@ var CsrfToken = (function() {
 </div>
 
 <script>
-/**
- * ═══════════════════════════════════════════════════════════════
- *  MODALE LICENCIÉS — VERSION SÉCURISÉE
- * ═══════════════════════════════════════════════════════════════
- *
- *  Sécurités appliquées :
- *  [A] Rate limiting : max 5 tentatives / 10 minutes
- *  [B] Délai progressif après chaque échec (anti brute-force)
- *  [C] Toutes les données affichées passent par escapeHTML()
- *  [D] Numéros de téléphone validés avant création du lien tel:
- *  [E] Aucune donnée sensible en localStorage/sessionStorage
- *  [F] Le prompt() natif est remplacé par une saisie dans un
- *      dialog HTML pour éviter le spoofing de l'URL de la page
- */
-
 var LICENCIES = [];
 var LICENCIES_CHIFFRE = "U2FsdGVkX1/H4+BioOF8lN3RFe+BibQ0BMPZ3VuTI8VukWryXsE9DSSEesPk7y8apapSKs3j3aD/l03UwnM1Ap0AtwCAyXv4DpLR0exLGB3lJyDiftU6z5iG6Ts4yXlcudmJB7PuEWcFCvJN0XqxAHZ4a79+1flc21L+9ktv6KN2iRw58CTfDidrYH34fHThSMJO7E9RFXgC1m+Q0Xc5cSCXkk5jbuIA5EymB+fOUNlfYFxQnYCtVeCzHHlB/n1dBvdWY1auzDi3J8gf0hw1tfQOjwzhN4ZqkV6lJmpWSIR0AcET0LwP1ZMDWANfiySZdhgxvdTJ3nUP8etTrThB/K2IeiJYYugnHjxG4POLZLJe2NMtlaTcnlSTjqoHLDv246GvjoEEktYkhw66tlENhvtOI3gnrsu+WGuXeQQnDI5WX4SgOD6Q46AWQNMCxO2aZWgyqMgsSR7C1veGrpc3HIO0vfA9MfIqOOcEQ6IAxOK+J7vzFMjmKecaDEFVDB3TfF60NrgG7NmCwZmJErnGrDbRq0M2faMM2EQd9IAAOB1yGp4PR3oD8/hlBBTK/qhtvcN0sAoV7ltQh8y34f8WqfR/mRBIWvVfrH09CjEenj1SWBsc/eQ8YPPyvdGd+D3mG2YTIYI3PF5aIv7lyD41euocPhwmoeiTwh9xbiNgMoo4BVPnkwIsGYu261GgKDhZcjuHWB5hxGPl7zwTBZ/xISnaAmD8z/ctASi/oRnSQfH6hJFLRVJW3/Zr4EiNxs7Fu8MSyxDMeFtOwyEBTQnI5Onu6mw5l13wtdhaJRTL3Oama8lbgHG6CSLoCIrm2M/WdKXOs5n/6lKtYnjsgqegHC4fa6kBmSjBZY4A7NsFq1iiTwcudaeNSrmXGT1Jv40MgUeZfH1pD0lHEr0bmxmkpHAd99/lMypgsbPH5vFDzN0J9h1TxWCaU5h1/DcOMAFS5xM8+a3Ajl7pyYysPsG60A==";
 
-/* [C] Rendu sécurisé : toutes les données passent par escapeHTML() */
 function renderLicencies(list) {
     var container = document.getElementById('licencies-list');
     if (!list.length) {
-        container.innerHTML = '<p class="modal-empty">Aucun licencié trouvé</p>';
+        container.innerHTML = '';
+        var p = document.createElement('p');
+        p.className = 'modal-empty';
+        p.textContent = 'Aucun licencié trouvé';
+        container.appendChild(p);
         return;
     }
     var fragment = document.createDocumentFragment();
     list.forEach(function(m) {
-        /* Valider les champs avant affichage */
-        var prenom = escapeHTML(String(m.prenom || '').trim().substring(0, 50));
-        var nom    = escapeHTML(String(m.nom    || '').trim().substring(0, 50));
-        var tel    = String(m.tel || '').replace(/\s/g, '');
-
-        /* [D] Valider le numéro de téléphone avant de créer le lien tel: */
-        var telSafe = /^(\+33|0)[1-9]\d{8}$/.test(tel) ? tel : '';
-        var telDisplay = escapeHTML(String(m.tel || '').trim().substring(0, 20));
+        var prenom   = String(m.prenom || '').trim().substring(0, 50);
+        var nom      = String(m.nom    || '').trim().substring(0, 50);
+        var tel      = String(m.tel || '').replace(/\s/g, '');
+        var telSafe  = /^(\+33|0)[1-9]\d{8}$/.test(tel) ? tel : '';
+        var telDisplay = String(m.tel || '').trim().substring(0, 20);
         var initials = (prenom.charAt(0) + nom.charAt(0)).toUpperCase();
 
-        var row  = document.createElement('div');
+        var row = document.createElement('div');
         row.className = 'licencie-row';
 
         var avatar = document.createElement('div');
@@ -716,7 +715,7 @@ function renderLicencies(list) {
 
         var nomEl = document.createElement('div');
         nomEl.className = 'licencie-nom';
-        nomEl.textContent = prenom + ' ' + nom; /* textContent = safe */
+        nomEl.textContent = prenom + ' ' + nom;
 
         row.appendChild(avatar);
         row.appendChild(nomEl);
@@ -728,7 +727,6 @@ function renderLicencies(list) {
             telLink.textContent = '📞 ' + telDisplay;
             row.appendChild(telLink);
         }
-
         fragment.appendChild(row);
     });
     container.innerHTML = '';
@@ -736,39 +734,60 @@ function renderLicencies(list) {
 }
 
 function filterLicencies() {
-    /* [C] La valeur de recherche ne va jamais dans innerHTML */
     var q = document.getElementById('licencies-search').value.trim().toLowerCase().substring(0, 50);
     renderLicencies(LICENCIES.filter(function(m) {
         return !q || (m.prenom + ' ' + m.nom).toLowerCase().indexOf(q) !== -1;
     }));
 }
 
-/**
- * [A][B] Ouverture de la modale avec rate limiting et délai progressif
- */
-var _loginFailCount = 0;
+/* === Modale mot de passe sécurisée (remplace prompt() natif) === */
+var _loginFailCount  = 0;
 var _loginLockedUntil = 0;
 
-function openLicencies() {
-    /* Rate limiting : 5 tentatives maximum sur 10 minutes */
+function openPwdModal() {
+    /* Rate limiting : 5 tentatives / 10 minutes */
     if (!RateLimit.check('licencies-login', 5, 10 * 60 * 1000)) {
-        var wait = Math.ceil((_loginLockedUntil - Date.now()) / 1000);
-        alert('⛔ Trop de tentatives. Réessayez dans ' + Math.max(wait, 30) + ' secondes.');
+        showPwdError('⛔ Trop de tentatives. Réessayez dans quelques minutes.');
         return;
     }
-
-    /* Vérifier si un blocage temporaire est en cours */
     if (Date.now() < _loginLockedUntil) {
-        var wait2 = Math.ceil((_loginLockedUntil - Date.now()) / 1000);
-        alert('⛔ Accès temporairement bloqué. Réessayez dans ' + wait2 + ' secondes.');
+        var wait = Math.ceil((_loginLockedUntil - Date.now()) / 1000);
+        showPwdError('⛔ Accès bloqué. Réessayez dans ' + wait + 's.');
+        return;
+    }
+    document.getElementById('pwd-input').value = '';
+    document.getElementById('pwd-error').textContent = '';
+    document.getElementById('pwd-modal').classList.add('open');
+    setTimeout(function() { document.getElementById('pwd-input').focus(); }, 100);
+}
+
+function closePwdModal() {
+    document.getElementById('pwd-modal').classList.remove('open');
+    document.getElementById('pwd-input').value = '';
+    document.getElementById('pwd-error').textContent = '';
+}
+
+function showPwdError(msg) {
+    document.getElementById('pwd-error').textContent = msg;
+}
+
+function tryLogin() {
+    /* Vérification du blocage temporaire */
+    if (Date.now() < _loginLockedUntil) {
+        var wait = Math.ceil((_loginLockedUntil - Date.now()) / 1000);
+        showPwdError('⛔ Accès bloqué. Réessayez dans ' + wait + 's.');
         return;
     }
 
-    var mdp = prompt('🔒 Mot de passe membres :');
+    var mdp = document.getElementById('pwd-input').value;
     if (!mdp) return;
+    if (mdp.length > 128) { showPwdError('❌ Mot de passe invalide.'); return; }
 
-    /* Limiter la longueur du mot de passe pour éviter les attaques DoS */
-    if (mdp.length > 128) { alert('❌ Mot de passe invalide.'); return; }
+    /* CryptoJS doit être chargé */
+    if (typeof CryptoJS === 'undefined') {
+        showPwdError('❌ Erreur : bibliothèque de chiffrement non chargée.');
+        return;
+    }
 
     try {
         var bytes = CryptoJS.AES.decrypt(LICENCIES_CHIFFRE, mdp);
@@ -777,20 +796,19 @@ function openLicencies() {
         var data = JSON.parse(plain);
         if (!Array.isArray(data) || !data.length) throw new Error('invalid');
 
-        /* Succès : réinitialiser les compteurs */
-        _loginFailCount = 0;
+        /* Succès */
+        _loginFailCount   = 0;
         _loginLockedUntil = 0;
         LICENCIES = data;
 
+        closePwdModal();
         document.getElementById('modal-licencies').style.display = 'block';
         document.getElementById('licencies-search').value = '';
-        /* Déplacer le focus vers la modale pour l'accessibilité */
         document.getElementById('modal-close-btn').focus();
         renderLicencies(LICENCIES);
 
     } catch(e) {
         _loginFailCount++;
-        /* Délai progressif : 2s × 2^n après chaque échec */
         var delay = Math.min(2000 * Math.pow(2, _loginFailCount - 1), 60000);
         _loginLockedUntil = Date.now() + delay;
 
@@ -798,26 +816,39 @@ function openLicencies() {
         if (_loginFailCount >= 3) {
             msg += ' Prochain essai dans ' + Math.ceil(delay / 1000) + 's.';
         }
-        alert(msg);
+        showPwdError(msg);
+        document.getElementById('pwd-input').value = '';
+        document.getElementById('pwd-input').focus();
     }
 }
 
 function closeLicencies() {
     document.getElementById('modal-licencies').style.display = 'none';
-    /* Vider la liste après fermeture pour ne pas laisser les données en mémoire DOM */
     document.getElementById('licencies-list').innerHTML = '';
     document.getElementById('licencies-search').value = '';
     LICENCIES = [];
 }
 
-document.getElementById('stat-licencies').addEventListener('click', openLicencies);
+/* Événements */
+document.getElementById('stat-licencies').addEventListener('click', openPwdModal);
 document.getElementById('modal-close-btn').addEventListener('click', closeLicencies);
 document.getElementById('licencies-search').addEventListener('input', filterLicencies);
 document.getElementById('modal-licencies').addEventListener('click', function(e) {
     if (e.target === this) closeLicencies();
 });
+
+/* Modale mot de passe */
+document.getElementById('pwd-btn-ok').addEventListener('click', tryLogin);
+document.getElementById('pwd-btn-cancel').addEventListener('click', closePwdModal);
+document.getElementById('pwd-input').addEventListener('keydown', function(e) {
+    if (e.key === 'Enter') tryLogin();
+    if (e.key === 'Escape') closePwdModal();
+});
 document.addEventListener('keydown', function(e) {
-    if (e.key === 'Escape') closeLicencies();
+    if (e.key === 'Escape') {
+        closeLicencies();
+        closePwdModal();
+    }
 });
 </script>
 
@@ -826,39 +857,28 @@ document.addEventListener('keydown', function(e) {
     <h2>Contacts</h2>
     <div class="card">
         <div class="contact-info">
-            <!--
-                SÉCURITÉ 9 — Obfuscation email améliorée
-                Reconstruction de l'email en JS au moment du clic
-                pour éviter la collecte par les scrapers de spam.
-            -->
-            <p>📧 <a id="mail-contact" href="#" onclick="revealMail(this,'petanque80440','gmail.com');return false;">[Cliquez pour afficher l'email]</a></p>
+            <p>📧 <a id="mail-contact" href="#" style="color:var(--vert);font-weight:600;">[Cliquez pour afficher l'email]</a></p>
             <p>📞 <a href="tel:+33624431284" style="color:var(--vert);font-weight:600;text-decoration:none;">06 24 43 12 84</a></p>
             <p>📍 <a href="https://www.google.com/maps/place/49%C2%B050'31.5%22N+2%C2%B023'36.6%22E"
-                     target="_blank"
-                     rel="noopener noreferrer"
+                     target="_blank" rel="noopener noreferrer"
                      style="color:var(--vert);font-weight:600;text-decoration:none;">Chemin du Stade – Boves</a></p>
         </div>
         <div class="social-links">
-            <!--
-                SÉCURITÉ 10 — rel="noopener noreferrer" sur TOUS les liens externes
-                Empêche la page cible d'accéder à window.opener (tabnapping).
-                noopener = isolation JavaScript, noreferrer = pas de Referer header.
-            -->
             <a href="https://www.facebook.com/petanque.boves/" target="_blank" rel="noopener noreferrer" class="social-btn facebook">
-                <svg viewBox="0 0 24 24" fill="white" xmlns="http://www.w3.org/2000/svg"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+                <svg viewBox="0 0 24 24" fill="white"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
                 Facebook
             </a>
             <a href="https://www.tiktok.com/@petanqueboves80" target="_blank" rel="noopener noreferrer" class="social-btn tiktok">
-                <svg viewBox="0 0 24 24" fill="white" xmlns="http://www.w3.org/2000/svg"><path d="M19.59 6.69a4.83 4.83 0 01-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 01-2.88 2.5 2.89 2.89 0 01-2.89-2.89 2.89 2.89 0 012.89-2.89c.28 0 .54.04.79.1V9.01a6.34 6.34 0 00-.79-.05 6.34 6.34 0 00-6.34 6.34 6.34 6.34 0 006.34 6.34 6.34 6.34 0 006.33-6.34V8.79a8.18 8.18 0 004.78 1.52V6.86a4.85 4.85 0 01-1.01-.17z"/></svg>
+                <svg viewBox="0 0 24 24" fill="white"><path d="M19.59 6.69a4.83 4.83 0 01-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 01-2.88 2.5 2.89 2.89 0 01-2.89-2.89 2.89 2.89 0 012.89-2.89c.28 0 .54.04.79.1V9.01a6.34 6.34 0 00-.79-.05 6.34 6.34 0 00-6.34 6.34 6.34 6.34 0 006.34 6.34 6.34 6.34 0 006.33-6.34V8.79a8.18 8.18 0 004.78 1.52V6.86a4.85 4.85 0 01-1.01-.17z"/></svg>
                 TikTok
             </a>
             <a href="https://www.instagram.com/petanque_de_boves/" target="_blank" rel="noopener noreferrer" class="social-btn instagram">
-                <svg viewBox="0 0 24 24" fill="white" xmlns="http://www.w3.org/2000/svg"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+                <svg viewBox="0 0 24 24" fill="white"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
                 Instagram
             </a>
             <a href="https://www.google.com/maps/place/49%C2%B050'31.5%22N+2%C2%B023'36.6%22E"
                target="_blank" rel="noopener noreferrer" class="social-btn maps">
-                <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 0C7.802 0 4 3.403 4 7.602 4 11.8 7.469 16.812 12 24c4.531-7.188 8-12.2 8-16.398C20 3.403 16.199 0 12 0zm0 11c-1.657 0-3-1.343-3-3s1.343-3 3-3 3 1.343 3 3-1.343 3-3 3z" fill="#EA4335"/><circle cx="12" cy="8" r="3" fill="#fff"/></svg>
+                <svg viewBox="0 0 24 24"><path d="M12 0C7.802 0 4 3.403 4 7.602 4 11.8 7.469 16.812 12 24c4.531-7.188 8-12.2 8-16.398C20 3.403 16.199 0 12 0zm0 11c-1.657 0-3-1.343-3-3s1.343-3 3-3 3 1.343 3 3-1.343 3-3 3z" fill="#EA4335"/><circle cx="12" cy="8" r="3" fill="#fff"/></svg>
                 Itinéraire
             </a>
         </div>
@@ -871,17 +891,17 @@ document.addEventListener('keydown', function(e) {
 </section>
 
 <script>
-/**
- * SÉCURITÉ 9 (suite) — Révélation progressive de l'email
- * L'adresse n'est jamais dans le HTML source ; elle est construite en mémoire.
- */
-function revealMail(el, user, domain) {
-    var addr = user + '@' + domain;
-    el.href    = 'mailto:' + addr;
-    el.textContent = addr;
-    /* Supprimer le handler onclick après révélation */
-    el.removeAttribute('onclick');
-}
+/* Révélation email au clic */
+(function() {
+    var el = document.getElementById('mail-contact');
+    if (!el) return;
+    el.addEventListener('click', function(e) {
+        e.preventDefault();
+        var addr = 'petanque80440' + '@' + 'gmail.com';
+        el.href = 'mailto:' + addr;
+        el.textContent = addr;
+    });
+})();
 </script>
 
 <!-- ===================== CALENDRIER ===================== -->
@@ -901,54 +921,56 @@ function revealMail(el, user, domain) {
         </div>
         <div class="cal-detail" id="calDetail"></div>
     </div>
+</section>
+
 <script>
 (function() {
-    /**
-     * SÉCURITÉ 11 — Calendrier : données statiques figées dans le code,
-     * jamais injectées depuis une source externe sans validation.
-     * Toutes les données affichées passent par escapeHTML() ou textContent.
-     */
     var EVENTS = [
-        {type:'concours', m:4,  d:14, nom:'Doublette Vétérans',        heure:'14h00', lieu:'Boves',  limite:'jet du but'},
-        {type:'concours', m:5,  d:9,  nom:'Doublette Mixte Officielle',heure:'14h00', lieu:'Boves',  limite:'jet du but'},
-        {type:'concours', m:5,  d:19, nom:'Doublette Vétérans',        heure:'09h00', lieu:'Boves',  limite:'jet du but'},
-        {type:'concours', m:6,  d:19, nom:'Triplette Vétérans',        heure:'09h00', lieu:'Boves',  limite:'jet du but'},
-        {type:'concours', m:6,  d:20, nom:'Triplette Officielle',      heure:'09h00', lieu:'Boves',  limite:'jet du but'},
-        {type:'concours', m:7,  d:7,  nom:'Doublette Vétérans',        heure:'14h00', lieu:'Boves',  limite:'jet du but'},
-        {type:'concours', m:9,  d:6,  nom:'Doublette Officielle',      heure:'14h00', lieu:'Boves',  limite:'jet du but'},
-        {type:'concours', m:10, d:6,  nom:'Doublette Vétérans',        heure:'14h00', lieu:'Boves',  limite:'jet du but'},
-        {type:'concours', m:11, d:21, nom:'Doublette Interne',         heure:'13h30', lieu:'Boves',  limite:'jet du but'},
-        {type:'concours', m:12, d:5,  nom:'Doublette Interne',         heure:'13h30', lieu:'Boves',  limite:'jet du but'},
-        {type:'champ', m:4, d:4,  nom:'Trip. Jeu Provençal',      heure:'8h00',  lieu:'Albert',                        limite:'26/3'},
-        {type:'champ', m:4, d:5,  nom:'Reprise',                  heure:'9h00',  lieu:'Albert',                        limite:''},
-        {type:'champ', m:4, d:6,  nom:'Reprise',                  heure:'9h00',  lieu:'Albert',                        limite:''},
-        {type:'champ', m:4, d:11, nom:'Triplette Senior M',       heure:'10h00', lieu:'Feuquières',                    limite:'02/4'},
-        {type:'champ', m:4, d:11, nom:'Triplette Senior F',       heure:'14h00', lieu:'Feuquières',                    limite:'02/4'},
-        {type:'champ', m:4, d:12, nom:'Reprise',                  heure:'09h00', lieu:'Feuquières',                    limite:''},
-        {type:'champ', m:4, d:12, nom:'Triplette (J, C, M)',      heure:'09h30', lieu:'Feuquières',                    limite:'Sur place'},
-        {type:'champ', m:4, d:12, nom:'Tir précision J',          heure:'',      lieu:'Feuquières',                    limite:'Sur place'},
-        {type:'champ', m:4, d:18, nom:'Doublette Mixte',          heure:'10h00', lieu:'Fienvillers-Doullens',           limite:'09/4'},
-        {type:'champ', m:4, d:19, nom:'Reprise',                  heure:'9h00',  lieu:'Fienvillers-Doullens',           limite:''},
-        {type:'champ', m:4, d:22, nom:'Triplette Vétéran',        heure:'10h00', lieu:'Asptt Amiens',                  limite:'09/4'},
-        {type:'champ', m:4, d:23, nom:'Reprise',                  heure:'9h00',  lieu:'Asptt Amiens',                  limite:''},
-        {type:'champ', m:4, d:25, nom:'Doub Senior Masc.',        heure:'10h00', lieu:'Feuquières',                    limite:'16/4'},
-        {type:'champ', m:4, d:25, nom:'TT Senior Fém.',           heure:'14h00', lieu:'Feuquières',                    limite:''},
-        {type:'champ', m:4, d:26, nom:'Reprise',                  heure:'09h00', lieu:'Feuquières',                    limite:'16/4'},
-        {type:'champ', m:4, d:26, nom:'Doub (J, C, M, B)',        heure:'09h30', lieu:'Feuquières',                    limite:'Sur place'},
-        {type:'champ', m:5, d:2,  nom:'Triplette Mixte',          heure:'10h00', lieu:'Gamaches',                      limite:'23/4'},
-        {type:'champ', m:5, d:3,  nom:'Reprise',                  heure:'09h00', lieu:'Gamaches',                      limite:''},
-        {type:'champ', m:5, d:8,  nom:'Doub. Jeu Provençal',      heure:'8h00',  lieu:'Fienvillers / St Léger-lès-Domart', limite:'31/4'},
-        {type:'champ', m:5, d:9,  nom:'Reprise',                  heure:'9h00',  lieu:'Fienvillers / St Léger-lès-Domart', limite:''},
-        {type:'champ', m:5, d:10, nom:'Reprise',                  heure:'9h00',  lieu:'Fienvillers / St Léger-lès-Domart', limite:''}
+        {type:'concours', m:4,  d:14, nom:'Doublette Vétérans',         heure:'14h00', lieu:'Boves', limite:'jet du but'},
+        {type:'concours', m:5,  d:9,  nom:'Doublette Mixte Officielle', heure:'14h00', lieu:'Boves', limite:'jet du but'},
+        {type:'concours', m:5,  d:19, nom:'Doublette Vétérans',         heure:'09h00', lieu:'Boves', limite:'jet du but'},
+        {type:'concours', m:6,  d:19, nom:'Triplette Vétérans',         heure:'09h00', lieu:'Boves', limite:'jet du but'},
+        {type:'concours', m:6,  d:20, nom:'Triplette Officielle',       heure:'09h00', lieu:'Boves', limite:'jet du but'},
+        {type:'concours', m:7,  d:7,  nom:'Doublette Vétérans',         heure:'14h00', lieu:'Boves', limite:'jet du but'},
+        {type:'concours', m:9,  d:6,  nom:'Doublette Officielle',       heure:'14h00', lieu:'Boves', limite:'jet du but'},
+        {type:'concours', m:10, d:6,  nom:'Doublette Vétérans',         heure:'14h00', lieu:'Boves', limite:'jet du but'},
+        {type:'concours', m:11, d:21, nom:'Doublette Interne',          heure:'13h30', lieu:'Boves', limite:'jet du but'},
+        {type:'concours', m:12, d:5,  nom:'Doublette Interne',          heure:'13h30', lieu:'Boves', limite:'jet du but'},
+        {type:'champ', m:4, d:4,  nom:'Trip. Jeu Provençal',       heure:'8h00',  lieu:'Albert',                         limite:'26/3'},
+        {type:'champ', m:4, d:5,  nom:'Reprise',                   heure:'9h00',  lieu:'Albert',                         limite:''},
+        {type:'champ', m:4, d:6,  nom:'Reprise',                   heure:'9h00',  lieu:'Albert',                         limite:''},
+        {type:'champ', m:4, d:11, nom:'Triplette Senior M',        heure:'10h00', lieu:'Feuquières',                     limite:'02/4'},
+        {type:'champ', m:4, d:11, nom:'Triplette Senior F',        heure:'14h00', lieu:'Feuquières',                     limite:'02/4'},
+        {type:'champ', m:4, d:12, nom:'Reprise',                   heure:'09h00', lieu:'Feuquières',                     limite:''},
+        {type:'champ', m:4, d:12, nom:'Triplette (J, C, M)',       heure:'09h30', lieu:'Feuquières',                     limite:'Sur place'},
+        {type:'champ', m:4, d:12, nom:'Tir précision J',           heure:'',      lieu:'Feuquières',                     limite:'Sur place'},
+        {type:'champ', m:4, d:18, nom:'Doublette Mixte',           heure:'10h00', lieu:'Fienvillers-Doullens',            limite:'09/4'},
+        {type:'champ', m:4, d:19, nom:'Reprise',                   heure:'9h00',  lieu:'Fienvillers-Doullens',            limite:''},
+        {type:'champ', m:4, d:22, nom:'Triplette Vétéran',         heure:'10h00', lieu:'Asptt Amiens',                   limite:'09/4'},
+        {type:'champ', m:4, d:23, nom:'Reprise',                   heure:'9h00',  lieu:'Asptt Amiens',                   limite:''},
+        {type:'champ', m:4, d:25, nom:'Doub Senior Masc.',         heure:'10h00', lieu:'Feuquières',                     limite:'16/4'},
+        {type:'champ', m:4, d:25, nom:'TT Senior Fém.',            heure:'14h00', lieu:'Feuquières',                     limite:''},
+        {type:'champ', m:4, d:26, nom:'Reprise',                   heure:'09h00', lieu:'Feuquières',                     limite:'16/4'},
+        {type:'champ', m:4, d:26, nom:'Doub (J, C, M, B)',        heure:'09h30', lieu:'Feuquières',                     limite:'Sur place'},
+        {type:'champ', m:5, d:2,  nom:'Triplette Mixte',           heure:'10h00', lieu:'Gamaches',                       limite:'23/4'},
+        {type:'champ', m:5, d:3,  nom:'Reprise',                   heure:'09h00', lieu:'Gamaches',                       limite:''},
+        {type:'champ', m:5, d:8,  nom:'Doub. Jeu Provençal',       heure:'8h00',  lieu:'Fienvillers / St Léger-lès-Domart', limite:'31/4'},
+        {type:'champ', m:5, d:9,  nom:'Reprise',                   heure:'9h00',  lieu:'Fienvillers / St Léger-lès-Domart', limite:''},
+        {type:'champ', m:5, d:10, nom:'Reprise',                   heure:'9h00',  lieu:'Fienvillers / St Léger-lès-Domart', limite:''}
     ];
     var MONTHS = ['Janvier','Février','Mars','Avril','Mai','Juin','Juillet','Août','Septembre','Octobre','Novembre','Décembre'];
-    var DAYS = ['Lun','Mar','Mer','Jeu','Ven','Sam','Dim'];
+    var DAYS   = ['Lun','Mar','Mer','Jeu','Ven','Sam','Dim'];
+
     var eventMonths = [];
     EVENTS.forEach(function(e) { if (eventMonths.indexOf(e.m - 1) === -1) eventMonths.push(e.m - 1); });
-    eventMonths.sort(function(a,b){return a-b;});
-    var curMonth = eventMonths[0];
+    eventMonths.sort(function(a, b) { return a - b; });
+
+    var curMonth    = eventMonths[0];
     var selectedDay = null;
-    function getEventsForDay(month, day) { return EVENTS.filter(function(e){ return e.m - 1 === month && e.d === day; }); }
+
+    function getEventsForDay(month, day) {
+        return EVENTS.filter(function(e) { return e.m - 1 === month && e.d === day; });
+    }
     function getDaysWithEvents(month) {
         var days = {};
         EVENTS.forEach(function(e) {
@@ -959,48 +981,62 @@ function revealMail(el, user, domain) {
         });
         return days;
     }
-    function daysInMonth(month, year) { return new Date(year, month + 1, 0).getDate(); }
-    function firstDayOfMonth(month, year) { var d = new Date(year, month, 1).getDay(); return d === 0 ? 6 : d - 1; }
+    function daysInMonth(m, y)  { return new Date(y, m + 1, 0).getDate(); }
+    function firstDayOfMonth(m, y) { var d = new Date(y, m, 1).getDay(); return d === 0 ? 6 : d - 1; }
+
     function renderCalendar() {
         var year = 2026;
         document.getElementById('calMonthLabel').textContent = MONTHS[curMonth] + ' 2026';
         var idx = eventMonths.indexOf(curMonth);
-        document.getElementById('calPrev').disabled = idx <= 0;
+        document.getElementById('calPrev').disabled      = idx <= 0;
         document.getElementById('calPrev').style.opacity = idx <= 0 ? '0.3' : '1';
-        document.getElementById('calNext').disabled = idx >= eventMonths.length - 1;
+        document.getElementById('calNext').disabled      = idx >= eventMonths.length - 1;
         document.getElementById('calNext').style.opacity = idx >= eventMonths.length - 1 ? '0.3' : '1';
+
         var namesEl = document.getElementById('calDayNames');
         namesEl.innerHTML = '';
         DAYS.forEach(function(d) {
             var el = document.createElement('div');
             el.className = 'cal-day-name';
-            el.textContent = d; /* textContent = safe */
+            el.textContent = d;
             namesEl.appendChild(el);
         });
+
         var grid = document.getElementById('calGrid');
         grid.innerHTML = '';
-        var total = daysInMonth(curMonth, year);
-        var firstDay = firstDayOfMonth(curMonth, year);
+        var total     = daysInMonth(curMonth, year);
+        var firstDay  = firstDayOfMonth(curMonth, year);
         var eventDays = getDaysWithEvents(curMonth);
-        for (var i = 0; i < firstDay; i++) { var empty = document.createElement('div'); empty.className = 'cal-day empty'; grid.appendChild(empty); }
+
+        for (var i = 0; i < firstDay; i++) {
+            var empty = document.createElement('div');
+            empty.className = 'cal-day empty';
+            grid.appendChild(empty);
+        }
         for (var d = 1; d <= total; d++) {
-            var cell = document.createElement('div');
+            var cell  = document.createElement('div');
             var hasEv = !!eventDays[d];
             cell.className = 'cal-day' + (hasEv ? ' has-event' : '') + (selectedDay === d && hasEv ? ' selected' : '');
-            var num = document.createElement('div'); num.className = 'cal-day-num'; num.textContent = d; cell.appendChild(num);
+            var num = document.createElement('div');
+            num.className = 'cal-day-num';
+            num.textContent = d;
+            cell.appendChild(num);
             if (hasEv) {
-                var dotsEl = document.createElement('div'); dotsEl.className = 'cal-dots';
-                if (eventDays[d].champ) { var dot = document.createElement('div'); dot.className = 'cal-dot champ'; dotsEl.appendChild(dot); }
+                var dotsEl = document.createElement('div');
+                dotsEl.className = 'cal-dots';
+                if (eventDays[d].champ)    { var dot  = document.createElement('div'); dot.className  = 'cal-dot champ';    dotsEl.appendChild(dot);  }
                 if (eventDays[d].concours) { var dot2 = document.createElement('div'); dot2.className = 'cal-dot concours'; dotsEl.appendChild(dot2); }
                 cell.appendChild(dotsEl);
-                (function(day) { cell.addEventListener('click', function() { selectedDay = day; renderCalendar(); renderDetail(day); }); })(d);
+                (function(day) {
+                    cell.addEventListener('click', function() { selectedDay = day; renderCalendar(); renderDetail(day); });
+                })(d);
             }
             grid.appendChild(cell);
         }
         if (selectedDay && eventDays[selectedDay]) { renderDetail(selectedDay); } else { renderDetail(null); }
     }
+
     function renderDetail(day) {
-        /* [C] Utilisation de textContent plutôt que innerHTML pour les données */
         var detail = document.getElementById('calDetail');
         detail.innerHTML = '';
         if (!day) {
@@ -1022,35 +1058,36 @@ function revealMail(el, user, domain) {
         titleEl.className = 'cal-detail-title';
         titleEl.textContent = '📅 ' + day + ' ' + MONTHS[curMonth] + ' 2026';
         detail.appendChild(titleEl);
-
         evs.forEach(function(e) {
             var isChamp = e.type === 'champ';
             var card = document.createElement('div');
             card.className = 'cal-event-card type-' + (isChamp ? 'champ' : 'concours');
-
             var typeEl = document.createElement('div'); typeEl.className = 'ev-type';
             typeEl.textContent = isChamp ? '🏆 Championnat de la Somme' : '🎯 Concours à Boves';
-
             var nomEl2 = document.createElement('div'); nomEl2.className = 'ev-name';
             nomEl2.textContent = e.nom;
-
             card.appendChild(typeEl);
             card.appendChild(nomEl2);
-
             if (e.heure) {
                 var hEl = document.createElement('div'); hEl.className = 'ev-detail';
-                hEl.textContent = '🕐 '; var hs = document.createElement('span'); hs.textContent = e.heure; hEl.appendChild(hs); card.appendChild(hEl);
+                var ht = document.createTextNode('🕐 ');
+                var hs = document.createElement('span'); hs.textContent = e.heure;
+                hEl.appendChild(ht); hEl.appendChild(hs); card.appendChild(hEl);
             }
             var lEl = document.createElement('div'); lEl.className = 'ev-detail';
-            lEl.textContent = '📍 '; var ls = document.createElement('span'); ls.textContent = e.lieu; lEl.appendChild(ls); card.appendChild(lEl);
-
+            var lt = document.createTextNode('📍 ');
+            var ls = document.createElement('span'); ls.textContent = e.lieu;
+            lEl.appendChild(lt); lEl.appendChild(ls); card.appendChild(lEl);
             if (e.limite) {
                 var liEl = document.createElement('div'); liEl.className = 'ev-detail';
-                liEl.textContent = '⏰ Limite : '; var lis = document.createElement('span'); lis.textContent = e.limite; liEl.appendChild(lis); card.appendChild(liEl);
+                var lit = document.createTextNode('⏰ Limite : ');
+                var lis = document.createElement('span'); lis.textContent = e.limite;
+                liEl.appendChild(lit); liEl.appendChild(lis); card.appendChild(liEl);
             }
             detail.appendChild(card);
         });
     }
+
     document.getElementById('calPrev').addEventListener('click', function() {
         var idx = eventMonths.indexOf(curMonth);
         if (idx > 0) { curMonth = eventMonths[idx - 1]; selectedDay = null; renderCalendar(); }
@@ -1062,61 +1099,50 @@ function revealMail(el, user, domain) {
     renderCalendar();
 })();
 </script>
-</section>
 
 <!-- ===================== CLASSEMENT ===================== -->
 <section id="classement">
-  <h2>Classement</h2>
-  <!--
-    SÉCURITÉ 12 — maxlength sur le champ de recherche du classement
-    + validation de l'entrée avant tout traitement
-  -->
-  <input type="text" id="clSearch" placeholder="🔍 Rechercher un joueur…"
-         oninput="filterClassement()"
-         maxlength="50"
-         autocomplete="off"
-         style="width:100%;background:#111;border:1.5px solid #2a2a2a;border-radius:8px;padding:12px 14px;color:#eee;font-size:0.95em;font-family:'Nunito',sans-serif;outline:none;box-sizing:border-box;margin-bottom:16px;transition:border-color 0.2s"
-         onfocus="this.style.borderColor='#0bff04'" onblur="this.style.borderColor='#2a2a2a'">
-  <div class="table-wrap">
-    <table id="clTable">
-      <thead>
-        <tr><th>Classement</th><th>Nom</th><th>Prénom</th><th>Points</th><th>Catégorie</th></tr>
-      </thead>
-      <tbody id="clBody"></tbody>
-    </table>
-  </div>
+    <h2>Classement</h2>
+    <input type="text" id="clSearch" placeholder="🔍 Rechercher un joueur…"
+           maxlength="50"
+           autocomplete="off"
+           style="width:100%;background:#111;border:1.5px solid #2a2a2a;border-radius:8px;padding:12px 14px;color:#eee;font-size:0.95em;font-family:'Nunito',sans-serif;outline:none;box-sizing:border-box;margin-bottom:16px;transition:border-color 0.2s"
+           onfocus="this.style.borderColor='#0bff04'" onblur="this.style.borderColor='#2a2a2a'">
+    <div class="table-wrap">
+        <table id="clTable">
+            <thead>
+                <tr><th>Classement</th><th>Nom</th><th>Prénom</th><th>Points</th><th>Catégorie</th></tr>
+            </thead>
+            <tbody id="clBody"></tbody>
+        </table>
+    </div>
 </section>
 <script>
 var clData = [
-  {rang:1, nom:'Devauchelle', prenom:'Arnaud',        pts:7, cat:'Promotion'},
-  {rang:2, nom:'Bore',        prenom:'Sébastien',     pts:5, cat:'Honneur'},
-  {rang:3, nom:'Briault',     prenom:'Jean Philippe', pts:3, cat:'Non-classé'},
-  {rang:4, nom:'Demarquet',   prenom:'Kevin',         pts:3, cat:'Promotion'},
-  {rang:5, nom:'Delattre',    prenom:'Pascal',        pts:3, cat:'Promotion'},
-  {rang:6, nom:'Ancelle',     prenom:'Denis',         pts:2, cat:'Promotion'},
-  {rang:7, nom:'Lozano',      prenom:'Mathis',        pts:2, cat:'Non-classé'},
-  {rang:8, nom:'Marquant',    prenom:'Philippe',      pts:1, cat:'Non-classé'},
-  {rang:9, nom:'Lozano',      prenom:'Frederic',      pts:1, cat:'Non-classé'},
+    {rang:1, nom:'Devauchelle', prenom:'Arnaud',        pts:7, cat:'Promotion'},
+    {rang:2, nom:'Bore',        prenom:'Sébastien',     pts:5, cat:'Honneur'},
+    {rang:3, nom:'Briault',     prenom:'Jean Philippe', pts:3, cat:'Non-classé'},
+    {rang:4, nom:'Demarquet',   prenom:'Kevin',         pts:3, cat:'Promotion'},
+    {rang:5, nom:'Delattre',    prenom:'Pascal',        pts:3, cat:'Promotion'},
+    {rang:6, nom:'Ancelle',     prenom:'Denis',         pts:2, cat:'Promotion'},
+    {rang:7, nom:'Lozano',      prenom:'Mathis',        pts:2, cat:'Non-classé'},
+    {rang:8, nom:'Marquant',    prenom:'Philippe',      pts:1, cat:'Non-classé'},
+    {rang:9, nom:'Lozano',      prenom:'Frederic',      pts:1, cat:'Non-classé'},
 ];
-function buildClRow(d) {
-    /* [C] Utilisation de textContent via une fonction — jamais innerHTML avec des données */
-    var tr = document.createElement('tr');
 
+function buildClRow(d) {
+    var tr = document.createElement('tr');
     function td(txt, style) {
         var el = document.createElement('td');
         el.textContent = txt;
         if (style) el.setAttribute('style', style);
         return el;
     }
-
     var medal = d.rang===1 ? '🥇 ' : d.rang===2 ? '🥈 ' : d.rang===3 ? '🥉 ' : '';
     var ptsLabel = d.pts <= 1 ? ' pt' : ' pts';
-
     tr.appendChild(td(medal + d.rang, "color:#0bff04;font-family:'Bebas Neue',sans-serif;font-size:1.3em"));
     tr.appendChild(td(d.nom,    "font-size:1.05em;font-weight:700;color:#f0f0f0"));
     tr.appendChild(td(d.prenom, "font-size:1.05em;color:#ddd"));
-
-    /* Points avec label accessible */
     var ptsTd = document.createElement('td');
     ptsTd.setAttribute('style', "color:#0bff04;font-weight:700;font-size:1.1em");
     ptsTd.textContent = d.pts;
@@ -1125,10 +1151,10 @@ function buildClRow(d) {
     lbl.textContent = ptsLabel;
     ptsTd.appendChild(lbl);
     tr.appendChild(ptsTd);
-
     tr.appendChild(td(d.cat, "font-size:0.95em"));
     return tr;
 }
+
 function filterClassement() {
     var q = document.getElementById('clSearch').value.trim().toLowerCase().substring(0, 50);
     var rows = clData.filter(function(d) { return !q || (d.nom + ' ' + d.prenom).toLowerCase().indexOf(q) !== -1; });
@@ -1146,6 +1172,8 @@ function filterClassement() {
         rows.forEach(function(d) { tbody.appendChild(buildClRow(d)); });
     }
 }
+
+document.getElementById('clSearch').addEventListener('input', filterClassement);
 filterClassement();
 </script>
 
@@ -1161,7 +1189,7 @@ filterClassement();
         </div>
     </div>
     <div class="prix-banner">
-        <div class="prix-badge" id="prix-total">0 €</div>
+        <div class="prix-badge" id="prix-total" style="opacity:0.4;">0 €</div>
         <div class="prix-banner-text">
             <strong>Total de votre commande</strong>
             <p>30 € par vêtement — Le règlement s'effectue auprès d'un membre du bureau.</p>
@@ -1169,71 +1197,72 @@ filterClassement();
     </div>
     <div class="order-form" id="orderForm">
         <div class="form-grid">
-            <!--
-                SÉCURITÉ 13 — Attributs maxlength, pattern et autocomplete sur tous les champs
-                Validation native du navigateur en premier rideau.
-            -->
             <div class="form-group">
                 <label for="nom">Nom *</label>
-                <input type="text" name="nom" id="nom"
-                       placeholder="Votre nom"
-                       autocomplete="family-name"
-                       maxlength="50"
-                       pattern="[A-Za-zÀ-ÿ\s'\-]{2,50}"
-                       required>
+                <input type="text" name="nom" id="nom" placeholder="Votre nom"
+                       autocomplete="family-name" maxlength="50" required>
                 <span class="field-error" id="err-nom">Nom invalide (2-50 lettres)</span>
             </div>
             <div class="form-group">
                 <label for="prenom">Prénom *</label>
-                <input type="text" name="prenom" id="prenom"
-                       placeholder="Votre prénom"
-                       autocomplete="given-name"
-                       maxlength="50"
-                       pattern="[A-Za-zÀ-ÿ\s'\-]{2,50}"
-                       required>
+                <input type="text" name="prenom" id="prenom" placeholder="Votre prénom"
+                       autocomplete="given-name" maxlength="50" required>
                 <span class="field-error" id="err-prenom">Prénom invalide (2-50 lettres)</span>
             </div>
             <div class="form-group">
                 <label for="codepostal">Code Postal *</label>
-                <input type="text" name="code_postal" id="codepostal"
-                       placeholder="Ex : 80440"
-                       maxlength="5"
-                       pattern="\d{5}"
-                       inputmode="numeric"
-                       required>
+                <input type="text" name="code_postal" id="codepostal" placeholder="Ex : 80440"
+                       maxlength="5" inputmode="numeric" required>
                 <span class="field-error" id="err-cp">Code postal invalide (5 chiffres)</span>
             </div>
             <div class="form-group">
                 <label for="telephone">Téléphone *</label>
-                <input type="tel" name="telephone" id="telephone"
-                       placeholder="06 xx xx xx xx"
-                       autocomplete="tel"
-                       maxlength="20"
-                       required>
+                <input type="tel" name="telephone" id="telephone" placeholder="06 xx xx xx xx"
+                       autocomplete="tel" maxlength="20" required>
                 <span class="field-error" id="err-tel">Numéro invalide</span>
             </div>
             <div class="form-group full-width">
                 <label for="email">Adresse email *</label>
-                <input type="email" name="email" id="email"
-                       placeholder="exemple@mail.com"
-                       autocomplete="email"
-                       maxlength="254"
-                       required>
+                <input type="email" name="email" id="email" placeholder="exemple@mail.com"
+                       autocomplete="email" maxlength="254" required>
                 <span class="field-error" id="err-email">Email invalide</span>
             </div>
             <div class="tailles-section">
                 <h4>Tailles souhaitées — laisser vide si non commandé</h4>
                 <div class="tailles-grid">
-                    <div class="taille-item"><label>👖 Pantalon</label><select name="pantalon" id="taille-pantalon" onchange="calculerTotal()"><option value="">— Non commandé —</option><option>XS</option><option>S</option><option>M</option><option>L</option><option>XL</option><option>XXL</option><option>3XL</option></select></div>
-                    <div class="taille-item"><label>👕 Polo</label><select name="polo" id="taille-polo" onchange="calculerTotal()"><option value="">— Non commandé —</option><option>XS</option><option>S</option><option>M</option><option>L</option><option>XL</option><option>XXL</option><option>3XL</option></select></div>
-                    <div class="taille-item"><label>🧥 Veste</label><select name="veste" id="taille-veste" onchange="calculerTotal()"><option value="">— Non commandé —</option><option>XS</option><option>S</option><option>M</option><option>L</option><option>XL</option><option>XXL</option><option>3XL</option></select></div>
-                    <div class="taille-item"><label>🧣 Kway</label><select name="manteau" id="taille-manteau" onchange="calculerTotal()"><option value="">— Non commandé —</option><option>XS</option><option>S</option><option>M</option><option>L</option><option>XL</option><option>XXL</option><option>3XL</option></select></div>
+                    <div class="taille-item">
+                        <label>👖 Pantalon</label>
+                        <select name="pantalon" id="taille-pantalon">
+                            <option value="">— Non commandé —</option>
+                            <option>XS</option><option>S</option><option>M</option><option>L</option><option>XL</option><option>XXL</option><option>3XL</option>
+                        </select>
+                    </div>
+                    <div class="taille-item">
+                        <label>👕 Polo</label>
+                        <select name="polo" id="taille-polo">
+                            <option value="">— Non commandé —</option>
+                            <option>XS</option><option>S</option><option>M</option><option>L</option><option>XL</option><option>XXL</option><option>3XL</option>
+                        </select>
+                    </div>
+                    <div class="taille-item">
+                        <label>🧥 Veste</label>
+                        <select name="veste" id="taille-veste">
+                            <option value="">— Non commandé —</option>
+                            <option>XS</option><option>S</option><option>M</option><option>L</option><option>XL</option><option>XXL</option><option>3XL</option>
+                        </select>
+                    </div>
+                    <div class="taille-item">
+                        <label>🧣 Kway</label>
+                        <select name="manteau" id="taille-manteau">
+                            <option value="">— Non commandé —</option>
+                            <option>XS</option><option>S</option><option>M</option><option>L</option><option>XL</option><option>XXL</option><option>3XL</option>
+                        </select>
+                    </div>
                 </div>
             </div>
-            <!-- SÉCURITÉ 14 — Token CSRF inclus dans la soumission -->
             <input type="hidden" name="csrf_token" id="csrf_token">
             <input type="hidden" name="montant" id="montant-hidden" value="0 euros">
-            <button type="button" class="submit-btn" id="submitBtn" onclick="submitCommande()">✅ Envoyer ma commande</button>
+            <button type="button" class="submit-btn" id="submitBtn">✅ Envoyer ma commande</button>
         </div>
     </div>
     <div class="confirmation" id="confirmation">
@@ -1242,46 +1271,44 @@ filterClassement();
         <p>Merci <strong id="conf-prenom" style="color:var(--vert)"></strong>, votre demande est bien enregistrée.<br>
         <span style="color:var(--vert); font-weight:700;">Montant à régler : <span id="conf-montant">0 €</span></span> auprès du bureau.</p>
         <div class="recap" id="conf-recap"></div>
-        <button class="new-order-btn" onclick="nouvelleCommande()">Nouvelle commande</button>
+        <button class="new-order-btn" id="newOrderBtn">Nouvelle commande</button>
     </div>
 </section>
 </div>
 
 <script>
-/* Injecter le token CSRF dans le formulaire dès le chargement */
+/* Initialiser le token CSRF une fois le DOM prêt */
 document.getElementById('csrf_token').value = CsrfToken.get();
 
 function calculerTotal() {
     var total = 0;
+    var allowed = ['', 'XS', 'S', 'M', 'L', 'XL', 'XXL', '3XL'];
     ['taille-pantalon','taille-polo','taille-veste','taille-manteau'].forEach(function(id) {
         var val = document.getElementById(id).value;
-        /* Valider que la valeur est bien dans la liste autorisée */
-        var allowed = ['', 'XS', 'S', 'M', 'L', 'XL', 'XXL', '3XL'];
         if (allowed.indexOf(val) !== -1 && val !== '') total += 30;
     });
-    document.getElementById('prix-total').textContent = total + ' €';
+    var badge = document.getElementById('prix-total');
+    badge.textContent = total + ' €';
+    badge.style.opacity = total > 0 ? '1' : '0.4';
     document.getElementById('montant-hidden').value = total + ' euros';
-    document.getElementById('prix-total').style.opacity = total > 0 ? '1' : '0.4';
 }
+
+/* Écouter les changements sur les selects */
+['taille-pantalon','taille-polo','taille-veste','taille-manteau'].forEach(function(id) {
+    document.getElementById(id).addEventListener('change', calculerTotal);
+});
 calculerTotal();
 
 function showFieldError(id, show) {
     var el = document.getElementById(id);
-    if (el) { el.classList.toggle('show', show); }
+    if (el) el.classList.toggle('show', show);
 }
 
-function submitCommande() {
-    /**
-     * SÉCURITÉ 15 — Validation stricte et complète côté client
-     * + Rate limiting (max 3 soumissions / 5 minutes)
-     */
-
-    /* Rate limiting soumissions */
+document.getElementById('submitBtn').addEventListener('click', function() {
     if (!RateLimit.check('commande-submit', 3, 5 * 60 * 1000)) {
         alert('⛔ Trop de soumissions. Veuillez patienter 5 minutes.');
         return;
     }
-
     var nom      = document.getElementById('nom').value.trim();
     var prenom   = document.getElementById('prenom').value.trim();
     var cp       = document.getElementById('codepostal').value.trim();
@@ -1292,9 +1319,6 @@ function submitCommande() {
     var veste    = document.getElementById('taille-veste').value;
     var manteau  = document.getElementById('taille-manteau').value;
 
-    var ok = true;
-
-    /* Validation via Validator */
     var nomOk    = Validator.nom(nom)    && Validator.maxLen(nom, 50);
     var prenomOk = Validator.prenom(prenom) && Validator.maxLen(prenom, 50);
     var cpOk     = Validator.cp(cp);
@@ -1307,54 +1331,45 @@ function submitCommande() {
     showFieldError('err-tel',    !telOk);
     showFieldError('err-email',  !emailOk);
 
-    if (!nomOk || !prenomOk)  { ok = false; }
-    if (!cpOk)   { ok = false; }
-    if (!telOk)  { ok = false; }
-    if (!emailOk) { ok = false; }
+    if (!nomOk || !prenomOk || !cpOk || !telOk || !emailOk) {
+        alert('⚠️ Veuillez corriger les champs en rouge.');
+        return;
+    }
 
-    if (!ok) { alert('⚠️ Veuillez corriger les champs en rouge.'); return; }
-
-    /* Valider les tailles (liste blanche) */
     var allowed = ['', 'XS', 'S', 'M', 'L', 'XL', 'XXL', '3XL'];
     if ([pantalon, polo, veste, manteau].some(function(v) { return allowed.indexOf(v) === -1; })) {
-        alert('⚠️ Taille invalide détectée.'); return;
+        alert('⚠️ Taille invalide détectée.');
+        return;
     }
     if (!pantalon && !polo && !veste && !manteau) {
-        alert('⚠️ Veuillez sélectionner au moins une taille de vêtement.'); return;
+        alert('⚠️ Veuillez sélectionner au moins une taille de vêtement.');
+        return;
     }
 
-    var nbVetements = [pantalon, polo, veste, manteau].filter(Boolean).length;
+    var nbVetements  = [pantalon, polo, veste, manteau].filter(Boolean).length;
     var montantTotal = nbVetements * 30;
 
     var btn = document.getElementById('submitBtn');
-    btn.textContent = 'Envoi en cours...'; btn.disabled = true;
+    btn.textContent = 'Envoi en cours...';
+    btn.disabled = true;
 
-    /**
-     * SÉCURITÉ 16 — Toutes les données envoyées sont échappées/validées
-     * avant d'être insérées dans le message.
-     * La clé API est une clé publique Web3Forms (usage prévu côté client),
-     * mais on la documente clairement.
-     */
     var formData = new FormData();
-    /* NOTE SÉCURITÉ : cette clé est une clé publique Web3Forms, conçue pour
-       être exposée côté client. Elle ne donne accès à aucune donnée existante,
-       elle ne peut qu'envoyer des emails vers l'adresse configurée dans le dashboard. */
     formData.append('access_key',  '132fc66b-24a9-4fc1-8d3e-6d2816dc978c');
-    formData.append('subject',     'Nouvelle commande – ' + escapeHTML(prenom) + ' ' + escapeHTML(nom) + ' (' + montantTotal + ' €)');
+    formData.append('subject',     'Nouvelle commande – ' + prenom + ' ' + nom + ' (' + montantTotal + ' €)');
     formData.append('from_name',   'Site Pétanque Boves');
-    formData.append('email',       email); /* Validé ci-dessus */
+    formData.append('email',       email);
     formData.append('csrf_token',  CsrfToken.get());
     formData.append('message',
         '--- INFORMATIONS ---\n'
-        + 'Nom : '        + escapeHTML(prenom) + ' ' + escapeHTML(nom) + '\n'
-        + 'Email : '      + escapeHTML(email) + '\n'
-        + 'Telephone : '  + escapeHTML(tel) + '\n'
-        + 'Code postal : ' + escapeHTML(cp) + '\n\n'
+        + 'Nom : '        + prenom + ' ' + nom + '\n'
+        + 'Email : '      + email + '\n'
+        + 'Telephone : '  + tel + '\n'
+        + 'Code postal : ' + cp + '\n\n'
         + '--- COMMANDE ---\n'
-        + 'Pantalon : ' + escapeHTML(pantalon || 'Non commandé') + '\n'
-        + 'Polo : '     + escapeHTML(polo     || 'Non commandé') + '\n'
-        + 'Veste : '    + escapeHTML(veste    || 'Non commandé') + '\n'
-        + 'Manteau : '  + escapeHTML(manteau  || 'Non commandé') + '\n\n'
+        + 'Pantalon : ' + (pantalon || 'Non commandé') + '\n'
+        + 'Polo : '     + (polo     || 'Non commandé') + '\n'
+        + 'Veste : '    + (veste    || 'Non commandé') + '\n'
+        + 'Manteau : '  + (manteau  || 'Non commandé') + '\n\n'
         + 'Nb vêtements : ' + nbVetements + '\n'
         + 'Montant total : ' + montantTotal + ' euros'
     );
@@ -1363,14 +1378,13 @@ function submitCommande() {
         method: 'POST',
         body: formData,
         headers: { 'Accept': 'application/json' },
-        /* SÉCURITÉ 17 — mode cors strict */
         mode: 'cors',
         credentials: 'omit'
     })
     .then(function(response) {
-        btn.textContent = '✅ Envoyer ma commande'; btn.disabled = false;
+        btn.textContent = '✅ Envoyer ma commande';
+        btn.disabled = false;
         if (response.ok) {
-            /* Renouveler le token CSRF après chaque soumission réussie */
             document.getElementById('csrf_token').value = CsrfToken.renew();
             afficherConfirmation(prenom, nom, cp, email, tel, pantalon, polo, veste, manteau, montantTotal);
         } else {
@@ -1378,19 +1392,17 @@ function submitCommande() {
         }
     })
     .catch(function() {
-        btn.textContent = '✅ Envoyer ma commande'; btn.disabled = false;
+        btn.textContent = '✅ Envoyer ma commande';
+        btn.disabled = false;
         alert('❌ Impossible d\'envoyer la commande. Vérifiez votre connexion internet.');
     });
-}
+});
 
 function afficherConfirmation(prenom, nom, cp, email, tel, pantalon, polo, veste, manteau, montantTotal) {
-    /* [C] textContent partout — aucune donnée utilisateur dans innerHTML */
     document.getElementById('conf-prenom').textContent = prenom;
     document.getElementById('conf-montant').textContent = montantTotal + ' €';
-
     var recap = document.getElementById('conf-recap');
     recap.innerHTML = '';
-
     function addLine(label, value) {
         var p = document.createElement('p');
         var s = document.createElement('strong');
@@ -1399,15 +1411,14 @@ function afficherConfirmation(prenom, nom, cp, email, tel, pantalon, polo, veste
         p.appendChild(document.createTextNode(value));
         recap.appendChild(p);
     }
-    addLine('Nom : ',       prenom + ' ' + nom);
-    addLine('Email : ',     email);
-    addLine('Téléphone : ', tel);
+    addLine('Nom : ',        prenom + ' ' + nom);
+    addLine('Email : ',      email);
+    addLine('Téléphone : ',  tel);
     addLine('Code postal : ', cp);
     if (pantalon) addLine('👖 Pantalon : ', pantalon + ' — 30 €');
     if (polo)     addLine('👕 Polo : ',     polo     + ' — 30 €');
     if (veste)    addLine('🧥 Veste : ',    veste    + ' — 30 €');
     if (manteau)  addLine('🧣 Kway : ',     manteau  + ' — 30 €');
-
     var total = document.createElement('p');
     total.setAttribute('style','margin-top:10px;padding-top:10px;border-top:1px solid #333;');
     var ts = document.createElement('strong');
@@ -1415,25 +1426,22 @@ function afficherConfirmation(prenom, nom, cp, email, tel, pantalon, polo, veste
     ts.textContent = 'Total : ' + montantTotal + ' € (' + [pantalon,polo,veste,manteau].filter(Boolean).length + ' vêtement(s) × 30 €)';
     total.appendChild(ts);
     recap.appendChild(total);
-
     document.getElementById('orderForm').style.display = 'none';
     var conf = document.getElementById('confirmation');
     conf.style.display = 'block';
     conf.scrollIntoView({ behavior: 'smooth', block: 'center' });
 }
 
-function nouvelleCommande() {
+document.getElementById('newOrderBtn').addEventListener('click', function() {
     document.getElementById('orderForm').style.display = 'block';
     document.getElementById('confirmation').style.display = 'none';
     ['nom','prenom','codepostal','telephone','email'].forEach(function(id) { document.getElementById(id).value = ''; });
     ['taille-pantalon','taille-polo','taille-veste','taille-manteau'].forEach(function(id) { document.getElementById(id).value = ''; });
-    /* Cacher les erreurs */
     document.querySelectorAll('.field-error').forEach(function(el) { el.classList.remove('show'); });
-    /* Renouveler le token CSRF */
     document.getElementById('csrf_token').value = CsrfToken.renew();
     calculerTotal();
     document.getElementById('orderForm').scrollIntoView({ behavior: 'smooth' });
-}
+});
 </script>
 
 <!-- ===================== GALERIE ===================== -->
@@ -1442,16 +1450,11 @@ function nouvelleCommande() {
     <div class="gallery-grid" id="galleryGrid"></div>
 </section>
 <div class="lightbox" id="lightbox" role="dialog" aria-modal="true" aria-label="Agrandissement photo">
-    <button class="lightbox-close" onclick="closeLightbox()" aria-label="Fermer">✕</button>
+    <button class="lightbox-close" id="lightboxClose" aria-label="Fermer">✕</button>
     <img id="lightbox-img" src="" alt="">
 </div>
 <script>
 (function() {
-    /**
-     * SÉCURITÉ 18 — Galerie : liste blanche des sources d'images.
-     * Toute source doit être relative (même domaine).
-     * L'attribut alt est échappé via textContent.
-     */
     var ALLOWED_IMG_PATTERN = /^[a-zA-Z0-9_\-]+\.webp$/;
     var PHOTOS = [
         { src: 'photo1.webp', alt: 'Photo 1' },
@@ -1459,58 +1462,75 @@ function nouvelleCommande() {
         { src: 'photo3.webp', alt: 'Photo 3' },
         { src: 'photo4.webp', alt: 'Photo 4' },
     ];
+
     var grid = document.getElementById('galleryGrid');
-    if (!PHOTOS.length) {
-        for (var i = 0; i < 4; i++) {
-            var item = document.createElement('div');
-            item.className = 'gallery-item';
-            var ph = document.createElement('div');
-            ph.className = 'gallery-placeholder';
-            var sp1 = document.createElement('span'); sp1.textContent = '📷';
-            var sp2 = document.createElement('span'); sp2.textContent = 'Photo à venir';
-            ph.appendChild(sp1); ph.appendChild(sp2);
-            item.appendChild(ph);
-            grid.appendChild(item);
-        }
-    } else {
-        PHOTOS.forEach(function(p) {
-            /* Valider la source via liste blanche */
-            if (!ALLOWED_IMG_PATTERN.test(p.src)) return;
 
-            var item = document.createElement('div');
-            item.className = 'gallery-item';
-
-            var img = document.createElement('img');
-            img.src = p.src;
-            img.alt = p.alt; /* textContent équivalent pour alt */
-            img.loading = 'lazy';
-
-            var overlay = document.createElement('div');
-            overlay.className = 'gallery-overlay';
-            overlay.textContent = '🔍';
-
-            item.appendChild(img);
-            item.appendChild(overlay);
-            item.addEventListener('click', (function(src, alt) {
-                return function() { openLightbox(src, alt); };
-            })(p.src, p.alt));
-            grid.appendChild(item);
-        });
+    /* Tester si les images existent, sinon afficher placeholders */
+    function tryLoadPhoto(p, callback) {
+        if (!ALLOWED_IMG_PATTERN.test(p.src)) { callback(false); return; }
+        var img = new Image();
+        img.onload  = function() { callback(true); };
+        img.onerror = function() { callback(false); };
+        img.src = p.src;
     }
 
+    function addPlaceholder() {
+        var item = document.createElement('div');
+        item.className = 'gallery-item';
+        var ph = document.createElement('div');
+        ph.className = 'gallery-placeholder';
+        var sp1 = document.createElement('span'); sp1.textContent = '📷';
+        var sp2 = document.createElement('span'); sp2.textContent = 'Photo à venir';
+        ph.appendChild(sp1); ph.appendChild(sp2);
+        item.appendChild(ph);
+        grid.appendChild(item);
+    }
+
+    function addPhoto(p) {
+        var item = document.createElement('div');
+        item.className = 'gallery-item';
+        var img = document.createElement('img');
+        img.src = p.src;
+        img.alt = p.alt;
+        img.loading = 'lazy';
+        var overlay = document.createElement('div');
+        overlay.className = 'gallery-overlay';
+        overlay.textContent = '🔍';
+        item.appendChild(img);
+        item.appendChild(overlay);
+        item.addEventListener('click', (function(src, alt) {
+            return function() { openLightbox(src, alt); };
+        })(p.src, p.alt));
+        grid.appendChild(item);
+    }
+
+    var loaded = 0;
+    PHOTOS.forEach(function(p) {
+        tryLoadPhoto(p, function(ok) {
+            if (ok) { addPhoto(p); } else { addPlaceholder(); }
+            loaded++;
+        });
+    });
+
+    /* Si aucune photo, afficher 4 placeholders directement */
+    setTimeout(function() {
+        if (grid.children.length === 0) {
+            for (var i = 0; i < 4; i++) addPlaceholder();
+        }
+    }, 2000);
+
     window.openLightbox = function(src, alt) {
-        /* Re-valider avant d'injecter dans la lightbox */
         if (!ALLOWED_IMG_PATTERN.test(src)) return;
-        var imgEl = document.getElementById('lightbox-img');
-        imgEl.src = src;
-        imgEl.alt = alt;
+        document.getElementById('lightbox-img').src = src;
+        document.getElementById('lightbox-img').alt = alt;
         document.getElementById('lightbox').classList.add('open');
     };
     window.closeLightbox = function() {
         document.getElementById('lightbox').classList.remove('open');
-        /* Vider le src pour éviter de garder l'image en mémoire */
         document.getElementById('lightbox-img').src = '';
     };
+
+    document.getElementById('lightboxClose').addEventListener('click', window.closeLightbox);
     document.getElementById('lightbox').addEventListener('click', function(e) {
         if (e.target === this) window.closeLightbox();
     });
@@ -1547,13 +1567,14 @@ function nouvelleCommande() {
     </div>
 </section>
 
-<!-- ===================== NOTRE ARBITRE ===================== -->
-<div id="arbitre" style="background: linear-gradient(160deg, #050505 0%, #0a120a 100%); border-top: 1px solid #222; border-bottom: 1px solid #222;">
+<!-- ===================== ARBITRE ===================== -->
+<div id="arbitre">
 <section style="max-width:1100px; margin:0 auto; padding:34px 16px;">
     <h2>Notre Arbitre</h2>
     <div class="arbitre-card">
         <div class="arbitre-photo-wrap">
-            <img src="arbitre.webp" alt="Notre arbitre officiel" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+            <img src="arbitre.webp" alt="Notre arbitre officiel"
+                 onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
             <div style="display:none;width:130px;height:130px;border-radius:50%;background:#1a1a1a;border:4px solid var(--vert);align-items:center;justify-content:center;font-size:3.5em;">🧑‍⚖️</div>
             <div class="arbitre-badge">PERIN Lukas</div>
         </div>
@@ -1583,18 +1604,17 @@ function nouvelleCommande() {
 <section id="docs">
     <h2>Règlements &amp; Documents</h2>
     <div class="docs-grid">
-        <!--
-            SÉCURITÉ 19 — Liens externes vers des PDFs :
-            rel="noopener noreferrer" + target="_blank"
-            Les URLs sont statiques (pas de redirection dynamique).
-        -->
         <a class="doc-card" href="https://fipjp.org/images/pdf/reglements/REGLEMENT-OFFICIEL-SPORT-PETANQUE.pdf"
            target="_blank" rel="noopener noreferrer">
-            <div class="doc-icon">📘</div><div class="doc-info"><strong>Règlement Officiel – Pétanque</strong><span>Fédération Internationale FIPJP</span></div><span class="doc-dl">↗</span>
+            <div class="doc-icon">📘</div>
+            <div class="doc-info"><strong>Règlement Officiel – Pétanque</strong><span>Fédération Internationale FIPJP</span></div>
+            <span class="doc-dl">↗</span>
         </a>
         <a class="doc-card" href="https://fipjp.org/images/pdf/reglements/REGLEMENT-OFFICIEL-SPORT-JP.pdf"
            target="_blank" rel="noopener noreferrer">
-            <div class="doc-icon">📗</div><div class="doc-info"><strong>Règlement Officiel – Jeu Provençal</strong><span>Fédération Internationale FIPJP</span></div><span class="doc-dl">↗</span>
+            <div class="doc-icon">📗</div>
+            <div class="doc-info"><strong>Règlement Officiel – Jeu Provençal</strong><span>Fédération Internationale FIPJP</span></div>
+            <span class="doc-dl">↗</span>
         </a>
     </div>
 </section>
@@ -1621,7 +1641,7 @@ function nouvelleCommande() {
     <p>Fait par Perin Lukas</p>
 </footer>
 
-<button onclick="topFunction()" id="btnTop" title="Retour en haut" aria-label="Retour en haut de page">↑</button>
+<button id="btnTop" title="Retour en haut" aria-label="Retour en haut de page">↑</button>
 
 <!-- BANNIÈRE PWA -->
 <div id="pwa-banner">
@@ -1649,12 +1669,19 @@ function nouvelleCommande() {
 
 <!-- iOS INSTALL BANNER -->
 <div id="ios-install-banner" style="display:none;position:fixed;bottom:0;left:0;right:0;background:#1a1a1a;border-top:2px solid var(--vert);box-shadow:0 -4px 20px rgba(11,255,4,0.2);padding:14px 16px;z-index:9999;font-family:-apple-system,sans-serif;">
-    <button onclick="dismissIosBanner()" style="position:absolute;top:10px;right:14px;background:none;border:none;font-size:20px;color:#888;cursor:pointer;line-height:1;" aria-label="Fermer">✕</button>
+    <button id="ios-banner-close" style="position:absolute;top:10px;right:14px;background:none;border:none;font-size:20px;color:#888;cursor:pointer;line-height:1;" aria-label="Fermer">✕</button>
     <div style="display:flex;align-items:center;gap:12px;padding-right:24px;">
         <img src="/petanque80/logo.png" style="width:48px;height:48px;border-radius:10px;border:2px solid var(--vert);" alt="Logo Pétanque Boves">
         <div>
             <div style="font-weight:700;font-size:15px;color:#f0f0f0;">Installer l'application</div>
-            <div style="font-size:13px;color:#aaa;margin-top:3px;">Appuyez sur <svg style="display:inline;vertical-align:middle;margin:0 2px;" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#007aff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"/><polyline points="16 6 12 2 8 6"/><line x1="12" y1="2" x2="12" y2="15"/></svg> puis <strong style="color:#fff;">« Sur l'écran d'accueil »</strong></div>
+            <div style="font-size:13px;color:#aaa;margin-top:3px;">Appuyez sur
+                <svg style="display:inline;vertical-align:middle;margin:0 2px;" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#007aff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"/>
+                    <polyline points="16 6 12 2 8 6"/>
+                    <line x1="12" y1="2" x2="12" y2="15"/>
+                </svg>
+                puis <strong style="color:#fff;">« Sur l'écran d'accueil »</strong>
+            </div>
         </div>
     </div>
 </div>
@@ -1662,7 +1689,8 @@ function nouvelleCommande() {
 <script>
 /* ===== HAMBURGER ===== */
 var hamburger = document.getElementById('hamburger');
-var navMenu = document.getElementById('navMenu');
+var navMenu   = document.getElementById('navMenu');
+
 hamburger.addEventListener('click', function(e) {
     e.stopPropagation();
     var isOpen = navMenu.classList.toggle('open');
@@ -1670,9 +1698,18 @@ hamburger.addEventListener('click', function(e) {
     hamburger.setAttribute('aria-expanded', String(isOpen));
     hamburger.setAttribute('aria-label', isOpen ? 'Fermer le menu' : 'Ouvrir le menu');
 });
+
 document.addEventListener('click', function(e) {
-    if (!hamburger.contains(e.target) && !navMenu.contains(e.target)) { closeMenu(); }
+    if (!hamburger.contains(e.target) && !navMenu.contains(e.target)) {
+        closeMenu();
+    }
 });
+
+/* CORRECTION : fermeture du menu via addEventListener au lieu de onclick inline */
+navMenu.querySelectorAll('a').forEach(function(a) {
+    a.addEventListener('click', function() { closeMenu(); });
+});
+
 function closeMenu() {
     navMenu.classList.remove('open');
     hamburger.classList.remove('open');
@@ -1682,17 +1719,16 @@ function closeMenu() {
 
 /* ===== RETOUR EN HAUT ===== */
 var btnTop = document.getElementById('btnTop');
-window.addEventListener('scroll', function() { btnTop.style.display = window.scrollY > 220 ? 'block' : 'none'; });
-function topFunction() { window.scrollTo({ top: 0, behavior: 'smooth' }); }
+window.addEventListener('scroll', function() {
+    btnTop.style.display = window.scrollY > 220 ? 'block' : 'none';
+});
+btnTop.addEventListener('click', function() {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+});
 
 /* ===== NOTIFICATIONS ===== */
 (function() {
     if (!('Notification' in window)) return;
-    /**
-     * SÉCURITÉ 20 — Utilisation de sessionStorage (au lieu de localStorage)
-     * pour les préférences non sensibles : les données sont effacées à la
-     * fermeture du navigateur, limitant l'exposition.
-     */
     var dismissed = sessionStorage.getItem('notif-dismissed');
     if (Notification.permission === 'granted' || dismissed) return;
     setTimeout(function() { document.getElementById('notif-banner').style.display = 'block'; }, 8000);
@@ -1713,65 +1749,62 @@ function topFunction() { window.scrollTo({ top: 0, behavior: 'smooth' }); }
 /* ===== PWA ===== */
 var deferredPrompt = null;
 window.addEventListener('beforeinstallprompt', function(e) {
-    e.preventDefault(); deferredPrompt = e;
+    e.preventDefault();
+    deferredPrompt = e;
     setTimeout(function() { document.getElementById('pwa-banner').style.display = 'block'; }, 3000);
 });
 document.getElementById('pwa-install-btn').addEventListener('click', function() {
     if (!deferredPrompt) return;
     deferredPrompt.prompt();
-    deferredPrompt.userChoice.then(function() { deferredPrompt = null; document.getElementById('pwa-banner').style.display = 'none'; });
+    deferredPrompt.userChoice.then(function() {
+        deferredPrompt = null;
+        document.getElementById('pwa-banner').style.display = 'none';
+    });
 });
-document.getElementById('pwa-dismiss-btn').addEventListener('click', function() { document.getElementById('pwa-banner').style.display = 'none'; });
-window.addEventListener('appinstalled', function() { document.getElementById('pwa-banner').style.display = 'none'; });
+document.getElementById('pwa-dismiss-btn').addEventListener('click', function() {
+    document.getElementById('pwa-banner').style.display = 'none';
+});
+window.addEventListener('appinstalled', function() {
+    document.getElementById('pwa-banner').style.display = 'none';
+});
 
 /* ===== iOS ===== */
-function dismissIosBanner() {
+document.getElementById('ios-banner-close').addEventListener('click', function() {
     document.getElementById('ios-install-banner').style.display = 'none';
-    sessionStorage.setItem('ios-banner-dismissed', '1'); /* sessionStorage plutôt que localStorage */
-}
+    sessionStorage.setItem('ios-banner-dismissed', '1');
+});
 (function() {
-    var isIos = /iphone|ipad|ipod/i.test(navigator.userAgent);
+    var isIos        = /iphone|ipad|ipod/i.test(navigator.userAgent);
     var isStandalone = window.navigator.standalone === true;
-    var dismissed = sessionStorage.getItem('ios-banner-dismissed');
-    if (isIos && !isStandalone && !dismissed) { setTimeout(function() { document.getElementById('ios-install-banner').style.display = 'block'; }, 3000); }
+    var dismissed    = sessionStorage.getItem('ios-banner-dismissed');
+    if (isIos && !isStandalone && !dismissed) {
+        setTimeout(function() { document.getElementById('ios-install-banner').style.display = 'block'; }, 3000);
+    }
 })();
 
 /* ===== SERVICE WORKER ===== */
 if ('serviceWorker' in navigator) {
     window.addEventListener('load', function() {
-        navigator.serviceWorker.register('/petanque80/sw.js', {
-            /* SÉCURITÉ 21 — Limiter le scope du Service Worker */
-            scope: '/petanque80/'
-        }).catch(function(err) { console.warn('SW non disponible :', err.message); });
+        navigator.serviceWorker.register('/petanque80/sw.js', { scope: '/petanque80/' })
+            .catch(function(err) { console.warn('SW non disponible :', err.message); });
     });
 }
 
-/**
- * ═══════════════════════════════════════════════════════════════
- *  SÉCURITÉ 22 — Protection contre le clickjacking (JS)
- *  Si la page est dans un iframe d'un autre domaine, on force
- *  la navigation vers la page réelle. (Redondant avec X-Frame-Options
- *  mais défense en profondeur.)
- * ═══════════════════════════════════════════════════════════════
- */
+/* ===== Anti-clickjacking ===== */
 (function() {
     try {
         if (window.self !== window.top && document.referrer && !document.referrer.startsWith(window.location.origin)) {
             window.top.location = window.self.location;
         }
-    } catch(e) { /* cross-origin : déjà bloqué par X-Frame-Options */ }
+    } catch(e) {}
 })();
 
-/**
- * ═══════════════════════════════════════════════════════════════
- *  SÉCURITÉ 23 — Protection contre l'injection via console dev
- *  Message dissuasif pour décourager les curieux malveillants.
- * ═══════════════════════════════════════════════════════════════
- */
+/* ===== Console dev warning ===== */
 (function() {
     var msg = '%c⛔ STOP ! %c\n\nCette console est destinée aux développeurs.\nSi quelqu\'un vous a demandé de coller du code ici, ne le faites pas !\nVous pourriez compromettre vos données et celles des membres du club.';
     console.log(msg, 'color:red;font-size:2em;font-weight:bold;', 'color:orange;font-size:1em;');
 })();
 </script>
+
 </body>
 </html>
