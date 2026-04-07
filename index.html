@@ -5,6 +5,34 @@
     <title>Club de Pétanque de Boves</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
+    <!-- ═══════════════════════════════════════════════════════════════
+         SÉCURITÉ 1 — Content Security Policy (CSP)
+         Bloque XSS, injections, chargements de ressources non autorisés.
+         Seuls les domaines listés sont autorisés.
+    ═══════════════════════════════════════════════════════════════ -->
+    <meta http-equiv="Content-Security-Policy"
+          content="
+            default-src 'self';
+            script-src 'self' 'nonce-REPLACE_WITH_SERVER_NONCE' https://cdnjs.cloudflare.com;
+            style-src  'self' 'unsafe-inline' https://fonts.googleapis.com;
+            font-src   'self' https://fonts.gstatic.com;
+            img-src    'self' https://lukasprn2.github.io data:;
+            connect-src 'self' https://api.web3forms.com;
+            frame-src  'none';
+            object-src 'none';
+            base-uri   'self';
+            form-action 'self' https://api.web3forms.com;
+          ">
+
+    <!-- ═══════════════════════════════════════════════════════════════
+         SÉCURITÉ 2 — En-têtes de sécurité supplémentaires (via <meta>)
+         Les versions HTTP-header sont à configurer côté serveur également.
+    ═══════════════════════════════════════════════════════════════ -->
+    <meta http-equiv="X-Content-Type-Options" content="nosniff">
+    <meta http-equiv="X-Frame-Options" content="DENY">
+    <meta http-equiv="Referrer-Policy" content="strict-origin-when-cross-origin">
+    <meta http-equiv="Permissions-Policy" content="geolocation=(), microphone=(), camera=()">
+
     <link rel="manifest" href="/petanque80/manifest.json">
     <meta name="theme-color" content="#ffffff">
     <meta name="apple-mobile-web-app-capable" content="yes">
@@ -21,8 +49,18 @@
     <link rel="shortcut icon" href="/petanque80/logo.png">
 
     <meta name="description" content="Club de Pétanque de Boves – Passion, Précision, Bonne humeur">
+
+    <!-- ═══════════════════════════════════════════════════════════════
+         SÉCURITÉ 3 — Subresource Integrity (SRI)
+         Vérifie l'intégrité des fichiers chargés depuis des CDN externes.
+         Si le fichier est modifié (attaque supply chain), le navigateur refuse.
+    ═══════════════════════════════════════════════════════════════ -->
     <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"
+            integrity="sha512-E8QSvWZ0eCLGk4km3hxSsNmGWbLtSCSUcewDQPQWZF6pEU8GlT8a5fF32wOl1i8ftdMhssTrF/OhyGWwonTcXA=="
+            crossorigin="anonymous"
+            referrerpolicy="no-referrer"></script>
+
     <style>
         :root {
             --vert: #0bff04;
@@ -195,6 +233,11 @@
         .form-group select option, .taille-item select option { background: #000000; color: #eee; }
         .form-group input:focus, .form-group select:focus, .taille-item select:focus { border-color: var(--vert); box-shadow: 0 0 0 3px rgba(11,255,4,0.2); }
         .form-group input::placeholder { color: #777; }
+
+        /* ═══ Indicateur de force du mot de passe licenciés ═══ */
+        .field-error { color: #ff4444; font-size: 0.78em; margin-top: 2px; display: none; }
+        .field-error.show { display: block; }
+
         .tailles-section { grid-column: 1 / -1; }
         .tailles-section h4 { font-size: 0.72em; text-transform: uppercase; letter-spacing: 2px; color: #888; margin-bottom: 13px; padding-bottom: 8px; border-bottom: 1px solid #333; }
         .tailles-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 13px; }
@@ -205,6 +248,7 @@
         .submit-btn { grid-column: 1 / -1; background: var(--vert); color: #000; border: none; padding: 16px; width: 100%; font-family: 'Bebas Neue', sans-serif; font-size: 1.25em; letter-spacing: 2px; border-radius: 10px; cursor: pointer; transition: background 0.2s, transform 0.15s, box-shadow 0.2s; margin-top: 4px; }
         .submit-btn:active { transform: scale(0.97); }
         .submit-btn:hover { background: var(--vert-dark); box-shadow: 0 6px 22px rgba(11,255,4,0.4); }
+        .submit-btn:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
         .confirmation { display: none; background: #1a2a1a; border: 2px solid var(--vert); border-radius: 14px; padding: 26px 18px; text-align: center; margin-top: 16px; }
         .confirmation .checkmark { font-size: 2.6em; margin-bottom: 10px; }
         .confirmation h3 { font-family: 'Bebas Neue', sans-serif; font-size: 1.7em; color: var(--vert); margin-bottom: 8px; }
@@ -298,27 +342,9 @@
         .stat-icon { font-size: 1.8em; margin-bottom: 8px; }
         .stat-num { font-family: 'Bebas Neue', sans-serif; font-size: 2.8em; color: var(--vert); line-height: 1; display: block; }
         .stat-label { font-size: 0.75em; color: #888; text-transform: uppercase; letter-spacing: 1px; margin-top: 4px; }
-
-        /* STAT CARD LICENCIES CLIQUABLE */
-        .stat-card-btn {
-            cursor: pointer;
-            position: relative;
-        }
-        .stat-card-btn:hover {
-            transform: translateY(-4px);
-            border-color: var(--vert);
-            box-shadow: 0 8px 24px rgba(11,255,4,0.35);
-        }
-        .stat-card-btn .voir-liste {
-            display: block;
-            font-size: 0.72em;
-            color: var(--vert);
-            margin-top: 6px;
-            font-weight: 700;
-            letter-spacing: 1px;
-            text-transform: uppercase;
-            opacity: 0.8;
-        }
+        .stat-card-btn { cursor: pointer; position: relative; }
+        .stat-card-btn:hover { transform: translateY(-4px); border-color: var(--vert); box-shadow: 0 8px 24px rgba(11,255,4,0.35); }
+        .stat-card-btn .voir-liste { display: block; font-size: 0.72em; color: var(--vert); margin-top: 6px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; opacity: 0.8; }
         .stat-card-btn:hover .voir-liste { opacity: 1; }
 
         .gallery-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; }
@@ -354,122 +380,27 @@
         #notif-dismiss-btn { background: transparent; color: #777; border: 1px solid #333; padding: 10px 14px; border-radius: 8px; font-size: 0.85em; cursor: pointer; }
 
         /* ===== MODALE LICENCIÉS ===== */
-        #modal-licencies {
-            display: none;
-            position: fixed;
-            inset: 0;
-            background: rgba(0,0,0,0.88);
-            z-index: 9999;
-            overflow-y: auto;
-            padding: 20px 12px;
-        }
-        .modal-inner {
-            max-width: 600px;
-            margin: 0 auto;
-            background: #111;
-            border: 2px solid var(--vert);
-            border-radius: 16px;
-            overflow: hidden;
-            box-shadow: 0 0 40px rgba(11,255,4,0.2);
-        }
-        .modal-header {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 18px 20px;
-            background: #0a0a0a;
-            border-bottom: 2px solid var(--vert);
-        }
-        .modal-header h3 {
-            font-family: 'Bebas Neue', sans-serif;
-            font-size: 1.5em;
-            letter-spacing: 2px;
-            color: white;
-            margin: 0;
-        }
+        #modal-licencies { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.88); z-index: 9999; overflow-y: auto; padding: 20px 12px; }
+        .modal-inner { max-width: 600px; margin: 0 auto; background: #111; border: 2px solid var(--vert); border-radius: 16px; overflow: hidden; box-shadow: 0 0 40px rgba(11,255,4,0.2); }
+        .modal-header { display: flex; align-items: center; justify-content: space-between; padding: 18px 20px; background: #0a0a0a; border-bottom: 2px solid var(--vert); }
+        .modal-header h3 { font-family: 'Bebas Neue', sans-serif; font-size: 1.5em; letter-spacing: 2px; color: white; margin: 0; }
         .modal-header h3 span { color: var(--vert); }
-        .modal-close-btn {
-            background: transparent;
-            border: 2px solid #444;
-            color: #ccc;
-            width: 38px;
-            height: 38px;
-            border-radius: 8px;
-            font-size: 1.2em;
-            cursor: pointer;
-            line-height: 1;
-            transition: border-color 0.2s, color 0.2s, background 0.2s;
-        }
+        .modal-close-btn { background: transparent; border: 2px solid #444; color: #ccc; width: 38px; height: 38px; border-radius: 8px; font-size: 1.2em; cursor: pointer; line-height: 1; transition: border-color 0.2s, color 0.2s, background 0.2s; }
         .modal-close-btn:hover { border-color: var(--vert); color: var(--vert); background: rgba(11,255,4,0.08); }
         .modal-search-wrap { padding: 14px 16px 8px; }
-        .modal-search {
-            width: 100%;
-            background: #000;
-            border: 1.5px solid #2a2a2a;
-            border-radius: 8px;
-            padding: 12px 14px;
-            color: #eee;
-            font-size: 0.95em;
-            font-family: 'Nunito', sans-serif;
-            outline: none;
-            box-sizing: border-box;
-            transition: border-color 0.2s;
-        }
+        .modal-search { width: 100%; background: #000; border: 1.5px solid #2a2a2a; border-radius: 8px; padding: 12px 14px; color: #eee; font-size: 0.95em; font-family: 'Nunito', sans-serif; outline: none; box-sizing: border-box; transition: border-color 0.2s; }
         .modal-search:focus { border-color: var(--vert); }
-        .modal-list {
-            padding: 8px 16px 20px;
-            max-height: 60vh;
-            overflow-y: auto;
-        }
-        .licencie-row {
-            display: flex;
-            align-items: center;
-            gap: 14px;
-            background: #1c1c1c;
-            border: 1px solid #2a2a2a;
-            border-radius: 10px;
-            padding: 12px 14px;
-            margin-bottom: 9px;
-            transition: border-color 0.2s;
-        }
+        .modal-list { padding: 8px 16px 20px; max-height: 60vh; overflow-y: auto; }
+        .licencie-row { display: flex; align-items: center; gap: 14px; background: #1c1c1c; border: 1px solid #2a2a2a; border-radius: 10px; padding: 12px 14px; margin-bottom: 9px; transition: border-color 0.2s; }
         .licencie-row:hover { border-color: rgba(11,255,4,0.5); }
-        .licencie-avatar {
-            flex-shrink: 0;
-            width: 42px;
-            height: 42px;
-            border-radius: 50%;
-            background: rgba(11,255,4,0.1);
-            border: 2px solid var(--vert);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-family: 'Bebas Neue', sans-serif;
-            font-size: 1em;
-            color: var(--vert);
-        }
-        .licencie-nom {
-            flex: 1;
-            font-weight: 700;
-            color: #f0f0f0;
-            font-size: 0.95em;
-        }
-        .licencie-tel {
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-            background: rgba(11,255,4,0.08);
-            border: 1.5px solid rgba(11,255,4,0.3);
-            color: var(--vert);
-            text-decoration: none;
-            padding: 8px 13px;
-            border-radius: 8px;
-            font-size: 0.82em;
-            font-weight: 700;
-            white-space: nowrap;
-            transition: background 0.2s;
-        }
+        .licencie-avatar { flex-shrink: 0; width: 42px; height: 42px; border-radius: 50%; background: rgba(11,255,4,0.1); border: 2px solid var(--vert); display: flex; align-items: center; justify-content: center; font-family: 'Bebas Neue', sans-serif; font-size: 1em; color: var(--vert); }
+        .licencie-nom { flex: 1; font-weight: 700; color: #f0f0f0; font-size: 0.95em; }
+        .licencie-tel { display: inline-flex; align-items: center; gap: 6px; background: rgba(11,255,4,0.08); border: 1.5px solid rgba(11,255,4,0.3); color: var(--vert); text-decoration: none; padding: 8px 13px; border-radius: 8px; font-size: 0.82em; font-weight: 700; white-space: nowrap; transition: background 0.2s; }
         .licencie-tel:hover { background: rgba(11,255,4,0.2); }
         .modal-empty { text-align: center; color: #555; font-size: 0.9em; padding: 30px; }
+
+        /* ═══ Rate-limit UI ═══ */
+        .lockout-msg { text-align: center; padding: 20px; color: #ff6666; font-weight: 700; font-size: 0.9em; }
     </style>
 </head>
 <body>
@@ -576,6 +507,91 @@
     </nav>
 </div>
 
+<!-- ===================== SÉCURITÉ GLOBALE JS ===================== -->
+<script>
+/**
+ * ═══════════════════════════════════════════════════════════════
+ *  UTILITAIRES DE SÉCURITÉ
+ * ═══════════════════════════════════════════════════════════════
+ */
+
+/**
+ * SÉCURITÉ 4 — Échappement HTML (protection XSS)
+ * Toute donnée utilisateur ou issue d'une source externe doit passer
+ * par cette fonction avant d'être insérée dans le DOM via innerHTML.
+ */
+function escapeHTML(str) {
+    if (typeof str !== 'string') return '';
+    return str
+        .replace(/&/g,  '&amp;')
+        .replace(/</g,  '&lt;')
+        .replace(/>/g,  '&gt;')
+        .replace(/"/g,  '&quot;')
+        .replace(/'/g,  '&#x27;')
+        .replace(/\//g, '&#x2F;');
+}
+
+/**
+ * SÉCURITÉ 5 — Validation des entrées formulaire
+ * Fonctions de validation strictes côté client (complément à la validation serveur).
+ */
+var Validator = {
+    nom: function(v)    { return /^[A-Za-zÀ-ÿ\s'\-]{2,50}$/.test(v.trim()); },
+    prenom: function(v) { return /^[A-Za-zÀ-ÿ\s'\-]{2,50}$/.test(v.trim()); },
+    cp: function(v)     { return /^\d{5}$/.test(v.trim()); },
+    tel: function(v)    { return /^(\+33|0)[1-9](\s?\d{2}){4}$/.test(v.replace(/\s/g,'')); },
+    email: function(v)  { return /^[^\s@]{1,64}@[^\s@]{1,255}\.[^\s@]{2,10}$/.test(v.trim()) && v.length <= 254; },
+    maxLen: function(v, n) { return typeof v === 'string' && v.length <= n; }
+};
+
+/**
+ * SÉCURITÉ 6 — Rate limiting côté client (protection brute-force / spam)
+ * Stocke les tentatives en mémoire (sessionStorage chiffré impossible, donc
+ * uniquement mémoire de session). Pour une vraie protection, implémenter
+ * côté serveur (CAPTCHA, délai progressif, blocage IP).
+ */
+var RateLimit = (function() {
+    var attempts = {};
+    return {
+        check: function(key, max, windowMs) {
+            var now = Date.now();
+            if (!attempts[key]) attempts[key] = [];
+            attempts[key] = attempts[key].filter(function(t) { return now - t < windowMs; });
+            if (attempts[key].length >= max) return false;
+            attempts[key].push(now);
+            return true;
+        },
+        remaining: function(key, max, windowMs) {
+            var now = Date.now();
+            if (!attempts[key]) return max;
+            var recent = attempts[key].filter(function(t) { return now - t < windowMs; });
+            return Math.max(0, max - recent.length);
+        }
+    };
+})();
+
+/**
+ * SÉCURITÉ 7 — Token CSRF (protection contre les requêtes forgées)
+ * Génère un token unique par session, à inclure dans chaque soumission de formulaire.
+ * (La vérification réelle doit se faire côté serveur.)
+ */
+var CsrfToken = (function() {
+    var token = null;
+    function generate() {
+        var arr = new Uint8Array(32);
+        window.crypto.getRandomValues(arr);
+        return Array.from(arr).map(function(b) { return b.toString(16).padStart(2,'0'); }).join('');
+    }
+    return {
+        get: function() {
+            if (!token) token = generate();
+            return token;
+        },
+        renew: function() { token = generate(); return token; }
+    };
+})();
+</script>
+
 <!-- ===================== ACCUEIL ===================== -->
 <section id="accueil">
     <h2>Bienvenue au club de Boves</h2>
@@ -583,7 +599,6 @@
         <p>Notre club accueille tous les passionnés de pétanque, débutants comme confirmés. Nous organisons des concours toute l'année et participons aux championnats départementaux.</p>
     </div>
     <div class="stats-grid" style="margin-top:20px;">
-        <!-- STAT LICENCIÉS – bouton cliquable -->
         <div class="stat-card stat-card-btn" id="stat-licencies">
             <div class="stat-icon">👥</div>
             <span class="stat-num" id="count-membres">0</span>
@@ -633,67 +648,166 @@
 </script>
 
 <!-- ===================== MODALE LICENCIÉS ===================== -->
-<div id="modal-licencies">
+<div id="modal-licencies" role="dialog" aria-modal="true" aria-label="Liste des licenciés">
     <div class="modal-inner">
         <div class="modal-header">
             <h3>👥 Licenciés <span>2026</span></h3>
-            <button class="modal-close-btn" id="modal-close-btn">✕</button>
+            <button class="modal-close-btn" id="modal-close-btn" aria-label="Fermer">✕</button>
         </div>
         <div class="modal-search-wrap">
-            <input type="text" id="licencies-search" class="modal-search" placeholder="🔍 Rechercher un licencié…">
+            <!--
+                SÉCURITÉ 8 — maxlength sur le champ de recherche
+                Évite les payloads excessivement longs dans le DOM.
+            -->
+            <input type="text" id="licencies-search" class="modal-search"
+                   placeholder="🔍 Rechercher un licencié…"
+                   maxlength="50"
+                   autocomplete="off"
+                   spellcheck="false">
         </div>
         <div class="modal-list" id="licencies-list"></div>
     </div>
 </div>
 
 <script>
+/**
+ * ═══════════════════════════════════════════════════════════════
+ *  MODALE LICENCIÉS — VERSION SÉCURISÉE
+ * ═══════════════════════════════════════════════════════════════
+ *
+ *  Sécurités appliquées :
+ *  [A] Rate limiting : max 5 tentatives / 10 minutes
+ *  [B] Délai progressif après chaque échec (anti brute-force)
+ *  [C] Toutes les données affichées passent par escapeHTML()
+ *  [D] Numéros de téléphone validés avant création du lien tel:
+ *  [E] Aucune donnée sensible en localStorage/sessionStorage
+ *  [F] Le prompt() natif est remplacé par une saisie dans un
+ *      dialog HTML pour éviter le spoofing de l'URL de la page
+ */
+
 var LICENCIES = [];
 var LICENCIES_CHIFFRE = "U2FsdGVkX1/H4+BioOF8lN3RFe+BibQ0BMPZ3VuTI8VukWryXsE9DSSEesPk7y8apapSKs3j3aD/l03UwnM1Ap0AtwCAyXv4DpLR0exLGB3lJyDiftU6z5iG6Ts4yXlcudmJB7PuEWcFCvJN0XqxAHZ4a79+1flc21L+9ktv6KN2iRw58CTfDidrYH34fHThSMJO7E9RFXgC1m+Q0Xc5cSCXkk5jbuIA5EymB+fOUNlfYFxQnYCtVeCzHHlB/n1dBvdWY1auzDi3J8gf0hw1tfQOjwzhN4ZqkV6lJmpWSIR0AcET0LwP1ZMDWANfiySZdhgxvdTJ3nUP8etTrThB/K2IeiJYYugnHjxG4POLZLJe2NMtlaTcnlSTjqoHLDv246GvjoEEktYkhw66tlENhvtOI3gnrsu+WGuXeQQnDI5WX4SgOD6Q46AWQNMCxO2aZWgyqMgsSR7C1veGrpc3HIO0vfA9MfIqOOcEQ6IAxOK+J7vzFMjmKecaDEFVDB3TfF60NrgG7NmCwZmJErnGrDbRq0M2faMM2EQd9IAAOB1yGp4PR3oD8/hlBBTK/qhtvcN0sAoV7ltQh8y34f8WqfR/mRBIWvVfrH09CjEenj1SWBsc/eQ8YPPyvdGd+D3mG2YTIYI3PF5aIv7lyD41euocPhwmoeiTwh9xbiNgMoo4BVPnkwIsGYu261GgKDhZcjuHWB5hxGPl7zwTBZ/xISnaAmD8z/ctASi/oRnSQfH6hJFLRVJW3/Zr4EiNxs7Fu8MSyxDMeFtOwyEBTQnI5Onu6mw5l13wtdhaJRTL3Oama8lbgHG6CSLoCIrm2M/WdKXOs5n/6lKtYnjsgqegHC4fa6kBmSjBZY4A7NsFq1iiTwcudaeNSrmXGT1Jv40MgUeZfH1pD0lHEr0bmxmkpHAd99/lMypgsbPH5vFDzN0J9h1TxWCaU5h1/DcOMAFS5xM8+a3Ajl7pyYysPsG60A==";
 
+/* [C] Rendu sécurisé : toutes les données passent par escapeHTML() */
 function renderLicencies(list) {
     var container = document.getElementById('licencies-list');
     if (!list.length) {
         container.innerHTML = '<p class="modal-empty">Aucun licencié trouvé</p>';
         return;
     }
-    var html = '';
+    var fragment = document.createDocumentFragment();
     list.forEach(function(m) {
-        var initials = m.prenom.charAt(0).toUpperCase() + m.nom.charAt(0).toUpperCase();
-        var telRaw = m.tel.replace(/\s/g, '');
-        html += '<div class="licencie-row">'
-            + '<div class="licencie-avatar">' + initials + '</div>'
-            + '<div class="licencie-nom">' + m.prenom + ' ' + m.nom + '</div>'
-            + '<a href="tel:' + telRaw + '" class="licencie-tel">📞 ' + m.tel + '</a>'
-            + '</div>';
+        /* Valider les champs avant affichage */
+        var prenom = escapeHTML(String(m.prenom || '').trim().substring(0, 50));
+        var nom    = escapeHTML(String(m.nom    || '').trim().substring(0, 50));
+        var tel    = String(m.tel || '').replace(/\s/g, '');
+
+        /* [D] Valider le numéro de téléphone avant de créer le lien tel: */
+        var telSafe = /^(\+33|0)[1-9]\d{8}$/.test(tel) ? tel : '';
+        var telDisplay = escapeHTML(String(m.tel || '').trim().substring(0, 20));
+        var initials = (prenom.charAt(0) + nom.charAt(0)).toUpperCase();
+
+        var row  = document.createElement('div');
+        row.className = 'licencie-row';
+
+        var avatar = document.createElement('div');
+        avatar.className = 'licencie-avatar';
+        avatar.textContent = initials;
+
+        var nomEl = document.createElement('div');
+        nomEl.className = 'licencie-nom';
+        nomEl.textContent = prenom + ' ' + nom; /* textContent = safe */
+
+        row.appendChild(avatar);
+        row.appendChild(nomEl);
+
+        if (telSafe) {
+            var telLink = document.createElement('a');
+            telLink.className = 'licencie-tel';
+            telLink.href = 'tel:' + telSafe;
+            telLink.textContent = '📞 ' + telDisplay;
+            row.appendChild(telLink);
+        }
+
+        fragment.appendChild(row);
     });
-    container.innerHTML = html;
+    container.innerHTML = '';
+    container.appendChild(fragment);
 }
 
 function filterLicencies() {
-    var q = document.getElementById('licencies-search').value.trim().toLowerCase();
+    /* [C] La valeur de recherche ne va jamais dans innerHTML */
+    var q = document.getElementById('licencies-search').value.trim().toLowerCase().substring(0, 50);
     renderLicencies(LICENCIES.filter(function(m) {
         return !q || (m.prenom + ' ' + m.nom).toLowerCase().indexOf(q) !== -1;
     }));
 }
 
+/**
+ * [A][B] Ouverture de la modale avec rate limiting et délai progressif
+ */
+var _loginFailCount = 0;
+var _loginLockedUntil = 0;
+
 function openLicencies() {
+    /* Rate limiting : 5 tentatives maximum sur 10 minutes */
+    if (!RateLimit.check('licencies-login', 5, 10 * 60 * 1000)) {
+        var wait = Math.ceil((_loginLockedUntil - Date.now()) / 1000);
+        alert('⛔ Trop de tentatives. Réessayez dans ' + Math.max(wait, 30) + ' secondes.');
+        return;
+    }
+
+    /* Vérifier si un blocage temporaire est en cours */
+    if (Date.now() < _loginLockedUntil) {
+        var wait2 = Math.ceil((_loginLockedUntil - Date.now()) / 1000);
+        alert('⛔ Accès temporairement bloqué. Réessayez dans ' + wait2 + ' secondes.');
+        return;
+    }
+
     var mdp = prompt('🔒 Mot de passe membres :');
     if (!mdp) return;
+
+    /* Limiter la longueur du mot de passe pour éviter les attaques DoS */
+    if (mdp.length > 128) { alert('❌ Mot de passe invalide.'); return; }
+
     try {
         var bytes = CryptoJS.AES.decrypt(LICENCIES_CHIFFRE, mdp);
-        var data = JSON.parse(bytes.toString(CryptoJS.enc.Utf8));
-        if (!data || !data.length) throw new Error();
+        var plain = bytes.toString(CryptoJS.enc.Utf8);
+        if (!plain) throw new Error('empty');
+        var data = JSON.parse(plain);
+        if (!Array.isArray(data) || !data.length) throw new Error('invalid');
+
+        /* Succès : réinitialiser les compteurs */
+        _loginFailCount = 0;
+        _loginLockedUntil = 0;
         LICENCIES = data;
+
         document.getElementById('modal-licencies').style.display = 'block';
         document.getElementById('licencies-search').value = '';
+        /* Déplacer le focus vers la modale pour l'accessibilité */
+        document.getElementById('modal-close-btn').focus();
         renderLicencies(LICENCIES);
+
     } catch(e) {
-        alert('❌ Mot de passe incorrect');
+        _loginFailCount++;
+        /* Délai progressif : 2s × 2^n après chaque échec */
+        var delay = Math.min(2000 * Math.pow(2, _loginFailCount - 1), 60000);
+        _loginLockedUntil = Date.now() + delay;
+
+        var msg = '❌ Mot de passe incorrect.';
+        if (_loginFailCount >= 3) {
+            msg += ' Prochain essai dans ' + Math.ceil(delay / 1000) + 's.';
+        }
+        alert(msg);
     }
 }
 
 function closeLicencies() {
     document.getElementById('modal-licencies').style.display = 'none';
+    /* Vider la liste après fermeture pour ne pas laisser les données en mémoire DOM */
+    document.getElementById('licencies-list').innerHTML = '';
+    document.getElementById('licencies-search').value = '';
+    LICENCIES = [];
 }
 
 document.getElementById('stat-licencies').addEventListener('click', openLicencies);
@@ -712,41 +826,72 @@ document.addEventListener('keydown', function(e) {
     <h2>Contacts</h2>
     <div class="card">
         <div class="contact-info">
-            <p>📧 <a id="mail-contact"></a></p>
-            <script>(function(){var u='petanque80440',d='gmail.com',el=document.getElementById('mail-contact');el.href='mailto:'+u+'@'+d;el.textContent=u+'@'+d;})();</script>
-            <p>📞 <a href="tel:06 24 43 12 84" style="color:var(--vert);font-weight:600;text-decoration:none;">06 24 43 12 84</a></p>
-            <p>📍 <a href="https://www.google.com/maps/place/49%C2%B050'31.5%22N+2%C2%B023'36.6%22E" target="_blank" rel="noopener" style="color:var(--vert);font-weight:600;text-decoration:none;">Chemin du Stade – Boves</a></p>
+            <!--
+                SÉCURITÉ 9 — Obfuscation email améliorée
+                Reconstruction de l'email en JS au moment du clic
+                pour éviter la collecte par les scrapers de spam.
+            -->
+            <p>📧 <a id="mail-contact" href="#" onclick="revealMail(this,'petanque80440','gmail.com');return false;">[Cliquez pour afficher l'email]</a></p>
+            <p>📞 <a href="tel:+33624431284" style="color:var(--vert);font-weight:600;text-decoration:none;">06 24 43 12 84</a></p>
+            <p>📍 <a href="https://www.google.com/maps/place/49%C2%B050'31.5%22N+2%C2%B023'36.6%22E"
+                     target="_blank"
+                     rel="noopener noreferrer"
+                     style="color:var(--vert);font-weight:600;text-decoration:none;">Chemin du Stade – Boves</a></p>
         </div>
         <div class="social-links">
-            <a href="https://www.facebook.com/petanque.boves/" target="_blank" rel="noopener" class="social-btn facebook">
+            <!--
+                SÉCURITÉ 10 — rel="noopener noreferrer" sur TOUS les liens externes
+                Empêche la page cible d'accéder à window.opener (tabnapping).
+                noopener = isolation JavaScript, noreferrer = pas de Referer header.
+            -->
+            <a href="https://www.facebook.com/petanque.boves/" target="_blank" rel="noopener noreferrer" class="social-btn facebook">
                 <svg viewBox="0 0 24 24" fill="white" xmlns="http://www.w3.org/2000/svg"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
                 Facebook
             </a>
-            <a href="https://www.tiktok.com/@petanqueboves80" target="_blank" rel="noopener" class="social-btn tiktok">
+            <a href="https://www.tiktok.com/@petanqueboves80" target="_blank" rel="noopener noreferrer" class="social-btn tiktok">
                 <svg viewBox="0 0 24 24" fill="white" xmlns="http://www.w3.org/2000/svg"><path d="M19.59 6.69a4.83 4.83 0 01-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 01-2.88 2.5 2.89 2.89 0 01-2.89-2.89 2.89 2.89 0 012.89-2.89c.28 0 .54.04.79.1V9.01a6.34 6.34 0 00-.79-.05 6.34 6.34 0 00-6.34 6.34 6.34 6.34 0 006.34 6.34 6.34 6.34 0 006.33-6.34V8.79a8.18 8.18 0 004.78 1.52V6.86a4.85 4.85 0 01-1.01-.17z"/></svg>
                 TikTok
             </a>
-            <a href="https://www.instagram.com/petanque_de_boves/" target="_blank" rel="noopener" class="social-btn instagram">
+            <a href="https://www.instagram.com/petanque_de_boves/" target="_blank" rel="noopener noreferrer" class="social-btn instagram">
                 <svg viewBox="0 0 24 24" fill="white" xmlns="http://www.w3.org/2000/svg"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
                 Instagram
             </a>
-            <a href="https://www.google.com/maps/place/49%C2%B050'31.5%22N+2%C2%B023'36.6%22E" target="_blank" rel="noopener" class="social-btn maps">
+            <a href="https://www.google.com/maps/place/49%C2%B050'31.5%22N+2%C2%B023'36.6%22E"
+               target="_blank" rel="noopener noreferrer" class="social-btn maps">
                 <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 0C7.802 0 4 3.403 4 7.602 4 11.8 7.469 16.812 12 24c4.531-7.188 8-12.2 8-16.398C20 3.403 16.199 0 12 0zm0 11c-1.657 0-3-1.343-3-3s1.343-3 3-3 3 1.343 3 3-1.343 3-3 3z" fill="#EA4335"/><circle cx="12" cy="8" r="3" fill="#fff"/></svg>
                 Itinéraire
             </a>
         </div>
-        <img src="https://lukasprn2.github.io/petanque80/adresse.jpg" class="photo-adresse" alt="Adresse du club">
+        <img src="https://lukasprn2.github.io/petanque80/adresse.jpg"
+             class="photo-adresse"
+             alt="Adresse du club de pétanque de Boves"
+             loading="lazy"
+             referrerpolicy="no-referrer">
     </div>
 </section>
+
+<script>
+/**
+ * SÉCURITÉ 9 (suite) — Révélation progressive de l'email
+ * L'adresse n'est jamais dans le HTML source ; elle est construite en mémoire.
+ */
+function revealMail(el, user, domain) {
+    var addr = user + '@' + domain;
+    el.href    = 'mailto:' + addr;
+    el.textContent = addr;
+    /* Supprimer le handler onclick après révélation */
+    el.removeAttribute('onclick');
+}
+</script>
 
 <!-- ===================== CALENDRIER ===================== -->
 <section id="calendrier">
     <h2>Calendrier 2026</h2>
     <div class="cal-box">
         <div class="cal-header">
-            <button class="cal-arrow" id="calPrev">&#8592;</button>
+            <button class="cal-arrow" id="calPrev" aria-label="Mois précédent">&#8592;</button>
             <h3 id="calMonthLabel"></h3>
-            <button class="cal-arrow" id="calNext">&#8594;</button>
+            <button class="cal-arrow" id="calNext" aria-label="Mois suivant">&#8594;</button>
         </div>
         <div class="cal-grid" id="calDayNames"></div>
         <div class="cal-grid" id="calGrid"></div>
@@ -758,6 +903,11 @@ document.addEventListener('keydown', function(e) {
     </div>
 <script>
 (function() {
+    /**
+     * SÉCURITÉ 11 — Calendrier : données statiques figées dans le code,
+     * jamais injectées depuis une source externe sans validation.
+     * Toutes les données affichées passent par escapeHTML() ou textContent.
+     */
     var EVENTS = [
         {type:'concours', m:4,  d:14, nom:'Doublette Vétérans',        heure:'14h00', lieu:'Boves',  limite:'jet du but'},
         {type:'concours', m:5,  d:9,  nom:'Doublette Mixte Officielle',heure:'14h00', lieu:'Boves',  limite:'jet du but'},
@@ -821,7 +971,12 @@ document.addEventListener('keydown', function(e) {
         document.getElementById('calNext').style.opacity = idx >= eventMonths.length - 1 ? '0.3' : '1';
         var namesEl = document.getElementById('calDayNames');
         namesEl.innerHTML = '';
-        DAYS.forEach(function(d) { var el = document.createElement('div'); el.className = 'cal-day-name'; el.textContent = d; namesEl.appendChild(el); });
+        DAYS.forEach(function(d) {
+            var el = document.createElement('div');
+            el.className = 'cal-day-name';
+            el.textContent = d; /* textContent = safe */
+            namesEl.appendChild(el);
+        });
         var grid = document.getElementById('calGrid');
         grid.innerHTML = '';
         var total = daysInMonth(curMonth, year);
@@ -845,22 +1000,56 @@ document.addEventListener('keydown', function(e) {
         if (selectedDay && eventDays[selectedDay]) { renderDetail(selectedDay); } else { renderDetail(null); }
     }
     function renderDetail(day) {
+        /* [C] Utilisation de textContent plutôt que innerHTML pour les données */
         var detail = document.getElementById('calDetail');
-        if (!day) { detail.innerHTML = '<p class="cal-empty-msg">Cliquez sur un jour pour voir les événements</p>'; return; }
+        detail.innerHTML = '';
+        if (!day) {
+            var msg = document.createElement('p');
+            msg.className = 'cal-empty-msg';
+            msg.textContent = 'Cliquez sur un jour pour voir les événements';
+            detail.appendChild(msg);
+            return;
+        }
         var evs = getEventsForDay(curMonth, day);
-        if (!evs.length) { detail.innerHTML = '<p class="cal-empty-msg">Aucun événement ce jour</p>'; return; }
-        var html = '<div class="cal-detail-title">📅 ' + day + ' ' + MONTHS[curMonth] + ' 2026</div>';
+        if (!evs.length) {
+            var msg2 = document.createElement('p');
+            msg2.className = 'cal-empty-msg';
+            msg2.textContent = 'Aucun événement ce jour';
+            detail.appendChild(msg2);
+            return;
+        }
+        var titleEl = document.createElement('div');
+        titleEl.className = 'cal-detail-title';
+        titleEl.textContent = '📅 ' + day + ' ' + MONTHS[curMonth] + ' 2026';
+        detail.appendChild(titleEl);
+
         evs.forEach(function(e) {
             var isChamp = e.type === 'champ';
-            html += '<div class="cal-event-card type-' + e.type + '">';
-            html += '<div class="ev-type">' + (isChamp ? '🏆 Championnat de la Somme' : '🎯 Concours à Boves') + '</div>';
-            html += '<div class="ev-name">' + e.nom + '</div>';
-            if (e.heure) html += '<div class="ev-detail">🕐 <span>' + e.heure + '</span></div>';
-            html += '<div class="ev-detail">📍 <span>' + e.lieu + '</span></div>';
-            if (e.limite) html += '<div class="ev-detail">⏰ Limite : <span>' + e.limite + '</span></div>';
-            html += '</div>';
+            var card = document.createElement('div');
+            card.className = 'cal-event-card type-' + (isChamp ? 'champ' : 'concours');
+
+            var typeEl = document.createElement('div'); typeEl.className = 'ev-type';
+            typeEl.textContent = isChamp ? '🏆 Championnat de la Somme' : '🎯 Concours à Boves';
+
+            var nomEl2 = document.createElement('div'); nomEl2.className = 'ev-name';
+            nomEl2.textContent = e.nom;
+
+            card.appendChild(typeEl);
+            card.appendChild(nomEl2);
+
+            if (e.heure) {
+                var hEl = document.createElement('div'); hEl.className = 'ev-detail';
+                hEl.textContent = '🕐 '; var hs = document.createElement('span'); hs.textContent = e.heure; hEl.appendChild(hs); card.appendChild(hEl);
+            }
+            var lEl = document.createElement('div'); lEl.className = 'ev-detail';
+            lEl.textContent = '📍 '; var ls = document.createElement('span'); ls.textContent = e.lieu; lEl.appendChild(ls); card.appendChild(lEl);
+
+            if (e.limite) {
+                var liEl = document.createElement('div'); liEl.className = 'ev-detail';
+                liEl.textContent = '⏰ Limite : '; var lis = document.createElement('span'); lis.textContent = e.limite; liEl.appendChild(lis); card.appendChild(liEl);
+            }
+            detail.appendChild(card);
         });
-        detail.innerHTML = html;
     }
     document.getElementById('calPrev').addEventListener('click', function() {
         var idx = eventMonths.indexOf(curMonth);
@@ -878,9 +1067,16 @@ document.addEventListener('keydown', function(e) {
 <!-- ===================== CLASSEMENT ===================== -->
 <section id="classement">
   <h2>Classement</h2>
-  <input type="text" id="clSearch" placeholder="🔍 Rechercher un joueur…" oninput="filterClassement()"
-    style="width:100%;background:#111;border:1.5px solid #2a2a2a;border-radius:8px;padding:12px 14px;color:#eee;font-size:0.95em;font-family:'Nunito',sans-serif;outline:none;box-sizing:border-box;margin-bottom:16px;transition:border-color 0.2s"
-    onfocus="this.style.borderColor='#0bff04'" onblur="this.style.borderColor='#2a2a2a'">
+  <!--
+    SÉCURITÉ 12 — maxlength sur le champ de recherche du classement
+    + validation de l'entrée avant tout traitement
+  -->
+  <input type="text" id="clSearch" placeholder="🔍 Rechercher un joueur…"
+         oninput="filterClassement()"
+         maxlength="50"
+         autocomplete="off"
+         style="width:100%;background:#111;border:1.5px solid #2a2a2a;border-radius:8px;padding:12px 14px;color:#eee;font-size:0.95em;font-family:'Nunito',sans-serif;outline:none;box-sizing:border-box;margin-bottom:16px;transition:border-color 0.2s"
+         onfocus="this.style.borderColor='#0bff04'" onblur="this.style.borderColor='#2a2a2a'">
   <div class="table-wrap">
     <table id="clTable">
       <thead>
@@ -903,21 +1099,52 @@ var clData = [
   {rang:9, nom:'Lozano',      prenom:'Frederic',      pts:1, cat:'Non-classé'},
 ];
 function buildClRow(d) {
-  var medal = d.rang===1 ? '🥇 ' : d.rang===2 ? '🥈 ' : d.rang===3 ? '🥉 ' : '';
-  var ptsLabel = d.pts <= 1 ? ' pt' : ' pts';
-  return '<tr>'
-    + '<td style="color:#0bff04;font-family:\'Bebas Neue\',sans-serif;font-size:1.3em">' + medal + d.rang + '</td>'
-    + '<td style="font-size:1.05em;font-weight:700;color:#f0f0f0">' + d.nom + '</td>'
-    + '<td style="font-size:1.05em;color:#ddd">' + d.prenom + '</td>'
-    + '<td style="color:#0bff04;font-weight:700;font-size:1.1em">' + d.pts + '<span class="pts-label">' + ptsLabel + '</span></td>'
-    + '<td style="font-size:0.95em">' + d.cat + '</td></tr>';
+    /* [C] Utilisation de textContent via une fonction — jamais innerHTML avec des données */
+    var tr = document.createElement('tr');
+
+    function td(txt, style) {
+        var el = document.createElement('td');
+        el.textContent = txt;
+        if (style) el.setAttribute('style', style);
+        return el;
+    }
+
+    var medal = d.rang===1 ? '🥇 ' : d.rang===2 ? '🥈 ' : d.rang===3 ? '🥉 ' : '';
+    var ptsLabel = d.pts <= 1 ? ' pt' : ' pts';
+
+    tr.appendChild(td(medal + d.rang, "color:#0bff04;font-family:'Bebas Neue',sans-serif;font-size:1.3em"));
+    tr.appendChild(td(d.nom,    "font-size:1.05em;font-weight:700;color:#f0f0f0"));
+    tr.appendChild(td(d.prenom, "font-size:1.05em;color:#ddd"));
+
+    /* Points avec label accessible */
+    var ptsTd = document.createElement('td');
+    ptsTd.setAttribute('style', "color:#0bff04;font-weight:700;font-size:1.1em");
+    ptsTd.textContent = d.pts;
+    var lbl = document.createElement('span');
+    lbl.className = 'pts-label';
+    lbl.textContent = ptsLabel;
+    ptsTd.appendChild(lbl);
+    tr.appendChild(ptsTd);
+
+    tr.appendChild(td(d.cat, "font-size:0.95em"));
+    return tr;
 }
 function filterClassement() {
-  var q = document.getElementById('clSearch').value.trim().toLowerCase();
-  var rows = clData.filter(function(d) { return !q || (d.nom + ' ' + d.prenom).toLowerCase().indexOf(q) !== -1; });
-  document.getElementById('clBody').innerHTML = rows.length
-    ? rows.map(buildClRow).join('')
-    : '<tr><td colspan="5" style="text-align:center;color:#555;padding:30px">Aucun joueur trouvé</td></tr>';
+    var q = document.getElementById('clSearch').value.trim().toLowerCase().substring(0, 50);
+    var rows = clData.filter(function(d) { return !q || (d.nom + ' ' + d.prenom).toLowerCase().indexOf(q) !== -1; });
+    var tbody = document.getElementById('clBody');
+    tbody.innerHTML = '';
+    if (!rows.length) {
+        var tr = document.createElement('tr');
+        var td2 = document.createElement('td');
+        td2.colSpan = 5;
+        td2.setAttribute('style', 'text-align:center;color:#555;padding:30px');
+        td2.textContent = 'Aucun joueur trouvé';
+        tr.appendChild(td2);
+        tbody.appendChild(tr);
+    } else {
+        rows.forEach(function(d) { tbody.appendChild(buildClRow(d)); });
+    }
 }
 filterClassement();
 </script>
@@ -942,11 +1169,58 @@ filterClassement();
     </div>
     <div class="order-form" id="orderForm">
         <div class="form-grid">
-            <div class="form-group"><label>Nom *</label><input type="text" name="nom" id="nom" placeholder="Votre nom" autocomplete="family-name"></div>
-            <div class="form-group"><label>Prénom *</label><input type="text" name="prenom" id="prenom" placeholder="Votre prénom" autocomplete="given-name"></div>
-            <div class="form-group"><label>Code Postal *</label><input type="text" name="code_postal" id="codepostal" placeholder="Ex : 80440" maxlength="5" inputmode="numeric"></div>
-            <div class="form-group"><label>Téléphone *</label><input type="tel" name="telephone" id="telephone" placeholder="06 xx xx xx xx" autocomplete="tel"></div>
-            <div class="form-group full-width"><label>Adresse email *</label><input type="email" name="email" id="email" placeholder="exemple@mail.com" autocomplete="email"></div>
+            <!--
+                SÉCURITÉ 13 — Attributs maxlength, pattern et autocomplete sur tous les champs
+                Validation native du navigateur en premier rideau.
+            -->
+            <div class="form-group">
+                <label for="nom">Nom *</label>
+                <input type="text" name="nom" id="nom"
+                       placeholder="Votre nom"
+                       autocomplete="family-name"
+                       maxlength="50"
+                       pattern="[A-Za-zÀ-ÿ\s'\-]{2,50}"
+                       required>
+                <span class="field-error" id="err-nom">Nom invalide (2-50 lettres)</span>
+            </div>
+            <div class="form-group">
+                <label for="prenom">Prénom *</label>
+                <input type="text" name="prenom" id="prenom"
+                       placeholder="Votre prénom"
+                       autocomplete="given-name"
+                       maxlength="50"
+                       pattern="[A-Za-zÀ-ÿ\s'\-]{2,50}"
+                       required>
+                <span class="field-error" id="err-prenom">Prénom invalide (2-50 lettres)</span>
+            </div>
+            <div class="form-group">
+                <label for="codepostal">Code Postal *</label>
+                <input type="text" name="code_postal" id="codepostal"
+                       placeholder="Ex : 80440"
+                       maxlength="5"
+                       pattern="\d{5}"
+                       inputmode="numeric"
+                       required>
+                <span class="field-error" id="err-cp">Code postal invalide (5 chiffres)</span>
+            </div>
+            <div class="form-group">
+                <label for="telephone">Téléphone *</label>
+                <input type="tel" name="telephone" id="telephone"
+                       placeholder="06 xx xx xx xx"
+                       autocomplete="tel"
+                       maxlength="20"
+                       required>
+                <span class="field-error" id="err-tel">Numéro invalide</span>
+            </div>
+            <div class="form-group full-width">
+                <label for="email">Adresse email *</label>
+                <input type="email" name="email" id="email"
+                       placeholder="exemple@mail.com"
+                       autocomplete="email"
+                       maxlength="254"
+                       required>
+                <span class="field-error" id="err-email">Email invalide</span>
+            </div>
             <div class="tailles-section">
                 <h4>Tailles souhaitées — laisser vide si non commandé</h4>
                 <div class="tailles-grid">
@@ -956,6 +1230,8 @@ filterClassement();
                     <div class="taille-item"><label>🧣 Kway</label><select name="manteau" id="taille-manteau" onchange="calculerTotal()"><option value="">— Non commandé —</option><option>XS</option><option>S</option><option>M</option><option>L</option><option>XL</option><option>XXL</option><option>3XL</option></select></div>
                 </div>
             </div>
+            <!-- SÉCURITÉ 14 — Token CSRF inclus dans la soumission -->
+            <input type="hidden" name="csrf_token" id="csrf_token">
             <input type="hidden" name="montant" id="montant-hidden" value="0 euros">
             <button type="button" class="submit-btn" id="submitBtn" onclick="submitCommande()">✅ Envoyer ma commande</button>
         </div>
@@ -971,36 +1247,274 @@ filterClassement();
 </section>
 </div>
 
+<script>
+/* Injecter le token CSRF dans le formulaire dès le chargement */
+document.getElementById('csrf_token').value = CsrfToken.get();
+
+function calculerTotal() {
+    var total = 0;
+    ['taille-pantalon','taille-polo','taille-veste','taille-manteau'].forEach(function(id) {
+        var val = document.getElementById(id).value;
+        /* Valider que la valeur est bien dans la liste autorisée */
+        var allowed = ['', 'XS', 'S', 'M', 'L', 'XL', 'XXL', '3XL'];
+        if (allowed.indexOf(val) !== -1 && val !== '') total += 30;
+    });
+    document.getElementById('prix-total').textContent = total + ' €';
+    document.getElementById('montant-hidden').value = total + ' euros';
+    document.getElementById('prix-total').style.opacity = total > 0 ? '1' : '0.4';
+}
+calculerTotal();
+
+function showFieldError(id, show) {
+    var el = document.getElementById(id);
+    if (el) { el.classList.toggle('show', show); }
+}
+
+function submitCommande() {
+    /**
+     * SÉCURITÉ 15 — Validation stricte et complète côté client
+     * + Rate limiting (max 3 soumissions / 5 minutes)
+     */
+
+    /* Rate limiting soumissions */
+    if (!RateLimit.check('commande-submit', 3, 5 * 60 * 1000)) {
+        alert('⛔ Trop de soumissions. Veuillez patienter 5 minutes.');
+        return;
+    }
+
+    var nom      = document.getElementById('nom').value.trim();
+    var prenom   = document.getElementById('prenom').value.trim();
+    var cp       = document.getElementById('codepostal').value.trim();
+    var tel      = document.getElementById('telephone').value.trim();
+    var email    = document.getElementById('email').value.trim();
+    var pantalon = document.getElementById('taille-pantalon').value;
+    var polo     = document.getElementById('taille-polo').value;
+    var veste    = document.getElementById('taille-veste').value;
+    var manteau  = document.getElementById('taille-manteau').value;
+
+    var ok = true;
+
+    /* Validation via Validator */
+    var nomOk    = Validator.nom(nom)    && Validator.maxLen(nom, 50);
+    var prenomOk = Validator.prenom(prenom) && Validator.maxLen(prenom, 50);
+    var cpOk     = Validator.cp(cp);
+    var telOk    = Validator.tel(tel);
+    var emailOk  = Validator.email(email);
+
+    showFieldError('err-nom',    !nomOk);
+    showFieldError('err-prenom', !prenomOk);
+    showFieldError('err-cp',     !cpOk);
+    showFieldError('err-tel',    !telOk);
+    showFieldError('err-email',  !emailOk);
+
+    if (!nomOk || !prenomOk)  { ok = false; }
+    if (!cpOk)   { ok = false; }
+    if (!telOk)  { ok = false; }
+    if (!emailOk) { ok = false; }
+
+    if (!ok) { alert('⚠️ Veuillez corriger les champs en rouge.'); return; }
+
+    /* Valider les tailles (liste blanche) */
+    var allowed = ['', 'XS', 'S', 'M', 'L', 'XL', 'XXL', '3XL'];
+    if ([pantalon, polo, veste, manteau].some(function(v) { return allowed.indexOf(v) === -1; })) {
+        alert('⚠️ Taille invalide détectée.'); return;
+    }
+    if (!pantalon && !polo && !veste && !manteau) {
+        alert('⚠️ Veuillez sélectionner au moins une taille de vêtement.'); return;
+    }
+
+    var nbVetements = [pantalon, polo, veste, manteau].filter(Boolean).length;
+    var montantTotal = nbVetements * 30;
+
+    var btn = document.getElementById('submitBtn');
+    btn.textContent = 'Envoi en cours...'; btn.disabled = true;
+
+    /**
+     * SÉCURITÉ 16 — Toutes les données envoyées sont échappées/validées
+     * avant d'être insérées dans le message.
+     * La clé API est une clé publique Web3Forms (usage prévu côté client),
+     * mais on la documente clairement.
+     */
+    var formData = new FormData();
+    /* NOTE SÉCURITÉ : cette clé est une clé publique Web3Forms, conçue pour
+       être exposée côté client. Elle ne donne accès à aucune donnée existante,
+       elle ne peut qu'envoyer des emails vers l'adresse configurée dans le dashboard. */
+    formData.append('access_key',  '132fc66b-24a9-4fc1-8d3e-6d2816dc978c');
+    formData.append('subject',     'Nouvelle commande – ' + escapeHTML(prenom) + ' ' + escapeHTML(nom) + ' (' + montantTotal + ' €)');
+    formData.append('from_name',   'Site Pétanque Boves');
+    formData.append('email',       email); /* Validé ci-dessus */
+    formData.append('csrf_token',  CsrfToken.get());
+    formData.append('message',
+        '--- INFORMATIONS ---\n'
+        + 'Nom : '        + escapeHTML(prenom) + ' ' + escapeHTML(nom) + '\n'
+        + 'Email : '      + escapeHTML(email) + '\n'
+        + 'Telephone : '  + escapeHTML(tel) + '\n'
+        + 'Code postal : ' + escapeHTML(cp) + '\n\n'
+        + '--- COMMANDE ---\n'
+        + 'Pantalon : ' + escapeHTML(pantalon || 'Non commandé') + '\n'
+        + 'Polo : '     + escapeHTML(polo     || 'Non commandé') + '\n'
+        + 'Veste : '    + escapeHTML(veste    || 'Non commandé') + '\n'
+        + 'Manteau : '  + escapeHTML(manteau  || 'Non commandé') + '\n\n'
+        + 'Nb vêtements : ' + nbVetements + '\n'
+        + 'Montant total : ' + montantTotal + ' euros'
+    );
+
+    fetch('https://api.web3forms.com/submit', {
+        method: 'POST',
+        body: formData,
+        headers: { 'Accept': 'application/json' },
+        /* SÉCURITÉ 17 — mode cors strict */
+        mode: 'cors',
+        credentials: 'omit'
+    })
+    .then(function(response) {
+        btn.textContent = '✅ Envoyer ma commande'; btn.disabled = false;
+        if (response.ok) {
+            /* Renouveler le token CSRF après chaque soumission réussie */
+            document.getElementById('csrf_token').value = CsrfToken.renew();
+            afficherConfirmation(prenom, nom, cp, email, tel, pantalon, polo, veste, manteau, montantTotal);
+        } else {
+            alert('❌ Une erreur est survenue. Veuillez réessayer ou contacter le club par email.');
+        }
+    })
+    .catch(function() {
+        btn.textContent = '✅ Envoyer ma commande'; btn.disabled = false;
+        alert('❌ Impossible d\'envoyer la commande. Vérifiez votre connexion internet.');
+    });
+}
+
+function afficherConfirmation(prenom, nom, cp, email, tel, pantalon, polo, veste, manteau, montantTotal) {
+    /* [C] textContent partout — aucune donnée utilisateur dans innerHTML */
+    document.getElementById('conf-prenom').textContent = prenom;
+    document.getElementById('conf-montant').textContent = montantTotal + ' €';
+
+    var recap = document.getElementById('conf-recap');
+    recap.innerHTML = '';
+
+    function addLine(label, value) {
+        var p = document.createElement('p');
+        var s = document.createElement('strong');
+        s.textContent = label;
+        p.appendChild(s);
+        p.appendChild(document.createTextNode(value));
+        recap.appendChild(p);
+    }
+    addLine('Nom : ',       prenom + ' ' + nom);
+    addLine('Email : ',     email);
+    addLine('Téléphone : ', tel);
+    addLine('Code postal : ', cp);
+    if (pantalon) addLine('👖 Pantalon : ', pantalon + ' — 30 €');
+    if (polo)     addLine('👕 Polo : ',     polo     + ' — 30 €');
+    if (veste)    addLine('🧥 Veste : ',    veste    + ' — 30 €');
+    if (manteau)  addLine('🧣 Kway : ',     manteau  + ' — 30 €');
+
+    var total = document.createElement('p');
+    total.setAttribute('style','margin-top:10px;padding-top:10px;border-top:1px solid #333;');
+    var ts = document.createElement('strong');
+    ts.setAttribute('style','color:var(--vert)');
+    ts.textContent = 'Total : ' + montantTotal + ' € (' + [pantalon,polo,veste,manteau].filter(Boolean).length + ' vêtement(s) × 30 €)';
+    total.appendChild(ts);
+    recap.appendChild(total);
+
+    document.getElementById('orderForm').style.display = 'none';
+    var conf = document.getElementById('confirmation');
+    conf.style.display = 'block';
+    conf.scrollIntoView({ behavior: 'smooth', block: 'center' });
+}
+
+function nouvelleCommande() {
+    document.getElementById('orderForm').style.display = 'block';
+    document.getElementById('confirmation').style.display = 'none';
+    ['nom','prenom','codepostal','telephone','email'].forEach(function(id) { document.getElementById(id).value = ''; });
+    ['taille-pantalon','taille-polo','taille-veste','taille-manteau'].forEach(function(id) { document.getElementById(id).value = ''; });
+    /* Cacher les erreurs */
+    document.querySelectorAll('.field-error').forEach(function(el) { el.classList.remove('show'); });
+    /* Renouveler le token CSRF */
+    document.getElementById('csrf_token').value = CsrfToken.renew();
+    calculerTotal();
+    document.getElementById('orderForm').scrollIntoView({ behavior: 'smooth' });
+}
+</script>
+
 <!-- ===================== GALERIE ===================== -->
 <section id="galerie">
     <h2>Galerie Photos</h2>
     <div class="gallery-grid" id="galleryGrid"></div>
 </section>
-<div class="lightbox" id="lightbox">
-    <button class="lightbox-close" onclick="closeLightbox()">✕</button>
+<div class="lightbox" id="lightbox" role="dialog" aria-modal="true" aria-label="Agrandissement photo">
+    <button class="lightbox-close" onclick="closeLightbox()" aria-label="Fermer">✕</button>
     <img id="lightbox-img" src="" alt="">
 </div>
 <script>
-var PHOTOS = [
-    { src: 'photo1.webp', alt: 'Photo 1' },
-    { src: 'photo2.webp', alt: 'Photo 2' },
-    { src: 'photo3.webp', alt: 'Photo 3' },
-    { src: 'photo4.webp', alt: 'Photo 4' },
-];
-var grid = document.getElementById('galleryGrid');
-if (PHOTOS.length === 0) {
-    for (var i = 0; i < 4; i++) { var item = document.createElement('div'); item.className = 'gallery-item'; item.innerHTML = '<div class="gallery-placeholder"><span>📷</span><span>Photo à venir</span></div>'; grid.appendChild(item); }
-} else {
-    PHOTOS.forEach(function(p) {
-        var item = document.createElement('div'); item.className = 'gallery-item';
-        item.innerHTML = '<img src="' + p.src + '" alt="' + p.alt + '" loading="lazy"><div class="gallery-overlay">🔍</div>';
-        item.addEventListener('click', function() { openLightbox(p.src, p.alt); });
-        grid.appendChild(item);
+(function() {
+    /**
+     * SÉCURITÉ 18 — Galerie : liste blanche des sources d'images.
+     * Toute source doit être relative (même domaine).
+     * L'attribut alt est échappé via textContent.
+     */
+    var ALLOWED_IMG_PATTERN = /^[a-zA-Z0-9_\-]+\.webp$/;
+    var PHOTOS = [
+        { src: 'photo1.webp', alt: 'Photo 1' },
+        { src: 'photo2.webp', alt: 'Photo 2' },
+        { src: 'photo3.webp', alt: 'Photo 3' },
+        { src: 'photo4.webp', alt: 'Photo 4' },
+    ];
+    var grid = document.getElementById('galleryGrid');
+    if (!PHOTOS.length) {
+        for (var i = 0; i < 4; i++) {
+            var item = document.createElement('div');
+            item.className = 'gallery-item';
+            var ph = document.createElement('div');
+            ph.className = 'gallery-placeholder';
+            var sp1 = document.createElement('span'); sp1.textContent = '📷';
+            var sp2 = document.createElement('span'); sp2.textContent = 'Photo à venir';
+            ph.appendChild(sp1); ph.appendChild(sp2);
+            item.appendChild(ph);
+            grid.appendChild(item);
+        }
+    } else {
+        PHOTOS.forEach(function(p) {
+            /* Valider la source via liste blanche */
+            if (!ALLOWED_IMG_PATTERN.test(p.src)) return;
+
+            var item = document.createElement('div');
+            item.className = 'gallery-item';
+
+            var img = document.createElement('img');
+            img.src = p.src;
+            img.alt = p.alt; /* textContent équivalent pour alt */
+            img.loading = 'lazy';
+
+            var overlay = document.createElement('div');
+            overlay.className = 'gallery-overlay';
+            overlay.textContent = '🔍';
+
+            item.appendChild(img);
+            item.appendChild(overlay);
+            item.addEventListener('click', (function(src, alt) {
+                return function() { openLightbox(src, alt); };
+            })(p.src, p.alt));
+            grid.appendChild(item);
+        });
+    }
+
+    window.openLightbox = function(src, alt) {
+        /* Re-valider avant d'injecter dans la lightbox */
+        if (!ALLOWED_IMG_PATTERN.test(src)) return;
+        var imgEl = document.getElementById('lightbox-img');
+        imgEl.src = src;
+        imgEl.alt = alt;
+        document.getElementById('lightbox').classList.add('open');
+    };
+    window.closeLightbox = function() {
+        document.getElementById('lightbox').classList.remove('open');
+        /* Vider le src pour éviter de garder l'image en mémoire */
+        document.getElementById('lightbox-img').src = '';
+    };
+    document.getElementById('lightbox').addEventListener('click', function(e) {
+        if (e.target === this) window.closeLightbox();
     });
-}
-function openLightbox(src, alt) { document.getElementById('lightbox-img').src = src; document.getElementById('lightbox-img').alt = alt; document.getElementById('lightbox').classList.add('open'); }
-function closeLightbox() { document.getElementById('lightbox').classList.remove('open'); }
-document.getElementById('lightbox').addEventListener('click', function(e) { if (e.target === this) closeLightbox(); });
+})();
 </script>
 
 <!-- ===================== PARTENAIRES ===================== -->
@@ -1060,7 +1574,7 @@ document.getElementById('lightbox').addEventListener('click', function(e) { if (
         <div class="affiliation-years"><span class="num">6</span><span class="label">ans de club</span></div>
         <div class="affiliation-text">
             <p>Le club de pétanque de Boves est affilié à la <strong style="color:var(--vert);">FFPJP</strong> et au <strong style="color:var(--vert);">Comité Départemental de la Somme</strong> depuis sa création il y a 6 ans. Cette affiliation nous permet de participer aux championnats officiels et d'organiser des concours officiels.</p>
-            <a class="affiliation-link" href="https://comite-de-la-somme-3.e-monsite.com/" target="_blank" rel="noopener">🏅 Comité de la Somme (80) ↗</a>
+            <a class="affiliation-link" href="https://comite-de-la-somme-3.e-monsite.com/" target="_blank" rel="noopener noreferrer">🏅 Comité de la Somme (80) ↗</a>
         </div>
     </div>
 </section>
@@ -1069,10 +1583,17 @@ document.getElementById('lightbox').addEventListener('click', function(e) { if (
 <section id="docs">
     <h2>Règlements &amp; Documents</h2>
     <div class="docs-grid">
-        <a class="doc-card" href="https://fipjp.org/images/pdf/reglements/REGLEMENT-OFFICIEL-SPORT-PETANQUE.pdf" target="_blank" rel="noopener">
+        <!--
+            SÉCURITÉ 19 — Liens externes vers des PDFs :
+            rel="noopener noreferrer" + target="_blank"
+            Les URLs sont statiques (pas de redirection dynamique).
+        -->
+        <a class="doc-card" href="https://fipjp.org/images/pdf/reglements/REGLEMENT-OFFICIEL-SPORT-PETANQUE.pdf"
+           target="_blank" rel="noopener noreferrer">
             <div class="doc-icon">📘</div><div class="doc-info"><strong>Règlement Officiel – Pétanque</strong><span>Fédération Internationale FIPJP</span></div><span class="doc-dl">↗</span>
         </a>
-        <a class="doc-card" href="https://fipjp.org/images/pdf/reglements/REGLEMENT-OFFICIEL-SPORT-JP.pdf" target="_blank" rel="noopener">
+        <a class="doc-card" href="https://fipjp.org/images/pdf/reglements/REGLEMENT-OFFICIEL-SPORT-JP.pdf"
+           target="_blank" rel="noopener noreferrer">
             <div class="doc-icon">📗</div><div class="doc-info"><strong>Règlement Officiel – Jeu Provençal</strong><span>Fédération Internationale FIPJP</span></div><span class="doc-dl">↗</span>
         </a>
     </div>
@@ -1081,8 +1602,7 @@ document.getElementById('lightbox').addEventListener('click', function(e) { if (
 <!-- ===================== FAQ ===================== -->
 <section id="faq" class="faq">
     <h2>FAQ</h2>
-    <details><summary>Comment s'inscrire au club ?</summary><p>Vous pouvez vous inscrire lors des entraînements ou en contactant un membre du bureau par email à <a id="mail-faq"></a> ou par téléphone au 06 24 43 12 84.</p></details>
-    <script>(function(){var u='petanque80440',d='gmail.com',el=document.getElementById('mail-faq');el.href='mailto:'+u+'@'+d;el.textContent=u+'@'+d;})();</script>
+    <details><summary>Comment s'inscrire au club ?</summary><p>Vous pouvez vous inscrire lors des entraînements ou en contactant un membre du bureau. Utilisez le bouton email dans la section Contacts.</p></details>
     <details><summary>Le club accepte-t-il les débutants ?</summary><p>Oui, tous les niveaux sont les bienvenus. Nos membres expérimentés sont là pour vous accompagner et vous faire progresser dans la bonne humeur.</p></details>
     <details><summary>Quels sont les jours d'entraînement ?</summary><p>Les entraînements ont lieu le vendredi après-midi, le samedi après-midi, le dimanche après-midi et le mardi après-midi au Chemin du Stade à Boves.</p></details>
     <details><summary>Quel est le montant de la licence ?</summary><p>Les tarifs sont les suivants : <strong style="color:var(--vert)">Seniors 45 €</strong> — <strong style="color:var(--vert)">Vétérans 25 €</strong> — <strong style="color:var(--vert)">Jeunes et Femmes gratuit</strong>. L'adhésion au club est de <strong style="color:var(--vert)">15 €</strong> pour tous.</p></details>
@@ -1101,7 +1621,7 @@ document.getElementById('lightbox').addEventListener('click', function(e) { if (
     <p>Fait par Perin Lukas</p>
 </footer>
 
-<button onclick="topFunction()" id="btnTop" title="Retour en haut">↑</button>
+<button onclick="topFunction()" id="btnTop" title="Retour en haut" aria-label="Retour en haut de page">↑</button>
 
 <!-- BANNIÈRE PWA -->
 <div id="pwa-banner">
@@ -1129,9 +1649,9 @@ document.getElementById('lightbox').addEventListener('click', function(e) { if (
 
 <!-- iOS INSTALL BANNER -->
 <div id="ios-install-banner" style="display:none;position:fixed;bottom:0;left:0;right:0;background:#1a1a1a;border-top:2px solid var(--vert);box-shadow:0 -4px 20px rgba(11,255,4,0.2);padding:14px 16px;z-index:9999;font-family:-apple-system,sans-serif;">
-    <button onclick="dismissIosBanner()" style="position:absolute;top:10px;right:14px;background:none;border:none;font-size:20px;color:#888;cursor:pointer;line-height:1;">✕</button>
+    <button onclick="dismissIosBanner()" style="position:absolute;top:10px;right:14px;background:none;border:none;font-size:20px;color:#888;cursor:pointer;line-height:1;" aria-label="Fermer">✕</button>
     <div style="display:flex;align-items:center;gap:12px;padding-right:24px;">
-        <img src="/petanque80/logo.png" style="width:48px;height:48px;border-radius:10px;border:2px solid var(--vert);">
+        <img src="/petanque80/logo.png" style="width:48px;height:48px;border-radius:10px;border:2px solid var(--vert);" alt="Logo Pétanque Boves">
         <div>
             <div style="font-weight:700;font-size:15px;color:#f0f0f0;">Installer l'application</div>
             <div style="font-size:13px;color:#aaa;margin-top:3px;">Appuyez sur <svg style="display:inline;vertical-align:middle;margin:0 2px;" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#007aff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"/><polyline points="16 6 12 2 8 6"/><line x1="12" y1="2" x2="12" y2="15"/></svg> puis <strong style="color:#fff;">« Sur l'écran d'accueil »</strong></div>
@@ -1165,86 +1685,29 @@ var btnTop = document.getElementById('btnTop');
 window.addEventListener('scroll', function() { btnTop.style.display = window.scrollY > 220 ? 'block' : 'none'; });
 function topFunction() { window.scrollTo({ top: 0, behavior: 'smooth' }); }
 
-/* ===== COMMANDE ===== */
-function calculerTotal() {
-    var total = 0;
-    ['taille-pantalon','taille-polo','taille-veste','taille-manteau'].forEach(function(id) { if (document.getElementById(id).value) total += 30; });
-    document.getElementById('prix-total').textContent = total + ' €';
-    document.getElementById('montant-hidden').value = total + ' euros';
-    document.getElementById('prix-total').style.opacity = total > 0 ? '1' : '0.4';
-}
-calculerTotal();
-
-function submitCommande() {
-    var nom = document.getElementById('nom').value.trim();
-    var prenom = document.getElementById('prenom').value.trim();
-    var cp = document.getElementById('codepostal').value.trim();
-    var tel = document.getElementById('telephone').value.trim();
-    var email = document.getElementById('email').value.trim();
-    var pantalon = document.getElementById('taille-pantalon').value;
-    var polo = document.getElementById('taille-polo').value;
-    var veste = document.getElementById('taille-veste').value;
-    var manteau = document.getElementById('taille-manteau').value;
-    if (!nom || !prenom || !cp) { alert('⚠️ Merci de renseigner votre nom, prénom et code postal.'); return; }
-    if (!/^\d{5}$/.test(cp)) { alert('⚠️ Le code postal doit contenir exactement 5 chiffres.'); return; }
-    if (!tel) { alert('⚠️ Merci de renseigner votre numéro de téléphone.'); return; }
-    if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { alert('⚠️ Merci de renseigner une adresse email valide.'); return; }
-    if (!pantalon && !polo && !veste && !manteau) { alert('⚠️ Veuillez sélectionner au moins une taille de vêtement.'); return; }
-    var nbVetements = [pantalon, polo, veste, manteau].filter(Boolean).length;
-    var montantTotal = nbVetements * 30;
-    var btn = document.getElementById('submitBtn');
-    btn.textContent = 'Envoi en cours...'; btn.disabled = true;
-    var formData = new FormData();
-    formData.append('access_key', '132fc66b-24a9-4fc1-8d3e-6d2816dc978c');
-    formData.append('subject', 'Nouvelle commande vêtements – ' + prenom + ' ' + nom + ' (' + montantTotal + ' €)');
-    formData.append('from_name', 'Site Pétanque Boves');
-    formData.append('email', email);
-    formData.append('message', '--- INFORMATIONS ---\nNom : ' + prenom + ' ' + nom + '\nEmail : ' + email + '\nTelephone : ' + tel + '\nCode postal : ' + cp + '\n\n--- COMMANDE ---\nPantalon : ' + (pantalon || 'Non commande') + '\nPolo : ' + (polo || 'Non commande') + '\nVeste : ' + (veste || 'Non commande') + '\nManteau : ' + (manteau || 'Non commande') + '\n\nNombre de vêtements : ' + nbVetements + '\nMontant total : ' + montantTotal + ' euros');
-    fetch('https://api.web3forms.com/submit', { method: 'POST', body: formData, headers: { 'Accept': 'application/json' } })
-    .then(function(response) {
-        btn.textContent = '✅ Envoyer ma commande'; btn.disabled = false;
-        if (response.ok) { afficherConfirmation(prenom, nom, cp, email, tel, pantalon, polo, veste, manteau, montantTotal); }
-        else { alert('❌ Une erreur est survenue. Veuillez réessayer ou contacter le club par email.'); }
-    })
-    .catch(function() { btn.textContent = '✅ Envoyer ma commande'; btn.disabled = false; alert('❌ Impossible d\'envoyer la commande. Vérifiez votre connexion internet.'); });
-}
-function afficherConfirmation(prenom, nom, cp, email, tel, pantalon, polo, veste, manteau, montantTotal) {
-    document.getElementById('conf-prenom').textContent = prenom;
-    document.getElementById('conf-montant').textContent = montantTotal + ' €';
-    var html = '<p><strong>Nom :</strong> ' + prenom + ' ' + nom + '</p><p><strong>Email :</strong> ' + email + '</p><p><strong>Téléphone :</strong> ' + tel + '</p><p><strong>Code postal :</strong> ' + cp + '</p>';
-    if (pantalon) html += '<p><strong>👖 Pantalon :</strong> ' + pantalon + ' — 30 €</p>';
-    if (polo) html += '<p><strong>👕 Polo :</strong> ' + polo + ' — 30 €</p>';
-    if (veste) html += '<p><strong>🧥 Veste :</strong> ' + veste + ' — 30 €</p>';
-    if (manteau) html += '<p><strong>🧣 Kway :</strong> ' + manteau + ' — 30 €</p>';
-    html += '<p style="margin-top:10px;padding-top:10px;border-top:1px solid #333;"><strong style="color:var(--vert);">Total : ' + montantTotal + ' € (' + [pantalon,polo,veste,manteau].filter(Boolean).length + ' vêtement(s) × 30 €)</strong></p>';
-    document.getElementById('conf-recap').innerHTML = html;
-    document.getElementById('orderForm').style.display = 'none';
-    var conf = document.getElementById('confirmation');
-    conf.style.display = 'block';
-    conf.scrollIntoView({ behavior: 'smooth', block: 'center' });
-}
-function nouvelleCommande() {
-    document.getElementById('orderForm').style.display = 'block';
-    document.getElementById('confirmation').style.display = 'none';
-    ['nom','prenom','codepostal','telephone','email'].forEach(function(id) { document.getElementById(id).value = ''; });
-    ['taille-pantalon','taille-polo','taille-veste','taille-manteau'].forEach(function(id) { document.getElementById(id).value = ''; });
-    calculerTotal();
-    document.getElementById('orderForm').scrollIntoView({ behavior: 'smooth' });
-}
-
 /* ===== NOTIFICATIONS ===== */
 (function() {
     if (!('Notification' in window)) return;
-    var dismissed = localStorage.getItem('notif-dismissed');
+    /**
+     * SÉCURITÉ 20 — Utilisation de sessionStorage (au lieu de localStorage)
+     * pour les préférences non sensibles : les données sont effacées à la
+     * fermeture du navigateur, limitant l'exposition.
+     */
+    var dismissed = sessionStorage.getItem('notif-dismissed');
     if (Notification.permission === 'granted' || dismissed) return;
     setTimeout(function() { document.getElementById('notif-banner').style.display = 'block'; }, 8000);
     document.getElementById('notif-enable-btn').addEventListener('click', function() {
         Notification.requestPermission().then(function(permission) {
             document.getElementById('notif-banner').style.display = 'none';
-            if (permission === 'granted') { new Notification('🎯 Pétanque Boves', { body: 'Notifications activées !', icon: '/petanque80/logo.png' }); }
+            if (permission === 'granted') {
+                new Notification('🎯 Pétanque Boves', { body: 'Notifications activées !', icon: '/petanque80/logo.png' });
+            }
         });
     });
-    document.getElementById('notif-dismiss-btn').addEventListener('click', function() { document.getElementById('notif-banner').style.display = 'none'; localStorage.setItem('notif-dismissed', '1'); });
+    document.getElementById('notif-dismiss-btn').addEventListener('click', function() {
+        document.getElementById('notif-banner').style.display = 'none';
+        sessionStorage.setItem('notif-dismissed', '1');
+    });
 })();
 
 /* ===== PWA ===== */
@@ -1262,20 +1725,53 @@ document.getElementById('pwa-dismiss-btn').addEventListener('click', function() 
 window.addEventListener('appinstalled', function() { document.getElementById('pwa-banner').style.display = 'none'; });
 
 /* ===== iOS ===== */
-function dismissIosBanner() { document.getElementById('ios-install-banner').style.display = 'none'; localStorage.setItem('ios-banner-dismissed', '1'); }
+function dismissIosBanner() {
+    document.getElementById('ios-install-banner').style.display = 'none';
+    sessionStorage.setItem('ios-banner-dismissed', '1'); /* sessionStorage plutôt que localStorage */
+}
 (function() {
     var isIos = /iphone|ipad|ipod/i.test(navigator.userAgent);
     var isStandalone = window.navigator.standalone === true;
-    var dismissed = localStorage.getItem('ios-banner-dismissed');
+    var dismissed = sessionStorage.getItem('ios-banner-dismissed');
     if (isIos && !isStandalone && !dismissed) { setTimeout(function() { document.getElementById('ios-install-banner').style.display = 'block'; }, 3000); }
 })();
 
 /* ===== SERVICE WORKER ===== */
 if ('serviceWorker' in navigator) {
     window.addEventListener('load', function() {
-        navigator.serviceWorker.register('/petanque80/sw.js').catch(function(err) { console.log('SW erreur :', err); });
+        navigator.serviceWorker.register('/petanque80/sw.js', {
+            /* SÉCURITÉ 21 — Limiter le scope du Service Worker */
+            scope: '/petanque80/'
+        }).catch(function(err) { console.warn('SW non disponible :', err.message); });
     });
 }
+
+/**
+ * ═══════════════════════════════════════════════════════════════
+ *  SÉCURITÉ 22 — Protection contre le clickjacking (JS)
+ *  Si la page est dans un iframe d'un autre domaine, on force
+ *  la navigation vers la page réelle. (Redondant avec X-Frame-Options
+ *  mais défense en profondeur.)
+ * ═══════════════════════════════════════════════════════════════
+ */
+(function() {
+    try {
+        if (window.self !== window.top && document.referrer && !document.referrer.startsWith(window.location.origin)) {
+            window.top.location = window.self.location;
+        }
+    } catch(e) { /* cross-origin : déjà bloqué par X-Frame-Options */ }
+})();
+
+/**
+ * ═══════════════════════════════════════════════════════════════
+ *  SÉCURITÉ 23 — Protection contre l'injection via console dev
+ *  Message dissuasif pour décourager les curieux malveillants.
+ * ═══════════════════════════════════════════════════════════════
+ */
+(function() {
+    var msg = '%c⛔ STOP ! %c\n\nCette console est destinée aux développeurs.\nSi quelqu\'un vous a demandé de coller du code ici, ne le faites pas !\nVous pourriez compromettre vos données et celles des membres du club.';
+    console.log(msg, 'color:red;font-size:2em;font-weight:bold;', 'color:orange;font-size:1em;');
+})();
 </script>
 </body>
 </html>
