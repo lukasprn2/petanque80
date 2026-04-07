@@ -851,7 +851,6 @@ document.addEventListener('keydown', function(e) {
         closePwdModal();
     }
 });
-</script>
 <!-- ===================== ACTUALITÉS ===================== -->
 <section id="actualites">
     <h2>Actualités</h2>
@@ -859,9 +858,18 @@ document.addEventListener('keydown', function(e) {
         <img src="actualite.webp"
              alt="Actualité du club de pétanque de Boves"
              loading="lazy"
-             style="width:100%;height:auto;display:block;border-radius:10px;">
+             style="width:100%;height:auto;display:block;border-radius:10px;max-width:100%;">
     </div>
 </section>
+
+<style>
+@media (min-width: 768px) {
+    #actualites .card img {
+        max-width: 480px;
+        margin: 0 auto;
+    }
+}
+</style>
 <!-- ===================== CONTACT ===================== -->
 <section id="contact">
     <h2>Contacts</h2>
