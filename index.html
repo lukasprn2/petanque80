@@ -578,21 +578,49 @@ document.getElementById('intro-enter-btn').addEventListener('click', function() 
             <span></span><span></span><span></span>
         </button>
     </div>
+    <!-- Ordre du menu aligné sur l'ordre réel des sections dans la page -->
     <nav class="nav-menu" id="navMenu" role="navigation">
         <a href="#accueil"       ><span class="nav-icon">🏠</span>Accueil</a>
         <a href="#actualites"    ><span class="nav-icon">📰</span>Actualités</a>
         <a href="#contact"       ><span class="nav-icon">📞</span>Contacts</a>
         <a href="#calendrier"    ><span class="nav-icon">📅</span>Calendrier</a>
-        <a href="#galerie"       ><span class="nav-icon">📸</span>Galerie</a>
         <a href="#classement"    ><span class="nav-icon">🥇</span>Classement</a>
         <a href="#commande-wrap" ><span class="nav-icon">🎽</span>Commande Vêtements</a>
-        <a href="#bureau"        ><span class="nav-icon">👥</span>Conseil</a>
+        <a href="#galerie"       ><span class="nav-icon">📸</span>Galerie</a>
         <a href="#partenaires"   ><span class="nav-icon">🤝</span>Partenaires</a>
+        <a href="#bureau"        ><span class="nav-icon">👥</span>Conseil</a>
         <a href="#affiliation"   ><span class="nav-icon">🏅</span>Affiliation</a>
         <a href="#docs"          ><span class="nav-icon">📄</span>Règlements</a>
         <a href="#faq"           ><span class="nav-icon">❓</span>FAQ</a>
     </nav>
 </div>
+
+<!-- ===================== SCROLL PRÉCIS (compense la nav sticky) ===================== -->
+<script>
+(function() {
+    // Récupère la hauteur réelle de la nav sticky
+    function getNavHeight() {
+        var nav = document.querySelector('.nav-wrapper');
+        return nav ? nav.getBoundingClientRect().height : 0;
+    }
+
+    function scrollToSection(id) {
+        var target = document.getElementById(id);
+        if (!target) return;
+        var navH = getNavHeight();
+        var top = target.getBoundingClientRect().top + window.pageYOffset - navH - 8;
+        window.scrollTo({ top: top, behavior: 'smooth' });
+    }
+
+    document.querySelectorAll('.nav-menu a[href^="#"]').forEach(function(link) {
+        link.addEventListener('click', function(e) {
+            e.preventDefault();
+            var id = this.getAttribute('href').replace('#', '');
+            scrollToSection(id);
+        });
+    });
+})();
+</script>
 
 <!-- ===================== ACCUEIL ===================== -->
 <section id="accueil">
@@ -920,6 +948,7 @@ document.addEventListener('keydown', function(e) {
 <script>
 (function() {
     var EVENTS = [
+        // ── Concours à Boves ─────────────────────────────────────────────────────
         {type:'concours', m:4,  d:14, nom:'Doublette Vétérans',         heure:'14h00', lieu:'Boves', limite:'jet du but'},
         {type:'concours', m:5,  d:9,  nom:'Doublette Mixte Officielle', heure:'14h00', lieu:'Boves', limite:'jet du but'},
         {type:'concours', m:5,  d:19, nom:'Doublette Vétérans',         heure:'09h00', lieu:'Boves', limite:'jet du but'},
@@ -930,27 +959,57 @@ document.addEventListener('keydown', function(e) {
         {type:'concours', m:10, d:6,  nom:'Doublette Vétérans',         heure:'14h00', lieu:'Boves', limite:'jet du but'},
         {type:'concours', m:11, d:21, nom:'Doublette Interne',          heure:'13h30', lieu:'Boves', limite:'jet du but'},
         {type:'concours', m:12, d:5,  nom:'Doublette Interne',          heure:'13h30', lieu:'Boves', limite:'jet du but'},
-        {type:'champ', m:4, d:4,  nom:'Trip. Jeu Provençal',       heure:'8h00',  lieu:'Albert',                             limite:'26/3'},
-        {type:'champ', m:4, d:5,  nom:'Reprise',                   heure:'9h00',  lieu:'Albert',                             limite:''},
-        {type:'champ', m:4, d:6,  nom:'Reprise',                   heure:'9h00',  lieu:'Albert',                             limite:''},
-        {type:'champ', m:4, d:11, nom:'Triplette Senior M',        heure:'10h00', lieu:'Feuquières',                         limite:'02/4'},
-        {type:'champ', m:4, d:11, nom:'Triplette Senior F',        heure:'14h00', lieu:'Feuquières',                         limite:'02/4'},
-        {type:'champ', m:4, d:12, nom:'Reprise',                   heure:'09h00', lieu:'Feuquières',                         limite:''},
-        {type:'champ', m:4, d:12, nom:'Triplette (J, C, M)',       heure:'09h30', lieu:'Feuquières',                         limite:'Sur place'},
-        {type:'champ', m:4, d:12, nom:'Tir précision J',           heure:'',      lieu:'Feuquières',                         limite:'Sur place'},
-        {type:'champ', m:4, d:18, nom:'Doublette Mixte',           heure:'10h00', lieu:'Fienvillers-Doullens',                limite:'09/4'},
-        {type:'champ', m:4, d:19, nom:'Reprise',                   heure:'9h00',  lieu:'Fienvillers-Doullens',                limite:''},
-        {type:'champ', m:4, d:22, nom:'Triplette Vétéran',         heure:'10h00', lieu:'Asptt Amiens',                       limite:'09/4'},
-        {type:'champ', m:4, d:23, nom:'Reprise',                   heure:'9h00',  lieu:'Asptt Amiens',                       limite:''},
-        {type:'champ', m:4, d:25, nom:'Doub Senior Masc.',         heure:'10h00', lieu:'Feuquières',                         limite:'16/4'},
-        {type:'champ', m:4, d:25, nom:'TT Senior Fém.',            heure:'14h00', lieu:'Feuquières',                         limite:''},
-        {type:'champ', m:4, d:26, nom:'Reprise',                   heure:'09h00', lieu:'Feuquières',                         limite:'16/4'},
-        {type:'champ', m:4, d:26, nom:'Doub (J, C, M, B)',        heure:'09h30', lieu:'Feuquières',                         limite:'Sur place'},
-        {type:'champ', m:5, d:2,  nom:'Triplette Mixte',           heure:'10h00', lieu:'Gamaches',                           limite:'23/4'},
-        {type:'champ', m:5, d:3,  nom:'Reprise',                   heure:'09h00', lieu:'Gamaches',                           limite:''},
-        {type:'champ', m:5, d:8,  nom:'Doub. Jeu Provençal',       heure:'8h00',  lieu:'Fienvillers / St Léger-lès-Domart',  limite:'31/4'},
-        {type:'champ', m:5, d:9,  nom:'Reprise',                   heure:'9h00',  lieu:'Fienvillers / St Léger-lès-Domart',  limite:''},
-        {type:'champ', m:5, d:10, nom:'Reprise',                   heure:'9h00',  lieu:'Fienvillers / St Léger-lès-Domart',  limite:''}
+        // ── Championnat de la Somme – avril / mai ────────────────────────────────
+        {type:'champ', m:4, d:4,  nom:'Trip. Jeu Provençal',       heure:'8h00',  lieu:'Albert',                            limite:'26/3'},
+        {type:'champ', m:4, d:5,  nom:'Reprise',                   heure:'9h00',  lieu:'Albert',                            limite:''},
+        {type:'champ', m:4, d:6,  nom:'Reprise',                   heure:'9h00',  lieu:'Albert',                            limite:''},
+        {type:'champ', m:4, d:11, nom:'Triplette Senior M',        heure:'10h00', lieu:'Feuquières',                        limite:'02/4'},
+        {type:'champ', m:4, d:11, nom:'Triplette Senior F',        heure:'14h00', lieu:'Feuquières',                        limite:'02/4'},
+        {type:'champ', m:4, d:12, nom:'Reprise',                   heure:'09h00', lieu:'Feuquières',                        limite:''},
+        {type:'champ', m:4, d:12, nom:'Triplette (J, C, M)',       heure:'09h30', lieu:'Feuquières',                        limite:'Sur place'},
+        {type:'champ', m:4, d:12, nom:'Tir précision J',           heure:'',      lieu:'Feuquières',                        limite:'Sur place'},
+        {type:'champ', m:4, d:18, nom:'Doublette Mixte',           heure:'10h00', lieu:'Fienvillers-Doullens',               limite:'09/4'},
+        {type:'champ', m:4, d:19, nom:'Reprise',                   heure:'9h00',  lieu:'Fienvillers-Doullens',               limite:''},
+        {type:'champ', m:4, d:22, nom:'Triplette Vétéran',         heure:'10h00', lieu:'Asptt Amiens',                      limite:'09/4'},
+        {type:'champ', m:4, d:23, nom:'Reprise',                   heure:'9h00',  lieu:'Asptt Amiens',                      limite:''},
+        {type:'champ', m:4, d:25, nom:'Doub Senior Masc.',         heure:'10h00', lieu:'Feuquières',                        limite:'16/4'},
+        {type:'champ', m:4, d:25, nom:'TT Senior Fém.',            heure:'14h00', lieu:'Feuquières',                        limite:''},
+        {type:'champ', m:4, d:26, nom:'Reprise',                   heure:'09h00', lieu:'Feuquières',                        limite:'16/4'},
+        {type:'champ', m:4, d:26, nom:'Doub (J, C, M, B)',         heure:'09h30', lieu:'Feuquières',                        limite:'Sur place'},
+        {type:'champ', m:5, d:2,  nom:'Triplette Mixte',           heure:'10h00', lieu:'Gamaches',                          limite:'23/4'},
+        {type:'champ', m:5, d:3,  nom:'Reprise',                   heure:'09h00', lieu:'Gamaches',                          limite:''},
+        {type:'champ', m:5, d:8,  nom:'Doub. Jeu Provençal',       heure:'8h00',  lieu:'Fienvillers / St Léger-lès-Domart', limite:'31/4'},
+        {type:'champ', m:5, d:9,  nom:'Reprise',                   heure:'9h00',  lieu:'Fienvillers / St Léger-lès-Domart', limite:''},
+        {type:'champ', m:5, d:10, nom:'Reprise',                   heure:'9h00',  lieu:'Fienvillers / St Léger-lès-Domart', limite:''},
+        // ── Championnat de la Somme – juillet ───────────────────────────────────
+        {type:'champ', m:7, d:19, nom:'CDCJP – Secteur Centre',    heure:'journée',    lieu:'Nesle',        limite:''},
+        {type:'champ', m:7, d:19, nom:'CDCJP – Secteur Maritime',  heure:'après-midi', lieu:'Pernois',      limite:''},
+        {type:'champ', m:7, d:20, nom:'CDCJP – Secteur Centre',    heure:'après-midi', lieu:'Nesle',        limite:''},
+        // ── Championnat de la Somme – septembre ─────────────────────────────────
+        {type:'champ', m:9, d:2,  nom:'CDC Vétéran – Secteur Centre',   heure:'journée',    lieu:'Poix',         limite:''},
+        {type:'champ', m:9, d:2,  nom:'CDC Vétéran – Secteur Maritime', heure:'journée',    lieu:'Feuquières',   limite:''},
+        {type:'champ', m:9, d:6,  nom:'CDC3 et CDC4',                   heure:'matin',      lieu:'Bouvaincourt', limite:''},
+        {type:'champ', m:9, d:6,  nom:'CDC1, CDC2 et CDCF',             heure:'après-midi', lieu:'Bouvaincourt', limite:''},
+        {type:'champ', m:9, d:6,  nom:'CDC2',                           heure:'matin',      lieu:'Poix',         limite:''},
+        {type:'champ', m:9, d:6,  nom:'CDC1, CDC3 et CDC4',             heure:'après-midi', lieu:'Poix',         limite:''},
+        {type:'champ', m:9, d:7,  nom:'CDCJP – Secteur Centre',         heure:'journée',    lieu:'Nesle',        limite:''},
+        {type:'champ', m:9, d:7,  nom:'CDCJP – Secteur Maritime',       heure:'journée',    lieu:'Pernois',      limite:''},
+        {type:'champ', m:9, d:9,  nom:'CDC Vétéran – Secteur Centre',   heure:'journée',    lieu:'Nesle',        limite:''},
+        {type:'champ', m:9, d:9,  nom:'CDC Vétéran – Secteur Maritime', heure:'journée',    lieu:'Friville',     limite:''},
+        {type:'champ', m:9, d:16, nom:'CDC Vétéran – Secteur Centre',   heure:'journée',    lieu:'Ham',          limite:''},
+        {type:'champ', m:9, d:16, nom:'CDC Vétéran – Secteur Maritime', heure:'journée',    lieu:'Friville',     limite:''},
+        {type:'champ', m:9, d:21, nom:'CDCJP – Finales',                heure:'journée',    lieu:'Nesle',        limite:''},
+        {type:'champ', m:9, d:23, nom:'CDC Vétéran – Finales',          heure:'journée',    lieu:'Ham',          limite:''},
+        // ── Championnat de la Somme – octobre ───────────────────────────────────
+        {type:'champ', m:10, d:4,  nom:'CDC1, CDC2, CDC3, CDC4 et CDCF – Maritime', heure:'journée', lieu:'Feuquières',   limite:''},
+        {type:'champ', m:10, d:4,  nom:'CDC1, CDC2, CDC3 et CDC4 – Centre',         heure:'journée', lieu:'Dreuil',       limite:''},
+        {type:'champ', m:10, d:5,  nom:'Reprise – Secteur Maritime',                heure:'',        lieu:'Feuquières',   limite:''},
+        {type:'champ', m:10, d:18, nom:'CDC1 et CDC2 – Maritime',                   heure:'journée', lieu:'Ault',         limite:''},
+        {type:'champ', m:10, d:18, nom:'CDC3 et CDC4 – Maritime',                   heure:'journée', lieu:'Béthencourt',  limite:''},
+        {type:'champ', m:10, d:18, nom:'CDC1, CDC2, CDC3, CDC4 et CDCF – Centre',   heure:'journée', lieu:'Asptt Amiens', limite:''},
+        {type:'champ', m:10, d:19, nom:'Reprise',                                   heure:'',        lieu:'Orléans',      limite:''},
+        // ── Championnat de la Somme – novembre ──────────────────────────────────
+        {type:'champ', m:11, d:8,  nom:'CDC1, CDC2, CDC3, CDC4 et CDCF – Finales',  heure:'journée', lieu:'Abbeville',    limite:''}
     ];
     var MONTHS = ['Janvier','Février','Mars','Avril','Mai','Juin','Juillet','Août','Septembre','Octobre','Novembre','Décembre'];
     var DAYS   = ['Lun','Mar','Mer','Jeu','Ven','Sam','Dim'];
@@ -1187,7 +1246,7 @@ filterClassement();
         <div class="prix-badge" id="prix-total" style="opacity:0.4;">0 €</div>
         <div class="prix-banner-text">
             <strong>Total de votre commande</strong>
-            <p>30 € par vêtement — Le règlement s'effectue auprès d'un membre du bureau.</p>
+            <p>30 € / vêtement — Offre 4 vêtements : 100 € — Le règlement s'effectue auprès d'un membre du bureau.</p>
         </div>
     </div>
     <div class="order-form" id="orderForm">
@@ -1229,28 +1288,28 @@ filterClassement();
                         <label>👖 Pantalon</label>
                         <select name="pantalon" id="taille-pantalon">
                             <option value="">— Non commandé —</option>
-                            <option>XS</option><option>S</option><option>M</option><option>L</option><option>XL</option><option>XXL</option><option>3XL</option>
+                            <option>XS</option><option>S</option><option>M</option><option>L</option><option>XL</option><option>XXL</option><option>3XL</option><option>4XL</option>
                         </select>
                     </div>
                     <div class="taille-item">
                         <label>👕 Polo</label>
                         <select name="polo" id="taille-polo">
                             <option value="">— Non commandé —</option>
-                            <option>XS</option><option>S</option><option>M</option><option>L</option><option>XL</option><option>XXL</option><option>3XL</option>
+                            <option>XS</option><option>S</option><option>M</option><option>L</option><option>XL</option><option>XXL</option><option>3XL</option><option>4XL</option>
                         </select>
                     </div>
                     <div class="taille-item">
                         <label>🧥 Veste</label>
                         <select name="veste" id="taille-veste">
                             <option value="">— Non commandé —</option>
-                            <option>XS</option><option>S</option><option>M</option><option>L</option><option>XL</option><option>XXL</option><option>3XL</option>
+                            <option>XS</option><option>S</option><option>M</option><option>L</option><option>XL</option><option>XXL</option><option>3XL</option><option>4XL</option>
                         </select>
                     </div>
                     <div class="taille-item">
                         <label>🧣 Kway</label>
                         <select name="manteau" id="taille-manteau">
                             <option value="">— Non commandé —</option>
-                            <option>XS</option><option>S</option><option>M</option><option>L</option><option>XL</option><option>XXL</option><option>3XL</option>
+                            <option>XS</option><option>S</option><option>M</option><option>L</option><option>XL</option><option>XXL</option><option>3XL</option><option>4XL</option>
                         </select>
                     </div>
                 </div>
@@ -1274,17 +1333,26 @@ filterClassement();
 <script>
 document.getElementById('csrf_token').value = CsrfToken.get();
 
+// ===================== CALCUL PRIX (plafonné à 100 € pour 4 vêtements) =====================
 function calculerTotal() {
-    var total = 0;
-    var allowed = ['', 'XS', 'S', 'M', 'L', 'XL', 'XXL', '3XL'];
+    var allowed = ['', 'XS', 'S', 'M', 'L', 'XL', 'XXL', '3XL', '4XL'];
+    var nbVetements = 0;
     ['taille-pantalon','taille-polo','taille-veste','taille-manteau'].forEach(function(id) {
         var val = document.getElementById(id).value;
-        if (allowed.indexOf(val) !== -1 && val !== '') total += 30;
+        if (allowed.indexOf(val) !== -1 && val !== '') nbVetements++;
     });
+
+    var total = 0;
+    if (nbVetements === 1) total = 30;
+    else if (nbVetements === 2) total = 60;
+    else if (nbVetements === 3) total = 90;
+    else if (nbVetements === 4) total = 100;
+
     var badge = document.getElementById('prix-total');
     badge.textContent = total + ' €';
     badge.style.opacity = total > 0 ? '1' : '0.4';
     document.getElementById('montant-hidden').value = total + ' euros';
+    return { nb: nbVetements, total: total };
 }
 
 ['taille-pantalon','taille-polo','taille-veste','taille-manteau'].forEach(function(id) {
@@ -1329,7 +1397,7 @@ document.getElementById('submitBtn').addEventListener('click', function() {
         return;
     }
 
-    var allowed = ['', 'XS', 'S', 'M', 'L', 'XL', 'XXL', '3XL'];
+    var allowed = ['', 'XS', 'S', 'M', 'L', 'XL', 'XXL', '3XL', '4XL'];
     if ([pantalon, polo, veste, manteau].some(function(v) { return allowed.indexOf(v) === -1; })) {
         alert('⚠️ Taille invalide détectée.');
         return;
@@ -1339,8 +1407,9 @@ document.getElementById('submitBtn').addEventListener('click', function() {
         return;
     }
 
-    var nbVetements  = [pantalon, polo, veste, manteau].filter(Boolean).length;
-    var montantTotal = nbVetements * 30;
+    var calc = calculerTotal();
+    var nbVetements  = calc.nb;
+    var montantTotal = calc.total;
 
     var btn = document.getElementById('submitBtn');
     btn.textContent = 'Envoi en cours...';
@@ -1379,7 +1448,7 @@ document.getElementById('submitBtn').addEventListener('click', function() {
         btn.disabled = false;
         if (response.ok) {
             document.getElementById('csrf_token').value = CsrfToken.renew();
-            afficherConfirmation(prenom, nom, cp, email, tel, pantalon, polo, veste, manteau, montantTotal);
+            afficherConfirmation(prenom, nom, cp, email, tel, pantalon, polo, veste, manteau, nbVetements, montantTotal);
         } else {
             alert('❌ Une erreur est survenue. Veuillez réessayer ou contacter le club par email.');
         }
@@ -1391,7 +1460,14 @@ document.getElementById('submitBtn').addEventListener('click', function() {
     });
 });
 
-function afficherConfirmation(prenom, nom, cp, email, tel, pantalon, polo, veste, manteau, montantTotal) {
+function getPrixUnitaire(nb, index) {
+    // Affichage du prix par article dans le récap
+    if (nb < 4) return '30 €';
+    // Pour 4 vêtements : 100 € au total, on affiche juste le total en bas
+    return '';
+}
+
+function afficherConfirmation(prenom, nom, cp, email, tel, pantalon, polo, veste, manteau, nbVetements, montantTotal) {
     document.getElementById('conf-prenom').textContent = prenom;
     document.getElementById('conf-montant').textContent = montantTotal + ' €';
     var recap = document.getElementById('conf-recap');
@@ -1408,15 +1484,28 @@ function afficherConfirmation(prenom, nom, cp, email, tel, pantalon, polo, veste
     addLine('Email : ',      email);
     addLine('Téléphone : ',  tel);
     addLine('Code postal : ', cp);
-    if (pantalon) addLine('👖 Pantalon : ', pantalon + ' — 30 €');
-    if (polo)     addLine('👕 Polo : ',     polo     + ' — 30 €');
-    if (veste)    addLine('🧥 Veste : ',    veste    + ' — 30 €');
-    if (manteau)  addLine('🧣 Kway : ',     manteau  + ' — 30 €');
+
+    var vetements = [
+        { label: '👖 Pantalon', taille: pantalon },
+        { label: '👕 Polo',     taille: polo     },
+        { label: '🧥 Veste',    taille: veste    },
+        { label: '🧣 Kway',     taille: manteau  }
+    ].filter(function(v) { return v.taille; });
+
+    vetements.forEach(function(v) {
+        var suffix = nbVetements < 4 ? ' — 30 €' : '';
+        addLine(v.label + ' : ', v.taille + suffix);
+    });
+
     var total = document.createElement('p');
     total.setAttribute('style','margin-top:10px;padding-top:10px;border-top:1px solid #333;');
     var ts = document.createElement('strong');
     ts.setAttribute('style','color:var(--vert)');
-    ts.textContent = 'Total : ' + montantTotal + ' € (' + [pantalon,polo,veste,manteau].filter(Boolean).length + ' vêtement(s) × 30 €)';
+    if (nbVetements === 4) {
+        ts.textContent = 'Total : ' + montantTotal + ' € (offre 4 vêtements)';
+    } else {
+        ts.textContent = 'Total : ' + montantTotal + ' € (' + nbVetements + ' vêtement(s) × 30 €)';
+    }
     total.appendChild(ts);
     recap.appendChild(total);
     document.getElementById('orderForm').style.display = 'none';
@@ -1619,7 +1708,7 @@ document.getElementById('newOrderBtn').addEventListener('click', function() {
     <details><summary>Comment participer aux concours officiels ?</summary><p>Pour participer aux concours officiels, il faut être licencié à la FFPJP. Contactez le bureau pour obtenir votre licence et vous inscrire aux prochains concours.</p></details>
     <details><summary>Le club est-il ouvert aux jeunes ?</summary><p>Absolument ! Le club accueille les jeunes joueurs avec plaisir. N'hésitez pas à venir avec vos enfants lors des entraînements pour découvrir la pétanque.</p></details>
     <details><summary>Où se trouve le terrain du club ?</summary><p>Le terrain est situé Chemin du Stade à Boves (80440). Vous pouvez retrouver l'itinéraire dans la section Contacts.</p></details>
-    <details><summary>Comment commander les vêtements du club ?</summary><p>Rendez-vous dans la section Commande de Vêtements du site. Remplissez le formulaire avec vos tailles et le bureau vous recontactera. Le montant est de 30 € par vêtement.</p></details>
+    <details><summary>Comment commander les vêtements du club ?</summary><p>Rendez-vous dans la section Commande de Vêtements du site. Remplissez le formulaire avec vos tailles et le bureau vous recontactera. Le tarif est de 30 € par vêtement, avec une offre spéciale à 100 € pour 4 vêtements.</p></details>
     <details><summary>Quelle est la différence entre pétanque et jeu provençal ?</summary><p>En pétanque, les joueurs tirent les pieds joints et dans un cercle. En jeu provençal, les joueurs prennent un élan de 1 à 3 pas avant de lancer. Les deux disciplines sont pratiquées au club.</p></details>
     <details><summary>Y a-t-il des compétitions par équipes ?</summary><p>Oui ! Nous participons aux championnats en doublette (2 joueurs), triplette (3 joueurs) et tête-à-tête (1 contre 1). Il y a aussi des catégories mixtes, vétérans et jeunes.</p></details>
     <details><summary>Comment suivre l'actualité du club ?</summary><p>Vous pouvez nous suivre sur Facebook, TikTok et Instagram via les boutons présents dans la section Contacts.</p></details>
@@ -1696,7 +1785,10 @@ document.addEventListener('click', function(e) {
 });
 
 navMenu.querySelectorAll('a').forEach(function(a) {
-    a.addEventListener('click', function() { closeMenu(); });
+    a.addEventListener('click', function() {
+        // Ferme le menu après un court délai pour laisser le scroll se déclencher
+        setTimeout(closeMenu, 50);
+    });
 });
 
 function closeMenu() {
