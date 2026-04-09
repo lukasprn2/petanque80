@@ -52,6 +52,8 @@
         :root {
             --vert: #0bff04;
             --vert-dark: #09cc03;
+            --bleu: #3b9eff;
+            --bleu-dark: #1a7fd4;
             --noir: #000000;
             --gris-fonce: #0a0a0a;
             --gris-card: #1c1c1c;
@@ -321,16 +323,19 @@
         .cal-dot { width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0; }
         .cal-dot.champ    { background: #ffffff; box-shadow: 0 0 6px rgba(255,255,255,0.6); }
         .cal-dot.concours { background: var(--vert); box-shadow: 0 0 6px rgba(11,255,4,0.7); }
+        .cal-dot.interne  { background: var(--bleu); box-shadow: 0 0 6px rgba(59,158,255,0.7); }
         .cal-detail { margin-top: 16px; min-height: 60px; padding: 0 2px 14px; }
         .cal-detail-title { font-size: 0.75em; text-transform: uppercase; letter-spacing: 1.5px; color: #555; padding: 10px 18px 8px; font-weight: 700; }
         .cal-empty-msg { text-align: center; color: #555; font-size: 0.88em; padding: 20px; }
         .cal-event-card { background: #181818; border-radius: 8px; padding: 10px 14px; margin: 6px 10px; box-shadow: 0 2px 10px rgba(0,0,0,0.2); }
         .cal-event-card.type-champ    { border-left: 4px solid #ffffff; }
         .cal-event-card.type-concours { border-left: 4px solid var(--vert); }
+        .cal-event-card.type-interne  { border-left: 4px solid var(--bleu); }
         .cal-event-card .ev-name { font-weight: 700; color: #f0f0f0; font-size: 0.92em; margin-bottom: 4px; }
         .cal-event-card .ev-type { font-size: 0.7em; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; padding: 2px 8px; border-radius: 20px; display: inline-block; margin-bottom: 6px; }
         .cal-event-card.type-champ    .ev-type { background: rgba(255,255,255,0.1); color: #eee; border: 1px solid rgba(255,255,255,0.35); }
         .cal-event-card.type-concours .ev-type { background: rgba(11,255,4,0.12); color: var(--vert); border: 1px solid rgba(11,255,4,0.3); }
+        .cal-event-card.type-interne  .ev-type { background: rgba(59,158,255,0.12); color: var(--bleu); border: 1px solid rgba(59,158,255,0.35); }
         .cal-event-card .ev-detail { font-size: 0.8em; color: #aaa; display: flex; gap: 6px; align-items: center; margin-top: 2px; }
         .cal-event-card .ev-detail span { color: #ccc; }
         .cal-legend { display: flex; gap: 28px; padding: 16px 20px; background: #111; border-top: 1px solid #2a2a2a; flex-wrap: wrap; }
@@ -338,6 +343,7 @@
         .cal-legend-dot { width: 14px; height: 14px; border-radius: 50%; flex-shrink: 0; }
         .cal-legend-dot.champ    { background: #ffffff; box-shadow: 0 0 8px rgba(255,255,255,0.6); }
         .cal-legend-dot.concours { background: var(--vert); box-shadow: 0 0 8px rgba(11,255,4,0.7); }
+        .cal-legend-dot.interne  { background: var(--bleu); box-shadow: 0 0 8px rgba(59,158,255,0.7); }
         @media (min-width: 480px) { .cal-day { min-height: 60px; } .cal-day-num { font-size: 0.95em; } }
 
         .stats-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px; }
@@ -578,7 +584,6 @@ document.getElementById('intro-enter-btn').addEventListener('click', function() 
             <span></span><span></span><span></span>
         </button>
     </div>
-    <!-- Ordre du menu aligné sur l'ordre réel des sections dans la page -->
     <nav class="nav-menu" id="navMenu" role="navigation">
         <a href="#accueil"       ><span class="nav-icon">🏠</span>Accueil</a>
         <a href="#actualites"    ><span class="nav-icon">📰</span>Actualités</a>
@@ -595,15 +600,12 @@ document.getElementById('intro-enter-btn').addEventListener('click', function() 
     </nav>
 </div>
 
-<!-- ===================== SCROLL PRÉCIS (compense la nav sticky) ===================== -->
 <script>
 (function() {
-    // Récupère la hauteur réelle de la nav sticky
     function getNavHeight() {
         var nav = document.querySelector('.nav-wrapper');
         return nav ? nav.getBoundingClientRect().height : 0;
     }
-
     function scrollToSection(id) {
         var target = document.getElementById(id);
         if (!target) return;
@@ -611,7 +613,6 @@ document.getElementById('intro-enter-btn').addEventListener('click', function() 
         var top = target.getBoundingClientRect().top + window.pageYOffset - navH - 8;
         window.scrollTo({ top: top, behavior: 'smooth' });
     }
-
     document.querySelectorAll('.nav-menu a[href^="#"]').forEach(function(link) {
         link.addEventListener('click', function(e) {
             e.preventDefault();
@@ -942,8 +943,9 @@ document.addEventListener('keydown', function(e) {
         <div class="cal-grid" id="calDayNames"></div>
         <div class="cal-grid" id="calGrid"></div>
         <div class="cal-legend">
-            <div class="cal-legend-item"><div class="cal-legend-dot champ"></div><span>Championnat de la Somme</span></div>
-            <div class="cal-legend-item"><div class="cal-legend-dot concours"></div><span>Concours à Boves</span></div>
+            <div class="cal-legend-item"><div class="cal-legend-dot champ"></div><span>Championnat de la Somme et CDC</span></div>
+            <div class="cal-legend-item"><div class="cal-legend-dot concours"></div><span>Concours officiels à Boves</span></div>
+            <div class="cal-legend-item"><div class="cal-legend-dot interne"></div><span>Concours Internes et ouvert à tous à Boves</span></div>
         </div>
         <div class="cal-detail" id="calDetail"></div>
     </div>
@@ -961,8 +963,13 @@ document.addEventListener('keydown', function(e) {
         {type:'concours', m:7,  d:7,  nom:'Doublette Vétérans',         heure:'14h00', lieu:'Boves', limite:'jet du but'},
         {type:'concours', m:9,  d:6,  nom:'Doublette Officielle',       heure:'14h00', lieu:'Boves', limite:'jet du but'},
         {type:'concours', m:10, d:6,  nom:'Doublette Vétérans',         heure:'14h00', lieu:'Boves', limite:'jet du but'},
-        {type:'concours', m:11, d:21, nom:'Doublette Interne',          heure:'13h30', lieu:'Boves', limite:'jet du but'},
-        {type:'concours', m:12, d:5,  nom:'Doublette Interne',          heure:'13h30', lieu:'Boves', limite:'jet du but'},
+        // ── Concours Internes et ouvert à tous ────────────────────────────────────────────────────
+          {type:'interne',  m:6, d:13,  nom:'Interclub Ailly sur Noye',      heure:'14h00', lieu:'Boves', limite:'jet du but'},
+        {type:'interne',  m:7,  d:5,  nom:'Tête à Tête Interne – 4 parties', heure:'14h00', lieu:'Boves', limite:'jet du but'},
+        {type:'interne',  m:8,  d:8,  nom:'Doublette Interne – 4 parties',   heure:'14h00', lieu:'Boves', limite:'jet du but'},
+        {type:'interne',  m:11, d:21, nom:'Doublette Interne',               heure:'13h30', lieu:'Boves', limite:'jet du but'},
+        {type:'interne',  m:12, d:5,  nom:'Doublette Interne',               heure:'13h30', lieu:'Boves', limite:'jet du but'},
+        
         // ── Championnat de la Somme – avril / mai ────────────────────────────────
         {type:'champ', m:4, d:4,  nom:'Trip. Jeu Provençal',       heure:'8h00',  lieu:'Albert',                            limite:'26/3'},
         {type:'champ', m:4, d:5,  nom:'Reprise',                   heure:'9h00',  lieu:'Albert',                            limite:''},
@@ -1015,6 +1022,7 @@ document.addEventListener('keydown', function(e) {
         // ── Championnat de la Somme – novembre ──────────────────────────────────
         {type:'champ', m:11, d:8,  nom:'CDC1, CDC2, CDC3, CDC4 et CDCF – Finales',  heure:'journée', lieu:'Abbeville',    limite:''}
     ];
+
     var MONTHS = ['Janvier','Février','Mars','Avril','Mai','Juin','Juillet','Août','Septembre','Octobre','Novembre','Décembre'];
     var DAYS   = ['Lun','Mar','Mer','Jeu','Ven','Sam','Dim'];
 
@@ -1032,7 +1040,7 @@ document.addEventListener('keydown', function(e) {
         var days = {};
         EVENTS.forEach(function(e) {
             if (e.m - 1 === month) {
-                if (!days[e.d]) days[e.d] = { champ: false, concours: false };
+                if (!days[e.d]) days[e.d] = { champ: false, concours: false, interne: false };
                 days[e.d][e.type] = true;
             }
         });
@@ -1083,6 +1091,7 @@ document.addEventListener('keydown', function(e) {
                 dotsEl.className = 'cal-dots';
                 if (eventDays[d].champ)    { var dot  = document.createElement('div'); dot.className  = 'cal-dot champ';    dotsEl.appendChild(dot);  }
                 if (eventDays[d].concours) { var dot2 = document.createElement('div'); dot2.className = 'cal-dot concours'; dotsEl.appendChild(dot2); }
+                if (eventDays[d].interne)  { var dot3 = document.createElement('div'); dot3.className = 'cal-dot interne';  dotsEl.appendChild(dot3); }
                 cell.appendChild(dotsEl);
                 (function(day) {
                     cell.addEventListener('click', function() { selectedDay = day; renderCalendar(); renderDetail(day); });
@@ -1116,11 +1125,12 @@ document.addEventListener('keydown', function(e) {
         titleEl.textContent = '📅 ' + day + ' ' + MONTHS[curMonth] + ' 2026';
         detail.appendChild(titleEl);
         evs.forEach(function(e) {
-            var isChamp = e.type === 'champ';
+            var isChamp   = e.type === 'champ';
+            var isInterne = e.type === 'interne';
             var card = document.createElement('div');
-            card.className = 'cal-event-card type-' + (isChamp ? 'champ' : 'concours');
+            card.className = 'cal-event-card type-' + (isChamp ? 'champ' : isInterne ? 'interne' : 'concours');
             var typeEl = document.createElement('div'); typeEl.className = 'ev-type';
-            typeEl.textContent = isChamp ? '🏆 Championnat de la Somme' : '🎯 Concours à Boves';
+            typeEl.textContent = isChamp ? '🏆 Championnat de la Somme' : isInterne ? '🏠 Concours Interne' : '🎯 Concours à Boves';
             var nomEl2 = document.createElement('div'); nomEl2.className = 'ev-name';
             nomEl2.textContent = e.nom;
             card.appendChild(typeEl);
@@ -1337,7 +1347,6 @@ filterClassement();
 <script>
 document.getElementById('csrf_token').value = CsrfToken.get();
 
-// ===================== CALCUL PRIX (plafonné à 100 € pour 4 vêtements) =====================
 function calculerTotal() {
     var allowed = ['', 'XS', 'S', 'M', 'L', 'XL', 'XXL', '3XL', '4XL'];
     var nbVetements = 0;
@@ -1463,13 +1472,6 @@ document.getElementById('submitBtn').addEventListener('click', function() {
         alert('❌ Impossible d\'envoyer la commande. Vérifiez votre connexion internet.');
     });
 });
-
-function getPrixUnitaire(nb, index) {
-    // Affichage du prix par article dans le récap
-    if (nb < 4) return '30 €';
-    // Pour 4 vêtements : 100 € au total, on affiche juste le total en bas
-    return '';
-}
 
 function afficherConfirmation(prenom, nom, cp, email, tel, pantalon, polo, veste, manteau, nbVetements, montantTotal) {
     document.getElementById('conf-prenom').textContent = prenom;
@@ -1790,7 +1792,6 @@ document.addEventListener('click', function(e) {
 
 navMenu.querySelectorAll('a').forEach(function(a) {
     a.addEventListener('click', function() {
-        // Ferme le menu après un court délai pour laisser le scroll se déclencher
         setTimeout(closeMenu, 50);
     });
 });
