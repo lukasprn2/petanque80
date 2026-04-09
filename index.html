@@ -943,7 +943,7 @@ document.addEventListener('keydown', function(e) {
         <div class="cal-grid" id="calDayNames"></div>
         <div class="cal-grid" id="calGrid"></div>
         <div class="cal-legend">
-            <div class="cal-legend-item"><div class="cal-legend-dot champ"></div><span>Championnat de la Somme et CDC</span></div>
+            <div class="cal-legend-item"><div class="cal-legend-dot champ"></div><span>Championnats de la Somme et CDC</span></div>
             <div class="cal-legend-item"><div class="cal-legend-dot concours"></div><span>Concours officiels à Boves</span></div>
             <div class="cal-legend-item"><div class="cal-legend-dot interne"></div><span>Concours Internes et ouvert à tous à Boves</span></div>
         </div>
@@ -1011,7 +1011,7 @@ document.addEventListener('keydown', function(e) {
         {type:'champ', m:9, d:16, nom:'CDC Vétéran – Secteur Maritime', heure:'journée',    lieu:'Friville',     limite:''},
         {type:'champ', m:9, d:21, nom:'CDCJP – Finales',                heure:'journée',    lieu:'Nesle',        limite:''},
         {type:'champ', m:9, d:23, nom:'CDC Vétéran – Finales',          heure:'journée',    lieu:'Ham',          limite:''},
-        // ── Championnat de la Somme – octobre ───────────────────────────────────
+        // ── Championnats de la Somme – octobre ───────────────────────────────────
         {type:'champ', m:10, d:4,  nom:'CDC1, CDC2, CDC3, CDC4 et CDCF – Maritime', heure:'journée', lieu:'Feuquières',   limite:''},
         {type:'champ', m:10, d:4,  nom:'CDC1, CDC2, CDC3 et CDC4 – Centre',         heure:'journée', lieu:'Dreuil',       limite:''},
         {type:'champ', m:10, d:5,  nom:'Reprise – Secteur Maritime',                heure:'',        lieu:'Feuquières',   limite:''},
@@ -1019,7 +1019,7 @@ document.addEventListener('keydown', function(e) {
         {type:'champ', m:10, d:18, nom:'CDC3 et CDC4 – Maritime',                   heure:'journée', lieu:'Béthencourt',  limite:''},
         {type:'champ', m:10, d:18, nom:'CDC1, CDC2, CDC3, CDC4 et CDCF – Centre',   heure:'journée', lieu:'Asptt Amiens', limite:''},
         {type:'champ', m:10, d:19, nom:'Reprise',                                   heure:'',        lieu:'Orléans',      limite:''},
-        // ── Championnat de la Somme – novembre ──────────────────────────────────
+        // ── Championnats de la Somme – novembre ──────────────────────────────────
         {type:'champ', m:11, d:8,  nom:'CDC1, CDC2, CDC3, CDC4 et CDCF – Finales',  heure:'journée', lieu:'Abbeville',    limite:''}
     ];
 
@@ -1130,7 +1130,7 @@ document.addEventListener('keydown', function(e) {
             var card = document.createElement('div');
             card.className = 'cal-event-card type-' + (isChamp ? 'champ' : isInterne ? 'interne' : 'concours');
             var typeEl = document.createElement('div'); typeEl.className = 'ev-type';
-            typeEl.textContent = isChamp ? '🏆 Championnat de la Somme' : isInterne ? '🏠 Concours Interne' : '🎯 Concours à Boves';
+            typeEl.textContent = isChamp ? '🏆 Championnats de la Somme' : isInterne ? '🏠 Concours Interne et ouvert à tous' : '🎯 Concours à officiels à Boves';
             var nomEl2 = document.createElement('div'); nomEl2.className = 'ev-name';
             nomEl2.textContent = e.nom;
             card.appendChild(typeEl);
