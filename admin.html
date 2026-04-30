@@ -1,0 +1,709 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Admin – Pétanque Boves</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow">
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --vert: #0bff04;
+            --vert-dark: #09cc03;
+            --rouge: #ff4444;
+            --bleu: #3b9eff;
+            --noir: #000;
+            --gris-fonce: #0a0a0a;
+            --gris-card: #1c1c1c;
+        }
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+        html { scroll-behavior: smooth; }
+        body { font-family: 'Nunito', sans-serif; background: #000; color: #e8e8e8; font-size: 16px; line-height: 1.6; min-height: 100vh; }
+
+        /* ── LOGIN ── */
+        #login-screen { display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 100vh; padding: 20px; }
+        .login-box { background: #111; border: 2px solid var(--vert); border-radius: 20px; padding: 40px 32px; max-width: 400px; width: 100%; box-shadow: 0 0 60px rgba(11,255,4,0.15); }
+        .login-box .logo { text-align: center; margin-bottom: 28px; }
+        .login-box .logo img { width: 80px; height: 80px; border-radius: 50%; border: 3px solid var(--vert); }
+        .login-box h1 { font-family: 'Bebas Neue', sans-serif; font-size: 1.8em; letter-spacing: 3px; color: white; text-align: center; margin-bottom: 6px; }
+        .login-box p { color: #666; font-size: 0.85em; text-align: center; margin-bottom: 28px; }
+        .login-box input { width: 100%; background: #000; border: 1.5px solid #333; border-radius: 10px; padding: 14px 16px; color: #eee; font-size: 1em; font-family: 'Nunito', sans-serif; outline: none; margin-bottom: 14px; transition: border-color 0.2s; }
+        .login-box input:focus { border-color: var(--vert); }
+        .login-btn { width: 100%; background: var(--vert); color: #000; border: none; padding: 15px; border-radius: 10px; font-family: 'Bebas Neue', sans-serif; font-size: 1.2em; letter-spacing: 2px; cursor: pointer; transition: background 0.2s, box-shadow 0.2s; }
+        .login-btn:hover { background: var(--vert-dark); box-shadow: 0 6px 24px rgba(11,255,4,0.4); }
+        .login-error { color: var(--rouge); font-size: 0.85em; text-align: center; margin-top: 10px; min-height: 20px; }
+
+        /* ── APP ── */
+        #app { display: none; }
+        .topbar { background: var(--gris-fonce); border-bottom: 2px solid var(--vert); padding: 0 20px; display: flex; align-items: center; justify-content: space-between; height: 58px; position: sticky; top: 0; z-index: 100; }
+        .topbar-brand { font-family: 'Bebas Neue', sans-serif; font-size: 1.2em; letter-spacing: 2px; color: var(--vert); }
+        .topbar-right { display: flex; align-items: center; gap: 14px; }
+        .topbar-user { font-size: 0.8em; color: #777; }
+        .topbar-user span { color: var(--vert); font-weight: 700; }
+        .logout-btn { background: transparent; border: 1.5px solid #444; color: #aaa; padding: 7px 14px; border-radius: 8px; font-size: 0.82em; cursor: pointer; transition: border-color 0.2s, color 0.2s; }
+        .logout-btn:hover { border-color: var(--rouge); color: var(--rouge); }
+
+        .main { max-width: 1100px; margin: 0 auto; padding: 32px 16px; }
+
+        /* ── ROLE BADGE ── */
+        .role-badge { display: inline-flex; align-items: center; gap: 8px; padding: 8px 18px; border-radius: 30px; font-size: 0.82em; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; margin-bottom: 28px; }
+        .role-badge.superadmin { background: rgba(11,255,4,0.1); border: 1.5px solid var(--vert); color: var(--vert); }
+        .role-badge.membre { background: rgba(59,158,255,0.1); border: 1.5px solid var(--bleu); color: var(--bleu); }
+
+        /* ── SECTIONS ── */
+        .section-card { background: var(--gris-card); border: 1px solid #2a2a2a; border-radius: 16px; padding: 28px 24px; margin-bottom: 24px; transition: border-color 0.2s; }
+        .section-card:hover { border-color: #3a3a3a; }
+        .section-title { font-family: 'Bebas Neue', sans-serif; font-size: 1.4em; letter-spacing: 2px; color: white; border-left: 4px solid var(--vert); padding-left: 14px; margin-bottom: 20px; display: flex; align-items: center; gap: 10px; }
+        .section-title .badge-only { font-size: 0.6em; background: rgba(59,158,255,0.15); border: 1px solid var(--bleu); color: var(--bleu); padding: 3px 10px; border-radius: 20px; letter-spacing: 1px; vertical-align: middle; }
+
+        /* ── FORM ELEMENTS ── */
+        label { display: block; font-size: 0.75em; font-weight: 700; text-transform: uppercase; letter-spacing: 1.2px; color: var(--vert); margin-bottom: 6px; margin-top: 14px; }
+        label:first-child { margin-top: 0; }
+        input[type=text], input[type=number], input[type=url], textarea, select {
+            width: 100%; background: #000; border: 1.5px solid #2a2a2a; border-radius: 8px;
+            padding: 12px 14px; color: #eee; font-family: 'Nunito', sans-serif; font-size: 0.95em;
+            outline: none; transition: border-color 0.2s, box-shadow 0.2s;
+        }
+        input:focus, textarea:focus, select:focus { border-color: var(--vert); box-shadow: 0 0 0 3px rgba(11,255,4,0.12); }
+        textarea { resize: vertical; min-height: 80px; }
+        select { cursor: pointer; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%230bff04' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 13px center; padding-right: 36px; -webkit-appearance: none; appearance: none; }
+        select option { background: #111; }
+
+        .form-grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+        @media (max-width: 600px) { .form-grid-2 { grid-template-columns: 1fr; } }
+        .form-grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; }
+        @media (max-width: 700px) { .form-grid-3 { grid-template-columns: 1fr 1fr; } }
+
+        /* ── BUTTONS ── */
+        .btn { display: inline-flex; align-items: center; gap: 8px; padding: 11px 20px; border-radius: 10px; font-family: 'Bebas Neue', sans-serif; font-size: 1em; letter-spacing: 1.5px; cursor: pointer; border: none; transition: background 0.2s, transform 0.15s, box-shadow 0.2s; }
+        .btn:active { transform: scale(0.97); }
+        .btn-green { background: var(--vert); color: #000; }
+        .btn-green:hover { background: var(--vert-dark); box-shadow: 0 4px 16px rgba(11,255,4,0.4); }
+        .btn-blue { background: var(--bleu); color: #fff; }
+        .btn-blue:hover { box-shadow: 0 4px 16px rgba(59,158,255,0.4); }
+        .btn-red { background: transparent; color: var(--rouge); border: 1.5px solid var(--rouge); padding: 8px 14px; font-size: 0.85em; }
+        .btn-red:hover { background: rgba(255,68,68,0.1); }
+        .btn-outline { background: transparent; color: #aaa; border: 1.5px solid #444; }
+        .btn-outline:hover { border-color: #888; color: #eee; }
+        .btn-row { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 18px; }
+
+        /* ── ITEMS LIST ── */
+        .items-list { display: flex; flex-direction: column; gap: 10px; margin-top: 16px; }
+        .item-row { background: #111; border: 1px solid #2a2a2a; border-radius: 10px; padding: 14px 16px; display: flex; align-items: flex-start; gap: 14px; transition: border-color 0.2s; }
+        .item-row:hover { border-color: #3a3a3a; }
+        .item-content { flex: 1; min-width: 0; }
+        .item-title { font-weight: 700; color: #f0f0f0; font-size: 0.95em; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .item-sub { color: #777; font-size: 0.8em; margin-top: 3px; }
+        .item-badge { display: inline-block; font-size: 0.68em; font-weight: 700; text-transform: uppercase; letter-spacing: 0.8px; padding: 2px 8px; border-radius: 20px; margin-top: 4px; }
+        .badge-champ { background: rgba(255,255,255,0.08); color: #ddd; border: 1px solid rgba(255,255,255,0.2); }
+        .badge-concours { background: rgba(11,255,4,0.1); color: var(--vert); border: 1px solid rgba(11,255,4,0.3); }
+        .badge-interne { background: rgba(59,158,255,0.1); color: var(--bleu); border: 1px solid rgba(59,158,255,0.3); }
+        .item-actions { display: flex; gap: 8px; flex-shrink: 0; align-items: center; }
+
+        /* ── PHOTO PREVIEW ── */
+        .photo-preview { width: 60px; height: 60px; border-radius: 8px; object-fit: cover; border: 1.5px solid #333; flex-shrink: 0; }
+        .photo-preview-placeholder { width: 60px; height: 60px; border-radius: 8px; background: #1a1a1a; border: 1.5px solid #333; display: flex; align-items: center; justify-content: center; color: #444; font-size: 1.4em; flex-shrink: 0; }
+
+        /* ── STATUS ── */
+        .status-msg { padding: 12px 16px; border-radius: 8px; font-size: 0.88em; font-weight: 700; margin-top: 14px; display: none; }
+        .status-msg.ok { background: rgba(11,255,4,0.1); border: 1px solid rgba(11,255,4,0.3); color: var(--vert); display: block; }
+        .status-msg.err { background: rgba(255,68,68,0.1); border: 1px solid rgba(255,68,68,0.3); color: var(--rouge); display: block; }
+        .status-msg.loading { background: rgba(59,158,255,0.1); border: 1px solid rgba(59,158,255,0.3); color: var(--bleu); display: block; }
+
+        /* ── SEPARATOR ── */
+        .sep { border: none; border-top: 1px solid #2a2a2a; margin: 22px 0; }
+
+        /* ── EMPTY STATE ── */
+        .empty-state { text-align: center; color: #444; padding: 30px; font-size: 0.9em; }
+
+        /* ── TABS ── */
+        .tabs { display: flex; gap: 4px; margin-bottom: 20px; flex-wrap: wrap; }
+        .tab { padding: 8px 16px; border-radius: 8px; font-size: 0.82em; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; cursor: pointer; border: 1.5px solid #333; color: #777; background: transparent; transition: all 0.2s; }
+        .tab.active { background: var(--vert); color: #000; border-color: var(--vert); }
+        .tab-panel { display: none; }
+        .tab-panel.active { display: block; }
+
+        /* ── URL PREVIEW ── */
+        .url-preview-wrap { margin-top: 10px; display: none; }
+        .url-preview-wrap img { max-width: 100%; max-height: 200px; border-radius: 8px; border: 1px solid #333; object-fit: contain; }
+    </style>
+</head>
+<body>
+
+<!-- ===================== LOGIN ===================== -->
+<div id="login-screen">
+    <div class="login-box">
+        <div class="logo">
+            <img src="logo.webp" alt="Logo" onerror="this.style.display='none'">
+        </div>
+        <h1>🎯 Espace Admin</h1>
+        <p>Pétanque Boves — Accès réservé au bureau</p>
+        <input type="email" id="login-email" placeholder="Email" autocomplete="email">
+        <input type="password" id="login-pwd" placeholder="Mot de passe" autocomplete="current-password">
+        <button class="login-btn" id="login-btn">SE CONNECTER</button>
+        <div class="login-error" id="login-error"></div>
+    </div>
+</div>
+
+<!-- ===================== APP ===================== -->
+<div id="app">
+    <div class="topbar">
+        <div class="topbar-brand">🎯 ADMIN — PÉTANQUE BOVES</div>
+        <div class="topbar-right">
+            <div class="topbar-user">Connecté : <span id="user-email-display"></span></div>
+            <button class="logout-btn" id="logout-btn">Déconnexion</button>
+        </div>
+    </div>
+
+    <div class="main">
+        <div id="role-badge-wrap"></div>
+
+        <!-- ===== SECTION GALERIE (tous les admins) ===== -->
+        <div class="section-card" id="section-galerie">
+            <div class="section-title">📸 Galerie Photos <span class="badge-only">MEMBRES</span></div>
+
+            <div>
+                <label>URL de la photo (imgur, postimages, etc.)</label>
+                <input type="url" id="photo-url" placeholder="https://i.imgur.com/exemple.jpg">
+                <div class="url-preview-wrap" id="url-preview-wrap">
+                    <img id="url-preview-img" src="" alt="Aperçu">
+                </div>
+                <label>Description / Alt</label>
+                <input type="text" id="photo-alt" placeholder="Ex : Concours du 14 avril 2026" maxlength="100">
+                <div class="btn-row">
+                    <button class="btn btn-green" id="add-photo-btn">➕ Ajouter la photo</button>
+                </div>
+                <div class="status-msg" id="status-galerie"></div>
+            </div>
+
+            <hr class="sep">
+            <div class="items-list" id="galerie-list"></div>
+        </div>
+
+        <!-- ===== SECTIONS SUPER ADMIN UNIQUEMENT ===== -->
+        <div id="superadmin-sections" style="display:none;">
+
+            <!-- ACTUALITÉS -->
+            <div class="section-card">
+                <div class="section-title">📰 Actualités</div>
+                <div>
+                    <label>URL de l'image principale</label>
+                    <input type="url" id="actu-img-url" placeholder="https://i.imgur.com/exemple.jpg">
+                    <label>Texte de l'actualité</label>
+                    <textarea id="actu-texte" placeholder="Ex : 🥈 Vice champion de la Somme Junior — Bravo !"></textarea>
+                    <label>Titre en vert (optionnel)</label>
+                    <input type="text" id="actu-titre" placeholder="Ex : Vice champion de la Somme Junior" maxlength="100">
+                    <div class="btn-row">
+                        <button class="btn btn-green" id="add-actu-btn">➕ Ajouter l'actualité</button>
+                    </div>
+                    <div class="status-msg" id="status-actu"></div>
+                </div>
+                <hr class="sep">
+                <div class="items-list" id="actu-list"></div>
+            </div>
+
+            <!-- CLASSEMENT -->
+            <div class="section-card">
+                <div class="section-title">🥇 Classement</div>
+                <div class="form-grid-3">
+                    <div>
+                        <label>Nom</label>
+                        <input type="text" id="cl-nom" placeholder="Dupont" maxlength="50">
+                    </div>
+                    <div>
+                        <label>Prénom</label>
+                        <input type="text" id="cl-prenom" placeholder="Jean" maxlength="50">
+                    </div>
+                    <div>
+                        <label>Points</label>
+                        <input type="number" id="cl-pts" placeholder="0" min="0" max="999">
+                    </div>
+                </div>
+                <div style="margin-top:14px;">
+                    <label>Catégorie</label>
+                    <select id="cl-cat">
+                        <option>Non-classé</option>
+                        <option>Promotion</option>
+                        <option>Honneur</option>
+                        <option>Excellence</option>
+                    </select>
+                </div>
+                <div class="btn-row">
+                    <button class="btn btn-green" id="add-cl-btn">➕ Ajouter au classement</button>
+                </div>
+                <div class="status-msg" id="status-cl"></div>
+                <hr class="sep">
+                <div class="items-list" id="cl-list"></div>
+            </div>
+
+            <!-- CALENDRIER -->
+            <div class="section-card">
+                <div class="section-title">📅 Calendrier</div>
+                <div class="form-grid-2">
+                    <div>
+                        <label>Nom de l'événement</label>
+                        <input type="text" id="cal-nom" placeholder="Ex : Doublette Vétérans" maxlength="100">
+                    </div>
+                    <div>
+                        <label>Type</label>
+                        <select id="cal-type">
+                            <option value="concours">🎯 Concours officiel à Boves</option>
+                            <option value="interne">🏠 Concours interne</option>
+                            <option value="champ">🏆 Championnat de la Somme</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label>Mois (1-12)</label>
+                        <input type="number" id="cal-mois" placeholder="Ex : 5" min="1" max="12">
+                    </div>
+                    <div>
+                        <label>Jour (1-31)</label>
+                        <input type="number" id="cal-jour" placeholder="Ex : 14" min="1" max="31">
+                    </div>
+                    <div>
+                        <label>Heure</label>
+                        <input type="text" id="cal-heure" placeholder="Ex : 14h00" maxlength="30">
+                    </div>
+                    <div>
+                        <label>Lieu</label>
+                        <input type="text" id="cal-lieu" placeholder="Ex : Boves" maxlength="100">
+                    </div>
+                </div>
+                <div style="margin-top:14px;">
+                    <label>Limite d'inscription (optionnel)</label>
+                    <input type="text" id="cal-limite" placeholder="Ex : jet du but" maxlength="60">
+                </div>
+                <div class="btn-row">
+                    <button class="btn btn-green" id="add-cal-btn">➕ Ajouter l'événement</button>
+                </div>
+                <div class="status-msg" id="status-cal"></div>
+                <hr class="sep">
+                <div class="items-list" id="cal-list"></div>
+            </div>
+
+            <!-- FAQ -->
+            <div class="section-card">
+                <div class="section-title">❓ FAQ</div>
+                <div>
+                    <label>Question</label>
+                    <input type="text" id="faq-question" placeholder="Ex : Comment s'inscrire au club ?" maxlength="200">
+                    <label>Réponse</label>
+                    <textarea id="faq-reponse" placeholder="Réponse complète…"></textarea>
+                </div>
+                <div class="btn-row">
+                    <button class="btn btn-green" id="add-faq-btn">➕ Ajouter la question</button>
+                </div>
+                <div class="status-msg" id="status-faq"></div>
+                <hr class="sep">
+                <div class="items-list" id="faq-list"></div>
+            </div>
+
+        </div><!-- /superadmin-sections -->
+    </div><!-- /main -->
+</div><!-- /app -->
+
+<!-- Firebase SDK -->
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-app.js";
+import { getAuth, signInWithEmailAndPassword, signOut, onAuthStateChanged }
+    from "https://www.gstatic.com/firebasejs/10.7.0/firebase-auth.js";
+import { getFirestore, collection, addDoc, getDocs, deleteDoc, doc, orderBy, query }
+    from "https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore.js";
+
+// ── CONFIG FIREBASE ──────────────────────────────────────────────────────────
+const firebaseConfig = {
+    apiKey: "AIzaSyC27gFQjA3WbpHcgzerSjQvOX0h6VO3EgY",
+    authDomain: "petanqueboves-54950.firebaseapp.com",
+    projectId: "petanqueboves-54950",
+    storageBucket: "petanqueboves-54950.firebasestorage.app",
+    messagingSenderId: "920624937926",
+    appId: "1:920624937926:web:fac2aa801abd3a5ee450c7"
+};
+
+// ── REMPLACE PAR TON EMAIL ICI ────────────────────────────────────────────────
+const SUPER_ADMIN_EMAIL = "TON_EMAIL@gmail.com"; // ← CHANGE ICI
+
+const app  = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const db   = getFirestore(app);
+
+// ── HELPERS ──────────────────────────────────────────────────────────────────
+function esc(str) {
+    if (typeof str !== 'string') return '';
+    return str.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+function showStatus(id, msg, type) {
+    const el = document.getElementById(id);
+    if (!el) return;
+    el.textContent = msg;
+    el.className = 'status-msg ' + type;
+    if (type !== 'loading') setTimeout(() => { el.className = 'status-msg'; }, 4000);
+}
+
+// ── AUTH ─────────────────────────────────────────────────────────────────────
+document.getElementById('login-btn').addEventListener('click', async () => {
+    const email = document.getElementById('login-email').value.trim();
+    const pwd   = document.getElementById('login-pwd').value;
+    const errEl = document.getElementById('login-error');
+    errEl.textContent = '';
+    if (!email || !pwd) { errEl.textContent = 'Remplissez tous les champs.'; return; }
+    try {
+        await signInWithEmailAndPassword(auth, email, pwd);
+    } catch(e) {
+        errEl.textContent = '❌ Email ou mot de passe incorrect.';
+    }
+});
+
+document.getElementById('login-pwd').addEventListener('keydown', e => {
+    if (e.key === 'Enter') document.getElementById('login-btn').click();
+});
+
+document.getElementById('logout-btn').addEventListener('click', () => signOut(auth));
+
+onAuthStateChanged(auth, user => {
+    if (user) {
+        document.getElementById('login-screen').style.display = 'none';
+        document.getElementById('app').style.display = 'block';
+        document.getElementById('user-email-display').textContent = user.email;
+
+        const isSuperAdmin = user.email === SUPER_ADMIN_EMAIL;
+
+        // Badge rôle
+        const badgeWrap = document.getElementById('role-badge-wrap');
+        if (isSuperAdmin) {
+            badgeWrap.innerHTML = '<div class="role-badge superadmin">⭐ Super Admin — Accès complet</div>';
+            document.getElementById('superadmin-sections').style.display = 'block';
+        } else {
+            badgeWrap.innerHTML = '<div class="role-badge membre">👤 Membre Bureau — Galerie uniquement</div>';
+            document.getElementById('superadmin-sections').style.display = 'none';
+        }
+
+        loadAll(isSuperAdmin);
+    } else {
+        document.getElementById('login-screen').style.display = 'flex';
+        document.getElementById('app').style.display = 'none';
+    }
+});
+
+// ── APERÇU URL PHOTO ─────────────────────────────────────────────────────────
+document.getElementById('photo-url').addEventListener('input', function() {
+    const url = this.value.trim();
+    const wrap = document.getElementById('url-preview-wrap');
+    const img  = document.getElementById('url-preview-img');
+    if (url.startsWith('http')) {
+        img.src = url;
+        wrap.style.display = 'block';
+        img.onerror = () => { wrap.style.display = 'none'; };
+    } else {
+        wrap.style.display = 'none';
+    }
+});
+
+// ── LOAD ALL ─────────────────────────────────────────────────────────────────
+async function loadAll(isSuperAdmin) {
+    await loadGalerie();
+    if (isSuperAdmin) {
+        await loadActus();
+        await loadClassement();
+        await loadCalendrier();
+        await loadFaq();
+    }
+}
+
+// ════════════════════════════════════════════════════════════
+//  GALERIE
+// ════════════════════════════════════════════════════════════
+async function loadGalerie() {
+    const list = document.getElementById('galerie-list');
+    list.innerHTML = '<p class="empty-state">Chargement…</p>';
+    try {
+        const q = query(collection(db, 'galerie'), orderBy('createdAt', 'desc'));
+        const snap = await getDocs(q);
+        list.innerHTML = '';
+        if (snap.empty) { list.innerHTML = '<p class="empty-state">Aucune photo pour l\'instant.</p>'; return; }
+        snap.forEach(docSnap => {
+            const d = docSnap.data();
+            list.appendChild(makePhotoRow(docSnap.id, d));
+        });
+    } catch(e) {
+        list.innerHTML = '<p class="empty-state" style="color:#ff4444">Erreur de chargement.</p>';
+    }
+}
+
+function makePhotoRow(id, d) {
+    const row = document.createElement('div');
+    row.className = 'item-row';
+    row.innerHTML = `
+        <div id="photo-thumb-${esc(id)}" style="flex-shrink:0"></div>
+        <div class="item-content">
+            <div class="item-title">${esc(d.alt || 'Sans description')}</div>
+            <div class="item-sub" style="word-break:break-all">${esc(d.url || '')}</div>
+        </div>
+        <div class="item-actions">
+            <button class="btn btn-red" data-id="${esc(id)}" data-col="galerie">🗑 Supprimer</button>
+        </div>`;
+    // Miniature
+    const thumbWrap = row.querySelector(`#photo-thumb-${CSS.escape(id)}`);
+    if (d.url) {
+        const img = document.createElement('img');
+        img.className = 'photo-preview';
+        img.src = d.url;
+        img.alt = d.alt || '';
+        img.onerror = () => {
+            img.remove();
+            const ph = document.createElement('div');
+            ph.className = 'photo-preview-placeholder';
+            ph.textContent = '🖼';
+            thumbWrap.appendChild(ph);
+        };
+        thumbWrap.appendChild(img);
+    } else {
+        thumbWrap.innerHTML = '<div class="photo-preview-placeholder">🖼</div>';
+    }
+    row.querySelector('button[data-col]').addEventListener('click', () => deleteItem('galerie', id, loadGalerie, 'status-galerie'));
+    return row;
+}
+
+document.getElementById('add-photo-btn').addEventListener('click', async () => {
+    const url = document.getElementById('photo-url').value.trim();
+    const alt = document.getElementById('photo-alt').value.trim();
+    if (!url) { showStatus('status-galerie', '⚠️ URL requise.', 'err'); return; }
+    if (!url.startsWith('http')) { showStatus('status-galerie', '⚠️ URL invalide (doit commencer par http).', 'err'); return; }
+    showStatus('status-galerie', 'Ajout en cours…', 'loading');
+    try {
+        await addDoc(collection(db, 'galerie'), { url, alt: alt || 'Photo du club', createdAt: Date.now() });
+        document.getElementById('photo-url').value = '';
+        document.getElementById('photo-alt').value = '';
+        document.getElementById('url-preview-wrap').style.display = 'none';
+        showStatus('status-galerie', '✅ Photo ajoutée !', 'ok');
+        await loadGalerie();
+    } catch(e) {
+        showStatus('status-galerie', '❌ Erreur : ' + e.message, 'err');
+    }
+});
+
+// ════════════════════════════════════════════════════════════
+//  ACTUALITÉS
+// ════════════════════════════════════════════════════════════
+async function loadActus() {
+    const list = document.getElementById('actu-list');
+    list.innerHTML = '<p class="empty-state">Chargement…</p>';
+    try {
+        const q = query(collection(db, 'actualites'), orderBy('createdAt', 'desc'));
+        const snap = await getDocs(q);
+        list.innerHTML = '';
+        if (snap.empty) { list.innerHTML = '<p class="empty-state">Aucune actualité.</p>'; return; }
+        snap.forEach(docSnap => {
+            const d = docSnap.data();
+            const row = document.createElement('div');
+            row.className = 'item-row';
+            row.innerHTML = `
+                <div class="item-content">
+                    <div class="item-title">${esc(d.titre || 'Sans titre')}</div>
+                    <div class="item-sub">${esc(d.texte || '').substring(0,80)}…</div>
+                </div>
+                <div class="item-actions">
+                    <button class="btn btn-red" data-id="${esc(docSnap.id)}">🗑 Supprimer</button>
+                </div>`;
+            row.querySelector('button').addEventListener('click', () => deleteItem('actualites', docSnap.id, loadActus, 'status-actu'));
+            list.appendChild(row);
+        });
+    } catch(e) {
+        list.innerHTML = '<p class="empty-state" style="color:#ff4444">Erreur de chargement.</p>';
+    }
+}
+
+document.getElementById('add-actu-btn').addEventListener('click', async () => {
+    const imgUrl = document.getElementById('actu-img-url').value.trim();
+    const texte  = document.getElementById('actu-texte').value.trim();
+    const titre  = document.getElementById('actu-titre').value.trim();
+    if (!texte) { showStatus('status-actu', '⚠️ Le texte est requis.', 'err'); return; }
+    showStatus('status-actu', 'Ajout en cours…', 'loading');
+    try {
+        await addDoc(collection(db, 'actualites'), { imgUrl, texte, titre, createdAt: Date.now() });
+        document.getElementById('actu-img-url').value = '';
+        document.getElementById('actu-texte').value = '';
+        document.getElementById('actu-titre').value = '';
+        showStatus('status-actu', '✅ Actualité ajoutée !', 'ok');
+        await loadActus();
+    } catch(e) {
+        showStatus('status-actu', '❌ Erreur : ' + e.message, 'err');
+    }
+});
+
+// ════════════════════════════════════════════════════════════
+//  CLASSEMENT
+// ════════════════════════════════════════════════════════════
+async function loadClassement() {
+    const list = document.getElementById('cl-list');
+    list.innerHTML = '<p class="empty-state">Chargement…</p>';
+    try {
+        const q = query(collection(db, 'classement'), orderBy('pts', 'desc'));
+        const snap = await getDocs(q);
+        list.innerHTML = '';
+        if (snap.empty) { list.innerHTML = '<p class="empty-state">Aucun joueur.</p>'; return; }
+        let rang = 1;
+        snap.forEach(docSnap => {
+            const d = docSnap.data();
+            const row = document.createElement('div');
+            row.className = 'item-row';
+            row.innerHTML = `
+                <div class="item-content">
+                    <div class="item-title">${rang}. ${esc(d.prenom)} ${esc(d.nom)}</div>
+                    <div class="item-sub">${esc(d.pts)} pts — ${esc(d.cat)}</div>
+                </div>
+                <div class="item-actions">
+                    <button class="btn btn-red" data-id="${esc(docSnap.id)}">🗑</button>
+                </div>`;
+            row.querySelector('button').addEventListener('click', () => deleteItem('classement', docSnap.id, loadClassement, 'status-cl'));
+            list.appendChild(row);
+            rang++;
+        });
+    } catch(e) {
+        list.innerHTML = '<p class="empty-state" style="color:#ff4444">Erreur de chargement.</p>';
+    }
+}
+
+document.getElementById('add-cl-btn').addEventListener('click', async () => {
+    const nom    = document.getElementById('cl-nom').value.trim();
+    const prenom = document.getElementById('cl-prenom').value.trim();
+    const pts    = parseInt(document.getElementById('cl-pts').value) || 0;
+    const cat    = document.getElementById('cl-cat').value;
+    if (!nom || !prenom) { showStatus('status-cl', '⚠️ Nom et prénom requis.', 'err'); return; }
+    showStatus('status-cl', 'Ajout en cours…', 'loading');
+    try {
+        await addDoc(collection(db, 'classement'), { nom, prenom, pts, cat, createdAt: Date.now() });
+        document.getElementById('cl-nom').value = '';
+        document.getElementById('cl-prenom').value = '';
+        document.getElementById('cl-pts').value = '';
+        showStatus('status-cl', '✅ Joueur ajouté !', 'ok');
+        await loadClassement();
+    } catch(e) {
+        showStatus('status-cl', '❌ Erreur : ' + e.message, 'err');
+    }
+});
+
+// ════════════════════════════════════════════════════════════
+//  CALENDRIER
+// ════════════════════════════════════════════════════════════
+const MONTHS = ['','Janvier','Février','Mars','Avril','Mai','Juin','Juillet','Août','Septembre','Octobre','Novembre','Décembre'];
+
+async function loadCalendrier() {
+    const list = document.getElementById('cal-list');
+    list.innerHTML = '<p class="empty-state">Chargement…</p>';
+    try {
+        const q = query(collection(db, 'calendrier'), orderBy('mois'), orderBy('jour'));
+        const snap = await getDocs(q);
+        list.innerHTML = '';
+        if (snap.empty) { list.innerHTML = '<p class="empty-state">Aucun événement.</p>'; return; }
+        snap.forEach(docSnap => {
+            const d = docSnap.data();
+            const row = document.createElement('div');
+            row.className = 'item-row';
+            const badgeClass = d.type === 'champ' ? 'badge-champ' : d.type === 'interne' ? 'badge-interne' : 'badge-concours';
+            const typeLabel  = d.type === 'champ' ? '🏆 Championnats' : d.type === 'interne' ? '🏠 Interne' : '🎯 Concours';
+            row.innerHTML = `
+                <div class="item-content">
+                    <div class="item-title">${esc(d.nom)}</div>
+                    <div class="item-sub">${esc(MONTHS[d.mois] || '')} ${esc(String(d.jour))} — ${esc(d.heure || '')} — ${esc(d.lieu || '')}</div>
+                    <span class="item-badge ${badgeClass}">${typeLabel}</span>
+                </div>
+                <div class="item-actions">
+                    <button class="btn btn-red" data-id="${esc(docSnap.id)}">🗑</button>
+                </div>`;
+            row.querySelector('button').addEventListener('click', () => deleteItem('calendrier', docSnap.id, loadCalendrier, 'status-cal'));
+            list.appendChild(row);
+        });
+    } catch(e) {
+        list.innerHTML = '<p class="empty-state" style="color:#ff4444">Erreur de chargement.</p>';
+    }
+}
+
+document.getElementById('add-cal-btn').addEventListener('click', async () => {
+    const nom    = document.getElementById('cal-nom').value.trim();
+    const type   = document.getElementById('cal-type').value;
+    const mois   = parseInt(document.getElementById('cal-mois').value);
+    const jour   = parseInt(document.getElementById('cal-jour').value);
+    const heure  = document.getElementById('cal-heure').value.trim();
+    const lieu   = document.getElementById('cal-lieu').value.trim();
+    const limite = document.getElementById('cal-limite').value.trim();
+    if (!nom || !mois || !jour || !lieu) { showStatus('status-cal', '⚠️ Nom, mois, jour et lieu sont requis.', 'err'); return; }
+    if (mois < 1 || mois > 12 || jour < 1 || jour > 31) { showStatus('status-cal', '⚠️ Date invalide.', 'err'); return; }
+    showStatus('status-cal', 'Ajout en cours…', 'loading');
+    try {
+        await addDoc(collection(db, 'calendrier'), { nom, type, mois, jour, heure, lieu, limite, createdAt: Date.now() });
+        ['cal-nom','cal-heure','cal-lieu','cal-limite'].forEach(id => { document.getElementById(id).value = ''; });
+        document.getElementById('cal-mois').value = '';
+        document.getElementById('cal-jour').value = '';
+        showStatus('status-cal', '✅ Événement ajouté !', 'ok');
+        await loadCalendrier();
+    } catch(e) {
+        showStatus('status-cal', '❌ Erreur : ' + e.message, 'err');
+    }
+});
+
+// ════════════════════════════════════════════════════════════
+//  FAQ
+// ════════════════════════════════════════════════════════════
+async function loadFaq() {
+    const list = document.getElementById('faq-list');
+    list.innerHTML = '<p class="empty-state">Chargement…</p>';
+    try {
+        const q = query(collection(db, 'faq'), orderBy('createdAt'));
+        const snap = await getDocs(q);
+        list.innerHTML = '';
+        if (snap.empty) { list.innerHTML = '<p class="empty-state">Aucune question.</p>'; return; }
+        snap.forEach(docSnap => {
+            const d = docSnap.data();
+            const row = document.createElement('div');
+            row.className = 'item-row';
+            row.innerHTML = `
+                <div class="item-content">
+                    <div class="item-title">${esc(d.question)}</div>
+                    <div class="item-sub">${esc(d.reponse || '').substring(0,80)}…</div>
+                </div>
+                <div class="item-actions">
+                    <button class="btn btn-red" data-id="${esc(docSnap.id)}">🗑</button>
+                </div>`;
+            row.querySelector('button').addEventListener('click', () => deleteItem('faq', docSnap.id, loadFaq, 'status-faq'));
+            list.appendChild(row);
+        });
+    } catch(e) {
+        list.innerHTML = '<p class="empty-state" style="color:#ff4444">Erreur de chargement.</p>';
+    }
+}
+
+document.getElementById('add-faq-btn').addEventListener('click', async () => {
+    const question = document.getElementById('faq-question').value.trim();
+    const reponse  = document.getElementById('faq-reponse').value.trim();
+    if (!question || !reponse) { showStatus('status-faq', '⚠️ Question et réponse requises.', 'err'); return; }
+    showStatus('status-faq', 'Ajout en cours…', 'loading');
+    try {
+        await addDoc(collection(db, 'faq'), { question, reponse, createdAt: Date.now() });
+        document.getElementById('faq-question').value = '';
+        document.getElementById('faq-reponse').value = '';
+        showStatus('status-faq', '✅ Question ajoutée !', 'ok');
+        await loadFaq();
+    } catch(e) {
+        showStatus('status-faq', '❌ Erreur : ' + e.message, 'err');
+    }
+});
+
+// ════════════════════════════════════════════════════════════
+//  DELETE GÉNÉRIQUE
+// ════════════════════════════════════════════════════════════
+async function deleteItem(colName, id, reloadFn, statusId) {
+    if (!confirm('Supprimer cet élément ?')) return;
+    try {
+        await deleteDoc(doc(db, colName, id));
+        showStatus(statusId, '✅ Supprimé.', 'ok');
+        await reloadFn();
+    } catch(e) {
+        showStatus(statusId, '❌ Erreur : ' + e.message, 'err');
+    }
+}
+</script>
+
+</body>
+</html>
