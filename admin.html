@@ -116,6 +116,14 @@
         /* ── EMPTY STATE ── */
         .empty-state { text-align: center; color: #444; padding: 30px; font-size: 0.9em; }
 
+        /* ── EDIT MODAL ── */
+        #edit-modal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.88); z-index: 9999; align-items: center; justify-content: center; padding: 20px; }
+        #edit-modal.open { display: flex; }
+        .edit-modal-box { background: #111; border: 2px solid var(--vert); border-radius: 16px; padding: 28px 24px; max-width: 500px; width: 100%; box-shadow: 0 0 40px rgba(11,255,4,0.2); max-height: 90vh; overflow-y: auto; }
+        .edit-modal-box h3 { font-family: 'Bebas Neue', sans-serif; font-size: 1.4em; color: white; margin-bottom: 20px; letter-spacing: 1.5px; border-left: 4px solid var(--vert); padding-left: 12px; }
+        .edit-modal-btns { display: flex; gap: 10px; margin-top: 20px; }
+        .edit-modal-btns button { flex: 1; }
+
         /* ── TABS ── */
         .tabs { display: flex; gap: 4px; margin-bottom: 20px; flex-wrap: wrap; }
         .tab { padding: 8px 16px; border-radius: 8px; font-size: 0.82em; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; cursor: pointer; border: 1.5px solid #333; color: #777; background: transparent; transition: all 0.2s; }
@@ -302,12 +310,25 @@
     </div><!-- /main -->
 </div><!-- /app -->
 
+<!-- ===================== EDIT MODAL ===================== -->
+<div id="edit-modal" role="dialog" aria-modal="true">
+    <div class="edit-modal-box">
+        <h3 id="edit-modal-title">✏️ Modifier</h3>
+        <div id="edit-modal-fields"></div>
+        <div class="edit-modal-btns">
+            <button class="btn btn-green" id="edit-modal-save">💾 Enregistrer</button>
+            <button class="btn btn-outline" id="edit-modal-cancel">Annuler</button>
+        </div>
+        <div class="status-msg" id="status-edit"></div>
+    </div>
+</div>
+
 <!-- Firebase SDK -->
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-app.js";
 import { getAuth, signInWithEmailAndPassword, signOut, onAuthStateChanged }
     from "https://www.gstatic.com/firebasejs/10.7.0/firebase-auth.js";
-import { getFirestore, collection, addDoc, getDocs, deleteDoc, doc, orderBy, query }
+import { getFirestore, collection, addDoc, getDocs, deleteDoc, doc, orderBy, query, updateDoc }
     from "https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore.js";
 
 // ── CONFIG FIREBASE ──────────────────────────────────────────────────────────
@@ -321,7 +342,7 @@ const firebaseConfig = {
 };
 
 // ── REMPLACE PAR TON EMAIL ICI ────────────────────────────────────────────────
-const SUPER_ADMIN_EMAIL = "admin@petanqueboves.com"; // ← CHANGE ICI
+const SUPER_ADMIN_EMAIL = "TON_EMAIL@gmail.com"; // ← CHANGE ICI
 
 const app  = initializeApp(firebaseConfig);
 const auth = getAuth(app);
@@ -462,6 +483,7 @@ function makePhotoRow(id, d) {
         thumbWrap.innerHTML = '<div class="photo-preview-placeholder">🖼</div>';
     }
     row.querySelector('button[data-col]').addEventListener('click', () => deleteItem('galerie', id, loadGalerie, 'status-galerie'));
+    addGalerieEditBtn(row, id, d);
     return row;
 }
 
@@ -507,6 +529,7 @@ async function loadActus() {
                     <button class="btn btn-red" data-id="${esc(docSnap.id)}">🗑 Supprimer</button>
                 </div>`;
             row.querySelector('button').addEventListener('click', () => deleteItem('actualites', docSnap.id, loadActus, 'status-actu'));
+            addActuEditBtn(row, docSnap.id, d);
             list.appendChild(row);
         });
     } catch(e) {
@@ -557,6 +580,7 @@ async function loadClassement() {
                     <button class="btn btn-red" data-id="${esc(docSnap.id)}">🗑</button>
                 </div>`;
             row.querySelector('button').addEventListener('click', () => deleteItem('classement', docSnap.id, loadClassement, 'status-cl'));
+            addClEditBtn(row, docSnap.id, d);
             list.appendChild(row);
             rang++;
         });
@@ -613,6 +637,7 @@ async function loadCalendrier() {
                     <button class="btn btn-red" data-id="${esc(docSnap.id)}">🗑</button>
                 </div>`;
             row.querySelector('button').addEventListener('click', () => deleteItem('calendrier', docSnap.id, loadCalendrier, 'status-cal'));
+            addCalEditBtn(row, docSnap.id, d);
             list.appendChild(row);
         });
     } catch(e) {
@@ -667,6 +692,7 @@ async function loadFaq() {
                     <button class="btn btn-red" data-id="${esc(docSnap.id)}">🗑</button>
                 </div>`;
             row.querySelector('button').addEventListener('click', () => deleteItem('faq', docSnap.id, loadFaq, 'status-faq'));
+            addFaqEditBtn(row, docSnap.id, d);
             list.appendChild(row);
         });
     } catch(e) {
@@ -702,6 +728,183 @@ async function deleteItem(colName, id, reloadFn, statusId) {
     } catch(e) {
         showStatus(statusId, '❌ Erreur : ' + e.message, 'err');
     }
+}
+
+// ════════════════════════════════════════════════════════════
+//  EDIT MODAL GÉNÉRIQUE
+// ════════════════════════════════════════════════════════════
+let _editSaveFn = null;
+
+function openEditModal(title, fields, saveFn) {
+    // fields = [{id, label, type, value, options?}]
+    document.getElementById('edit-modal-title').textContent = '✏️ Modifier — ' + title;
+    const container = document.getElementById('edit-modal-fields');
+    container.innerHTML = '';
+    fields.forEach(f => {
+        const lbl = document.createElement('label');
+        lbl.textContent = f.label;
+        lbl.style.marginTop = '12px';
+        container.appendChild(lbl);
+        let input;
+        if (f.type === 'textarea') {
+            input = document.createElement('textarea');
+            input.value = f.value || '';
+        } else if (f.type === 'select') {
+            input = document.createElement('select');
+            f.options.forEach(opt => {
+                const o = document.createElement('option');
+                o.value = opt; o.textContent = opt;
+                if (opt === f.value) o.selected = true;
+                input.appendChild(o);
+            });
+        } else {
+            input = document.createElement('input');
+            input.type = f.type || 'text';
+            input.value = f.value || '';
+        }
+        input.id = 'edit-field-' + f.id;
+        input.style.marginBottom = '4px';
+        if (f.maxlength) input.maxLength = f.maxlength;
+        container.appendChild(input);
+    });
+    document.getElementById('status-edit').className = 'status-msg';
+    _editSaveFn = saveFn;
+    document.getElementById('edit-modal').classList.add('open');
+}
+
+function closeEditModal() {
+    document.getElementById('edit-modal').classList.remove('open');
+    _editSaveFn = null;
+}
+
+document.getElementById('edit-modal-cancel').addEventListener('click', closeEditModal);
+document.getElementById('edit-modal').addEventListener('click', e => {
+    if (e.target === document.getElementById('edit-modal')) closeEditModal();
+});
+document.getElementById('edit-modal-save').addEventListener('click', async () => {
+    if (!_editSaveFn) return;
+    showStatus('status-edit', 'Enregistrement…', 'loading');
+    try {
+        await _editSaveFn();
+        showStatus('status-edit', '✅ Modifié !', 'ok');
+        setTimeout(closeEditModal, 1200);
+    } catch(e) {
+        showStatus('status-edit', '❌ Erreur : ' + e.message, 'err');
+    }
+});
+
+function getEditVal(id) {
+    const el = document.getElementById('edit-field-' + id);
+    return el ? el.value.trim() : '';
+}
+
+// ── Boutons ✏️ sur chaque section ──
+
+// GALERIE edit
+function addGalerieEditBtn(row, docId, data) {
+    const btn = document.createElement('button');
+    btn.className = 'btn btn-outline';
+    btn.style.cssText = 'padding:8px 12px;font-size:0.85em;';
+    btn.textContent = '✏️';
+    btn.addEventListener('click', () => {
+        openEditModal('Photo', [
+            { id: 'url',  label: 'URL de la photo', type: 'url',  value: data.url,  maxlength: 500 },
+            { id: 'alt',  label: 'Description',     type: 'text', value: data.alt,  maxlength: 100 }
+        ], async () => {
+            await updateDoc(doc(db, 'galerie', docId), { url: getEditVal('url'), alt: getEditVal('alt') });
+            await loadGalerie();
+        });
+    });
+    row.querySelector('.item-actions').insertBefore(btn, row.querySelector('.item-actions').firstChild);
+}
+
+// ACTUALITÉS edit
+function addActuEditBtn(row, docId, data) {
+    const btn = document.createElement('button');
+    btn.className = 'btn btn-outline';
+    btn.style.cssText = 'padding:8px 12px;font-size:0.85em;';
+    btn.textContent = '✏️';
+    btn.addEventListener('click', () => {
+        openEditModal('Actualité', [
+            { id: 'imgUrl', label: 'URL image',  type: 'url',      value: data.imgUrl, maxlength: 500 },
+            { id: 'titre',  label: 'Titre vert', type: 'text',     value: data.titre,  maxlength: 100 },
+            { id: 'texte',  label: 'Texte',      type: 'textarea', value: data.texte }
+        ], async () => {
+            await updateDoc(doc(db, 'actualites', docId), { imgUrl: getEditVal('imgUrl'), titre: getEditVal('titre'), texte: getEditVal('texte') });
+            await loadActus();
+        });
+    });
+    row.querySelector('.item-actions').insertBefore(btn, row.querySelector('.item-actions').firstChild);
+}
+
+// CLASSEMENT edit
+function addClEditBtn(row, docId, data) {
+    const btn = document.createElement('button');
+    btn.className = 'btn btn-outline';
+    btn.style.cssText = 'padding:8px 12px;font-size:0.85em;';
+    btn.textContent = '✏️';
+    btn.addEventListener('click', () => {
+        openEditModal('Joueur', [
+            { id: 'nom',    label: 'Nom',      type: 'text',   value: data.nom,    maxlength: 50 },
+            { id: 'prenom', label: 'Prénom',   type: 'text',   value: data.prenom, maxlength: 50 },
+            { id: 'pts',    label: 'Points',   type: 'number', value: data.pts },
+            { id: 'cat',    label: 'Catégorie',type: 'select', value: data.cat,
+              options: ['Non-classé','Promotion','Honneur','Excellence'] }
+        ], async () => {
+            await updateDoc(doc(db, 'classement', docId), {
+                nom: getEditVal('nom'), prenom: getEditVal('prenom'),
+                pts: parseInt(getEditVal('pts')) || 0, cat: getEditVal('cat')
+            });
+            await loadClassement();
+        });
+    });
+    row.querySelector('.item-actions').insertBefore(btn, row.querySelector('.item-actions').firstChild);
+}
+
+// CALENDRIER edit
+function addCalEditBtn(row, docId, data) {
+    const btn = document.createElement('button');
+    btn.className = 'btn btn-outline';
+    btn.style.cssText = 'padding:8px 12px;font-size:0.85em;';
+    btn.textContent = '✏️';
+    btn.addEventListener('click', () => {
+        openEditModal('Événement', [
+            { id: 'nom',    label: 'Nom',    type: 'text',   value: data.nom,    maxlength: 100 },
+            { id: 'type',   label: 'Type',   type: 'select', value: data.type,
+              options: ['concours','interne','champ'] },
+            { id: 'mois',   label: 'Mois',   type: 'number', value: data.mois },
+            { id: 'jour',   label: 'Jour',   type: 'number', value: data.jour },
+            { id: 'heure',  label: 'Heure',  type: 'text',   value: data.heure,  maxlength: 30 },
+            { id: 'lieu',   label: 'Lieu',   type: 'text',   value: data.lieu,   maxlength: 100 },
+            { id: 'limite', label: 'Limite', type: 'text',   value: data.limite, maxlength: 60 }
+        ], async () => {
+            await updateDoc(doc(db, 'calendrier', docId), {
+                nom: getEditVal('nom'), type: getEditVal('type'),
+                mois: parseInt(getEditVal('mois')), jour: parseInt(getEditVal('jour')),
+                heure: getEditVal('heure'), lieu: getEditVal('lieu'), limite: getEditVal('limite')
+            });
+            await loadCalendrier();
+        });
+    });
+    row.querySelector('.item-actions').insertBefore(btn, row.querySelector('.item-actions').firstChild);
+}
+
+// FAQ edit
+function addFaqEditBtn(row, docId, data) {
+    const btn = document.createElement('button');
+    btn.className = 'btn btn-outline';
+    btn.style.cssText = 'padding:8px 12px;font-size:0.85em;';
+    btn.textContent = '✏️';
+    btn.addEventListener('click', () => {
+        openEditModal('Question FAQ', [
+            { id: 'question', label: 'Question', type: 'text',     value: data.question, maxlength: 200 },
+            { id: 'reponse',  label: 'Réponse',  type: 'textarea', value: data.reponse }
+        ], async () => {
+            await updateDoc(doc(db, 'faq', docId), { question: getEditVal('question'), reponse: getEditVal('reponse') });
+            await loadFaq();
+        });
+    });
+    row.querySelector('.item-actions').insertBefore(btn, row.querySelector('.item-actions').firstChild);
 }
 </script>
 
