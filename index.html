@@ -12,7 +12,7 @@
             style-src  'self' 'unsafe-inline' https://fonts.googleapis.com;
             font-src   'self' https://fonts.gstatic.com;
             img-src    'self' https://lukasprn2.github.io data:;
-            connect-src 'self' https://api.web3forms.com;
+            connect-src 'self' https://api.web3forms.com https://*.firebaseio.com https://*.googleapis.com https://identitytoolkit.googleapis.com https://securetoken.googleapis.com https://firestore.googleapis.com;
             frame-src  'none';
             object-src 'none';
             base-uri   'self';
@@ -962,7 +962,7 @@ document.addEventListener('keydown', function(e) {
 
 <script>
 (function() {
-    var EVENTS = [
+    window.EVENTS = [
         // ── Concours à Boves ─────────────────────────────────────────────────────
         {type:'concours', m:4,  d:14, nom:'Doublette Vétérans',         heure:'14h00', lieu:'Boves', limite:'jet du but'},
         {type:'concours', m:5,  d:9,  nom:'Doublette Mixte Officielle', heure:'14h00', lieu:'Boves', limite:'jet du but'},
@@ -1057,7 +1057,7 @@ document.addEventListener('keydown', function(e) {
     function daysInMonth(m, y)  { return new Date(y, m + 1, 0).getDate(); }
     function firstDayOfMonth(m, y) { var d = new Date(y, m, 1).getDay(); return d === 0 ? 6 : d - 1; }
 
-    function renderCalendar() {
+    window.renderCalendar = function() {
         var year = 2026;
         document.getElementById('calMonthLabel').textContent = MONTHS[curMonth] + ' 2026';
         var idx = eventMonths.indexOf(curMonth);
@@ -1102,7 +1102,7 @@ document.addEventListener('keydown', function(e) {
                 if (eventDays[d].interne)  { var dot3 = document.createElement('div'); dot3.className = 'cal-dot interne';  dotsEl.appendChild(dot3); }
                 cell.appendChild(dotsEl);
                 (function(day) {
-                    cell.addEventListener('click', function() { selectedDay = day; renderCalendar(); renderDetail(day); });
+                    cell.addEventListener('click', function() { selectedDay = day;window.renderCalendar(); renderDetail(day); });
                 })(d);
             }
             grid.appendChild(cell);
@@ -1194,7 +1194,7 @@ document.addEventListener('keydown', function(e) {
 </section>
 
 <script>
-var clData = [
+window.clData = [
     {rang:1, nom:'Devauchelle', prenom:'Arnaud',        pts:7, cat:'Promotion'},
     {rang:2, nom:'Bore',        prenom:'Sébastien',     pts:5, cat:'Honneur'},
     {rang:3, nom:'Coovertis',     prenom:'Franck', pts:5, cat:'Promotion'},
@@ -1241,8 +1241,7 @@ function buildClRow(d) {
     tr.appendChild(td(d.cat, "font-size:0.95em"));
     return tr;
 }
-
-function filterClassement() {
+window.filterClassement = function() {
     var q = document.getElementById('clSearch').value.trim().toLowerCase().substring(0, 50);
     var rows = clData.filter(function(d) { return !q || (d.nom + ' ' + d.prenom).toLowerCase().indexOf(q) !== -1; });
     var tbody = document.getElementById('clBody');
@@ -1910,6 +1909,259 @@ if ('serviceWorker' in navigator) {
     console.log(msg, 'color:red;font-size:2em;font-weight:bold;', 'color:orange;font-size:1em;');
 })();
 </script>
+<!-- ===================== FIREBASE – DONNÉES DYNAMIQUES ===================== -->
+<!-- COLLER CE BLOC JUSTE AVANT </body> DANS index.html -->
 
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-app.js";
+import { getFirestore, collection, getDocs, orderBy, query }
+    from "https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore.js";
+
+const firebaseConfig = {
+    apiKey: "AIzaSyC27gFQjA3WbpHcgzerSjQvOX0h6VO3EgY",
+    authDomain: "petanqueboves-54950.firebaseapp.com",
+    projectId: "petanqueboves-54950",
+    storageBucket: "petanqueboves-54950.firebasestorage.app",
+    messagingSenderId: "920624937926",
+    appId: "1:920624937926:web:fac2aa801abd3a5ee450c7"
+};
+
+const app = initializeApp(firebaseConfig);
+const db  = getFirestore(app);
+
+function esc(str) {
+    if (typeof str !== 'string') return '';
+    return str
+        .replace(/&/g,'&amp;').replace(/</g,'&lt;')
+        .replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+// ═══════════════════════════════════════════════
+//  ACTUALITÉS — injecte les cartes depuis Firestore
+//  AVANT les cartes existantes dans #actualites
+// ═══════════════════════════════════════════════
+async function loadActualites() {
+    try {
+        const q = query(collection(db, 'actualites'), orderBy('createdAt', 'desc'));
+        const snap = await getDocs(q);
+        if (snap.empty) return;
+
+        const section = document.getElementById('actualites');
+        if (!section) return;
+        // On insère après le <h2>
+        const h2 = section.querySelector('h2');
+        const insertAfter = h2 || section.firstChild;
+
+        snap.forEach(docSnap => {
+            const d = docSnap.data();
+            const card = document.createElement('div');
+            card.className = 'card';
+            card.style.cssText = 'flex-direction:column;align-items:center;padding:0 0 16px;';
+
+            if (d.imgUrl) {
+                const img = document.createElement('img');
+                img.src = esc(d.imgUrl);
+                img.alt = esc(d.titre || 'Actualité');
+                img.loading = 'lazy';
+                img.style.cssText = 'width:100%;height:auto;display:block;border-radius:10px 10px 0 0;';
+                img.onerror = () => img.remove();
+                card.appendChild(img);
+            }
+
+            const p = document.createElement('p');
+            p.style.cssText = 'margin-top:12px;padding:0 16px;text-align:center;color:#e8e8e8;font-size:0.95em;';
+            if (d.titre) {
+                const strong = document.createElement('strong');
+                strong.style.color = 'var(--vert)';
+                strong.textContent = d.titre;
+                p.appendChild(strong);
+                p.appendChild(document.createTextNode(' — '));
+            }
+            p.appendChild(document.createTextNode(d.texte || ''));
+            card.appendChild(p);
+
+            // Insérer juste après le h2
+            if (insertAfter.nextSibling) {
+                section.insertBefore(card, insertAfter.nextSibling);
+            } else {
+                section.appendChild(card);
+            }
+        });
+    } catch(e) {
+        console.warn('[Firebase] Actualités:', e.message);
+    }
+}
+
+// ═══════════════════════════════════════════════
+//  CLASSEMENT — remplace les données codées en dur
+// ═══════════════════════════════════════════════
+async function loadClassement() {
+    try {
+        const q = query(collection(db, 'classement'), orderBy('pts', 'desc'));
+        const snap = await getDocs(q);
+        if (snap.empty) return; // garde les données codées en dur si Firestore est vide
+
+        // Reconstruire clData depuis Firestore
+        const newData = [];
+        let rang = 1;
+        snap.forEach(docSnap => {
+            const d = docSnap.data();
+            newData.push({
+                rang,
+                nom:    d.nom    || '',
+                prenom: d.prenom || '',
+                pts:    d.pts    || 0,
+                cat:    d.cat    || 'Non-classé'
+            });
+            rang++;
+        });
+
+        // Remplacer clData global et re-render
+        if (typeof clData !== 'undefined') {
+            clData.length = 0;
+            newData.forEach(item => clData.push(item));
+        }
+        if (typeof filterClassement === 'function') filterClassement();
+    } catch(e) {
+        console.warn('[Firebase] Classement:', e.message);
+    }
+}
+
+// ═══════════════════════════════════════════════
+//  CALENDRIER — ajoute les événements Firestore
+//  aux événements existants codés en dur (EVENTS)
+// ═══════════════════════════════════════════════
+async function loadCalendrier() {
+    try {
+        const q = query(collection(db, 'calendrier'), orderBy('mois'), orderBy('jour'));
+        const snap = await getDocs(q);
+        if (snap.empty) return;
+
+        // EVENTS est la variable globale du calendrier
+        // On y ajoute les nouveaux événements
+        if (typeof EVENTS === 'undefined') return;
+
+        snap.forEach(docSnap => {
+            const d = docSnap.data();
+            // Éviter les doublons si rechargement
+            const exists = EVENTS.some(e =>
+                e.nom === d.nom && e.m === d.mois && e.d === d.jour
+            );
+            if (!exists) {
+                EVENTS.push({
+                    type:   d.type   || 'concours',
+                    m:      d.mois,
+                    d:      d.jour,
+                    nom:    d.nom    || '',
+                    heure:  d.heure  || '',
+                    lieu:   d.lieu   || '',
+                    limite: d.limite || ''
+                });
+            }
+        });
+
+        // Re-render le calendrier avec les nouveaux événements
+        if (typeof renderCalendar === 'function') {
+            renderCalendar();
+        }
+    } catch(e) {
+        console.warn('[Firebase] Calendrier:', e.message);
+    }
+}
+
+// ═══════════════════════════════════════════════
+//  FAQ — ajoute les questions Firestore
+//  à la section #faq existante
+// ═══════════════════════════════════════════════
+async function loadFaq() {
+    try {
+        const q = query(collection(db, 'faq'), orderBy('createdAt'));
+        const snap = await getDocs(q);
+        if (snap.empty) return;
+
+        const section = document.getElementById('faq');
+        if (!section) return;
+
+        snap.forEach(docSnap => {
+            const d = docSnap.data();
+            const details = document.createElement('details');
+            const summary = document.createElement('summary');
+            summary.textContent = d.question || '';
+            const p = document.createElement('p');
+            p.textContent = d.reponse || '';
+            details.appendChild(summary);
+            details.appendChild(p);
+            section.appendChild(details);
+        });
+    } catch(e) {
+        console.warn('[Firebase] FAQ:', e.message);
+    }
+}
+
+// ═══════════════════════════════════════════════
+//  GALERIE — ajoute les photos Firestore
+//  à la grille existante #galleryGrid
+// ═══════════════════════════════════════════════
+async function loadGalerie() {
+    try {
+        const q = query(collection(db, 'galerie'), orderBy('createdAt', 'desc'));
+        const snap = await getDocs(q);
+        if (snap.empty) return;
+
+        const grid = document.getElementById('galleryGrid');
+        if (!grid) return;
+
+        snap.forEach(docSnap => {
+            const d = docSnap.data();
+            if (!d.url) return;
+
+            const item = document.createElement('div');
+            item.className = 'gallery-item';
+
+            const img = document.createElement('img');
+            img.src = esc(d.url);
+            img.alt = esc(d.alt || 'Photo du club');
+            img.loading = 'lazy';
+
+            const overlay = document.createElement('div');
+            overlay.className = 'gallery-overlay';
+            overlay.textContent = '🔍';
+
+            item.appendChild(img);
+            item.appendChild(overlay);
+
+            img.onerror = () => {
+                item.innerHTML = '';
+                const ph = document.createElement('div');
+                ph.className = 'gallery-placeholder';
+                ph.innerHTML = '<span>📷</span><span>Photo indisponible</span>';
+                item.appendChild(ph);
+            };
+
+            item.addEventListener('click', () => {
+                if (typeof openLightbox === 'function') {
+                    openLightbox(d.url, d.alt || 'Photo du club');
+                }
+            });
+
+            grid.appendChild(item);
+        });
+    } catch(e) {
+        console.warn('[Firebase] Galerie:', e.message);
+    }
+}
+
+// ═══════════════════════════════════════════════
+//  LANCEMENT — après que le DOM soit prêt
+// ═══════════════════════════════════════════════
+window.addEventListener('load', () => {
+    loadActualites();
+    loadClassement();
+    loadCalendrier();
+    loadFaq();
+    loadGalerie();
+});
+</script>
+<!-- ===================== FIN FIREBASE ===================== -->
 </body>
 </html>
