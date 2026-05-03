@@ -413,10 +413,10 @@ document.getElementById('login-pwd').addEventListener('keydown', e => {
     if (e.key === 'Enter') document.getElementById('login-btn').click();
 });
 
-document.getElementById('logout-btn').addEventListener('click', () => {
-    signOut(auth).then(() => { window.location.href = 'https://lukasprn2.github.io/petanque80/'; });
+document.getElementById('logout-btn').addEventListener('click', async () => {
+    await signOut(auth);
+    window.location.replace('https://lukasprn2.github.io/petanque80/');
 });
-
 onAuthStateChanged(auth, user => {
     if (user) {
         document.getElementById('login-screen').style.display = 'none';
