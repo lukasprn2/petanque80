@@ -963,16 +963,19 @@ document.addEventListener('keydown', function(e) {
 
 <script>
 (function() {
-   window.EVENTS = [];
+    window.EVENTS = [];
     var MONTHS = ['Janvier','Février','Mars','Avril','Mai','Juin','Juillet','Août','Septembre','Octobre','Novembre','Décembre'];
     var DAYS   = ['Lun','Mar','Mer','Jeu','Ven','Sam','Dim'];
 
-    var eventMonths = [];
-    EVENTS.forEach(function(e) { if (eventMonths.indexOf(e.m - 1) === -1) eventMonths.push(e.m - 1); });
-    eventMonths.sort(function(a, b) { return a - b; });
-
-    var curMonth    = eventMonths[0];
+    var curMonth    = null;
     var selectedDay = null;
+
+    function getEventMonths() {
+        var months = [];
+        EVENTS.forEach(function(e) { if (months.indexOf(e.m - 1) === -1) months.push(e.m - 1); });
+        months.sort(function(a, b) { return a - b; });
+        return months;
+    }
 
     function getEventsForDay(month, day) {
         return EVENTS.filter(function(e) { return e.m - 1 === month && e.d === day; });
@@ -991,6 +994,14 @@ document.addEventListener('keydown', function(e) {
     function firstDayOfMonth(m, y) { var d = new Date(y, m, 1).getDay(); return d === 0 ? 6 : d - 1; }
 
     window.renderCalendar = function() {
+        var eventMonths = getEventMonths();
+        if (eventMonths.length === 0) return;
+
+        // Initialiser curMonth si pas encore défini
+        if (curMonth === null || eventMonths.indexOf(curMonth) === -1) {
+            curMonth = eventMonths[0];
+        }
+
         var year = 2026;
         document.getElementById('calMonthLabel').textContent = MONTHS[curMonth] + ' 2026';
         var idx = eventMonths.indexOf(curMonth);
@@ -1035,15 +1046,16 @@ document.addEventListener('keydown', function(e) {
                 if (eventDays[d].interne)  { var dot3 = document.createElement('div'); dot3.className = 'cal-dot interne';  dotsEl.appendChild(dot3); }
                 cell.appendChild(dotsEl);
                 (function(day) {
-                    cell.addEventListener('click', function() { selectedDay = day;window.renderCalendar(); renderDetail(day); });
+                    cell.addEventListener('click', function() { selectedDay = day; window.renderCalendar(); renderDetail(day); });
                 })(d);
             }
             grid.appendChild(cell);
         }
         if (selectedDay && eventDays[selectedDay]) { renderDetail(selectedDay); } else { renderDetail(null); }
-    }
+    };
 
     function renderDetail(day) {
+        var eventMonths = getEventMonths();
         var detail = document.getElementById('calDetail');
         detail.innerHTML = '';
         if (!day) {
@@ -1071,7 +1083,7 @@ document.addEventListener('keydown', function(e) {
             var card = document.createElement('div');
             card.className = 'cal-event-card type-' + (isChamp ? 'champ' : isInterne ? 'interne' : 'concours');
             var typeEl = document.createElement('div'); typeEl.className = 'ev-type';
-            typeEl.textContent = isChamp ? '🏆 Championnats de la Somme' : isInterne ? '🏠 Concours Interne et ouvert à tous' : '🎯 Concours à officiels à Boves';
+            typeEl.textContent = isChamp ? '🏆 Championnats de la Somme' : isInterne ? '🏠 Concours Interne et ouvert à tous' : '🎯 Concours officiels à Boves';
             var nomEl2 = document.createElement('div'); nomEl2.className = 'ev-name';
             nomEl2.textContent = e.nom;
             card.appendChild(typeEl);
@@ -1097,14 +1109,17 @@ document.addEventListener('keydown', function(e) {
     }
 
     document.getElementById('calPrev').addEventListener('click', function() {
+        var eventMonths = getEventMonths();
         var idx = eventMonths.indexOf(curMonth);
-        if (idx > 0) { curMonth = eventMonths[idx - 1]; selectedDay = null; renderCalendar(); }
+        if (idx > 0) { curMonth = eventMonths[idx - 1]; selectedDay = null; window.renderCalendar(); }
     });
     document.getElementById('calNext').addEventListener('click', function() {
+        var eventMonths = getEventMonths();
         var idx = eventMonths.indexOf(curMonth);
-        if (idx < eventMonths.length - 1) { curMonth = eventMonths[idx + 1]; selectedDay = null; renderCalendar(); }
+        if (idx < eventMonths.length - 1) { curMonth = eventMonths[idx + 1]; selectedDay = null; window.renderCalendar(); }
     });
-    renderCalendar();
+
+    window.renderCalendar();
 })();
 </script>
 
