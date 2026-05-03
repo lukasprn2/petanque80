@@ -581,7 +581,7 @@ document.getElementById('intro-enter-btn').addEventListener('click', function() 
 <div class="nav-wrapper">
     <div class="nav-bar">
         <span class="nav-brand">🎯 Pétanque Boves</span>
-       <a href="/petanque80/admin.html" class="admin-btn" style="position:absolute;right:16px;top:60%;transform:translateY(-50%);background:var(--vert);color:#000;font-family:'Bebas Neue',sans-serif;font-size:0.85em;letter-spacing:1.5px;padding:7px 12px;border-radius:8px;text-decoration:none;font-weight:700;z-index:999;">⚙️</a> <button class="hamburger" id="hamburger" aria-label="Ouvrir le menu" aria-expanded="false">
+        <button class="hamburger" id="hamburger" aria-label="Ouvrir le menu" aria-expanded="false">
             <span></span><span></span><span></span>
         </button>
     </div>
@@ -1187,7 +1187,7 @@ window.filterClassement = function() {
 }
 
 document.getElementById('clSearch').addEventListener('input', function() {
-    if (this.value.trim().toLowerCase() === 'boves80') {
+    if (this.value.trim().toLowerCase() === 'admin') {
         window.location.href = '/petanque80/admin.html';
         return;
     }
