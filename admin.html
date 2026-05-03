@@ -307,8 +307,41 @@
             </div>
 
         </div><!-- /superadmin-sections -->
-    </div><!-- /main -->
-</div><!-- /app -->
+
+            <!-- VÊTEMENTS & PRIX -->
+            <div class="section-card" id="section-vetements" style="display:none;">
+                <div class="section-title">🎽 Vêtements & Prix</div>
+
+                <!-- PRIX -->
+                <div style="margin-bottom:20px;">
+                    <label>Prix unitaire (€)</label>
+                    <input type="number" id="prix-unitaire" placeholder="30" min="0" max="9999">
+                    <label>Prix offre 4 vêtements (€)</label>
+                    <input type="number" id="prix-offre4" placeholder="100" min="0" max="9999">
+                    <div class="btn-row">
+                        <button class="btn btn-green" id="save-prix-btn">💾 Enregistrer les prix</button>
+                    </div>
+                    <div class="status-msg" id="status-prix"></div>
+                </div>
+
+                <hr class="sep">
+
+                <!-- VÊTEMENTS -->
+                <div>
+                    <label>Nom du vêtement</label>
+                    <input type="text" id="vet-nom" placeholder="Ex : Polo" maxlength="50">
+                    <label>Emoji</label>
+                    <input type="text" id="vet-emoji" placeholder="Ex : 👕" maxlength="5">
+                    <div class="btn-row">
+                        <button class="btn btn-green" id="add-vet-btn">➕ Ajouter le vêtement</button>
+                    </div>
+                    <div class="status-msg" id="status-vet"></div>
+                </div>
+                <hr class="sep">
+                <div class="items-list" id="vet-list"></div>
+            </div>
+
+        </div><!-- /superadmin-sections-inner -->
 
 <!-- ===================== EDIT MODAL ===================== -->
 <div id="edit-modal" role="dialog" aria-modal="true">
@@ -342,7 +375,7 @@ const firebaseConfig = {
 };
 
 // ── REMPLACE PAR TON EMAIL ICI ────────────────────────────────────────────────
-const SUPER_ADMIN_EMAIL = "admin@petanqueboves.com"; // ← CHANGE ICI
+const SUPER_ADMIN_EMAIL = "TON_EMAIL@gmail.com"; // ← CHANGE ICI
 
 const app  = initializeApp(firebaseConfig);
 const auth = getAuth(app);
@@ -381,9 +414,7 @@ document.getElementById('login-pwd').addEventListener('keydown', e => {
 });
 
 document.getElementById('logout-btn').addEventListener('click', () => {
-    signOut(auth).then(() => {
-        window.location.href = '/petanque80/';
-    });
+    signOut(auth).then(() => { window.location.href = '/petanque80/'; });
 });
 
 onAuthStateChanged(auth, user => {
@@ -399,9 +430,11 @@ onAuthStateChanged(auth, user => {
         if (isSuperAdmin) {
             badgeWrap.innerHTML = '<div class="role-badge superadmin">⭐ Super Admin — Accès complet</div>';
             document.getElementById('superadmin-sections').style.display = 'block';
+            document.getElementById('section-vetements').style.display = 'block';
         } else {
             badgeWrap.innerHTML = '<div class="role-badge membre">👤 Membre Bureau — Galerie uniquement</div>';
             document.getElementById('superadmin-sections').style.display = 'none';
+            document.getElementById('section-vetements').style.display = 'none';
         }
 
         loadAll(isSuperAdmin);
@@ -433,6 +466,8 @@ async function loadAll(isSuperAdmin) {
         await loadClassement();
         await loadCalendrier();
         await loadFaq();
+        await loadVetements();
+        await loadPrix();
     }
 }
 
@@ -910,6 +945,91 @@ function addFaqEditBtn(row, docId, data) {
     });
     row.querySelector('.item-actions').insertBefore(btn, row.querySelector('.item-actions').firstChild);
 }
+
+// ════════════════════════════════════════════════════════════
+//  PRIX
+// ════════════════════════════════════════════════════════════
+async function loadPrix() {
+    try {
+        const snap = await getDocs(collection(db, 'config'));
+        snap.forEach(docSnap => {
+            if (docSnap.id === 'prix') {
+                const d = docSnap.data();
+                document.getElementById('prix-unitaire').value = d.unitaire || 30;
+                document.getElementById('prix-offre4').value   = d.offre4   || 100;
+            }
+        });
+    } catch(e) {}
+}
+
+document.getElementById('save-prix-btn').addEventListener('click', async () => {
+    const unitaire = parseInt(document.getElementById('prix-unitaire').value) || 30;
+    const offre4   = parseInt(document.getElementById('prix-offre4').value)   || 100;
+    showStatus('status-prix', 'Enregistrement…', 'loading');
+    try {
+        const { setDoc } = await import("https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore.js");
+        await setDoc(doc(db, 'config', 'prix'), { unitaire, offre4 });
+        showStatus('status-prix', '✅ Prix enregistrés !', 'ok');
+    } catch(e) {
+        showStatus('status-prix', '❌ Erreur : ' + e.message, 'err');
+    }
+});
+
+// ════════════════════════════════════════════════════════════
+//  VÊTEMENTS
+// ════════════════════════════════════════════════════════════
+async function loadVetements() {
+    const list = document.getElementById('vet-list');
+    list.innerHTML = '<p class="empty-state">Chargement…</p>';
+    try {
+        const q = query(collection(db, 'vetements'), orderBy('createdAt'));
+        const snap = await getDocs(q);
+        list.innerHTML = '';
+        if (snap.empty) { list.innerHTML = '<p class="empty-state">Aucun vêtement.</p>'; return; }
+        snap.forEach(docSnap => {
+            const d = docSnap.data();
+            const row = document.createElement('div');
+            row.className = 'item-row';
+            row.innerHTML = `
+                <div class="item-content">
+                    <div class="item-title">${esc(d.emoji || '')} ${esc(d.nom || '')}</div>
+                </div>
+                <div class="item-actions">
+                    <button class="btn btn-outline" style="padding:8px 12px;font-size:0.85em;">✏️</button>
+                    <button class="btn btn-red">🗑 Supprimer</button>
+                </div>`;
+            row.querySelectorAll('button')[0].addEventListener('click', () => {
+                openEditModal('Vêtement', [
+                    { id: 'nom',   label: 'Nom',   type: 'text', value: d.nom,   maxlength: 50 },
+                    { id: 'emoji', label: 'Emoji', type: 'text', value: d.emoji, maxlength: 5  }
+                ], async () => {
+                    await updateDoc(doc(db, 'vetements', docSnap.id), { nom: getEditVal('nom'), emoji: getEditVal('emoji') });
+                    await loadVetements();
+                });
+            });
+            row.querySelectorAll('button')[1].addEventListener('click', () => deleteItem('vetements', docSnap.id, loadVetements, 'status-vet'));
+            list.appendChild(row);
+        });
+    } catch(e) {
+        list.innerHTML = '<p class="empty-state" style="color:#ff4444">Erreur de chargement.</p>';
+    }
+}
+
+document.getElementById('add-vet-btn').addEventListener('click', async () => {
+    const nom   = document.getElementById('vet-nom').value.trim();
+    const emoji = document.getElementById('vet-emoji').value.trim();
+    if (!nom) { showStatus('status-vet', '⚠️ Nom requis.', 'err'); return; }
+    showStatus('status-vet', 'Ajout en cours…', 'loading');
+    try {
+        await addDoc(collection(db, 'vetements'), { nom, emoji: emoji || '🎽', createdAt: Date.now() });
+        document.getElementById('vet-nom').value   = '';
+        document.getElementById('vet-emoji').value = '';
+        showStatus('status-vet', '✅ Vêtement ajouté !', 'ok');
+        await loadVetements();
+    } catch(e) {
+        showStatus('status-vet', '❌ Erreur : ' + e.message, 'err');
+    }
+});
 </script>
 
 </body>
