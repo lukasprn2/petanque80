@@ -88,9 +88,8 @@
             .nav-icon { font-size: 1em; flex-shrink: 0; }
         }
         @media (min-width: 768px) {
-           .hamburger, .nav-brand { display: none; }
-.nav-bar { display: flex; justify-content: flex-end; padding: 0 16px; }
-.nav-bar .admin-btn { display: flex; }
+       
+.hamburger, .nav-brand, .nav-bar { display: none; }
             .nav-menu { max-height: none !important; overflow: visible; display: flex; flex-wrap: wrap; justify-content: center; gap: 4px; padding: 8px 16px; background: transparent; border-top: none; }
             .nav-menu a { padding: 6px 11px; border-bottom: none; border-radius: 6px; font-size: 0.87em; color: #ccc; display: flex; align-items: center; gap: 12px; text-decoration: none; font-weight: 700; transition: color 0.2s, background 0.2s, padding-left 0.2s; }
             .nav-menu a:hover { padding-left: 11px; color: var(--vert); background: rgba(11,255,4,0.08); }
@@ -671,7 +670,7 @@ document.getElementById('intro-enter-btn').addEventListener('click', function() 
         entries.forEach(function(entry) {
             if (entry.isIntersecting && !observed) {
                 observed = true;
-                animateCount(document.getElementById('count-membres'), 88, 1200);
+                animateCount(document.getElementById('count-membres'), 89, 1200);
                 observer.disconnect();
             }
         });
@@ -1495,7 +1494,7 @@ document.getElementById('newOrderBtn').addEventListener('click', function() {
 
 <script>
 (function() {
-    var ALLOWED_IMG_PATTERN = /^[a-zA-Z0-9_\-]+\.webp$/;
+    var ALLOWED_IMG_PATTERN = /^(https?:\/\/.+|[a-zA-Z0-9_\-]+\.(webp|jpg|jpeg|png))$/;
     var PHOTOS = [
         { src: 'photo1.webp', alt: 'Photo 1' },
         { src: 'photo2.webp', alt: 'Photo 2' },
@@ -1555,8 +1554,8 @@ document.getElementById('newOrderBtn').addEventListener('click', function() {
         }
     }, 2000);
 
-    window.openLightbox = function(src, alt) {
-        if (!ALLOWED_IMG_PATTERN.test(src)) return;
+   window.openLightbox = function(src, alt) {
+    if (!src) return;
         document.getElementById('lightbox-img').src = src;
         document.getElementById('lightbox-img').alt = alt;
         document.getElementById('lightbox').classList.add('open');
