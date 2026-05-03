@@ -130,6 +130,12 @@
                 width: 300px;
             }
         }
+        @media (min-width: 768px) {
+    #actualites .actu-img {
+        width: 360px !important;
+        max-width: 360px !important;
+    }
+}
 
         .social-links { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 18px; }
         .social-btn { display: inline-flex; align-items: center; gap: 10px; padding: 12px 20px; border-radius: 12px; text-decoration: none; font-family: 'Nunito', sans-serif; font-weight: 700; font-size: 0.92em; border: 2px solid transparent; transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s, opacity 0.2s; }
@@ -1869,7 +1875,8 @@ async function loadActualites() {
                 img.src = esc(d.imgUrl);
                 img.alt = esc(d.titre || 'Actualité');
                 img.loading = 'lazy';
-                img.style.cssText = 'width:100%;height:auto;display:block;border-radius:10px 10px 0 0;';
+                img.style.cssText = 'width:100%;height:auto;display:block;border-radius:10px 10px 0 0;max-width:100%;';
+img.className = 'actu-img';
                 img.onerror = () => img.remove();
                 card.appendChild(img);
             }
