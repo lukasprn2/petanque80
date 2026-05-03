@@ -380,7 +380,11 @@ document.getElementById('login-pwd').addEventListener('keydown', e => {
     if (e.key === 'Enter') document.getElementById('login-btn').click();
 });
 
-document.getElementById('logout-btn').addEventListener('click', () => signOut(auth));
+document.getElementById('logout-btn').addEventListener('click', () => {
+    signOut(auth).then(() => {
+        window.location.href = '/petanque80/';
+    });
+});
 
 onAuthStateChanged(auth, user => {
     if (user) {
