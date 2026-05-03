@@ -963,75 +963,7 @@ document.addEventListener('keydown', function(e) {
 
 <script>
 (function() {
-    window.EVENTS = [
-        // ── Concours à Boves ─────────────────────────────────────────────────────
-        {type:'concours', m:4,  d:14, nom:'Doublette Vétérans',         heure:'14h00', lieu:'Boves', limite:'jet du but'},
-        {type:'concours', m:5,  d:9,  nom:'Doublette Mixte Officielle', heure:'14h00', lieu:'Boves', limite:'jet du but'},
-        {type:'concours', m:5,  d:19, nom:'Doublette Vétérans',         heure:'09h00', lieu:'Boves', limite:'jet du but'},
-        {type:'concours', m:6,  d:19, nom:'Triplette Vétérans',         heure:'09h00', lieu:'Boves', limite:'jet du but'},
-        {type:'concours', m:6,  d:20, nom:'Triplette Officielle',       heure:'09h00', lieu:'Boves', limite:'jet du but'},
-        {type:'concours', m:7,  d:7,  nom:'Doublette Vétérans',         heure:'14h00', lieu:'Boves', limite:'jet du but'},
-        {type:'concours', m:10, d:6,  nom:'Doublette Vétérans',         heure:'14h00', lieu:'Boves', limite:'jet du but'},
-        // ── Concours Internes et ouvert à tous ────────────────────────────────────────────────────
-          {type:'interne',  m:6, d:13,  nom:'Interclub Ailly sur Noye',      heure:'14h00', lieu:'Boves', limite:'jet du but'},
-        {type:'interne',  m:7,  d:5,  nom:'Triplette Interne – 4 parties', heure:'14h00', lieu:'Boves', limite:'jet du but'},
-        {type:'interne',  m:8,  d:8,  nom:'Doublette Interne – 4 parties',   heure:'14h00', lieu:'Boves', limite:'jet du but'},
-        {type:'interne',  m:11, d:21, nom:'Doublette Interne',               heure:'13h30', lieu:'Boves', limite:'jet du but'},
-        {type:'interne',  m:12, d:5,  nom:'Doublette Interne',               heure:'13h30', lieu:'Boves', limite:'jet du but'},
-        
-        // ── Championnat de la Somme – avril / mai ────────────────────────────────
-        {type:'champ', m:4, d:4,  nom:'Trip. Jeu Provençal',       heure:'8h00',  lieu:'Albert',                            limite:'26/3'},
-        {type:'champ', m:4, d:5,  nom:'Reprise',                   heure:'9h00',  lieu:'Albert',                            limite:''},
-        {type:'champ', m:4, d:6,  nom:'Reprise',                   heure:'9h00',  lieu:'Albert',                            limite:''},
-        {type:'champ', m:4, d:11, nom:'Triplette Senior M',        heure:'10h00', lieu:'Feuquières',                        limite:'02/4'},
-        {type:'champ', m:4, d:11, nom:'Triplette Senior F',        heure:'14h00', lieu:'Feuquières',                        limite:'02/4'},
-        {type:'champ', m:4, d:12, nom:'Reprise',                   heure:'09h00', lieu:'Feuquières',                        limite:''},
-        {type:'champ', m:4, d:12, nom:'Triplette (J, C, M)',       heure:'09h30', lieu:'Feuquières',                        limite:'Sur place'},
-        {type:'champ', m:4, d:12, nom:'Tir précision J',           heure:'',      lieu:'Feuquières',                        limite:'Sur place'},
-        {type:'champ', m:4, d:18, nom:'Doublette Mixte',           heure:'10h00', lieu:'Fienvillers-Doullens',               limite:'09/4'},
-        {type:'champ', m:4, d:19, nom:'Reprise',                   heure:'9h00',  lieu:'Fienvillers-Doullens',               limite:''},
-        {type:'champ', m:4, d:22, nom:'Triplette Vétéran',         heure:'10h00', lieu:'Asptt Amiens',                      limite:'09/4'},
-        {type:'champ', m:4, d:23, nom:'Reprise',                   heure:'9h00',  lieu:'Asptt Amiens',                      limite:''},
-        {type:'champ', m:4, d:25, nom:'Doub Senior Masc.',         heure:'10h00', lieu:'Feuquières',                        limite:'16/4'},
-        {type:'champ', m:4, d:25, nom:'TT Senior Fém.',            heure:'14h00', lieu:'Feuquières',                        limite:''},
-        {type:'champ', m:4, d:26, nom:'Reprise',                   heure:'09h00', lieu:'Feuquières',                        limite:'16/4'},
-        {type:'champ', m:4, d:26, nom:'Doub (J, C, M, B)',         heure:'09h30', lieu:'Feuquières',                        limite:'Sur place'},
-        {type:'champ', m:5, d:2,  nom:'Triplette Mixte',           heure:'10h00', lieu:'Gamaches',                          limite:'23/4'},
-        {type:'champ', m:5, d:3,  nom:'Reprise',                   heure:'09h00', lieu:'Gamaches',                          limite:''},
-        {type:'champ', m:5, d:8,  nom:'Doub. Jeu Provençal',       heure:'8h00',  lieu:'Fienvillers / St Léger-lès-Domart', limite:'31/4'},
-        {type:'champ', m:5, d:9,  nom:'Reprise',                   heure:'9h00',  lieu:'Fienvillers / St Léger-lès-Domart', limite:''},
-        {type:'champ', m:5, d:10, nom:'Reprise',                   heure:'9h00',  lieu:'Fienvillers / St Léger-lès-Domart', limite:''},
-        // ── Championnat de la Somme – juillet ───────────────────────────────────
-        {type:'champ', m:7, d:19, nom:'CDCJP – Secteur Centre',    heure:'journée',    lieu:'Nesle',        limite:''},
-        {type:'champ', m:7, d:19, nom:'CDCJP – Secteur Maritime',  heure:'après-midi', lieu:'Pernois',      limite:''},
-        {type:'champ', m:7, d:20, nom:'CDCJP – Secteur Centre',    heure:'après-midi', lieu:'Nesle',        limite:''},
-        // ── Championnat de la Somme – septembre ─────────────────────────────────
-        {type:'champ', m:9, d:2,  nom:'CDC Vétéran – Secteur Centre',   heure:'journée',    lieu:'Poix',         limite:''},
-        {type:'champ', m:9, d:2,  nom:'CDC Vétéran – Secteur Maritime', heure:'journée',    lieu:'Feuquières',   limite:''},
-        {type:'champ', m:9, d:6,  nom:'CDC3 et CDC4',                   heure:'matin',      lieu:'Bouvaincourt', limite:''},
-        {type:'champ', m:9, d:6,  nom:'CDC1, CDC2 et CDCF',             heure:'après-midi', lieu:'Bouvaincourt', limite:''},
-        {type:'champ', m:9, d:6,  nom:'CDC2',                           heure:'matin',      lieu:'Poix',         limite:''},
-        {type:'champ', m:9, d:6,  nom:'CDC1, CDC3 et CDC4',             heure:'après-midi', lieu:'Poix',         limite:''},
-        {type:'champ', m:9, d:7,  nom:'CDCJP – Secteur Centre',         heure:'journée',    lieu:'Nesle',        limite:''},
-        {type:'champ', m:9, d:7,  nom:'CDCJP – Secteur Maritime',       heure:'journée',    lieu:'Pernois',      limite:''},
-        {type:'champ', m:9, d:9,  nom:'CDC Vétéran – Secteur Centre',   heure:'journée',    lieu:'Nesle',        limite:''},
-        {type:'champ', m:9, d:9,  nom:'CDC Vétéran – Secteur Maritime', heure:'journée',    lieu:'Friville',     limite:''},
-        {type:'champ', m:9, d:16, nom:'CDC Vétéran – Secteur Centre',   heure:'journée',    lieu:'Ham',          limite:''},
-        {type:'champ', m:9, d:16, nom:'CDC Vétéran – Secteur Maritime', heure:'journée',    lieu:'Friville',     limite:''},
-        {type:'champ', m:9, d:21, nom:'CDCJP – Finales',                heure:'journée',    lieu:'Nesle',        limite:''},
-        {type:'champ', m:9, d:23, nom:'CDC Vétéran – Finales',          heure:'journée',    lieu:'Ham',          limite:''},
-        // ── Championnats de la Somme – octobre ───────────────────────────────────
-        {type:'champ', m:10, d:4,  nom:'CDC1, CDC2, CDC3, CDC4 et CDCF – Maritime', heure:'journée', lieu:'Feuquières',   limite:''},
-        {type:'champ', m:10, d:4,  nom:'CDC1, CDC2, CDC3 et CDC4 – Centre',         heure:'journée', lieu:'Dreuil',       limite:''},
-        {type:'champ', m:10, d:5,  nom:'Reprise – Secteur Maritime',                heure:'',        lieu:'Feuquières',   limite:''},
-        {type:'champ', m:10, d:18, nom:'CDC1 et CDC2 – Maritime',                   heure:'journée', lieu:'Ault',         limite:''},
-        {type:'champ', m:10, d:18, nom:'CDC3 et CDC4 – Maritime',                   heure:'journée', lieu:'Béthencourt',  limite:''},
-        {type:'champ', m:10, d:18, nom:'CDC1, CDC2, CDC3, CDC4 et CDCF – Centre',   heure:'journée', lieu:'Asptt Amiens', limite:''},
-        {type:'champ', m:10, d:19, nom:'Reprise',                                   heure:'',        lieu:'Orléans',      limite:''},
-        // ── Championnats de la Somme – novembre ──────────────────────────────────
-        {type:'champ', m:11, d:8,  nom:'CDC1, CDC2, CDC3, CDC4 et CDCF – Finales',  heure:'journée', lieu:'Abbeville',    limite:''}
-    ];
-
+   window.EVENTS = [];
     var MONTHS = ['Janvier','Février','Mars','Avril','Mai','Juin','Juillet','Août','Septembre','Octobre','Novembre','Décembre'];
     var DAYS   = ['Lun','Mar','Mer','Jeu','Ven','Sam','Dim'];
 
@@ -1195,28 +1127,7 @@ document.addEventListener('keydown', function(e) {
 </section>
 
 <script>
-window.clData = [
-    {rang:1, nom:'Devauchelle', prenom:'Arnaud',        pts:7, cat:'Promotion'},
-    {rang:2, nom:'Bore',        prenom:'Sébastien',     pts:5, cat:'Honneur'},
-    {rang:3, nom:'Coovertis',     prenom:'Franck', pts:5, cat:'Promotion'},
-    {rang:4, nom:'Briault',     prenom:'Jean Philippe', pts:3, cat:'Non-classé'},
-    {rang:5, nom:'Demarquet',   prenom:'Kevin',         pts:3, cat:'Promotion'},
-    {rang:6, nom:'Delattre',    prenom:'Pascal',        pts:3, cat:'Promotion'},
-    {rang:7, nom:'Curillon',     prenom:'Jean-Jacques',         pts:2, cat:'Promotion'},
-    {rang:8, nom:'Macret',     prenom:'Sébastien',         pts:2, cat:'Promotion'},
-    {rang:9, nom:'Sauveur',     prenom:'Dimitri',         pts:2, cat:'Non-classé'},
-    {rang:10, nom:'Sauveur',     prenom:'Clotilde',         pts:2, cat:'Non-classé'},
-    {rang:11, nom:'Ancelle',     prenom:'Denis',         pts:2, cat:'Promotion'},
-     {rang:12, nom:'Douche',     prenom:'Jean-Marc',         pts:2, cat:'Non-classé'},
-    {rang:13, nom:'Lozano',      prenom:'Mathis',        pts:2, cat:'Non-classé'},
-    {rang:14, nom:'Langlois',      prenom:'Emmanuel',        pts:1, cat:'Promotion'},
-    {rang:15, nom:'Marquant',    prenom:'Philippe',      pts:1, cat:'Non-classé'},
-     {rang:16, nom:'Celos',    prenom:'Charles',      pts:1, cat:'Non-classé'},
-    {rang:17, nom:'Legris',    prenom:'Daniel',      pts:1, cat:'Non-classé'},
-    {rang:18, nom:'Scozzesi',    prenom:'Tony',      pts:1, cat:'Promotion'},
-    {rang:19, nom:'Lozano',      prenom:'Frederic',      pts:1, cat:'Non-classé'},
-    {rang:20, nom:'Depestel',      prenom:'Jean-Claude',      pts:1, cat:'Non-classé'},
-];
+window.clData = [];
 
 function buildClRow(d) {
     var tr = document.createElement('tr');
@@ -1726,17 +1637,6 @@ document.getElementById('newOrderBtn').addEventListener('click', function() {
 <!-- ===================== FAQ ===================== -->
 <section id="faq" class="faq">
     <h2>FAQ</h2>
-    <details><summary>Comment s'inscrire au club ?</summary><p>Vous pouvez vous inscrire lors des entraînements ou en contactant un membre du bureau. Utilisez le bouton email dans la section Contacts.</p></details>
-    <details><summary>Le club accepte-t-il les débutants ?</summary><p>Oui, tous les niveaux sont les bienvenus. Nos membres expérimentés sont là pour vous accompagner et vous faire progresser dans la bonne humeur.</p></details>
-    <details><summary>Quels sont les jours d'entraînement ?</summary><p>Les entraînements ont lieu le vendredi après-midi, le samedi après-midi, le dimanche après-midi et le mardi après-midi au Chemin du Stade à Boves.</p></details>
-    <details><summary>Quel est le montant de la licence ?</summary><p>Les tarifs sont les suivants : <strong style="color:var(--vert)">Seniors 45 €</strong> — <strong style="color:var(--vert)">Vétérans 25 €</strong> — <strong style="color:var(--vert)">Jeunes et Femmes gratuit</strong>. L'adhésion au club est de <strong style="color:var(--vert)">15 €</strong> pour tous.</p></details>
-    <details><summary>Comment participer aux concours officiels ?</summary><p>Pour participer aux concours officiels, il faut être licencié à la FFPJP. Contactez le bureau pour obtenir votre licence et vous inscrire aux prochains concours.</p></details>
-    <details><summary>Le club est-il ouvert aux jeunes ?</summary><p>Absolument ! Le club accueille les jeunes joueurs avec plaisir. N'hésitez pas à venir avec vos enfants lors des entraînements pour découvrir la pétanque.</p></details>
-    <details><summary>Où se trouve le terrain du club ?</summary><p>Le terrain est situé Chemin du Stade à Boves (80440). Vous pouvez retrouver l'itinéraire dans la section Contacts.</p></details>
-    <details><summary>Comment commander les vêtements du club ?</summary><p>Rendez-vous dans la section Commande de Vêtements du site. Remplissez le formulaire avec vos tailles et le bureau vous recontactera. Le tarif est de 30 € par vêtement, avec une offre spéciale à 100 € pour 4 vêtements.</p></details>
-    <details><summary>Quelle est la différence entre pétanque et jeu provençal ?</summary><p>En pétanque, les joueurs tirent les pieds joints et dans un cercle. En jeu provençal, les joueurs prennent un élan de 1 à 3 pas avant de lancer. Les deux disciplines sont pratiquées au club.</p></details>
-    <details><summary>Y a-t-il des compétitions par équipes ?</summary><p>Oui ! Nous participons aux championnats en doublette (2 joueurs), triplette (3 joueurs) et tête-à-tête (1 contre 1). Il y a aussi des catégories mixtes, vétérans et jeunes.</p></details>
-    <details><summary>Comment suivre l'actualité du club ?</summary><p>Vous pouvez nous suivre sur Facebook, TikTok et Instagram via les boutons présents dans la section Contacts.</p></details>
 </section>
 
 <footer>
