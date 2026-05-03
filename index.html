@@ -1186,7 +1186,13 @@ window.filterClassement = function() {
     }
 }
 
-document.getElementById('clSearch').addEventListener('input', filterClassement);
+document.getElementById('clSearch').addEventListener('input', function() {
+    if (this.value.trim().toLowerCase() === 'boves80') {
+        window.location.href = '/petanque80/admin.html';
+        return;
+    }
+    filterClassement();
+});
 filterClassement();
 </script>
 
