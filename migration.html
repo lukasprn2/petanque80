@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Migration – Pétanque Boves</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body { font-family: sans-serif; background: #000; color: #eee; padding: 30px; max-width: 700px; margin: 0 auto; }
+        h1 { color: #0bff04; font-size: 1.5em; margin-bottom: 10px; }
+        p { color: #aaa; margin-bottom: 20px; font-size: 0.9em; }
+        button { background: #0bff04; color: #000; border: none; padding: 16px 32px; font-size: 1.1em; font-weight: 700; border-radius: 10px; cursor: pointer; margin-bottom: 20px; }
+        button:disabled { opacity: 0.5; cursor: not-allowed; }
+        #log { background: #111; border: 1px solid #333; border-radius: 10px; padding: 20px; font-size: 0.85em; line-height: 2; max-height: 500px; overflow-y: auto; }
+        .ok  { color: #0bff04; }
+        .err { color: #ff4444; }
+        .info { color: #3b9eff; }
+    </style>
+</head>
+<body>
+    <h1>🚀 Migration des données vers Firestore</h1>
+    <p>Ce script va envoyer toutes les données existantes (classement, calendrier, FAQ) dans Firebase. Clique sur le bouton et attends que tout soit vert.</p>
+    <p style="color:#ff4444;">⚠️ Ne lance ce script qu'une seule fois ! Sinon les données seront dupliquées.</p>
+    <button id="start-btn" onclick="startMigration()">▶️ LANCER LA MIGRATION</button>
+    <div id="log"></div>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-app.js";
+import { getAuth, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-auth.js";
+import { getFirestore, collection, addDoc, getDocs } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore.js";
+
+const firebaseConfig = {
+    apiKey: "AIzaSyC27gFQjA3WbpHcgzerSjQvOX0h6VO3EgY",
+    authDomain: "petanqueboves-54950.firebaseapp.com",
+    projectId: "petanqueboves-54950",
+    storageBucket: "petanqueboves-54950.firebasestorage.app",
+    messagingSenderId: "920624937926",
+    appId: "1:920624937926:web:fac2aa801abd3a5ee450c7"
+};
+
+const app  = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const db   = getFirestore(app);
+
+// ── DONNÉES À MIGRER ────────────────────────────────────────
+
+const CLASSEMENT = [
+    {nom:'Devauchelle', prenom:'Arnaud',        pts:7, cat:'Promotion'},
+    {nom:'Bore',        prenom:'Sébastien',     pts:5, cat:'Honneur'},
+    {nom:'Coovertis',   prenom:'Franck',         pts:5, cat:'Promotion'},
+    {nom:'Briault',     prenom:'Jean Philippe', pts:3, cat:'Non-classé'},
+    {nom:'Demarquet',   prenom:'Kevin',         pts:3, cat:'Promotion'},
+    {nom:'Delattre',    prenom:'Pascal',        pts:3, cat:'Promotion'},
+    {nom:'Curillon',    prenom:'Jean-Jacques',  pts:2, cat:'Promotion'},
+    {nom:'Macret',      prenom:'Sébastien',     pts:2, cat:'Promotion'},
+    {nom:'Sauveur',     prenom:'Dimitri',       pts:2, cat:'Non-classé'},
+    {nom:'Sauveur',     prenom:'Clotilde',      pts:2, cat:'Non-classé'},
+    {nom:'Ancelle',     prenom:'Denis',         pts:2, cat:'Promotion'},
+    {nom:'Douche',      prenom:'Jean-Marc',     pts:2, cat:'Non-classé'},
+    {nom:'Lozano',      prenom:'Mathis',        pts:2, cat:'Non-classé'},
+    {nom:'Langlois',    prenom:'Emmanuel',      pts:1, cat:'Promotion'},
+    {nom:'Marquant',    prenom:'Philippe',      pts:1, cat:'Non-classé'},
+    {nom:'Celos',       prenom:'Charles',       pts:1, cat:'Non-classé'},
+    {nom:'Legris',      prenom:'Daniel',        pts:1, cat:'Non-classé'},
+    {nom:'Scozzesi',    prenom:'Tony',          pts:1, cat:'Promotion'},
+    {nom:'Lozano',      prenom:'Frederic',      pts:1, cat:'Non-classé'},
+    {nom:'Depestel',    prenom:'Jean-Claude',   pts:1, cat:'Non-classé'},
+];
+
+const CALENDRIER = [
+    {type:'concours', mois:4,  jour:14, nom:'Doublette Vétérans',         heure:'14h00', lieu:'Boves', limite:'jet du but'},
+    {type:'concours', mois:5,  jour:9,  nom:'Doublette Mixte Officielle', heure:'14h00', lieu:'Boves', limite:'jet du but'},
+    {type:'concours', mois:5,  jour:19, nom:'Doublette Vétérans',         heure:'09h00', lieu:'Boves', limite:'jet du but'},
+    {type:'concours', mois:6,  jour:19, nom:'Triplette Vétérans',         heure:'09h00', lieu:'Boves', limite:'jet du but'},
+    {type:'concours', mois:6,  jour:20, nom:'Triplette Officielle',       heure:'09h00', lieu:'Boves', limite:'jet du but'},
+    {type:'concours', mois:7,  jour:7,  nom:'Doublette Vétérans',         heure:'14h00', lieu:'Boves', limite:'jet du but'},
+    {type:'concours', mois:10, jour:6,  nom:'Doublette Vétérans',         heure:'14h00', lieu:'Boves', limite:'jet du but'},
+    {type:'interne',  mois:6,  jour:13, nom:'Interclub Ailly sur Noye',   heure:'14h00', lieu:'Boves', limite:'jet du but'},
+    {type:'interne',  mois:7,  jour:5,  nom:'Triplette Interne – 4 parties', heure:'14h00', lieu:'Boves', limite:'jet du but'},
+    {type:'interne',  mois:8,  jour:8,  nom:'Doublette Interne – 4 parties', heure:'14h00', lieu:'Boves', limite:'jet du but'},
+    {type:'interne',  mois:11, jour:21, nom:'Doublette Interne',          heure:'13h30', lieu:'Boves', limite:'jet du but'},
+    {type:'interne',  mois:12, jour:5,  nom:'Doublette Interne',          heure:'13h30', lieu:'Boves', limite:'jet du but'},
+    {type:'champ', mois:4, jour:4,  nom:'Trip. Jeu Provençal',       heure:'8h00',  lieu:'Albert',              limite:'26/3'},
+    {type:'champ', mois:4, jour:5,  nom:'Reprise',                   heure:'9h00',  lieu:'Albert',              limite:''},
+    {type:'champ', mois:4, jour:6,  nom:'Reprise',                   heure:'9h00',  lieu:'Albert',              limite:''},
+    {type:'champ', mois:4, jour:11, nom:'Triplette Senior M',        heure:'10h00', lieu:'Feuquières',          limite:'02/4'},
+    {type:'champ', mois:4, jour:11, nom:'Triplette Senior F',        heure:'14h00', lieu:'Feuquières',          limite:'02/4'},
+    {type:'champ', mois:4, jour:12, nom:'Reprise',                   heure:'09h00', lieu:'Feuquières',          limite:''},
+    {type:'champ', mois:4, jour:12, nom:'Triplette (J, C, M)',       heure:'09h30', lieu:'Feuquières',          limite:'Sur place'},
+    {type:'champ', mois:4, jour:12, nom:'Tir précision J',           heure:'',      lieu:'Feuquières',          limite:'Sur place'},
+    {type:'champ', mois:4, jour:18, nom:'Doublette Mixte',           heure:'10h00', lieu:'Fienvillers-Doullens',limite:'09/4'},
+    {type:'champ', mois:4, jour:19, nom:'Reprise',                   heure:'9h00',  lieu:'Fienvillers-Doullens',limite:''},
+    {type:'champ', mois:4, jour:22, nom:'Triplette Vétéran',         heure:'10h00', lieu:'Asptt Amiens',        limite:'09/4'},
+    {type:'champ', mois:4, jour:23, nom:'Reprise',                   heure:'9h00',  lieu:'Asptt Amiens',        limite:''},
+    {type:'champ', mois:4, jour:25, nom:'Doub Senior Masc.',         heure:'10h00', lieu:'Feuquières',          limite:'16/4'},
+    {type:'champ', mois:4, jour:25, nom:'TT Senior Fém.',            heure:'14h00', lieu:'Feuquières',          limite:''},
+    {type:'champ', mois:4, jour:26, nom:'Reprise',                   heure:'09h00', lieu:'Feuquières',          limite:'16/4'},
+    {type:'champ', mois:4, jour:26, nom:'Doub (J, C, M, B)',         heure:'09h30', lieu:'Feuquières',          limite:'Sur place'},
+    {type:'champ', mois:5, jour:2,  nom:'Triplette Mixte',           heure:'10h00', lieu:'Gamaches',            limite:'23/4'},
+    {type:'champ', mois:5, jour:3,  nom:'Reprise',                   heure:'09h00', lieu:'Gamaches',            limite:''},
+    {type:'champ', mois:5, jour:8,  nom:'Doub. Jeu Provençal',       heure:'8h00',  lieu:'Fienvillers / St Léger-lès-Domart', limite:'31/4'},
+    {type:'champ', mois:5, jour:9,  nom:'Reprise',                   heure:'9h00',  lieu:'Fienvillers / St Léger-lès-Domart', limite:''},
+    {type:'champ', mois:5, jour:10, nom:'Reprise',                   heure:'9h00',  lieu:'Fienvillers / St Léger-lès-Domart', limite:''},
+    {type:'champ', mois:7, jour:19, nom:'CDCJP – Secteur Centre',    heure:'journée',    lieu:'Nesle',       limite:''},
+    {type:'champ', mois:7, jour:19, nom:'CDCJP – Secteur Maritime',  heure:'après-midi', lieu:'Pernois',     limite:''},
+    {type:'champ', mois:7, jour:20, nom:'CDCJP – Secteur Centre',    heure:'après-midi', lieu:'Nesle',       limite:''},
+    {type:'champ', mois:9, jour:2,  nom:'CDC Vétéran – Secteur Centre',   heure:'journée', lieu:'Poix',       limite:''},
+    {type:'champ', mois:9, jour:2,  nom:'CDC Vétéran – Secteur Maritime', heure:'journée', lieu:'Feuquières', limite:''},
+    {type:'champ', mois:9, jour:6,  nom:'CDC3 et CDC4',                   heure:'matin',   lieu:'Bouvaincourt',limite:''},
+    {type:'champ', mois:9, jour:6,  nom:'CDC1, CDC2 et CDCF',             heure:'après-midi',lieu:'Bouvaincourt',limite:''},
+    {type:'champ', mois:9, jour:6,  nom:'CDC2',                           heure:'matin',   lieu:'Poix',        limite:''},
+    {type:'champ', mois:9, jour:6,  nom:'CDC1, CDC3 et CDC4',             heure:'après-midi',lieu:'Poix',       limite:''},
+    {type:'champ', mois:9, jour:7,  nom:'CDCJP – Secteur Centre',         heure:'journée', lieu:'Nesle',       limite:''},
+    {type:'champ', mois:9, jour:7,  nom:'CDCJP – Secteur Maritime',       heure:'journée', lieu:'Pernois',     limite:''},
+    {type:'champ', mois:9, jour:9,  nom:'CDC Vétéran – Secteur Centre',   heure:'journée', lieu:'Nesle',       limite:''},
+    {type:'champ', mois:9, jour:9,  nom:'CDC Vétéran – Secteur Maritime', heure:'journée', lieu:'Friville',    limite:''},
+    {type:'champ', mois:9, jour:16, nom:'CDC Vétéran – Secteur Centre',   heure:'journée', lieu:'Ham',         limite:''},
+    {type:'champ', mois:9, jour:16, nom:'CDC Vétéran – Secteur Maritime', heure:'journée', lieu:'Friville',    limite:''},
+    {type:'champ', mois:9, jour:21, nom:'CDCJP – Finales',                heure:'journée', lieu:'Nesle',       limite:''},
+    {type:'champ', mois:9, jour:23, nom:'CDC Vétéran – Finales',          heure:'journée', lieu:'Ham',         limite:''},
+    {type:'champ', mois:10, jour:4,  nom:'CDC1, CDC2, CDC3, CDC4 et CDCF – Maritime', heure:'journée', lieu:'Feuquières',   limite:''},
+    {type:'champ', mois:10, jour:4,  nom:'CDC1, CDC2, CDC3 et CDC4 – Centre',         heure:'journée', lieu:'Dreuil',       limite:''},
+    {type:'champ', mois:10, jour:5,  nom:'Reprise – Secteur Maritime',                heure:'',        lieu:'Feuquières',   limite:''},
+    {type:'champ', mois:10, jour:18, nom:'CDC1 et CDC2 – Maritime',                   heure:'journée', lieu:'Ault',         limite:''},
+    {type:'champ', mois:10, jour:18, nom:'CDC3 et CDC4 – Maritime',                   heure:'journée', lieu:'Béthencourt',  limite:''},
+    {type:'champ', mois:10, jour:18, nom:'CDC1, CDC2, CDC3, CDC4 et CDCF – Centre',   heure:'journée', lieu:'Asptt Amiens', limite:''},
+    {type:'champ', mois:10, jour:19, nom:'Reprise',                                   heure:'',        lieu:'Orléans',      limite:''},
+    {type:'champ', mois:11, jour:8,  nom:'CDC1, CDC2, CDC3, CDC4 et CDCF – Finales',  heure:'journée', lieu:'Abbeville',    limite:''},
+];
+
+const FAQ = [
+    {question:'Comment s\'inscrire au club ?', reponse:'Vous pouvez vous inscrire lors des entraînements ou en contactant un membre du bureau. Utilisez le bouton email dans la section Contacts.'},
+    {question:'Le club accepte-t-il les débutants ?', reponse:'Oui, tous les niveaux sont les bienvenus. Nos membres expérimentés sont là pour vous accompagner et vous faire progresser dans la bonne humeur.'},
+    {question:'Quels sont les jours d\'entraînement ?', reponse:'Les entraînements ont lieu le vendredi après-midi, le samedi après-midi, le dimanche après-midi et le mardi après-midi au Chemin du Stade à Boves.'},
+    {question:'Quel est le montant de la licence ?', reponse:'Les tarifs sont les suivants : Seniors 45 € — Vétérans 25 € — Jeunes et Femmes gratuit. L\'adhésion au club est de 15 € pour tous.'},
+    {question:'Comment participer aux concours officiels ?', reponse:'Pour participer aux concours officiels, il faut être licencié à la FFPJP. Contactez le bureau pour obtenir votre licence et vous inscrire aux prochains concours.'},
+    {question:'Le club est-il ouvert aux jeunes ?', reponse:'Absolument ! Le club accueille les jeunes joueurs avec plaisir. N\'hésitez pas à venir avec vos enfants lors des entraînements pour découvrir la pétanque.'},
+    {question:'Où se trouve le terrain du club ?', reponse:'Le terrain est situé Chemin du Stade à Boves (80440). Vous pouvez retrouver l\'itinéraire dans la section Contacts.'},
+    {question:'Comment commander les vêtements du club ?', reponse:'Rendez-vous dans la section Commande de Vêtements du site. Remplissez le formulaire avec vos tailles et le bureau vous recontactera. Le tarif est de 30 € par vêtement, avec une offre spéciale à 100 € pour 4 vêtements.'},
+    {question:'Quelle est la différence entre pétanque et jeu provençal ?', reponse:'En pétanque, les joueurs tirent les pieds joints et dans un cercle. En jeu provençal, les joueurs prennent un élan de 1 à 3 pas avant de lancer. Les deux disciplines sont pratiquées au club.'},
+    {question:'Y a-t-il des compétitions par équipes ?', reponse:'Oui ! Nous participons aux championnats en doublette (2 joueurs), triplette (3 joueurs) et tête-à-tête (1 contre 1). Il y a aussi des catégories mixtes, vétérans et jeunes.'},
+    {question:'Comment suivre l\'actualité du club ?', reponse:'Vous pouvez nous suivre sur Facebook, TikTok et Instagram via les boutons présents dans la section Contacts.'},
+];
+
+// ── MIGRATION ───────────────────────────────────────────────
+
+function log(msg, type = 'ok') {
+    const div = document.getElementById('log');
+    const line = document.createElement('div');
+    line.className = type;
+    line.textContent = msg;
+    div.appendChild(line);
+    div.scrollTop = div.scrollHeight;
+}
+
+window.startMigration = async function() {
+    const btn = document.getElementById('start-btn');
+    btn.disabled = true;
+    btn.textContent = '⏳ Migration en cours…';
+
+    // Demander email/mdp
+    const email = prompt('Ton email Firebase admin :');
+    const pwd   = prompt('Ton mot de passe :');
+    if (!email || !pwd) { log('❌ Annulé.', 'err'); btn.disabled = false; return; }
+
+    try {
+        log('🔐 Connexion à Firebase…', 'info');
+        await signInWithEmailAndPassword(auth, email, pwd);
+        log('✅ Connecté !', 'ok');
+    } catch(e) {
+        log('❌ Connexion échouée : ' + e.message, 'err');
+        btn.disabled = false;
+        return;
+    }
+
+    // Vérifier si déjà migré
+    try {
+        const existingCl = await getDocs(collection(db, 'classement'));
+        if (!existingCl.empty) {
+            const confirm = window.confirm(`⚠️ Il y a déjà ${existingCl.size} joueur(s) dans Firestore. Continuer quand même risque de créer des doublons. Continuer ?`);
+            if (!confirm) { log('⛔ Migration annulée.', 'err'); btn.disabled = false; return; }
+        }
+    } catch(e) {}
+
+    // CLASSEMENT
+    log('📊 Migration du classement (' + CLASSEMENT.length + ' joueurs)…', 'info');
+    let ok = 0;
+    for (const joueur of CLASSEMENT) {
+        try {
+            await addDoc(collection(db, 'classement'), { ...joueur, createdAt: Date.now() });
+            log('  ✅ ' + joueur.prenom + ' ' + joueur.nom);
+            ok++;
+        } catch(e) {
+            log('  ❌ ' + joueur.nom + ' : ' + e.message, 'err');
+        }
+    }
+    log('✅ Classement : ' + ok + '/' + CLASSEMENT.length + ' joueurs migrés', 'ok');
+
+    // CALENDRIER
+    log('📅 Migration du calendrier (' + CALENDRIER.length + ' événements)…', 'info');
+    ok = 0;
+    for (const evt of CALENDRIER) {
+        try {
+            await addDoc(collection(db, 'calendrier'), { ...evt, createdAt: Date.now() });
+            log('  ✅ ' + evt.nom + ' (' + evt.mois + '/' + evt.jour + ')');
+            ok++;
+        } catch(e) {
+            log('  ❌ ' + evt.nom + ' : ' + e.message, 'err');
+        }
+    }
+    log('✅ Calendrier : ' + ok + '/' + CALENDRIER.length + ' événements migrés', 'ok');
+
+    // FAQ
+    log('❓ Migration de la FAQ (' + FAQ.length + ' questions)…', 'info');
+    ok = 0;
+    for (const faq of FAQ) {
+        try {
+            await addDoc(collection(db, 'faq'), { ...faq, createdAt: Date.now() });
+            log('  ✅ ' + faq.question.substring(0, 50) + '…');
+            ok++;
+        } catch(e) {
+            log('  ❌ ' + faq.question.substring(0,30) + ' : ' + e.message, 'err');
+        }
+    }
+    log('❓ FAQ : ' + ok + '/' + FAQ.length + ' questions migrées', 'ok');
+
+    log('', 'ok');
+    log('🎉 MIGRATION TERMINÉE ! Tu peux fermer cette page.', 'ok');
+    log('⚠️ Supprime maintenant les données codées en dur dans index.html', 'info');
+    btn.textContent = '✅ Migration terminée';
+};
+</script>
+</body>
+</html>
