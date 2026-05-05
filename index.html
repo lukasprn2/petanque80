@@ -1262,11 +1262,16 @@ document.getElementById('csrf_token').value = CsrfToken.get();
 function calculerTotal() {
     var allowed = ['', 'XS', 'S', 'M', 'L', 'XL', 'XXL', '3XL', '4XL'];
     var nbVetements = 0;
-    document.querySelectorAll('#tailles-grid-dynamic select').forEach(function(sel) {
+    var selects = document.querySelectorAll('#tailles-grid-dynamic select');
+    if (selects.length === 0) {
+        var badge = document.getElementById('prix-total');
+        if (badge) { badge.textContent = '0 €'; badge.style.opacity = '0.4'; }
+        return { nb: 0, total: 0 };
+    }
+    selects.forEach(function(sel) {
         var val = sel.value;
         if (allowed.indexOf(val) !== -1 && val !== '') nbVetements++;
     });
-
     var total = 0;
     if (nbVetements === 1) total = 30;
     else if (nbVetements === 2) total = 60;
