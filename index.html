@@ -1237,38 +1237,9 @@ filterClassement();
                 <span class="field-error" id="err-email">Email invalide</span>
             </div>
             <div class="tailles-section">
-                <h4>Tailles souhaitées — laisser vide si non commandé</h4>
-                <div class="tailles-grid">
-                    <div class="taille-item">
-                        <label>👖 Pantalon</label>
-                        <select name="pantalon" id="taille-pantalon">
-                            <option value="">— Non commandé —</option>
-                            <option>XS</option><option>S</option><option>M</option><option>L</option><option>XL</option><option>XXL</option><option>3XL</option><option>4XL</option>
-                        </select>
-                    </div>
-                    <div class="taille-item">
-                        <label>👕 Polo</label>
-                        <select name="polo" id="taille-polo">
-                            <option value="">— Non commandé —</option>
-                            <option>XS</option><option>S</option><option>M</option><option>L</option><option>XL</option><option>XXL</option><option>3XL</option><option>4XL</option>
-                        </select>
-                    </div>
-                    <div class="taille-item">
-                        <label>🧥 Veste</label>
-                        <select name="veste" id="taille-veste">
-                            <option value="">— Non commandé —</option>
-                            <option>XS</option><option>S</option><option>M</option><option>L</option><option>XL</option><option>XXL</option><option>3XL</option><option>4XL</option>
-                        </select>
-                    </div>
-                    <div class="taille-item">
-                        <label>🧣 Kway</label>
-                        <select name="manteau" id="taille-manteau">
-                            <option value="">— Non commandé —</option>
-                            <option>XS</option><option>S</option><option>M</option><option>L</option><option>XL</option><option>XXL</option><option>3XL</option><option>4XL</option>
-                        </select>
-                    </div>
-                </div>
-            </div>
+    <h4>Tailles souhaitées — laisser vide si non commandé</h4>
+    <div class="tailles-grid" id="tailles-grid-dynamic"></div>
+</div>
             <input type="hidden" name="csrf_token" id="csrf_token">
             <input type="hidden" name="montant" id="montant-hidden" value="0 euros">
             <button type="button" class="submit-btn" id="submitBtn">✅ Envoyer ma commande</button>
@@ -1291,8 +1262,8 @@ document.getElementById('csrf_token').value = CsrfToken.get();
 function calculerTotal() {
     var allowed = ['', 'XS', 'S', 'M', 'L', 'XL', 'XXL', '3XL', '4XL'];
     var nbVetements = 0;
-    ['taille-pantalon','taille-polo','taille-veste','taille-manteau'].forEach(function(id) {
-        var val = document.getElementById(id).value;
+    document.querySelectorAll('#tailles-grid-dynamic select').forEach(function(sel) {
+        var val = sel.value;
         if (allowed.indexOf(val) !== -1 && val !== '') nbVetements++;
     });
 
