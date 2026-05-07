@@ -428,16 +428,31 @@ onAuthStateChanged(auth, user => {
 
         // Badge rôle
         const badgeWrap = document.getElementById('role-badge-wrap');
-        if (isSuperAdmin) {
-            badgeWrap.innerHTML = '<div class="role-badge superadmin">⭐ Super Admin — Accès complet</div>';
-            document.getElementById('superadmin-sections').style.display = 'block';
-            document.getElementById('section-vetements').style.display = 'block';
-        } else {
-            badgeWrap.innerHTML = '<div class="role-badge membre">👤 Membre Bureau — Galerie uniquement</div>';
-            document.getElementById('superadmin-sections').style.display = 'none';
-            document.getElementById('section-vetements').style.display = 'none';
-        }
+        const CLASSEMENT_EMAILS = ['president@petanqueboves.com', 'vice-president@petanqueboves.com'];
+const canEditClassement = isSuperAdmin || CLASSEMENT_EMAILS.includes(user.email);
 
+if (isSuperAdmin) {
+    badgeWrap.innerHTML = '<div class="role-badge superadmin">⭐ Super Admin — Accès complet</div>';
+    document.getElementById('superadmin-sections').style.display = 'block';
+    document.getElementById('section-vetements').style.display = 'block';
+} else if (canEditClassement) {
+    badgeWrap.innerHTML = '<div class="role-badge membre">👤 Membre Bureau — Galerie & Classement</div>';
+    document.getElementById('superadmin-sections').style.display = 'block';
+    document.getElementById('section-vetements').style.display = 'none';
+    // Cacher tout sauf classement et galerie
+    document.querySelectorAll('#superadmin-sections .section-card').forEach(el => {
+        const title = el.querySelector('.section-title');
+        if (title && !title.textContent.includes('Classement')) {
+            el.style.display = 'none';
+        }
+    });
+} else {
+    badgeWrap.innerHTML = '<div class="role-badge membre">👤 Membre Bureau — Galerie uniquement</div>';
+    document.getElementById('superadmin-sections').style.display = 'none';
+    document.getElementById('section-vetements').style.display = 'none';
+}
+
+loadAll(canEditClassement || isSuperAdmin);
         loadAll(isSuperAdmin);
     } else {
         document.getElementById('login-screen').style.display = 'flex';
