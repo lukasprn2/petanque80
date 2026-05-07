@@ -475,9 +475,9 @@ document.getElementById('photo-url').addEventListener('input', function() {
 });
 
 // ── LOAD ALL ─────────────────────────────────────────────────────────────────
-async function loadAll(isSuperAdmin) {
+async function loadAll(isAdmin) {
     await loadGalerie();
-    if (isSuperAdmin) {
+    if (isAdmin) {
         await loadActus();
         await loadClassement();
         await loadCalendrier();
@@ -486,7 +486,6 @@ async function loadAll(isSuperAdmin) {
         await loadPrix();
     }
 }
-
 // ════════════════════════════════════════════════════════════
 //  GALERIE
 // ════════════════════════════════════════════════════════════
