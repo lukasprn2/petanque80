@@ -1,125 +1,102 @@
-// ============================================================
-//  Service Worker – Club Pétanque Boves
-//  Mise à jour silencieuse et automatique pour les utilisateurs
-// ============================================================
+// ===================== SERVICE WORKER — Pétanque Boves =====================
+// Gère : cache offline + notifications push Firebase Cloud Messaging
 
-// Change cette valeur à chaque déploiement pour déclencher la MAJ
-const CACHE_VERSION = '2026-04-05-47';
-const CACHE_NAME = 'petanque-boves-' + CACHE_VERSION;
+importScripts('https://www.gstatic.com/firebasejs/10.7.0/firebase-app-compat.js');
+importScripts('https://www.gstatic.com/firebasejs/10.7.0/firebase-messaging-compat.js');
 
-const ASSETS = [
+const CACHE_NAME = 'petanque-boves-v3';
+const CACHE_URLS = [
     '/petanque80/',
     '/petanque80/index.html',
     '/petanque80/logo.webp',
-    '/petanque80/logo.png',
-    '/petanque80/manifest.json',
-    '/petanque80/sonintro.mp3',
-    '/petanque80/adresse.jpg',
-    '/petanque80/president.webp',
-    '/petanque80/vice-president.webp',
-    '/petanque80/secretaire.webp',
-    '/petanque80/tresorier.webp',
-    '/petanque80/vincent.webp',
-    '/petanque80/denis.webp',
-    '/petanque80/virginie.webp',
-    '/petanque80/philippe-d.webp',
-    '/petanque80/eric.webp',
-    '/petanque80/philippe-m.webp',
-    '/petanque80/benoit.webp',
-    '/petanque80/jean-marie.webp',
-    '/petanque80/arbitre.webp',
-    '/petanque80/amiens.webp',
-    '/petanque80/somme.webp',
-    '/petanque80/estaminet.webp',
-    '/petanque80/clarins.webp',
-    '/petanque80/photo1.webp',
-    '/petanque80/photo2.webp',
-    '/petanque80/photo3.webp',
-    '/petanque80/photo4.webp',
+    '/petanque80/manifest.json'
 ];
 
-// ── INSTALLATION ──
-self.addEventListener('install', function(event) {
-    console.log('[SW] Installation – version', CACHE_VERSION);
-    self.skipWaiting();
+// ─── Initialisation Firebase dans le SW ──────────────────────────────────────
+firebase.initializeApp({
+    apiKey: "AIzaSyC27gFQjA3WbpHcgzerSjQvOX0h6VO3EgY",
+    authDomain: "petanqueboves-54950.firebaseapp.com",
+    projectId: "petanqueboves-54950",
+    storageBucket: "petanqueboves-54950.firebasestorage.app",
+    messagingSenderId: "920624937926",
+    appId: "1:920624937926:web:fac2aa801abd3a5ee450c7"
+});
+
+const messaging = firebase.messaging();
+
+// ─── Réception des notifs en arrière-plan (app fermée / onglet inactif) ──────
+messaging.onBackgroundMessage(function(payload) {
+    console.log('[SW] Notif reçue en arrière-plan:', payload);
+
+    const notifTitle = payload.notification?.title || '🎯 Pétanque Boves';
+    const notifOptions = {
+        body:    payload.notification?.body  || 'Nouvelle mise à jour du club !',
+        icon:    '/petanque80/logo.png',
+        badge:   '/petanque80/logo.png',
+        tag:     payload.data?.tag || 'petanque-update',
+        data:    payload.data || {},
+        actions: [
+            { action: 'open',    title: '👀 Voir' },
+            { action: 'dismiss', title: 'Ignorer' }
+        ],
+        requireInteraction: false,
+        vibrate: [200, 100, 200]
+    };
+
+    return self.registration.showNotification(notifTitle, notifOptions);
+});
+
+// ─── Clic sur la notification ─────────────────────────────────────────────────
+self.addEventListener('notificationclick', function(event) {
+    event.notification.close();
+
+    if (event.action === 'dismiss') return;
+
+    const urlCible = event.notification.data?.url || '/petanque80/';
+    const urlAncre = event.notification.data?.ancre ? urlCible + '#' + event.notification.data.ancre : urlCible;
+
     event.waitUntil(
-        caches.open(CACHE_NAME).then(function(cache) {
-            return Promise.allSettled(
-                ASSETS.map(function(url) {
-                    return cache.add(url).catch(function(err) {
-                        console.warn('[SW] Impossible de cacher :', url, err);
-                    });
-                })
-            );
+        clients.matchAll({ type: 'window', includeUncontrolled: true }).then(function(clientList) {
+            for (const client of clientList) {
+                if (client.url.includes('/petanque80/') && 'focus' in client) {
+                    client.focus();
+                    client.postMessage({ type: 'NAVIGATE', url: urlAncre });
+                    return;
+                }
+            }
+            if (clients.openWindow) {
+                return clients.openWindow(urlAncre);
+            }
         })
     );
 });
 
-// ── ACTIVATION : supprime les anciens caches et recharge toutes les pages ──
-self.addEventListener('activate', function(event) {
-    console.log('[SW] Activation – version', CACHE_VERSION);
+// ─── Cache offline ────────────────────────────────────────────────────────────
+self.addEventListener('install', function(event) {
     event.waitUntil(
-        self.clients.claim()
-            .then(function() {
-                return caches.keys().then(function(cacheNames) {
-                    return Promise.all(
-                        cacheNames.map(function(name) {
-                            if (name !== CACHE_NAME) {
-                                console.log('[SW] Suppression ancien cache :', name);
-                                return caches.delete(name);
-                            }
-                        })
-                    );
-                });
-            })
-            .then(function() {
-                // Recharge automatiquement toutes les fenêtres ouvertes
-                return self.clients.matchAll({ type: 'window' }).then(function(clients) {
-                    clients.forEach(function(client) {
-                        console.log('[SW] Rechargement automatique');
-                        client.navigate(client.url);
-                    });
-                });
-            })
+        caches.open(CACHE_NAME).then(function(cache) {
+            return cache.addAll(CACHE_URLS);
+        })
     );
+    self.skipWaiting();
 });
 
-// ── FETCH : Network First pour HTML, Cache First pour les assets ──
+self.addEventListener('activate', function(event) {
+    event.waitUntil(
+        caches.keys().then(function(keys) {
+            return Promise.all(
+                keys.filter(k => k !== CACHE_NAME).map(k => caches.delete(k))
+            );
+        })
+    );
+    return self.clients.claim();
+});
+
 self.addEventListener('fetch', function(event) {
-    var url = event.request.url;
-
     if (event.request.method !== 'GET') return;
-    if (!url.includes('/petanque80/') && !url.endsWith('/petanque80')) return;
-
-    // index.html → toujours le réseau en priorité
-    if (url.endsWith('/') || url.endsWith('/petanque80') || url.includes('index.html')) {
-        event.respondWith(
-            fetch(event.request)
-                .then(function(networkResponse) {
-                    var clone = networkResponse.clone();
-                    caches.open(CACHE_NAME).then(function(cache) {
-                        cache.put(event.request, clone);
-                    });
-                    return networkResponse;
-                })
-                .catch(function() {
-                    return caches.match(event.request);
-                })
-        );
-        return;
-    }
-
-    // Autres assets → Cache First
     event.respondWith(
-        caches.match(event.request).then(function(cachedResponse) {
-            if (cachedResponse) return cachedResponse;
-            return fetch(event.request).then(function(networkResponse) {
-                var clone = networkResponse.clone();
-                caches.open(CACHE_NAME).then(function(cache) {
-                    cache.put(event.request, clone);
-                });
-                return networkResponse;
-            });
+        caches.match(event.request).then(function(cached) {
+            return cached || fetch(event.request);
         })
     );
 });
