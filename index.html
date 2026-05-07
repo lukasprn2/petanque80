@@ -2284,7 +2284,7 @@ async function activerNotifications() {
 }
 
 // ─── Relier le bouton existant dans le HTML ───────────────────────────────────
-document.addEventListener('load', function() {
+window.addEventListener('load', function() {
     const btnEnable = document.getElementById('notif-enable-btn');
     if (btnEnable) {
         btnEnable.removeEventListener('click', btnEnable._handler); // Évite les doublons
