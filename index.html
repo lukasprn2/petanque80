@@ -2083,5 +2083,234 @@ window.addEventListener('load', () => {
 });
 </script>
 <!-- ===================== FIN FIREBASE ===================== -->
+    <!--
+=======================================================================
+  BLOC NOTIFICATIONS PUSH — À intégrer dans index.html
+  Placer CE BLOC juste après le bloc Firebase existant (fin du <body>)
+=======================================================================
+-->
+
+<script type="module">
+import { initializeApp, getApps } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-app.js";
+import { getMessaging, getToken, onMessage }
+    from "https://www.gstatic.com/firebasejs/10.7.0/firebase-messaging.js";
+import { getFirestore, collection, onSnapshot, query, orderBy, limit, where, Timestamp, addDoc }
+    from "https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore.js";
+
+// ─── Config (même que dans ton bloc Firebase existant) ────────────────────────
+const firebaseConfig = {
+    apiKey: "AIzaSyC27gFQjA3WbpHcgzerSjQvOX0h6VO3EgY",
+    authDomain: "petanqueboves-54950.firebaseapp.com",
+    projectId: "petanqueboves-54950",
+    storageBucket: "petanqueboves-54950.firebasestorage.app",
+    messagingSenderId: "920624937926",
+    appId: "1:920624937926:web:fac2aa801abd3a5ee450c7"
+};
+
+// Réutilise l'app déjà init si elle existe
+const app = getApps().length ? getApps()[0] : initializeApp(firebaseConfig);
+const db  = getFirestore(app);
+
+// ─── CLÉ VAPID — À REMPLIR ───────────────────────────────────────────────────
+// Va dans : Console Firebase → Paramètres du projet → Cloud Messaging
+// → Certificats push web → Générer une paire de clés → copier la clé publique
+const VAPID_KEY = 'BGnNqQrDMkMeETZiZyBDvhp6WmPkpEVO5wGhQ3ocLY8cc6aK184UvPY_-W4ayi54fvQw9wDs7dJ7tyyiG3BV3Nk';
+
+// ─── Enregistrement du token FCM ──────────────────────────────────────────────
+async function enregistrerTokenFCM() {
+    if (!('serviceWorker' in navigator) || !('Notification' in window)) return;
+    if (Notification.permission !== 'granted') return;
+
+    try {
+        const swReg = await navigator.serviceWorker.ready;
+        const messaging = getMessaging(app);
+
+        const token = await getToken(messaging, {
+            vapidKey: VAPID_KEY,
+            serviceWorkerRegistration: swReg
+        });
+
+        if (token) {
+            console.log('[FCM] Token obtenu:', token);
+            // Stocker le token en local pour éviter de le renvoyer à chaque fois
+            const tokenActuel = localStorage.getItem('fcm_token');
+            if (token !== tokenActuel) {
+                localStorage.setItem('fcm_token', token);
+                // Optionnel : sauvegarder dans Firestore pour ciblage admin
+                 await addDoc(collection(db, 'fcm_tokens'), { token, createdAt: Timestamp.now() });
+                console.log('[FCM] Nouveau token enregistré');
+            }
+        }
+
+        // ─── Notifs reçues quand l'app est OUVERTE (foreground) ───────────────
+        onMessage(messaging, function(payload) {
+            console.log('[FCM] Message reçu en foreground:', payload);
+            afficherToastNotif(
+                payload.notification?.title || '🎯 Pétanque Boves',
+                payload.notification?.body  || 'Nouvelle mise à jour !',
+                payload.data?.ancre || ''
+            );
+        });
+
+    } catch (err) {
+        console.warn('[FCM] Erreur token:', err.message);
+    }
+}
+
+// ─── Toast de notification in-app (foreground) ────────────────────────────────
+function afficherToastNotif(titre, corps, ancre) {
+    // Supprimer un toast existant
+    const ancien = document.getElementById('notif-toast');
+    if (ancien) ancien.remove();
+
+    const toast = document.createElement('div');
+    toast.id = 'notif-toast';
+    toast.innerHTML = `
+        <div style="display:flex;align-items:center;gap:10px;">
+            <img src="/petanque80/logo.png" style="width:36px;height:36px;border-radius:8px;border:2px solid #0bff04;flex-shrink:0">
+            <div style="flex:1;min-width:0">
+                <strong style="color:#f0f0f0;font-size:0.88em;display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${titre}</strong>
+                <span style="color:#aaa;font-size:0.78em;display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${corps}</span>
+            </div>
+            <button id="toast-close" style="background:none;border:none;color:#888;font-size:1.2em;cursor:pointer;flex-shrink:0;padding:4px" aria-label="Fermer">✕</button>
+        </div>
+    `;
+    Object.assign(toast.style, {
+        position:   'fixed',
+        top:        '72px',
+        right:      '14px',
+        background: '#1a1a1a',
+        border:     '2px solid #0bff04',
+        borderRadius: '12px',
+        padding:    '12px 14px',
+        zIndex:     '9999',
+        boxShadow:  '0 8px 28px rgba(11,255,4,0.25)',
+        maxWidth:   '320px',
+        width:      'calc(100% - 28px)',
+        animation:  'toastIn 0.35s ease',
+        fontFamily: "'Nunito', sans-serif"
+    });
+
+    // Animation CSS
+    if (!document.getElementById('toast-style')) {
+        const style = document.createElement('style');
+        style.id = 'toast-style';
+        style.textContent = `
+            @keyframes toastIn  { from{opacity:0;transform:translateY(-16px)} to{opacity:1;transform:translateY(0)} }
+            @keyframes toastOut { from{opacity:1;transform:translateY(0)} to{opacity:0;transform:translateY(-16px)} }
+        `;
+        document.head.appendChild(style);
+    }
+
+    document.body.appendChild(toast);
+
+    // Clic sur le toast → naviguer vers l'ancre
+    if (ancre) {
+        toast.style.cursor = 'pointer';
+        toast.addEventListener('click', function(e) {
+            if (e.target.id === 'toast-close') return;
+            const target = document.getElementById(ancre);
+            if (target) {
+                const navH = document.querySelector('.nav-wrapper')?.getBoundingClientRect().height || 0;
+                window.scrollTo({ top: target.getBoundingClientRect().top + window.pageYOffset - navH - 8, behavior: 'smooth' });
+            }
+            toast.remove();
+        });
+    }
+
+    // Fermeture manuelle
+    document.getElementById('toast-close').addEventListener('click', function(e) {
+        e.stopPropagation();
+        toast.style.animation = 'toastOut 0.3s ease forwards';
+        setTimeout(() => toast.remove(), 300);
+    });
+
+    // Auto-fermeture après 7 secondes
+    setTimeout(function() {
+        if (document.contains(toast)) {
+            toast.style.animation = 'toastOut 0.3s ease forwards';
+            setTimeout(() => toast.remove(), 300);
+        }
+    }, 7000);
+}
+
+// ─── Écoute en temps réel des nouvelles actualités ───────────────────────────
+// Déclenche une notif in-app quand une nouvelle actualité est publiée
+// pendant que l'utilisateur est sur le site
+function ecouterNouvellesActualites() {
+    const cinqMinutesAvant = new Date(Date.now() - 5 * 60 * 1000);
+    const q = query(
+        collection(db, 'actualites'),
+        where('createdAt', '>', Timestamp.fromDate(cinqMinutesAvant)),
+        orderBy('createdAt', 'desc'),
+        limit(1)
+    );
+
+    let premierAppel = true;
+    onSnapshot(q, function(snap) {
+        if (premierAppel) { premierAppel = false; return; } // Ignorer le snapshot initial
+        snap.docChanges().forEach(function(change) {
+            if (change.type === 'added') {
+                const d = change.doc.data();
+                afficherToastNotif(
+                    '📰 Nouvelle actualité',
+                    d.titre || 'Découvrez la dernière news du club !',
+                    'actualites'
+                );
+            }
+        });
+    });
+}
+
+// ─── Bouton "Activer les notifications" ───────────────────────────────────────
+async function activerNotifications() {
+    if (!('Notification' in window)) {
+        alert('Votre navigateur ne supporte pas les notifications push.');
+        return;
+    }
+
+    try {
+        const permission = await Notification.requestPermission();
+        document.getElementById('notif-banner').style.display = 'none';
+        sessionStorage.setItem('notif-dismissed', '1');
+
+        if (permission === 'granted') {
+            await enregistrerTokenFCM();
+            afficherToastNotif('🔔 Notifications activées', 'Vous recevrez les mises à jour du club en temps réel !', '');
+        }
+    } catch (err) {
+        console.warn('[Notif] Erreur permission:', err);
+    }
+}
+
+// ─── Relier le bouton existant dans le HTML ───────────────────────────────────
+document.addEventListener('DOMContentLoaded', function() {
+    const btnEnable = document.getElementById('notif-enable-btn');
+    if (btnEnable) {
+        btnEnable.removeEventListener('click', btnEnable._handler); // Évite les doublons
+        btnEnable._handler = activerNotifications;
+        btnEnable.addEventListener('click', activerNotifications);
+    }
+
+    const btnDismiss = document.getElementById('notif-dismiss-btn');
+    if (btnDismiss) {
+        btnDismiss.addEventListener('click', function() {
+            document.getElementById('notif-banner').style.display = 'none';
+            sessionStorage.setItem('notif-dismissed', '1');
+        });
+    }
+});
+
+// ─── Démarrage ────────────────────────────────────────────────────────────────
+window.addEventListener('load', async function() {
+    // Si l'utilisateur a déjà accordé la permission → enregistrer le token silencieusement
+    if (Notification.permission === 'granted') {
+        await enregistrerTokenFCM();
+    }
+
+    // Écouter les nouvelles actualités en temps réel (pour tous les visiteurs)
+    ecouterNouvellesActualites();
+});
+</script>
 </body>
 </html>
