@@ -4,7 +4,7 @@
 importScripts('https://www.gstatic.com/firebasejs/10.7.0/firebase-app-compat.js');
 importScripts('https://www.gstatic.com/firebasejs/10.7.0/firebase-messaging-compat.js');
 
-const CACHE_NAME = 'petanque-boves-v3';
+const CACHE_NAME = 'petanque-boves-v4';
 const CACHE_URLS = [
     '/petanque80/',
     '/petanque80/index.html',
