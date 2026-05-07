@@ -1727,48 +1727,103 @@ btnTop.addEventListener('click', function() {
 /* ===== NOTIFICATIONS ===== */
 (function() {
     if (!('Notification' in window)) return;
+
     var dismissed = sessionStorage.getItem('notif-dismissed');
-    if (Notification.permission === 'granted' || dismissed) return;
-    setTimeout(function() { document.getElementById('notif-banner').style.display = 'block'; }, 8000);
-   document.getElementById('notif-enable-btn').addEventListener('click', async function() {
-    document.getElementById('notif-banner').style.display = 'none';
-    try {
-        const { initializeApp, getApps } = await import("https://www.gstatic.com/firebasejs/10.7.0/firebase-app.js");
-        const { getMessaging, getToken } = await import("https://www.gstatic.com/firebasejs/10.7.0/firebase-messaging.js");
-        const { getFirestore, collection, addDoc } = await import("https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore.js");
 
-        const firebaseConfig = {
-            apiKey: "AIzaSyC27gFQjA3WbpHcgzerSjQvOX0h6VO3EgY",
-            authDomain: "petanqueboves-54950.firebaseapp.com",
-            projectId: "petanqueboves-54950",
-            storageBucket: "petanqueboves-54950.firebasestorage.app",
-            messagingSenderId: "920624937926",
-            appId: "1:920624937926:web:fac2aa801abd3a5ee450c7"
-        };
-
-        const app = getApps().length ? getApps()[0] : initializeApp(firebaseConfig);
-        const messaging = getMessaging(app);
-        const db = getFirestore(app);
-
-        const token = await getToken(messaging, {
-            vapidKey: 'BGnNqQrDMkMeETZiZyBDvhp6WmPkpEVO5wGhQ3ocLY8cc6aK184UvPY_-W4ayi54fvQw9wDs7dJ7tyyiG3BV3Nk',
-            serviceWorkerRegistration: await navigator.serviceWorker.getRegistration('/petanque80/sw.js')
-        });
-
-        if (token) {
-            await addDoc(collection(db, 'fcm_tokens'), { token, createdAt: new Date() });
-            new Notification('🎯 Pétanque Boves', { body: 'Notifications activées !', icon: '/petanque80/logo.png' });
-        }
-    } catch(e) {
-        console.warn('Erreur FCM:', e.message);
+    // Afficher la bannière seulement si pas encore accepté et pas dismissé
+    if (Notification.permission !== 'granted' && !dismissed) {
+        setTimeout(function() {
+            var banner = document.getElementById('notif-banner');
+            if (banner) banner.style.display = 'block';
+        }, 8000);
     }
-});
-    document.getElementById('notif-dismiss-btn').addEventListener('click', function() {
-        document.getElementById('notif-banner').style.display = 'none';
-        sessionStorage.setItem('notif-dismissed', '1');
-    });
-})();
 
+    var btnEnable  = document.getElementById('notif-enable-btn');
+    var btnDismiss = document.getElementById('notif-dismiss-btn');
+
+    if (btnEnable) {
+        btnEnable.addEventListener('click', async function() {
+            var banner = document.getElementById('notif-banner');
+            if (banner) banner.style.display = 'none';
+
+            try {
+                // Demander la permission si pas encore accordée
+                if (Notification.permission !== 'granted') {
+                    var permission = await Notification.requestPermission();
+                    if (permission !== 'granted') {
+                        console.warn('Permission refusée');
+                        return;
+                    }
+                }
+
+                const { initializeApp, getApps } = await import("https://www.gstatic.com/firebasejs/10.7.0/firebase-app.js");
+                const { getMessaging, getToken, onMessage } = await import("https://www.gstatic.com/firebasejs/10.7.0/firebase-messaging.js");
+                const { getFirestore, collection, addDoc, Timestamp } = await import("https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore.js");
+
+                const firebaseConfig = {
+                    apiKey: "AIzaSyC27gFQjA3WbpHcgzerSjQvOX0h6VO3EgY",
+                    authDomain: "petanqueboves-54950.firebaseapp.com",
+                    projectId: "petanqueboves-54950",
+                    storageBucket: "petanqueboves-54950.firebasestorage.app",
+                    messagingSenderId: "920624937926",
+                    appId: "1:920624937926:web:fac2aa801abd3a5ee450c7"
+                };
+
+                const app = getApps().length ? getApps()[0] : initializeApp(firebaseConfig);
+                const messaging = getMessaging(app);
+                const db = getFirestore(app);
+
+                const swReg = await navigator.serviceWorker.getRegistration('/petanque80/sw.js');
+                const token = await getToken(messaging, {
+                    vapidKey: 'BGnNqQrDMkMeETZiZyBDvhp6WmPkpEVO5wGhQ3ocLY8cc6aK184UvPY_-W4ayi54fvQw9wDs7dJ7tyyiG3BV3Nk',
+                    serviceWorkerRegistration: swReg
+                });
+
+                if (token) {
+                    console.log('[FCM] Token obtenu:', token);
+
+                    // Sauvegarder seulement si nouveau token
+                    var tokenActuel = localStorage.getItem('fcm_token');
+                    if (token !== tokenActuel) {
+                        localStorage.setItem('fcm_token', token);
+                        await addDoc(collection(db, 'fcm_tokens'), {
+                            token: token,
+                            createdAt: Timestamp.now()
+                        });
+                        console.log('[FCM] Token sauvegardé dans Firestore');
+                    }
+
+                    // Notif de confirmation
+                    new Notification('🎯 Pétanque Boves', {
+                        body: 'Notifications activées ! Vous recevrez les mises à jour du club.',
+                        icon: '/petanque80/logo.png'
+                    });
+
+                    // Écouter les notifs quand l'app est ouverte
+                    onMessage(messaging, function(payload) {
+                        console.log('[FCM] Message reçu:', payload);
+                        var titre = (payload.notification && payload.notification.title) || '🎯 Pétanque Boves';
+                        var corps  = (payload.notification && payload.notification.body)  || 'Nouvelle mise à jour !';
+                        new Notification(titre, {
+                            body: corps,
+                            icon: '/petanque80/logo.png'
+                        });
+                    });
+                }
+            } catch(e) {
+                console.warn('[FCM] Erreur:', e.message);
+            }
+        });
+    }
+
+    if (btnDismiss) {
+        btnDismiss.addEventListener('click', function() {
+            var banner = document.getElementById('notif-banner');
+            if (banner) banner.style.display = 'none';
+            sessionStorage.setItem('notif-dismissed', '1');
+        });
+    }
+})();
 /* ===== PWA ===== */
 var deferredPrompt = null;
 window.addEventListener('beforeinstallprompt', function(e) {
