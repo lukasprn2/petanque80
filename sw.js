@@ -49,10 +49,10 @@ firebase.initializeApp({
 
 const messaging = firebase.messaging();
 
-// ─── Réception des notifs en arrière-plan ────────────────────────────────────
+// ─── Réception des notifs en arrière-plan (app fermée / onglet inactif) ──────
 messaging.onBackgroundMessage(function(payload) {
-    const notifTitle = (payload.notification && payload.notification.title) || '🎯 Pétanque Boves';
-    const notifOptions = {
+    var notifTitle = (payload.notification && payload.notification.title) || '🎯 Pétanque Boves';
+    var notifOptions = {
         body:    (payload.notification && payload.notification.body) || 'Nouvelle mise à jour du club !',
         icon:    '/petanque80/logo.png',
         badge:   '/petanque80/logo.png',
@@ -72,8 +72,8 @@ messaging.onBackgroundMessage(function(payload) {
 self.addEventListener('notificationclick', function(event) {
     event.notification.close();
     if (event.action === 'dismiss') return;
-    const urlCible = (event.notification.data && event.notification.data.url) || '/petanque80/';
-    const urlAncre = (event.notification.data && event.notification.data.ancre)
+    var urlCible = (event.notification.data && event.notification.data.url) || '/petanque80/';
+    var urlAncre = (event.notification.data && event.notification.data.ancre)
         ? urlCible + '#' + event.notification.data.ancre
         : urlCible;
     event.waitUntil(
@@ -96,7 +96,7 @@ self.addEventListener('notificationclick', function(event) {
 // ─── Installation : mise en cache des assets ──────────────────────────────────
 self.addEventListener('install', function(event) {
     console.log('[SW] Installation — version', CACHE_VERSION);
-    self.skipWaiting(); // Prend le contrôle immédiatement
+    self.skipWaiting();
     event.waitUntil(
         caches.open(CACHE_NAME).then(function(cache) {
             return Promise.allSettled(
@@ -125,7 +125,6 @@ self.addEventListener('activate', function(event) {
                 );
             });
         }).then(function() {
-            // Recharge toutes les fenêtres ouvertes pour appliquer la nouvelle version
             return self.clients.matchAll({ type: 'window' }).then(function(clients) {
                 clients.forEach(function(client) {
                     console.log('[SW] Rechargement automatique');
@@ -142,7 +141,6 @@ self.addEventListener('fetch', function(event) {
     if (event.request.method !== 'GET') return;
     if (!url.includes('/petanque80/') && !url.endsWith('/petanque80')) return;
 
-    // index.html → réseau en priorité (pour toujours avoir la dernière version)
     if (url.endsWith('/') || url.endsWith('/petanque80') || url.includes('index.html') || url.includes('admin.html')) {
         event.respondWith(
             fetch(event.request).then(function(networkResponse) {
@@ -158,7 +156,6 @@ self.addEventListener('fetch', function(event) {
         return;
     }
 
-    // Autres assets → Cache First
     event.respondWith(
         caches.match(event.request).then(function(cached) {
             if (cached) return cached;
