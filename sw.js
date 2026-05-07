@@ -1,15 +1,40 @@
 // ===================== SERVICE WORKER — Pétanque Boves =====================
-// Gère : cache offline + notifications push Firebase Cloud Messaging
+// Change cette valeur à chaque déploiement pour forcer la mise à jour du cache
+const CACHE_VERSION = '2026-05-05-1';
+const CACHE_NAME = 'petanque-boves-' + CACHE_VERSION;
 
 importScripts('https://www.gstatic.com/firebasejs/10.7.0/firebase-app-compat.js');
 importScripts('https://www.gstatic.com/firebasejs/10.7.0/firebase-messaging-compat.js');
 
-const CACHE_NAME = 'petanque-boves-v4';
 const CACHE_URLS = [
     '/petanque80/',
     '/petanque80/index.html',
     '/petanque80/logo.webp',
-    '/petanque80/manifest.json'
+    '/petanque80/logo.png',
+    '/petanque80/manifest.json',
+    '/petanque80/sonintro.mp3',
+    '/petanque80/adresse.jpg',
+    '/petanque80/president.webp',
+    '/petanque80/vice-president.webp',
+    '/petanque80/secretaire.webp',
+    '/petanque80/tresorier.webp',
+    '/petanque80/vincent.webp',
+    '/petanque80/denis.webp',
+    '/petanque80/virginie.webp',
+    '/petanque80/philippe-d.webp',
+    '/petanque80/eric.webp',
+    '/petanque80/philippe-m.webp',
+    '/petanque80/benoit.webp',
+    '/petanque80/jean-marie.webp',
+    '/petanque80/arbitre.webp',
+    '/petanque80/amiens.webp',
+    '/petanque80/somme.webp',
+    '/petanque80/estaminet.webp',
+    '/petanque80/clarins.webp',
+    '/petanque80/photo1.webp',
+    '/petanque80/photo2.webp',
+    '/petanque80/photo3.webp',
+    '/petanque80/photo4.webp',
 ];
 
 // ─── Initialisation Firebase dans le SW ──────────────────────────────────────
@@ -24,16 +49,14 @@ firebase.initializeApp({
 
 const messaging = firebase.messaging();
 
-// ─── Réception des notifs en arrière-plan (app fermée / onglet inactif) ──────
+// ─── Réception des notifs en arrière-plan ────────────────────────────────────
 messaging.onBackgroundMessage(function(payload) {
-    console.log('[SW] Notif reçue en arrière-plan:', payload);
-
-    const notifTitle = payload.notification?.title || '🎯 Pétanque Boves';
+    const notifTitle = (payload.notification && payload.notification.title) || '🎯 Pétanque Boves';
     const notifOptions = {
-        body:    payload.notification?.body  || 'Nouvelle mise à jour du club !',
+        body:    (payload.notification && payload.notification.body) || 'Nouvelle mise à jour du club !',
         icon:    '/petanque80/logo.png',
         badge:   '/petanque80/logo.png',
-        tag:     payload.data?.tag || 'petanque-update',
+        tag:     (payload.data && payload.data.tag) || 'petanque-update',
         data:    payload.data || {},
         actions: [
             { action: 'open',    title: '👀 Voir' },
@@ -42,22 +65,21 @@ messaging.onBackgroundMessage(function(payload) {
         requireInteraction: false,
         vibrate: [200, 100, 200]
     };
-
     return self.registration.showNotification(notifTitle, notifOptions);
 });
 
 // ─── Clic sur la notification ─────────────────────────────────────────────────
 self.addEventListener('notificationclick', function(event) {
     event.notification.close();
-
     if (event.action === 'dismiss') return;
-
-    const urlCible = event.notification.data?.url || '/petanque80/';
-    const urlAncre = event.notification.data?.ancre ? urlCible + '#' + event.notification.data.ancre : urlCible;
-
+    const urlCible = (event.notification.data && event.notification.data.url) || '/petanque80/';
+    const urlAncre = (event.notification.data && event.notification.data.ancre)
+        ? urlCible + '#' + event.notification.data.ancre
+        : urlCible;
     event.waitUntil(
         clients.matchAll({ type: 'window', includeUncontrolled: true }).then(function(clientList) {
-            for (const client of clientList) {
+            for (var i = 0; i < clientList.length; i++) {
+                var client = clientList[i];
                 if (client.url.includes('/petanque80/') && 'focus' in client) {
                     client.focus();
                     client.postMessage({ type: 'NAVIGATE', url: urlAncre });
@@ -71,32 +93,82 @@ self.addEventListener('notificationclick', function(event) {
     );
 });
 
-// ─── Cache offline ────────────────────────────────────────────────────────────
+// ─── Installation : mise en cache des assets ──────────────────────────────────
 self.addEventListener('install', function(event) {
+    console.log('[SW] Installation — version', CACHE_VERSION);
+    self.skipWaiting(); // Prend le contrôle immédiatement
     event.waitUntil(
         caches.open(CACHE_NAME).then(function(cache) {
-            return cache.addAll(CACHE_URLS);
-        })
-    );
-    self.skipWaiting();
-});
-
-self.addEventListener('activate', function(event) {
-    event.waitUntil(
-        caches.keys().then(function(keys) {
-            return Promise.all(
-                keys.filter(k => k !== CACHE_NAME).map(k => caches.delete(k))
+            return Promise.allSettled(
+                CACHE_URLS.map(function(url) {
+                    return cache.add(url).catch(function(err) {
+                        console.warn('[SW] Impossible de cacher :', url, err.message);
+                    });
+                })
             );
         })
     );
-    return self.clients.claim();
 });
 
+// ─── Activation : supprime les anciens caches et prend le contrôle ───────────
+self.addEventListener('activate', function(event) {
+    console.log('[SW] Activation — version', CACHE_VERSION);
+    event.waitUntil(
+        self.clients.claim().then(function() {
+            return caches.keys().then(function(keys) {
+                return Promise.all(
+                    keys.filter(function(k) { return k !== CACHE_NAME; })
+                        .map(function(k) {
+                            console.log('[SW] Suppression ancien cache :', k);
+                            return caches.delete(k);
+                        })
+                );
+            });
+        }).then(function() {
+            // Recharge toutes les fenêtres ouvertes pour appliquer la nouvelle version
+            return self.clients.matchAll({ type: 'window' }).then(function(clients) {
+                clients.forEach(function(client) {
+                    console.log('[SW] Rechargement automatique');
+                    client.navigate(client.url);
+                });
+            });
+        })
+    );
+});
+
+// ─── Fetch : Network First pour HTML, Cache First pour les assets ─────────────
 self.addEventListener('fetch', function(event) {
+    var url = event.request.url;
     if (event.request.method !== 'GET') return;
+    if (!url.includes('/petanque80/') && !url.endsWith('/petanque80')) return;
+
+    // index.html → réseau en priorité (pour toujours avoir la dernière version)
+    if (url.endsWith('/') || url.endsWith('/petanque80') || url.includes('index.html') || url.includes('admin.html')) {
+        event.respondWith(
+            fetch(event.request).then(function(networkResponse) {
+                var clone = networkResponse.clone();
+                caches.open(CACHE_NAME).then(function(cache) {
+                    cache.put(event.request, clone);
+                });
+                return networkResponse;
+            }).catch(function() {
+                return caches.match(event.request);
+            })
+        );
+        return;
+    }
+
+    // Autres assets → Cache First
     event.respondWith(
         caches.match(event.request).then(function(cached) {
-            return cached || fetch(event.request);
+            if (cached) return cached;
+            return fetch(event.request).then(function(networkResponse) {
+                var clone = networkResponse.clone();
+                caches.open(CACHE_NAME).then(function(cache) {
+                    cache.put(event.request, clone);
+                });
+                return networkResponse;
+            });
         })
     );
 });
