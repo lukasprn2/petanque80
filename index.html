@@ -1778,7 +1778,7 @@ const token = await getToken(messaging, {
     serviceWorkerRegistration: swReg
 });
                 if (token) {
-                    console.log('[FCM] Token obtenu:', token);
+                   alert(token);
 
                     // Sauvegarder seulement si nouveau token
                     var tokenActuel = localStorage.getItem('fcm_token');
