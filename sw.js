@@ -1,6 +1,6 @@
 // ===================== SERVICE WORKER — Pétanque Boves =====================
 // Change cette valeur à chaque déploiement pour forcer la mise à jour du cache
-const CACHE_VERSION = '2026-05-05-6';
+const CACHE_VERSION = '2026-05-05-7';
 const CACHE_NAME = 'petanque-boves-' + CACHE_VERSION;
 
 importScripts('https://www.gstatic.com/firebasejs/10.7.0/firebase-app-compat.js');
