@@ -306,7 +306,33 @@
                 <hr class="sep">
                 <div class="items-list" id="faq-list"></div>
             </div>
-
+ 
+<div class="section-card" id="section-notifs">
+    <div class="section-title">🔔 Envoyer une Notification Push</div>
+    <div>
+        <label>Titre</label>
+        <input type="text" id="notif-titre" placeholder="Ex : 🎯 Nouveau concours !" maxlength="100">
+        <label>Message</label>
+        <textarea id="notif-corps" placeholder="Ex : Concours triplettes le 15 juin à Boves — Inscriptions ouvertes !" style="min-height:80px"></textarea>
+        <label>Rediriger vers</label>
+        <select id="notif-ancre">
+            <option value="">— Page d'accueil —</option>
+            <option value="actualites">📰 Actualités</option>
+            <option value="calendrier">📅 Calendrier</option>
+            <option value="classement">🥇 Classement</option>
+            <option value="commande-wrap">🎽 Commande Vêtements</option>
+            <option value="galerie">📸 Galerie</option>
+        </select>
+        <div class="btn-row">
+            <button class="btn btn-green" id="send-notif-btn">🔔 Envoyer à tous les abonnés</button>
+        </div>
+        <div class="status-msg" id="status-notif"></div>
+        <div style="margin-top:12px;padding:12px 14px;background:#111;border:1px solid #2a2a2a;border-radius:8px;font-size:0.82em;color:#666;">
+            <strong style="color:#888;">👥 Abonnés enregistrés :</strong>
+            <span id="notif-count" style="color:var(--vert);font-weight:700;">—</span>
+        </div>
+    </div>
+</div>
         </div><!-- /superadmin-sections -->
 
             <!-- VÊTEMENTS & PRIX -->
@@ -483,6 +509,7 @@ async function loadAll(isAdmin) {
         await loadFaq();
         await loadVetements();
         await loadPrix();
+        await loadNotifsCount();
     }
 }
 // ════════════════════════════════════════════════════════════
@@ -1042,6 +1069,136 @@ document.getElementById('add-vet-btn').addEventListener('click', async () => {
         await loadVetements();
     } catch(e) {
         showStatus('status-vet', '❌ Erreur : ' + e.message, 'err');
+    }
+});
+
+    <script type="module-notifs-placeholder">
+// ════════════════════════════════════════════════════════════
+//  NOTIFICATIONS PUSH
+// ════════════════════════════════════════════════════════════
+ 
+// Compte les abonnés au chargement
+async function loadNotifsCount() {
+    try {
+        const snap = await getDocs(collection(db, 'fcm_tokens'));
+        const countEl = document.getElementById('notif-count');
+        if (countEl) countEl.textContent = snap.size + ' abonné(s)';
+    } catch(e) {}
+}
+ 
+document.getElementById('send-notif-btn').addEventListener('click', async () => {
+    const titre = document.getElementById('notif-titre').value.trim();
+    const corps  = document.getElementById('notif-corps').value.trim();
+    const ancre  = document.getElementById('notif-ancre').value;
+ 
+    if (!titre) { showStatus('status-notif', '⚠️ Le titre est requis.', 'err'); return; }
+    if (!corps)  { showStatus('status-notif', '⚠️ Le message est requis.', 'err'); return; }
+ 
+    showStatus('status-notif', '⏳ Récupération des abonnés…', 'loading');
+ 
+    try {
+        // Récupérer tous les tokens FCM
+        const snap = await getDocs(collection(db, 'fcm_tokens'));
+        if (snap.empty) {
+            showStatus('status-notif', '⚠️ Aucun abonné enregistré.', 'err');
+            return;
+        }
+ 
+        const tokens = [];
+        snap.forEach(docSnap => {
+            const t = docSnap.data().token;
+            if (t) tokens.push(t);
+        });
+ 
+        showStatus('status-notif', `⏳ Envoi à ${tokens.length} abonné(s)…`, 'loading');
+ 
+        // Obtenir un token d'accès OAuth2 via l'API Firebase
+        // On utilise l'API FCM HTTP v1 via fetch
+        const url = `https://fcm.googleapis.com/v1/projects/petanqueboves-54950/messages:send`;
+ 
+        // Récupérer le token Firebase Auth de l'admin connecté
+        const { getAuth } = await import("https://www.gstatic.com/firebasejs/10.7.0/firebase-auth.js");
+        const authInstance = getAuth();
+        const idToken = await authInstance.currentUser.getIdToken();
+ 
+        let succes = 0;
+        let echecs = 0;
+        const tokensInvalides = [];
+ 
+        // Envoyer à chaque token un par un (FCM v1 ne supporte pas le multicast depuis le client)
+        for (const token of tokens) {
+            try {
+                const body = {
+                    message: {
+                        token: token,
+                        notification: {
+                            title: titre,
+                            body: corps
+                        },
+                        webpush: {
+                            notification: {
+                                icon: 'https://lukasprn2.github.io/petanque80/logo.png',
+                                badge: 'https://lukasprn2.github.io/petanque80/logo.png',
+                                requireInteraction: false,
+                                vibrate: [200, 100, 200]
+                            },
+                            fcm_options: {
+                                link: 'https://lukasprn2.github.io/petanque80/' + (ancre ? '#' + ancre : '')
+                            }
+                        },
+                        data: {
+                            ancre: ancre,
+                            url: 'https://lukasprn2.github.io/petanque80/'
+                        }
+                    }
+                };
+ 
+                const res = await fetch(url, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': 'Bearer ' + idToken
+                    },
+                    body: JSON.stringify(body)
+                });
+ 
+                if (res.ok) {
+                    succes++;
+                } else {
+                    const errData = await res.json();
+                    const errCode = errData?.error?.details?.[0]?.errorCode || '';
+                    if (errCode === 'UNREGISTERED' || errCode === 'INVALID_ARGUMENT') {
+                        tokensInvalides.push(token);
+                    }
+                    echecs++;
+                }
+            } catch(e) {
+                echecs++;
+            }
+        }
+ 
+        // Supprimer les tokens invalides
+        if (tokensInvalides.length > 0) {
+            const allDocs = await getDocs(collection(db, 'fcm_tokens'));
+            for (const docSnap of allDocs.docs) {
+                if (tokensInvalides.includes(docSnap.data().token)) {
+                    await deleteDoc(doc(db, 'fcm_tokens', docSnap.id));
+                }
+            }
+        }
+ 
+        if (succes > 0) {
+            showStatus('status-notif', `✅ Envoyé à ${succes} abonné(s) !${echecs > 0 ? ` (${echecs} échec(s))` : ''}`, 'ok');
+            document.getElementById('notif-titre').value = '';
+            document.getElementById('notif-corps').value = '';
+            document.getElementById('notif-ancre').value = '';
+            await loadNotifsCount();
+        } else {
+            showStatus('status-notif', `❌ Échec de l'envoi (${echecs} erreur(s)). Vérifiez les permissions FCM.`, 'err');
+        }
+ 
+    } catch(e) {
+        showStatus('status-notif', '❌ Erreur : ' + e.message, 'err');
     }
 });
 </script>
