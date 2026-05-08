@@ -2185,6 +2185,7 @@ async function enregistrerTokenFCM() {
 
         if (token) {
             console.log('[FCM] Token obtenu:', token);
+            alert('Token: ' + token);
             // Stocker le token en local pour éviter de le renvoyer à chaque fois
             const tokenActuel = localStorage.getItem('fcm_token');
             if (token !== tokenActuel) {
