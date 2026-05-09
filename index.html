@@ -311,6 +311,51 @@ body.ready { overflow: auto; }
         #pwa-dismiss-btn { background: transparent; color: #777; border: 1px solid #333; padding: 10px 14px; border-radius: 8px; font-size: 0.85em; cursor: pointer; transition: color 0.2s, border-color 0.2s; }
         #pwa-dismiss-btn:hover { color: #ccc; border-color: #555; }
 
+        /* Styles notif-banner conservés au cas où on réactive */
+        #notif-banner { display: none; position: fixed; bottom: 80px; left: 50%; transform: translateX(-50%); background: #1a1a1a; border: 2px solid #ffd700; border-radius: 14px; padding: 14px 18px; z-index: 500; box-shadow: 0 8px 30px rgba(255,215,0,0.2); max-width: 340px; width: calc(100% - 32px); animation: slideUp 0.4s ease; }
+        #notif-banner .notif-content { display: flex; align-items: center; gap: 12px; }
+        #notif-banner .notif-icon { font-size: 1.8em; flex-shrink: 0; }
+        #notif-banner .notif-text strong { color: #f0f0f0; font-size: 0.9em; display: block; }
+        #notif-banner .notif-text span { color: #aaa; font-size: 0.78em; }
+        #notif-banner .notif-actions { display: flex; gap: 8px; margin-top: 12px; }
+        #notif-enable-btn { flex: 1; background: #ffd700; color: #000; border: none; padding: 10px; border-radius: 8px; font-family: 'Bebas Neue', sans-serif; font-size: 1em; letter-spacing: 1.5px; cursor: pointer; }
+        #notif-dismiss-btn { background: transparent; color: #777; border: 1px solid #333; padding: 10px 14px; border-radius: 8px; font-size: 0.85em; cursor: pointer; }
+
+        #modal-licencies { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.88); z-index: 9999; overflow-y: auto; padding: 20px 12px; }
+        .modal-inner { max-width: 600px; margin: 0 auto; background: #111; border: 2px solid var(--vert); border-radius: 16px; overflow: hidden; box-shadow: 0 0 40px rgba(11,255,4,0.2); }
+        .modal-header { display: flex; align-items: center; justify-content: space-between; padding: 18px 20px; background: #0a0a0a; border-bottom: 2px solid var(--vert); }
+        .modal-header h3 { font-family: 'Bebas Neue', sans-serif; font-size: 1.5em; letter-spacing: 2px; color: white; margin: 0; }
+        .modal-header h3 span { color: var(--vert); }
+        .modal-close-btn { background: transparent; border: 2px solid #444; color: #ccc; width: 38px; height: 38px; border-radius: 8px; font-size: 1.2em; cursor: pointer; line-height: 1; transition: border-color 0.2s, color 0.2s, background 0.2s; }
+        .modal-close-btn:hover { border-color: var(--vert); color: var(--vert); background: rgba(11,255,4,0.08); }
+        .modal-search-wrap { padding: 14px 16px 8px; }
+        .modal-search { width: 100%; background: #000; border: 1.5px solid #2a2a2a; border-radius: 8px; padding: 12px 14px; color: #eee; font-size: 0.95em; font-family: 'Nunito', sans-serif; outline: none; box-sizing: border-box; transition: border-color 0.2s; }
+        .modal-search:focus { border-color: var(--vert); }
+        .modal-list { padding: 8px 16px 20px; max-height: 60vh; overflow-y: auto; }
+        .licencie-row { display: flex; align-items: center; gap: 14px; background: #1c1c1c; border: 1px solid #2a2a2a; border-radius: 10px; padding: 12px 14px; margin-bottom: 9px; transition: border-color 0.2s; }
+        .licencie-row:hover { border-color: rgba(11,255,4,0.5); }
+        .licencie-avatar { flex-shrink: 0; width: 42px; height: 42px; border-radius: 50%; background: rgba(11,255,4,0.1); border: 2px solid var(--vert); display: flex; align-items: center; justify-content: center; font-family: 'Bebas Neue', sans-serif; font-size: 1em; color: var(--vert); }
+        .licencie-nom { flex: 1; font-weight: 700; color: #f0f0f0; font-size: 0.95em; }
+        .licencie-tel { display: inline-flex; align-items: center; gap: 6px; background: rgba(11,255,4,0.08); border: 1.5px solid rgba(11,255,4,0.3); color: var(--vert); text-decoration: none; padding: 8px 13px; border-radius: 8px; font-size: 0.82em; font-weight: 700; white-space: nowrap; transition: background 0.2s; }
+        .licencie-tel:hover { background: rgba(11,255,4,0.2); }
+        .modal-empty { text-align: center; color: #555; font-size: 0.9em; padding: 30px; }
+        .lockout-msg { text-align: center; padding: 20px; color: #ff6666; font-weight: 700; font-size: 0.9em; }
+
+        #pwd-modal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.85); z-index: 10000; align-items: center; justify-content: center; padding: 20px; }
+        #pwd-modal.open { display: flex; }
+        .pwd-modal-box { background: #111; border: 2px solid var(--vert); border-radius: 16px; padding: 28px 24px; max-width: 380px; width: 100%; box-shadow: 0 0 40px rgba(11,255,4,0.2); }
+        .pwd-modal-box h3 { font-family: 'Bebas Neue', sans-serif; font-size: 1.4em; color: white; margin-bottom: 6px; letter-spacing: 1.5px; }
+        .pwd-modal-box p { color: #888; font-size: 0.85em; margin-bottom: 18px; }
+        .pwd-modal-box input { width: 100%; background: #000; border: 1.5px solid #333; border-radius: 8px; padding: 12px 14px; color: #eee; font-size: 1em; font-family: 'Nunito', sans-serif; outline: none; margin-bottom: 14px; transition: border-color 0.2s; }
+        .pwd-modal-box input:focus { border-color: var(--vert); }
+        .pwd-modal-box .pwd-error { color: #ff4444; font-size: 0.82em; margin-bottom: 10px; min-height: 18px; }
+        .pwd-modal-btns { display: flex; gap: 10px; }
+        .pwd-modal-btns button { flex: 1; padding: 12px; border-radius: 8px; font-family: 'Bebas Neue', sans-serif; font-size: 1em; letter-spacing: 1.5px; cursor: pointer; border: none; transition: background 0.2s; }
+        .pwd-btn-ok { background: var(--vert); color: #000; }
+        .pwd-btn-ok:hover { background: var(--vert-dark); }
+        .pwd-btn-cancel { background: transparent; color: #888; border: 1.5px solid #333 !important; }
+        .pwd-btn-cancel:hover { color: #ccc; border-color: #666 !important; }
+
         .cal-box { background: var(--gris-card); border-radius: 14px; overflow: hidden; border: 1px solid #363636; }
         .cal-header { display: flex; align-items: center; justify-content: space-between; padding: 14px 18px; background: #181818; border-bottom: 2px solid var(--vert); }
         .cal-header h3 { font-family: 'Bebas Neue', sans-serif; font-size: 1.4em; letter-spacing: 2px; color: white; margin: 0; text-transform: uppercase; }
@@ -386,50 +431,6 @@ body.ready { overflow: auto; }
         .partner-card:hover { border-color: var(--vert); transform: translateY(-4px); box-shadow: 0 8px 24px rgba(11,255,4,0.2); }
         .partner-logo { width: 110px; height: 110px; border-radius: 12px; object-fit: contain; background: #111; padding: 8px; }
         .partner-name { color: #f0f0f0; font-weight: 700; font-size: 1.05em; }
-
-        #notif-banner { display: none; position: fixed; bottom: 80px; left: 50%; transform: translateX(-50%); background: #1a1a1a; border: 2px solid #ffd700; border-radius: 14px; padding: 14px 18px; z-index: 500; box-shadow: 0 8px 30px rgba(255,215,0,0.2); max-width: 340px; width: calc(100% - 32px); animation: slideUp 0.4s ease; }
-        #notif-banner .notif-content { display: flex; align-items: center; gap: 12px; }
-        #notif-banner .notif-icon { font-size: 1.8em; flex-shrink: 0; }
-        #notif-banner .notif-text strong { color: #f0f0f0; font-size: 0.9em; display: block; }
-        #notif-banner .notif-text span { color: #aaa; font-size: 0.78em; }
-        #notif-banner .notif-actions { display: flex; gap: 8px; margin-top: 12px; }
-        #notif-enable-btn { flex: 1; background: #ffd700; color: #000; border: none; padding: 10px; border-radius: 8px; font-family: 'Bebas Neue', sans-serif; font-size: 1em; letter-spacing: 1.5px; cursor: pointer; }
-        #notif-dismiss-btn { background: transparent; color: #777; border: 1px solid #333; padding: 10px 14px; border-radius: 8px; font-size: 0.85em; cursor: pointer; }
-
-        #modal-licencies { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.88); z-index: 9999; overflow-y: auto; padding: 20px 12px; }
-        .modal-inner { max-width: 600px; margin: 0 auto; background: #111; border: 2px solid var(--vert); border-radius: 16px; overflow: hidden; box-shadow: 0 0 40px rgba(11,255,4,0.2); }
-        .modal-header { display: flex; align-items: center; justify-content: space-between; padding: 18px 20px; background: #0a0a0a; border-bottom: 2px solid var(--vert); }
-        .modal-header h3 { font-family: 'Bebas Neue', sans-serif; font-size: 1.5em; letter-spacing: 2px; color: white; margin: 0; }
-        .modal-header h3 span { color: var(--vert); }
-        .modal-close-btn { background: transparent; border: 2px solid #444; color: #ccc; width: 38px; height: 38px; border-radius: 8px; font-size: 1.2em; cursor: pointer; line-height: 1; transition: border-color 0.2s, color 0.2s, background 0.2s; }
-        .modal-close-btn:hover { border-color: var(--vert); color: var(--vert); background: rgba(11,255,4,0.08); }
-        .modal-search-wrap { padding: 14px 16px 8px; }
-        .modal-search { width: 100%; background: #000; border: 1.5px solid #2a2a2a; border-radius: 8px; padding: 12px 14px; color: #eee; font-size: 0.95em; font-family: 'Nunito', sans-serif; outline: none; box-sizing: border-box; transition: border-color 0.2s; }
-        .modal-search:focus { border-color: var(--vert); }
-        .modal-list { padding: 8px 16px 20px; max-height: 60vh; overflow-y: auto; }
-        .licencie-row { display: flex; align-items: center; gap: 14px; background: #1c1c1c; border: 1px solid #2a2a2a; border-radius: 10px; padding: 12px 14px; margin-bottom: 9px; transition: border-color 0.2s; }
-        .licencie-row:hover { border-color: rgba(11,255,4,0.5); }
-        .licencie-avatar { flex-shrink: 0; width: 42px; height: 42px; border-radius: 50%; background: rgba(11,255,4,0.1); border: 2px solid var(--vert); display: flex; align-items: center; justify-content: center; font-family: 'Bebas Neue', sans-serif; font-size: 1em; color: var(--vert); }
-        .licencie-nom { flex: 1; font-weight: 700; color: #f0f0f0; font-size: 0.95em; }
-        .licencie-tel { display: inline-flex; align-items: center; gap: 6px; background: rgba(11,255,4,0.08); border: 1.5px solid rgba(11,255,4,0.3); color: var(--vert); text-decoration: none; padding: 8px 13px; border-radius: 8px; font-size: 0.82em; font-weight: 700; white-space: nowrap; transition: background 0.2s; }
-        .licencie-tel:hover { background: rgba(11,255,4,0.2); }
-        .modal-empty { text-align: center; color: #555; font-size: 0.9em; padding: 30px; }
-        .lockout-msg { text-align: center; padding: 20px; color: #ff6666; font-weight: 700; font-size: 0.9em; }
-
-        #pwd-modal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.85); z-index: 10000; align-items: center; justify-content: center; padding: 20px; }
-        #pwd-modal.open { display: flex; }
-        .pwd-modal-box { background: #111; border: 2px solid var(--vert); border-radius: 16px; padding: 28px 24px; max-width: 380px; width: 100%; box-shadow: 0 0 40px rgba(11,255,4,0.2); }
-        .pwd-modal-box h3 { font-family: 'Bebas Neue', sans-serif; font-size: 1.4em; color: white; margin-bottom: 6px; letter-spacing: 1.5px; }
-        .pwd-modal-box p { color: #888; font-size: 0.85em; margin-bottom: 18px; }
-        .pwd-modal-box input { width: 100%; background: #000; border: 1.5px solid #333; border-radius: 8px; padding: 12px 14px; color: #eee; font-size: 1em; font-family: 'Nunito', sans-serif; outline: none; margin-bottom: 14px; transition: border-color 0.2s; }
-        .pwd-modal-box input:focus { border-color: var(--vert); }
-        .pwd-modal-box .pwd-error { color: #ff4444; font-size: 0.82em; margin-bottom: 10px; min-height: 18px; }
-        .pwd-modal-btns { display: flex; gap: 10px; }
-        .pwd-modal-btns button { flex: 1; padding: 12px; border-radius: 8px; font-family: 'Bebas Neue', sans-serif; font-size: 1em; letter-spacing: 1.5px; cursor: pointer; border: none; transition: background 0.2s; }
-        .pwd-btn-ok { background: var(--vert); color: #000; }
-        .pwd-btn-ok:hover { background: var(--vert-dark); }
-        .pwd-btn-cancel { background: transparent; color: #888; border: 1.5px solid #333 !important; }
-        .pwd-btn-cancel:hover { color: #ccc; border-color: #666 !important; }
     </style>
 </head>
 <body>
@@ -483,100 +484,6 @@ var CsrfToken = (function() {
     };
 })();
 </script>
-
-<!-- ===================== INTRO ANIMATION ===================== 
-<script>
-(function() {
-    var introStarted = false;
-
-    window.skipIntro = function() {
-        var screen = document.getElementById('intro-screen');
-        if (!screen) return;
-        screen.style.transition = 'opacity 0.4s ease';
-        screen.style.opacity = '0';
-        setTimeout(function() {
-            screen.style.display = 'none';
-            document.body.classList.add('ready');
-        }, 420);
-    };
-
-    window.startIntro = function() {
-        if (introStarted) return;
-        introStarted = true;
-        var screen  = document.getElementById('intro-screen');
-        var logo    = document.getElementById('introLogo');
-        var bar     = document.getElementById('introBar');
-        var btnWrap = document.getElementById('intro-enter-wrap');
-
-        try {
-            var audio = new Audio('sonintro.mp3');
-            audio.volume = 0.7;
-            audio.play().catch(function(){});
-        } catch(e) {}
-
-        btnWrap.style.transition = 'opacity 0.3s ease';
-        btnWrap.style.opacity = '0';
-        setTimeout(function() { btnWrap.style.display = 'none'; }, 300);
-
-        bar.classList.add('run');
-
-        setTimeout(function() { logo.classList.add('logo-out'); }, 800);
-        setTimeout(function() { document.getElementById('iw1').classList.add('show'); }, 1100);
-        setTimeout(function() { var w = document.getElementById('iw1'); w.classList.remove('show'); w.classList.add('out'); }, 2700);
-        setTimeout(function() { document.getElementById('iw2').classList.add('show'); }, 3000);
-        setTimeout(function() { var w = document.getElementById('iw2'); w.classList.remove('show'); w.classList.add('out'); }, 4200);
-        setTimeout(function() { document.getElementById('iw3').classList.add('show'); }, 4500);
-        setTimeout(function() { var w = document.getElementById('iw3'); w.classList.remove('show'); w.classList.add('out'); }, 5900);
-        setTimeout(function() {
-            screen.classList.add('hide');
-            setTimeout(function() {
-                screen.style.display = 'none';
-                document.body.classList.add('ready');
-            }, 900);
-        }, 5300);
-    };
-})();
-</script>
-
-<div id="intro-screen">
-    <style>
-        #intro-screen { position: fixed; inset: 0; background: #000; z-index: 9999; display: flex; flex-direction: column; align-items: center; justify-content: center; }
-        #intro-screen.hide { animation: introFadeOut 0.8s ease forwards; }
-        @keyframes introFadeOut { to { opacity: 0; pointer-events: none; } }
-        .intro-logo { width: 250px; height: 250px; object-fit: contain; opacity: 0; transform: scale(0.6); animation: logoIn 0.7s cubic-bezier(.34,1.56,.64,1) 0.2s forwards; }
-        .intro-logo.logo-out { animation: logoOut 0.5s ease forwards; }
-        @keyframes logoIn { to { opacity: 1; transform: scale(1); } }
-        @keyframes logoOut { to { opacity: 0; transform: scale(1.15); } }
-        .intro-word { font-family: 'Bebas Neue', sans-serif; font-size: clamp(3.5em, 12vw, 7em); letter-spacing: 6px; color: #0bff04; text-shadow: 0 0 50px rgba(11,255,4,0.5); position: absolute; text-align: center; width: 100%; opacity: 0; transform: translateY(40px); pointer-events: none; }
-        .intro-word.show { animation: wordIn 0.55s cubic-bezier(.34,1.2,.64,1) forwards; }
-        .intro-word.out  { animation: wordOut 0.35s ease forwards; }
-        @keyframes wordIn  { to { opacity: 1; transform: translateY(0); } }
-        @keyframes wordOut { to { opacity: 0; transform: translateY(-40px); } }
-        .intro-bar { position: absolute; bottom: 0; left: 0; height: 3px; width: 0; background: #0bff04; box-shadow: 0 0 12px rgba(11,255,4,0.8); }
-        .intro-bar.run { animation: barRun 6.0s linear forwards; }
-        @keyframes barRun { to { width: 100%; } }
-        #intro-enter-wrap { margin-top: 40px; }
-        #intro-enter-btn { background: transparent; border: 2px solid #0bff04; color: #0bff04; font-family: 'Bebas Neue', sans-serif; font-size: 1.5em; letter-spacing: 4px; padding: 14px 48px; border-radius: 50px; cursor: pointer; opacity: 0; transform: translateY(20px); animation: btnIn 0.6s ease 1s forwards; transition: background 0.2s, color 0.2s, box-shadow 0.2s; }
-        #intro-enter-btn:hover { background: #0bff04; color: #000; box-shadow: 0 0 30px rgba(11,255,4,0.5); }
-        @keyframes btnIn { to { opacity: 1; transform: translateY(0); } }
-        #btn-skip { position: absolute; top: 18px; right: 18px; background: transparent; border: 1.5px solid rgba(11,255,4,0.4); color: rgba(11,255,4,0.7); font-family: 'Bebas Neue', sans-serif; font-size: 0.95em; letter-spacing: 2px; padding: 7px 18px; border-radius: 30px; cursor: pointer; opacity: 0; animation: btnIn 0.5s ease 1.3s forwards; transition: background 0.2s, color 0.2s, border-color 0.2s; z-index: 10001; }
-        #btn-skip:hover { background: rgba(11,255,4,0.12); color: #0bff04; border-color: #0bff04; }
-    </style>
-    <button id="btn-skip">⏭ Passer</button>
-    <img src="logo.webp" alt="Logo" class="intro-logo" id="introLogo">
-    <div id="intro-enter-wrap">
-        <button id="intro-enter-btn">ENTRER</button>
-    </div>
-    <span class="intro-word" id="iw1">PASSION</span>
-    <span class="intro-word" id="iw2">PRÉCISION</span>
-    <span class="intro-word" id="iw3">BONNE HUMEUR</span>
-    <div class="intro-bar" id="introBar"></div>
-</div>
-
-<script>
-document.getElementById('btn-skip').addEventListener('click', function() { window.skipIntro(); });
-document.getElementById('intro-enter-btn').addEventListener('click', function() { window.startIntro(); });
-</script> -->
 
 <div class="banner">
     <img src="logo.webp" alt="Logo club pétanque Boves">
@@ -987,7 +894,6 @@ document.addEventListener('keydown', function(e) {
         var eventMonths = getEventMonths();
         if (eventMonths.length === 0) return;
 
-        // Initialiser curMonth si pas encore défini
         if (curMonth === null || eventMonths.indexOf(curMonth) === -1) {
             curMonth = eventMonths[0];
         }
@@ -1652,7 +1558,8 @@ document.getElementById('newOrderBtn').addEventListener('click', function() {
     </div>
 </div>
 
-<!-- NOTIFICATIONS PUSH -->
+<!-- NOTIFICATIONS PUSH — bannière désactivée (commentée) -->
+<!--
 <div id="notif-banner">
     <div class="notif-content">
         <div class="notif-icon">🔔</div>
@@ -1663,6 +1570,7 @@ document.getElementById('newOrderBtn').addEventListener('click', function() {
         <button id="notif-dismiss-btn">Plus tard</button>
     </div>
 </div>
+-->
 
 <!-- iOS INSTALL BANNER -->
 <div id="ios-install-banner" style="display:none;position:fixed;bottom:0;left:0;right:0;background:#1a1a1a;border-top:2px solid var(--vert);box-shadow:0 -4px 20px rgba(11,255,4,0.2);padding:14px 16px;z-index:9999;font-family:-apple-system,sans-serif;">
@@ -1724,104 +1632,6 @@ btnTop.addEventListener('click', function() {
     window.scrollTo({ top: 0, behavior: 'smooth' });
 });
 
-/* ===== NOTIFICATIONS ===== */
-(function() {
-    if (!('Notification' in window)) return;
-
-    var dismissed = sessionStorage.getItem('notif-dismissed');
-
-    // Afficher la bannière seulement si pas encore accepté et pas dismissé
-    if (Notification.permission !== 'granted' && !dismissed) {
-        setTimeout(function() {
-            var banner = document.getElementById('notif-banner');
-            if (banner) banner.style.display = 'block';
-        }, 8000);
-    }
-
-    var btnEnable  = document.getElementById('notif-enable-btn');
-    var btnDismiss = document.getElementById('notif-dismiss-btn');
-
-    if (btnEnable) {
-        btnEnable.addEventListener('click', async function() {
-            var banner = document.getElementById('notif-banner');
-            if (banner) banner.style.display = 'none';
-
-            try {
-                // Demander la permission si pas encore accordée
-                if (Notification.permission !== 'granted') {
-                    var permission = await Notification.requestPermission();
-                    if (permission !== 'granted') {
-                        console.warn('Permission refusée');
-                        return;
-                    }
-                }
-
-                const { initializeApp, getApps } = await import("https://www.gstatic.com/firebasejs/10.7.0/firebase-app.js");
-                const { getMessaging, getToken, onMessage } = await import("https://www.gstatic.com/firebasejs/10.7.0/firebase-messaging.js");
-                const { getFirestore, collection, addDoc, Timestamp } = await import("https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore.js");
-
-                const firebaseConfig = {
-                    apiKey: "AIzaSyC27gFQjA3WbpHcgzerSjQvOX0h6VO3EgY",
-                    authDomain: "petanqueboves-54950.firebaseapp.com",
-                    projectId: "petanqueboves-54950",
-                    storageBucket: "petanqueboves-54950.firebasestorage.app",
-                    messagingSenderId: "920624937926",
-                    appId: "1:920624937926:web:fac2aa801abd3a5ee450c7"
-                };
-
-                const app = getApps().length ? getApps()[0] : initializeApp(firebaseConfig);
-                const messaging = getMessaging(app);
-                const db = getFirestore(app);
-const swReg = await navigator.serviceWorker.ready;
-const token = await getToken(messaging, {
-    vapidKey: 'BGnNqQrDMkMeETZiZyBDvhp6WmPkpEVO5wGhQ3ocLY8cc6aK184UvPY_-W4ayi54fvQw9wDs7dJ7tyyiG3BV3Nk',
-    serviceWorkerRegistration: swReg
-});
-                if (token) {
-                   alert(token);
-
-                    // Sauvegarder seulement si nouveau token
-                    var tokenActuel = localStorage.getItem('fcm_token');
-                    if (token !== tokenActuel) {
-                        localStorage.setItem('fcm_token', token);
-                        await addDoc(collection(db, 'fcm_tokens'), {
-                            token: token,
-                            createdAt: Timestamp.now()
-                        });
-                        console.log('[FCM] Token sauvegardé dans Firestore');
-                    }
-
-                    // Notif de confirmation
-                    new Notification('🎯 Pétanque Boves', {
-                        body: 'Notifications activées ! Vous recevrez les mises à jour du club.',
-                        icon: '/petanque80/logo.png'
-                    });
-
-                    // Écouter les notifs quand l'app est ouverte
-                    onMessage(messaging, function(payload) {
-                        console.log('[FCM] Message reçu:', payload);
-                        var titre = (payload.notification && payload.notification.title) || '🎯 Pétanque Boves';
-                        var corps  = (payload.notification && payload.notification.body)  || 'Nouvelle mise à jour !';
-                        new Notification(titre, {
-                            body: corps,
-                            icon: '/petanque80/logo.png'
-                        });
-                    });
-                }
-            } catch(e) {
-                console.warn('[FCM] Erreur:', e.message);
-            }
-        });
-    }
-
-    if (btnDismiss) {
-        btnDismiss.addEventListener('click', function() {
-            var banner = document.getElementById('notif-banner');
-            if (banner) banner.style.display = 'none';
-            sessionStorage.setItem('notif-dismissed', '1');
-        });
-    }
-})();
 /* ===== PWA ===== */
 var deferredPrompt = null;
 window.addEventListener('beforeinstallprompt', function(e) {
@@ -1882,8 +1692,6 @@ if ('serviceWorker' in navigator) {
 })();
 </script>
 <!-- ===================== FIREBASE – DONNÉES DYNAMIQUES ===================== -->
-<!-- COLLER CE BLOC JUSTE AVANT </body> DANS index.html -->
-
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-app.js";
 import { getFirestore, collection, getDocs, orderBy, query }
@@ -1908,10 +1716,6 @@ function esc(str) {
         .replace(/>/g,'&gt;').replace(/"/g,'&quot;');
 }
 
-// ═══════════════════════════════════════════════
-//  ACTUALITÉS — injecte les cartes depuis Firestore
-//  AVANT les cartes existantes dans #actualites
-// ═══════════════════════════════════════════════
 async function loadActualites() {
     try {
         const q = query(collection(db, 'actualites'), orderBy('createdAt', 'desc'));
@@ -1920,7 +1724,6 @@ async function loadActualites() {
 
         const section = document.getElementById('actualites');
         if (!section) return;
-        // On insère après le <h2>
         const h2 = section.querySelector('h2');
         const insertAfter = h2 || section.firstChild;
 
@@ -1936,7 +1739,7 @@ async function loadActualites() {
                 img.alt = esc(d.titre || 'Actualité');
                 img.loading = 'lazy';
                 img.style.cssText = 'width:100%;height:auto;display:block;border-radius:10px 10px 0 0;max-width:100%;';
-img.className = 'actu-img';
+                img.className = 'actu-img';
                 img.onerror = () => img.remove();
                 card.appendChild(img);
             }
@@ -1953,7 +1756,6 @@ img.className = 'actu-img';
             p.appendChild(document.createTextNode(d.texte || ''));
             card.appendChild(p);
 
-            // Insérer juste après le h2
             if (insertAfter.nextSibling) {
                 section.insertBefore(card, insertAfter.nextSibling);
             } else {
@@ -1965,16 +1767,12 @@ img.className = 'actu-img';
     }
 }
 
-// ═══════════════════════════════════════════════
-//  CLASSEMENT — remplace les données codées en dur
-// ═══════════════════════════════════════════════
 async function loadClassement() {
     try {
         const q = query(collection(db, 'classement'), orderBy('pts', 'desc'));
         const snap = await getDocs(q);
-        if (snap.empty) return; // garde les données codées en dur si Firestore est vide
+        if (snap.empty) return;
 
-        // Reconstruire clData depuis Firestore
         const newData = [];
         let rang = 1;
         snap.forEach(docSnap => {
@@ -1989,7 +1787,6 @@ async function loadClassement() {
             rang++;
         });
 
-        // Remplacer clData global et re-render
         if (typeof clData !== 'undefined') {
             clData.length = 0;
             newData.forEach(item => clData.push(item));
@@ -2000,23 +1797,16 @@ async function loadClassement() {
     }
 }
 
-// ═══════════════════════════════════════════════
-//  CALENDRIER — ajoute les événements Firestore
-//  aux événements existants codés en dur (EVENTS)
-// ═══════════════════════════════════════════════
 async function loadCalendrier() {
     try {
         const q = query(collection(db, 'calendrier'), orderBy('mois'), orderBy('jour'));
         const snap = await getDocs(q);
         if (snap.empty) return;
 
-        // EVENTS est la variable globale du calendrier
-        // On y ajoute les nouveaux événements
         if (typeof EVENTS === 'undefined') return;
 
         snap.forEach(docSnap => {
             const d = docSnap.data();
-            // Éviter les doublons si rechargement
             const exists = EVENTS.some(e =>
                 e.nom === d.nom && e.m === d.mois && e.d === d.jour
             );
@@ -2033,7 +1823,6 @@ async function loadCalendrier() {
             }
         });
 
-        // Re-render le calendrier avec les nouveaux événements
         if (typeof renderCalendar === 'function') {
             renderCalendar();
         }
@@ -2042,10 +1831,6 @@ async function loadCalendrier() {
     }
 }
 
-// ═══════════════════════════════════════════════
-//  FAQ — ajoute les questions Firestore
-//  à la section #faq existante
-// ═══════════════════════════════════════════════
 async function loadFaq() {
     try {
         const q = query(collection(db, 'faq'), orderBy('createdAt'));
@@ -2071,10 +1856,6 @@ async function loadFaq() {
     }
 }
 
-// ═══════════════════════════════════════════════
-//  GALERIE — ajoute les photos Firestore
-//  à la grille existante #galleryGrid
-// ═══════════════════════════════════════════════
 async function loadGalerie() {
     try {
         const q = query(collection(db, 'galerie'), orderBy('createdAt', 'desc'));
@@ -2124,9 +1905,6 @@ async function loadGalerie() {
     }
 }
 
-// ═══════════════════════════════════════════════
-//  LANCEMENT — après que le DOM soit prêt
-// ═══════════════════════════════════════════════
 window.addEventListener('load', () => {
     loadActualites();
     loadClassement();
@@ -2136,12 +1914,6 @@ window.addEventListener('load', () => {
 });
 </script>
 <!-- ===================== FIN FIREBASE ===================== -->
-    <!--
-=======================================================================
-  BLOC NOTIFICATIONS PUSH — À intégrer dans index.html
-  Placer CE BLOC juste après le bloc Firebase existant (fin du <body>)
-=======================================================================
--->
 
 <script type="module">
 import { initializeApp, getApps } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-app.js";
@@ -2150,7 +1922,6 @@ import { getMessaging, getToken, onMessage }
 import { getFirestore, collection, onSnapshot, query, orderBy, limit, where, Timestamp, addDoc }
     from "https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore.js";
 
-// ─── Config (même que dans ton bloc Firebase existant) ────────────────────────
 const firebaseConfig = {
     apiKey: "AIzaSyC27gFQjA3WbpHcgzerSjQvOX0h6VO3EgY",
     authDomain: "petanqueboves-54950.firebaseapp.com",
@@ -2160,16 +1931,11 @@ const firebaseConfig = {
     appId: "1:920624937926:web:fac2aa801abd3a5ee450c7"
 };
 
-// Réutilise l'app déjà init si elle existe
 const app = getApps().length ? getApps()[0] : initializeApp(firebaseConfig);
 const db  = getFirestore(app);
 
-// ─── CLÉ VAPID — À REMPLIR ───────────────────────────────────────────────────
-// Va dans : Console Firebase → Paramètres du projet → Cloud Messaging
-// → Certificats push web → Générer une paire de clés → copier la clé publique
 const VAPID_KEY = 'BGnNqQrDMkMeETZiZyBDvhp6WmPkpEVO5wGhQ3ocLY8cc6aK184UvPY_-W4ayi54fvQw9wDs7dJ7tyyiG3BV3Nk';
 
-// ─── Enregistrement du token FCM ──────────────────────────────────────────────
 async function enregistrerTokenFCM() {
     if (!('serviceWorker' in navigator) || !('Notification' in window)) return;
     if (Notification.permission !== 'granted') return;
@@ -2185,18 +1951,14 @@ async function enregistrerTokenFCM() {
 
         if (token) {
             console.log('[FCM] Token obtenu:', token);
-            alert('Token: ' + token);
-            // Stocker le token en local pour éviter de le renvoyer à chaque fois
             const tokenActuel = localStorage.getItem('fcm_token');
             if (token !== tokenActuel) {
                 localStorage.setItem('fcm_token', token);
-                // Optionnel : sauvegarder dans Firestore pour ciblage admin
-                 await addDoc(collection(db, 'fcm_tokens'), { token, createdAt: Timestamp.now() });
+                await addDoc(collection(db, 'fcm_tokens'), { token, createdAt: Timestamp.now() });
                 console.log('[FCM] Nouveau token enregistré');
             }
         }
 
-        // ─── Notifs reçues quand l'app est OUVERTE (foreground) ───────────────
         onMessage(messaging, function(payload) {
             console.log('[FCM] Message reçu en foreground:', payload);
             afficherToastNotif(
@@ -2211,9 +1973,7 @@ async function enregistrerTokenFCM() {
     }
 }
 
-// ─── Toast de notification in-app (foreground) ────────────────────────────────
 function afficherToastNotif(titre, corps, ancre) {
-    // Supprimer un toast existant
     const ancien = document.getElementById('notif-toast');
     if (ancien) ancien.remove();
 
@@ -2245,7 +2005,6 @@ function afficherToastNotif(titre, corps, ancre) {
         fontFamily: "'Nunito', sans-serif"
     });
 
-    // Animation CSS
     if (!document.getElementById('toast-style')) {
         const style = document.createElement('style');
         style.id = 'toast-style';
@@ -2258,7 +2017,6 @@ function afficherToastNotif(titre, corps, ancre) {
 
     document.body.appendChild(toast);
 
-    // Clic sur le toast → naviguer vers l'ancre
     if (ancre) {
         toast.style.cursor = 'pointer';
         toast.addEventListener('click', function(e) {
@@ -2272,14 +2030,12 @@ function afficherToastNotif(titre, corps, ancre) {
         });
     }
 
-    // Fermeture manuelle
     document.getElementById('toast-close').addEventListener('click', function(e) {
         e.stopPropagation();
         toast.style.animation = 'toastOut 0.3s ease forwards';
         setTimeout(() => toast.remove(), 300);
     });
 
-    // Auto-fermeture après 7 secondes
     setTimeout(function() {
         if (document.contains(toast)) {
             toast.style.animation = 'toastOut 0.3s ease forwards';
@@ -2288,9 +2044,6 @@ function afficherToastNotif(titre, corps, ancre) {
     }, 7000);
 }
 
-// ─── Écoute en temps réel des nouvelles actualités ───────────────────────────
-// Déclenche une notif in-app quand une nouvelle actualité est publiée
-// pendant que l'utilisateur est sur le site
 function ecouterNouvellesActualites() {
     const cinqMinutesAvant = new Date(Date.now() - 5 * 60 * 1000);
     const q = query(
@@ -2302,7 +2055,7 @@ function ecouterNouvellesActualites() {
 
     let premierAppel = true;
     onSnapshot(q, function(snap) {
-        if (premierAppel) { premierAppel = false; return; } // Ignorer le snapshot initial
+        if (premierAppel) { premierAppel = false; return; }
         snap.docChanges().forEach(function(change) {
             if (change.type === 'added') {
                 const d = change.doc.data();
@@ -2316,7 +2069,6 @@ function ecouterNouvellesActualites() {
     });
 }
 
-// ─── Bouton "Activer les notifications" ───────────────────────────────────────
 async function activerNotifications() {
     if (!('Notification' in window)) {
         alert('Votre navigateur ne supporte pas les notifications push.');
@@ -2325,8 +2077,12 @@ async function activerNotifications() {
 
     try {
         const permission = await Notification.requestPermission();
-        document.getElementById('notif-banner').style.display = 'none';
-        sessionStorage.setItem('notif-dismissed', '1');
+        // La bannière est désactivée, mais on garde la logique au cas où
+        const notifBanner = document.getElementById('notif-banner');
+        if (notifBanner) {
+            notifBanner.style.display = 'none';
+            sessionStorage.setItem('notif-dismissed', '1');
+        }
 
         if (permission === 'granted') {
             await enregistrerTokenFCM();
@@ -2337,11 +2093,10 @@ async function activerNotifications() {
     }
 }
 
-// ─── Relier le bouton existant dans le HTML ───────────────────────────────────
 window.addEventListener('load', function() {
     const btnEnable = document.getElementById('notif-enable-btn');
     if (btnEnable) {
-        btnEnable.removeEventListener('click', btnEnable._handler); // Évite les doublons
+        btnEnable.removeEventListener('click', btnEnable._handler);
         btnEnable._handler = activerNotifications;
         btnEnable.addEventListener('click', activerNotifications);
     }
@@ -2349,20 +2104,17 @@ window.addEventListener('load', function() {
     const btnDismiss = document.getElementById('notif-dismiss-btn');
     if (btnDismiss) {
         btnDismiss.addEventListener('click', function() {
-            document.getElementById('notif-banner').style.display = 'none';
+            const notifBanner = document.getElementById('notif-banner');
+            if (notifBanner) notifBanner.style.display = 'none';
             sessionStorage.setItem('notif-dismissed', '1');
         });
     }
 });
 
-// ─── Démarrage ────────────────────────────────────────────────────────────────
 window.addEventListener('load', async function() {
-    // Si l'utilisateur a déjà accordé la permission → enregistrer le token silencieusement
     if (Notification.permission === 'granted') {
         await enregistrerTokenFCM();
     }
-
-    // Écouter les nouvelles actualités en temps réel (pour tous les visiteurs)
     ecouterNouvellesActualites();
 });
 </script>
