@@ -59,7 +59,7 @@
         /* ── FORM ELEMENTS ── */
         label { display: block; font-size: 0.75em; font-weight: 700; text-transform: uppercase; letter-spacing: 1.2px; color: var(--vert); margin-bottom: 6px; margin-top: 14px; }
         label:first-child { margin-top: 0; }
-        input[type=text], input[type=number], input[type=url], textarea, select {
+        input[type=text], input[type=number], input[type=url], input[type=tel], input[type=password], textarea, select {
             width: 100%; background: #000; border: 1.5px solid #2a2a2a; border-radius: 8px;
             padding: 12px 14px; color: #eee; font-family: 'Nunito', sans-serif; font-size: 0.95em;
             outline: none; transition: border-color 0.2s, box-shadow 0.2s;
@@ -73,6 +73,8 @@
         @media (max-width: 600px) { .form-grid-2 { grid-template-columns: 1fr; } }
         .form-grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; }
         @media (max-width: 700px) { .form-grid-3 { grid-template-columns: 1fr 1fr; } }
+        .form-grid-4 { display: grid; grid-template-columns: 1fr 1fr 1fr 1fr; gap: 16px; }
+        @media (max-width: 800px) { .form-grid-4 { grid-template-columns: 1fr 1fr; } }
 
         /* ── BUTTONS ── */
         .btn { display: inline-flex; align-items: center; gap: 8px; padding: 11px 20px; border-radius: 10px; font-family: 'Bebas Neue', sans-serif; font-size: 1em; letter-spacing: 1.5px; cursor: pointer; border: none; transition: background 0.2s, transform 0.15s, box-shadow 0.2s; }
@@ -85,6 +87,7 @@
         .btn-red:hover { background: rgba(255,68,68,0.1); }
         .btn-outline { background: transparent; color: #aaa; border: 1.5px solid #444; }
         .btn-outline:hover { border-color: #888; color: #eee; }
+        .btn-sm { padding: 7px 12px; font-size: 0.82em; }
         .btn-row { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 18px; }
 
         /* ── ITEMS LIST ── */
@@ -124,16 +127,32 @@
         .edit-modal-btns { display: flex; gap: 10px; margin-top: 20px; }
         .edit-modal-btns button { flex: 1; }
 
-        /* ── TABS ── */
-        .tabs { display: flex; gap: 4px; margin-bottom: 20px; flex-wrap: wrap; }
-        .tab { padding: 8px 16px; border-radius: 8px; font-size: 0.82em; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; cursor: pointer; border: 1.5px solid #333; color: #777; background: transparent; transition: all 0.2s; }
-        .tab.active { background: var(--vert); color: #000; border-color: var(--vert); }
-        .tab-panel { display: none; }
-        .tab-panel.active { display: block; }
-
         /* ── URL PREVIEW ── */
         .url-preview-wrap { margin-top: 10px; display: none; }
         .url-preview-wrap img { max-width: 100%; max-height: 200px; border-radius: 8px; border: 1px solid #333; object-fit: contain; }
+
+        /* ── LICENCIÉS ── */
+        .lic-unlock-box { background: #0a0a0a; border: 2px solid rgba(11,255,4,0.25); border-radius: 14px; padding: 28px 24px; text-align: center; }
+        .lic-unlock-box p { color: #888; font-size: 0.88em; margin-bottom: 16px; }
+        .lic-unlock-row { display: flex; gap: 10px; max-width: 420px; margin: 0 auto; }
+        .lic-stats { display: flex; gap: 12px; margin-bottom: 20px; flex-wrap: wrap; }
+        .lic-stat { background: #111; border: 1px solid #2a2a2a; border-radius: 10px; padding: 12px 18px; text-align: center; flex: 1; min-width: 80px; }
+        .lic-stat .n { font-family: 'Bebas Neue', sans-serif; font-size: 2em; color: var(--vert); display: block; line-height: 1; }
+        .lic-stat .l { font-size: 0.7em; color: #666; text-transform: uppercase; letter-spacing: 1px; margin-top: 4px; }
+        .lic-search { width: 100%; background: #000; border: 1.5px solid #2a2a2a; border-radius: 8px; padding: 11px 14px; color: #eee; font-family: 'Nunito', sans-serif; font-size: 0.95em; outline: none; margin-bottom: 14px; transition: border-color 0.2s; }
+        .lic-search:focus { border-color: var(--vert); box-shadow: 0 0 0 3px rgba(11,255,4,0.12); }
+        .lic-row { background: #111; border: 1px solid #2a2a2a; border-radius: 10px; padding: 12px 14px; display: flex; align-items: center; gap: 12px; transition: border-color 0.2s; }
+        .lic-row:hover { border-color: rgba(11,255,4,0.3); }
+        .lic-avatar { flex-shrink: 0; width: 38px; height: 38px; border-radius: 50%; background: rgba(11,255,4,0.08); border: 2px solid var(--vert); display: flex; align-items: center; justify-content: center; font-family: 'Bebas Neue', sans-serif; font-size: 0.9em; color: var(--vert); }
+        .lic-info { flex: 1; min-width: 0; }
+        .lic-name { font-weight: 700; color: #f0f0f0; font-size: 0.92em; }
+        .lic-meta { font-size: 0.76em; color: #666; margin-top: 2px; display: flex; gap: 10px; flex-wrap: wrap; }
+        .lic-meta span { color: #999; }
+        .lic-actions { display: flex; gap: 6px; flex-shrink: 0; }
+        .encrypt-result { background: #000; border: 1px solid #2a2a2a; border-radius: 8px; padding: 12px 14px; font-size: 0.72em; color: var(--vert); word-break: break-all; max-height: 90px; overflow-y: auto; font-family: monospace; line-height: 1.5; margin: 10px 0; }
+        .info-banner { background: rgba(11,255,4,0.05); border: 1px solid rgba(11,255,4,0.18); border-radius: 10px; padding: 12px 16px; margin-bottom: 20px; font-size: 0.84em; color: #999; line-height: 1.7; }
+        .info-banner strong { color: var(--vert); }
+        .info-banner code { background: #111; color: var(--vert); padding: 1px 6px; border-radius: 4px; font-family: monospace; font-size: 0.9em; }
     </style>
 </head>
 <body>
@@ -167,10 +186,9 @@
     <div class="main">
         <div id="role-badge-wrap"></div>
 
-        <!-- ===== SECTION GALERIE (tous les admins) ===== -->
+        <!-- ===== GALERIE (tous les admins) ===== -->
         <div class="section-card" id="section-galerie">
             <div class="section-title">📸 Galerie Photos <span class="badge-only">MEMBRES</span></div>
-
             <div>
                 <label>URL de la photo (imgur, postimages, etc.)</label>
                 <input type="url" id="photo-url" placeholder="https://i.imgur.com/exemple.jpg">
@@ -184,7 +202,6 @@
                 </div>
                 <div class="status-msg" id="status-galerie"></div>
             </div>
-
             <hr class="sep">
             <div class="items-list" id="galerie-list"></div>
         </div>
@@ -306,40 +323,134 @@
                 <hr class="sep">
                 <div class="items-list" id="faq-list"></div>
             </div>
- 
-<div class="section-card" id="section-notifs">
-    <div class="section-title">🔔 Envoyer une Notification Push</div>
-    <div>
-        <label>Titre</label>
-        <input type="text" id="notif-titre" placeholder="Ex : 🎯 Nouveau concours !" maxlength="100">
-        <label>Message</label>
-        <textarea id="notif-corps" placeholder="Ex : Concours triplettes le 15 juin à Boves — Inscriptions ouvertes !" style="min-height:80px"></textarea>
-        <label>Rediriger vers</label>
-        <select id="notif-ancre">
-            <option value="">— Page d'accueil —</option>
-            <option value="actualites">📰 Actualités</option>
-            <option value="calendrier">📅 Calendrier</option>
-            <option value="classement">🥇 Classement</option>
-            <option value="commande-wrap">🎽 Commande Vêtements</option>
-            <option value="galerie">📸 Galerie</option>
-        </select>
-        <div class="btn-row">
-            <button class="btn btn-green" id="send-notif-btn">🔔 Envoyer à tous les abonnés</button>
-        </div>
-        <div class="status-msg" id="status-notif"></div>
-        <div style="margin-top:12px;padding:12px 14px;background:#111;border:1px solid #2a2a2a;border-radius:8px;font-size:0.82em;color:#666;">
-            <strong style="color:#888;">👥 Abonnés enregistrés :</strong>
-            <span id="notif-count" style="color:var(--vert);font-weight:700;">—</span>
-        </div>
-    </div>
-</div>
-        </div><!-- /superadmin-sections -->
+
+            <!-- NOTIFICATIONS PUSH -->
+            <div class="section-card" id="section-notifs">
+                <div class="section-title">🔔 Envoyer une Notification Push</div>
+                <div>
+                    <label>Titre</label>
+                    <input type="text" id="notif-titre" placeholder="Ex : 🎯 Nouveau concours !" maxlength="100">
+                    <label>Message</label>
+                    <textarea id="notif-corps" placeholder="Ex : Concours triplettes le 15 juin à Boves — Inscriptions ouvertes !" style="min-height:80px"></textarea>
+                    <label>Rediriger vers</label>
+                    <select id="notif-ancre">
+                        <option value="">— Page d'accueil —</option>
+                        <option value="actualites">📰 Actualités</option>
+                        <option value="calendrier">📅 Calendrier</option>
+                        <option value="classement">🥇 Classement</option>
+                        <option value="commande-wrap">🎽 Commande Vêtements</option>
+                        <option value="galerie">📸 Galerie</option>
+                    </select>
+                    <div class="btn-row">
+                        <button class="btn btn-green" id="send-notif-btn">🔔 Envoyer à tous les abonnés</button>
+                    </div>
+                    <div class="status-msg" id="status-notif"></div>
+                    <div style="margin-top:12px;padding:12px 14px;background:#111;border:1px solid #2a2a2a;border-radius:8px;font-size:0.82em;color:#666;">
+                        <strong style="color:#888;">👥 Abonnés enregistrés :</strong>
+                        <span id="notif-count" style="color:var(--vert);font-weight:700;">—</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ======================================================
+                 LICENCIÉS — section chiffrée AES, super admin only
+                 ====================================================== -->
+            <div class="section-card" id="section-licencies">
+                <div class="section-title">👥 Licenciés 2026</div>
+
+                <!-- ÉTAPE 1 : déverrouillage AES -->
+                <div id="lic-lock-zone">
+                    <div class="lic-unlock-box">
+                        <p>Les données des licenciés sont chiffrées (AES). Entrez le mot de passe pour les déverrouiller.</p>
+                        <div class="lic-unlock-row">
+                            <input type="password" id="lic-unlock-pwd" placeholder="Mot de passe AES…" maxlength="128" style="flex:1">
+                            <button class="btn btn-green" id="lic-unlock-btn">🔓 Déverrouiller</button>
+                        </div>
+                        <div class="status-msg" id="status-lic-unlock" style="max-width:420px;margin:10px auto 0;"></div>
+                    </div>
+                </div>
+
+                <!-- ÉTAPE 2 : interface de gestion (visible après déverrouillage) -->
+                <div id="lic-manage-zone" style="display:none;">
+
+                    <div class="info-banner">
+                        Les données sont déchiffrées <strong>uniquement en mémoire</strong>. Après toute modification,
+                        cliquez sur <strong>« Générer &amp; Copier »</strong> pour obtenir la nouvelle chaîne
+                        <code>LICENCIES_CHIFFRE</code> à coller dans <strong>index.html</strong>.
+                        Firebase sert de <strong>source de vérité</strong> — la chaîne chiffrée n'est qu'un cache côté client.
+                    </div>
+
+                    <!-- Stats -->
+                    <div class="lic-stats">
+                        <div class="lic-stat"><span class="n" id="lic-stat-total">0</span><span class="l">Total</span></div>
+                        <div class="lic-stat"><span class="n" id="lic-stat-tel">0</span><span class="l">Avec tél.</span></div>
+                        <div class="lic-stat"><span class="n" id="lic-stat-lic">0</span><span class="l">Avec n° licence</span></div>
+                        <div class="lic-stat"><span class="n" id="lic-stat-sans">0</span><span class="l">Incomplets</span></div>
+                    </div>
+
+                    <!-- Formulaire ajout -->
+                    <div class="form-grid-4" style="margin-bottom:6px;">
+                        <div>
+                            <label>Prénom *</label>
+                            <input type="text" id="lic-add-prenom" placeholder="Prénom" maxlength="50">
+                        </div>
+                        <div>
+                            <label>Nom *</label>
+                            <input type="text" id="lic-add-nom" placeholder="Nom" maxlength="50">
+                        </div>
+                        <div>
+                            <label>Téléphone</label>
+                            <input type="tel" id="lic-add-tel" placeholder="06 xx xx xx xx" maxlength="20">
+                        </div>
+                        <div>
+                            <label>N° de licence</label>
+                            <input type="text" id="lic-add-licence" placeholder="Ex : 80-12345" maxlength="30">
+                        </div>
+                    </div>
+                    <div class="btn-row" style="margin-top:10px;">
+                        <button class="btn btn-green" id="lic-add-btn">➕ Ajouter</button>
+                    </div>
+                    <div class="status-msg" id="status-lic-add"></div>
+
+                    <hr class="sep">
+
+                    <!-- Recherche -->
+                    <input type="text" class="lic-search" id="lic-search" placeholder="🔍 Rechercher par nom, prénom ou n° de licence…" autocomplete="off" maxlength="60">
+
+                    <!-- Liste -->
+                    <div id="lic-list" style="display:flex;flex-direction:column;gap:8px;"></div>
+
+                    <hr class="sep">
+
+                    <!-- Génération chaîne chiffrée -->
+                    <div>
+                        <div style="font-family:'Bebas Neue',sans-serif;font-size:1.1em;letter-spacing:1.5px;color:#f0f0f0;margin-bottom:10px;">🔐 Mettre à jour index.html</div>
+                        <p style="color:#888;font-size:0.84em;margin-bottom:14px;">
+                            Génère la nouvelle valeur de <code style="color:var(--vert);background:#111;padding:1px 6px;border-radius:3px;font-family:monospace">LICENCIES_CHIFFRE</code>
+                            à coller dans <strong style="color:#ccc">index.html</strong>.
+                            Le mot de passe utilisé doit être identique à celui de index.html.
+                        </p>
+                        <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:flex-end;">
+                            <div style="flex:1;min-width:200px;">
+                                <label>Mot de passe AES pour index.html</label>
+                                <input type="password" id="lic-export-pwd" placeholder="Ex : petanqueboves2026" maxlength="128">
+                            </div>
+                            <button class="btn btn-green" id="lic-export-btn" style="flex-shrink:0;align-self:flex-end;">🔒 Générer &amp; Copier</button>
+                        </div>
+                        <div id="lic-export-box" style="display:none;margin-top:12px;">
+                            <div style="font-size:0.78em;color:#777;margin-bottom:6px;">Nouvelle valeur de <code style="color:var(--vert);font-family:monospace">LICENCIES_CHIFFRE</code> :</div>
+                            <div class="encrypt-result" id="lic-export-output"></div>
+                            <button class="btn btn-outline btn-sm" id="lic-copy-btn">📋 Copier dans le presse-papier</button>
+                        </div>
+                        <div class="status-msg" id="status-lic-export"></div>
+                    </div>
+
+                </div><!-- /lic-manage-zone -->
+            </div><!-- /section-licencies -->
 
             <!-- VÊTEMENTS & PRIX -->
             <div class="section-card" id="section-vetements" style="display:none;">
                 <div class="section-title">🎽 Vêtements & Prix</div>
-
-                <!-- PRIX -->
                 <div style="margin-bottom:20px;">
                     <label>Prix unitaire (€)</label>
                     <input type="number" id="prix-unitaire" placeholder="30" min="0" max="9999">
@@ -350,10 +461,7 @@
                     </div>
                     <div class="status-msg" id="status-prix"></div>
                 </div>
-
                 <hr class="sep">
-
-                <!-- VÊTEMENTS -->
                 <div>
                     <label>Nom du vêtement</label>
                     <input type="text" id="vet-nom" placeholder="Ex : Polo" maxlength="50">
@@ -368,7 +476,9 @@
                 <div class="items-list" id="vet-list"></div>
             </div>
 
-        </div><!-- /superadmin-sections-inner -->
+        </div><!-- /superadmin-sections -->
+    </div><!-- /main -->
+</div><!-- /app -->
 
 <!-- ===================== EDIT MODAL ===================== -->
 <div id="edit-modal" role="dialog" aria-modal="true">
@@ -383,15 +493,21 @@
     </div>
 </div>
 
-<!-- Firebase SDK -->
+<!-- CryptoJS — nécessaire pour le chiffrement/déchiffrement des licenciés -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"
+        integrity="sha512-E8QSvWZ0eCLGk4km3hxSsNmGWbLtSCSUcewDQPQWZF6pEU8GlT8a5fF32wOl1i8ftdMhssTrF/OhyGWwonTcXA=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+<!-- ===================== FIREBASE + LOGIQUE APP ===================== -->
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-app.js";
 import { getAuth, signInWithEmailAndPassword, signOut, onAuthStateChanged }
     from "https://www.gstatic.com/firebasejs/10.7.0/firebase-auth.js";
-import { getFirestore, collection, addDoc, getDocs, deleteDoc, doc, orderBy, query, updateDoc }
+import { getFirestore, collection, addDoc, getDocs, deleteDoc, doc,
+         orderBy, query, updateDoc, setDoc, Timestamp }
     from "https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore.js";
 
-// ── CONFIG FIREBASE ──────────────────────────────────────────────────────────
+// ── CONFIG ───────────────────────────────────────────────────────────────────
 const firebaseConfig = {
     apiKey: "AIzaSyC27gFQjA3WbpHcgzerSjQvOX0h6VO3EgY",
     authDomain: "petanqueboves-54950.firebaseapp.com",
@@ -401,19 +517,28 @@ const firebaseConfig = {
     appId: "1:920624937926:web:fac2aa801abd3a5ee450c7"
 };
 
-// ── REMPLACE PAR TON EMAIL ICI ────────────────────────────────────────────────
-const SUPER_ADMIN_EMAIL = "admin@petanqueboves.com"; // ← CHANGE ICI
+// ← CHANGE ICI avec le vrai email super admin
+const SUPER_ADMIN_EMAIL = "admin@petanqueboves.com";
 
 const app  = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db   = getFirestore(app);
+
+// ── DONNÉES LICENCIÉS CHIFFRÉES (AES) ────────────────────────────────────────
+// Mot de passe : petanqueboves2026  — même clé que dans index.html
+// 79 licenciés — prenom / nom / tel / licence
+const LICENCIES_CHIFFRE_ADMIN = "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";
+
+// ── ÉTAT LICENCIÉS (en mémoire uniquement) ───────────────────────────────────
+let LIC_UNLOCKED = false;   // true après déchiffrement réussi
+let LIC_DATA     = [];      // [{id?, prenom, nom, tel, licence}, ...]
+let LIC_FILTERED = [];
 
 // ── HELPERS ──────────────────────────────────────────────────────────────────
 function esc(str) {
     if (typeof str !== 'string') return '';
     return str.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
 }
-
 function showStatus(id, msg, type) {
     const el = document.getElementById(id);
     if (!el) return;
@@ -421,6 +546,10 @@ function showStatus(id, msg, type) {
     el.className = 'status-msg ' + type;
     if (type !== 'loading') setTimeout(() => { el.className = 'status-msg'; }, 4000);
 }
+function valNom(v)     { return /^[A-Za-zÀ-ÿ\s'\-]{2,50}$/.test(v.trim()); }
+function valPrenom(v)  { return valNom(v); }
+function valTel(v)     { return !v || /^(\+33|0)[1-9](\s?\d{2}){4}$/.test(v.replace(/\s/g,'')); }
+function valLicence(v) { return !v || (typeof v === 'string' && v.trim().length <= 30); }
 
 // ── AUTH ─────────────────────────────────────────────────────────────────────
 document.getElementById('login-btn').addEventListener('click', async () => {
@@ -435,15 +564,14 @@ document.getElementById('login-btn').addEventListener('click', async () => {
         errEl.textContent = '❌ Email ou mot de passe incorrect.';
     }
 });
-
 document.getElementById('login-pwd').addEventListener('keydown', e => {
     if (e.key === 'Enter') document.getElementById('login-btn').click();
 });
-
 document.getElementById('logout-btn').addEventListener('click', async () => {
     await signOut(auth);
     window.location.replace('https://lukasprn2.github.io/petanque80/');
 });
+
 onAuthStateChanged(auth, user => {
     if (user) {
         document.getElementById('login-screen').style.display = 'none';
@@ -451,39 +579,48 @@ onAuthStateChanged(auth, user => {
         document.getElementById('user-email-display').textContent = user.email;
 
         const isSuperAdmin = user.email === SUPER_ADMIN_EMAIL;
-
-        // Badge rôle
-        const badgeWrap = document.getElementById('role-badge-wrap');
         const CLASSEMENT_EMAILS = ['president@petanqueboves.com', 'vicepresident@petanqueboves.com'];
-const canEditClassement = isSuperAdmin || CLASSEMENT_EMAILS.includes(user.email);
+        const canEditClassement = isSuperAdmin || CLASSEMENT_EMAILS.includes(user.email);
 
-if (isSuperAdmin) {
-    badgeWrap.innerHTML = '<div class="role-badge superadmin">⭐ Super Admin — Accès complet</div>';
-    document.getElementById('superadmin-sections').style.display = 'block';
-    document.getElementById('section-vetements').style.display = 'block';
-} else if (canEditClassement) {
-    badgeWrap.innerHTML = '<div class="role-badge membre">👤 Membre Bureau — Galerie & Classement</div>';
-    document.getElementById('superadmin-sections').style.display = 'block';
-    document.getElementById('section-vetements').style.display = 'none';
-    // Cacher tout sauf classement et galerie
-    document.querySelectorAll('#superadmin-sections .section-card').forEach(el => {
-        const title = el.querySelector('.section-title');
-        if (title && !title.textContent.includes('Classement')) {
-            el.style.display = 'none';
+        const badgeWrap = document.getElementById('role-badge-wrap');
+        if (isSuperAdmin) {
+            badgeWrap.innerHTML = '<div class="role-badge superadmin">⭐ Super Admin — Accès complet</div>';
+            document.getElementById('superadmin-sections').style.display = 'block';
+            document.getElementById('section-vetements').style.display = 'block';
+        } else if (canEditClassement) {
+            badgeWrap.innerHTML = '<div class="role-badge membre">👤 Membre Bureau — Galerie & Classement</div>';
+            document.getElementById('superadmin-sections').style.display = 'block';
+            document.getElementById('section-vetements').style.display = 'none';
+            document.getElementById('section-licencies').style.display = 'none';
+            document.querySelectorAll('#superadmin-sections .section-card').forEach(el => {
+                const title = el.querySelector('.section-title');
+                if (title && !title.textContent.includes('Classement')) el.style.display = 'none';
+            });
+        } else {
+            badgeWrap.innerHTML = '<div class="role-badge membre">👤 Membre Bureau — Galerie uniquement</div>';
+            document.getElementById('superadmin-sections').style.display = 'none';
         }
-    });
-} else {
-    badgeWrap.innerHTML = '<div class="role-badge membre">👤 Membre Bureau — Galerie uniquement</div>';
-    document.getElementById('superadmin-sections').style.display = 'none';
-    document.getElementById('section-vetements').style.display = 'none';
-}
 
-loadAll(canEditClassement || isSuperAdmin);
+        loadAll(isSuperAdmin, canEditClassement);
     } else {
         document.getElementById('login-screen').style.display = 'flex';
         document.getElementById('app').style.display = 'none';
     }
 });
+
+async function loadAll(isSuperAdmin, canClassement) {
+    await loadGalerie();
+    if (canClassement || isSuperAdmin) await loadClassement();
+    if (isSuperAdmin) {
+        await loadActus();
+        await loadCalendrier();
+        await loadFaq();
+        await loadVetements();
+        await loadPrix();
+        await loadNotifsCount();
+        // Licenciés : déverrouillage manuel par l'admin, pas de chargement auto
+    }
+}
 
 // ── APERÇU URL PHOTO ─────────────────────────────────────────────────────────
 document.getElementById('photo-url').addEventListener('input', function() {
@@ -491,27 +628,11 @@ document.getElementById('photo-url').addEventListener('input', function() {
     const wrap = document.getElementById('url-preview-wrap');
     const img  = document.getElementById('url-preview-img');
     if (url.startsWith('http')) {
-        img.src = url;
-        wrap.style.display = 'block';
+        img.src = url; wrap.style.display = 'block';
         img.onerror = () => { wrap.style.display = 'none'; };
-    } else {
-        wrap.style.display = 'none';
-    }
+    } else { wrap.style.display = 'none'; }
 });
 
-// ── LOAD ALL ─────────────────────────────────────────────────────────────────
-async function loadAll(isAdmin) {
-    await loadGalerie();
-    if (isAdmin) {
-        await loadActus();
-        await loadClassement();
-        await loadCalendrier();
-        await loadFaq();
-        await loadVetements();
-        await loadPrix();
-        await loadNotifsCount();
-    }
-}
 // ════════════════════════════════════════════════════════════
 //  GALERIE
 // ════════════════════════════════════════════════════════════
@@ -523,15 +644,9 @@ async function loadGalerie() {
         const snap = await getDocs(q);
         list.innerHTML = '';
         if (snap.empty) { list.innerHTML = '<p class="empty-state">Aucune photo pour l\'instant.</p>'; return; }
-        snap.forEach(docSnap => {
-            const d = docSnap.data();
-            list.appendChild(makePhotoRow(docSnap.id, d));
-        });
-    } catch(e) {
-        list.innerHTML = '<p class="empty-state" style="color:#ff4444">Erreur de chargement.</p>';
-    }
+        snap.forEach(docSnap => list.appendChild(makePhotoRow(docSnap.id, docSnap.data())));
+    } catch(e) { list.innerHTML = '<p class="empty-state" style="color:#ff4444">Erreur de chargement.</p>'; }
 }
-
 function makePhotoRow(id, d) {
     const row = document.createElement('div');
     row.className = 'item-row';
@@ -544,34 +659,22 @@ function makePhotoRow(id, d) {
         <div class="item-actions">
             <button class="btn btn-red" data-id="${esc(id)}" data-col="galerie">🗑 Supprimer</button>
         </div>`;
-    // Miniature
     const thumbWrap = row.querySelector(`#photo-thumb-${CSS.escape(id)}`);
     if (d.url) {
         const img = document.createElement('img');
-        img.className = 'photo-preview';
-        img.src = d.url;
-        img.alt = d.alt || '';
-        img.onerror = () => {
-            img.remove();
-            const ph = document.createElement('div');
-            ph.className = 'photo-preview-placeholder';
-            ph.textContent = '🖼';
-            thumbWrap.appendChild(ph);
-        };
+        img.className = 'photo-preview'; img.src = d.url; img.alt = d.alt || '';
+        img.onerror = () => { img.remove(); const ph = document.createElement('div'); ph.className = 'photo-preview-placeholder'; ph.textContent = '🖼'; thumbWrap.appendChild(ph); };
         thumbWrap.appendChild(img);
-    } else {
-        thumbWrap.innerHTML = '<div class="photo-preview-placeholder">🖼</div>';
-    }
+    } else { thumbWrap.innerHTML = '<div class="photo-preview-placeholder">🖼</div>'; }
     row.querySelector('button[data-col]').addEventListener('click', () => deleteItem('galerie', id, loadGalerie, 'status-galerie'));
     addGalerieEditBtn(row, id, d);
     return row;
 }
-
 document.getElementById('add-photo-btn').addEventListener('click', async () => {
     const url = document.getElementById('photo-url').value.trim();
     const alt = document.getElementById('photo-alt').value.trim();
     if (!url) { showStatus('status-galerie', '⚠️ URL requise.', 'err'); return; }
-    if (!url.startsWith('http')) { showStatus('status-galerie', '⚠️ URL invalide (doit commencer par http).', 'err'); return; }
+    if (!url.startsWith('http')) { showStatus('status-galerie', '⚠️ URL invalide.', 'err'); return; }
     showStatus('status-galerie', 'Ajout en cours…', 'loading');
     try {
         await addDoc(collection(db, 'galerie'), { url, alt: alt || 'Photo du club', createdAt: Date.now() });
@@ -580,9 +683,7 @@ document.getElementById('add-photo-btn').addEventListener('click', async () => {
         document.getElementById('url-preview-wrap').style.display = 'none';
         showStatus('status-galerie', '✅ Photo ajoutée !', 'ok');
         await loadGalerie();
-    } catch(e) {
-        showStatus('status-galerie', '❌ Erreur : ' + e.message, 'err');
-    }
+    } catch(e) { showStatus('status-galerie', '❌ Erreur : ' + e.message, 'err'); }
 });
 
 // ════════════════════════════════════════════════════════════
@@ -606,23 +707,20 @@ async function loadActus() {
                     <div class="item-sub">${esc(d.texte || '').substring(0,80)}…</div>
                 </div>
                 <div class="item-actions">
-                    <button class="btn btn-red" data-id="${esc(docSnap.id)}">🗑 Supprimer</button>
+                    <button class="btn btn-red">🗑 Supprimer</button>
                 </div>`;
             row.querySelector('button').addEventListener('click', () => deleteItem('actualites', docSnap.id, loadActus, 'status-actu'));
             addActuEditBtn(row, docSnap.id, d);
             list.appendChild(row);
         });
-    } catch(e) {
-        list.innerHTML = '<p class="empty-state" style="color:#ff4444">Erreur de chargement.</p>';
-    }
+    } catch(e) { list.innerHTML = '<p class="empty-state" style="color:#ff4444">Erreur.</p>'; }
 }
-
 document.getElementById('add-actu-btn').addEventListener('click', async () => {
     const imgUrl = document.getElementById('actu-img-url').value.trim();
     const texte  = document.getElementById('actu-texte').value.trim();
     const titre  = document.getElementById('actu-titre').value.trim();
     if (!texte) { showStatus('status-actu', '⚠️ Le texte est requis.', 'err'); return; }
-    showStatus('status-actu', 'Ajout en cours…', 'loading');
+    showStatus('status-actu', 'Ajout…', 'loading');
     try {
         await addDoc(collection(db, 'actualites'), { imgUrl, texte, titre, createdAt: Date.now() });
         document.getElementById('actu-img-url').value = '';
@@ -630,9 +728,7 @@ document.getElementById('add-actu-btn').addEventListener('click', async () => {
         document.getElementById('actu-titre').value = '';
         showStatus('status-actu', '✅ Actualité ajoutée !', 'ok');
         await loadActus();
-    } catch(e) {
-        showStatus('status-actu', '❌ Erreur : ' + e.message, 'err');
-    }
+    } catch(e) { showStatus('status-actu', '❌ Erreur : ' + e.message, 'err'); }
 });
 
 // ════════════════════════════════════════════════════════════
@@ -654,28 +750,25 @@ async function loadClassement() {
             row.innerHTML = `
                 <div class="item-content">
                     <div class="item-title">${rang}. ${esc(d.prenom)} ${esc(d.nom)}</div>
-                    <div class="item-sub">${esc(d.pts)} pts — ${esc(d.cat)}</div>
+                    <div class="item-sub">${esc(String(d.pts))} pts — ${esc(d.cat)}</div>
                 </div>
                 <div class="item-actions">
-                    <button class="btn btn-red" data-id="${esc(docSnap.id)}">🗑</button>
+                    <button class="btn btn-red">🗑</button>
                 </div>`;
             row.querySelector('button').addEventListener('click', () => deleteItem('classement', docSnap.id, loadClassement, 'status-cl'));
             addClEditBtn(row, docSnap.id, d);
             list.appendChild(row);
             rang++;
         });
-    } catch(e) {
-        list.innerHTML = '<p class="empty-state" style="color:#ff4444">Erreur de chargement.</p>';
-    }
+    } catch(e) { list.innerHTML = '<p class="empty-state" style="color:#ff4444">Erreur.</p>'; }
 }
-
 document.getElementById('add-cl-btn').addEventListener('click', async () => {
     const nom    = document.getElementById('cl-nom').value.trim();
     const prenom = document.getElementById('cl-prenom').value.trim();
     const pts    = parseInt(document.getElementById('cl-pts').value) || 0;
     const cat    = document.getElementById('cl-cat').value;
     if (!nom || !prenom) { showStatus('status-cl', '⚠️ Nom et prénom requis.', 'err'); return; }
-    showStatus('status-cl', 'Ajout en cours…', 'loading');
+    showStatus('status-cl', 'Ajout…', 'loading');
     try {
         await addDoc(collection(db, 'classement'), { nom, prenom, pts, cat, createdAt: Date.now() });
         document.getElementById('cl-nom').value = '';
@@ -683,16 +776,13 @@ document.getElementById('add-cl-btn').addEventListener('click', async () => {
         document.getElementById('cl-pts').value = '';
         showStatus('status-cl', '✅ Joueur ajouté !', 'ok');
         await loadClassement();
-    } catch(e) {
-        showStatus('status-cl', '❌ Erreur : ' + e.message, 'err');
-    }
+    } catch(e) { showStatus('status-cl', '❌ Erreur : ' + e.message, 'err'); }
 });
 
 // ════════════════════════════════════════════════════════════
 //  CALENDRIER
 // ════════════════════════════════════════════════════════════
 const MONTHS = ['','Janvier','Février','Mars','Avril','Mai','Juin','Juillet','Août','Septembre','Octobre','Novembre','Décembre'];
-
 async function loadCalendrier() {
     const list = document.getElementById('cal-list');
     list.innerHTML = '<p class="empty-state">Chargement…</p>';
@@ -714,17 +804,14 @@ async function loadCalendrier() {
                     <span class="item-badge ${badgeClass}">${typeLabel}</span>
                 </div>
                 <div class="item-actions">
-                    <button class="btn btn-red" data-id="${esc(docSnap.id)}">🗑</button>
+                    <button class="btn btn-red">🗑</button>
                 </div>`;
             row.querySelector('button').addEventListener('click', () => deleteItem('calendrier', docSnap.id, loadCalendrier, 'status-cal'));
             addCalEditBtn(row, docSnap.id, d);
             list.appendChild(row);
         });
-    } catch(e) {
-        list.innerHTML = '<p class="empty-state" style="color:#ff4444">Erreur de chargement.</p>';
-    }
+    } catch(e) { list.innerHTML = '<p class="empty-state" style="color:#ff4444">Erreur.</p>'; }
 }
-
 document.getElementById('add-cal-btn').addEventListener('click', async () => {
     const nom    = document.getElementById('cal-nom').value.trim();
     const type   = document.getElementById('cal-type').value;
@@ -733,19 +820,17 @@ document.getElementById('add-cal-btn').addEventListener('click', async () => {
     const heure  = document.getElementById('cal-heure').value.trim();
     const lieu   = document.getElementById('cal-lieu').value.trim();
     const limite = document.getElementById('cal-limite').value.trim();
-    if (!nom || !mois || !jour || !lieu) { showStatus('status-cal', '⚠️ Nom, mois, jour et lieu sont requis.', 'err'); return; }
+    if (!nom || !mois || !jour || !lieu) { showStatus('status-cal', '⚠️ Nom, mois, jour et lieu requis.', 'err'); return; }
     if (mois < 1 || mois > 12 || jour < 1 || jour > 31) { showStatus('status-cal', '⚠️ Date invalide.', 'err'); return; }
-    showStatus('status-cal', 'Ajout en cours…', 'loading');
+    showStatus('status-cal', 'Ajout…', 'loading');
     try {
         await addDoc(collection(db, 'calendrier'), { nom, type, mois, jour, heure, lieu, limite, createdAt: Date.now() });
-        ['cal-nom','cal-heure','cal-lieu','cal-limite'].forEach(id => { document.getElementById(id).value = ''; });
+        ['cal-nom','cal-heure','cal-lieu','cal-limite'].forEach(id => document.getElementById(id).value = '');
         document.getElementById('cal-mois').value = '';
         document.getElementById('cal-jour').value = '';
         showStatus('status-cal', '✅ Événement ajouté !', 'ok');
         await loadCalendrier();
-    } catch(e) {
-        showStatus('status-cal', '❌ Erreur : ' + e.message, 'err');
-    }
+    } catch(e) { showStatus('status-cal', '❌ Erreur : ' + e.message, 'err'); }
 });
 
 // ════════════════════════════════════════════════════════════
@@ -769,31 +854,26 @@ async function loadFaq() {
                     <div class="item-sub">${esc(d.reponse || '').substring(0,80)}…</div>
                 </div>
                 <div class="item-actions">
-                    <button class="btn btn-red" data-id="${esc(docSnap.id)}">🗑</button>
+                    <button class="btn btn-red">🗑</button>
                 </div>`;
             row.querySelector('button').addEventListener('click', () => deleteItem('faq', docSnap.id, loadFaq, 'status-faq'));
             addFaqEditBtn(row, docSnap.id, d);
             list.appendChild(row);
         });
-    } catch(e) {
-        list.innerHTML = '<p class="empty-state" style="color:#ff4444">Erreur de chargement.</p>';
-    }
+    } catch(e) { list.innerHTML = '<p class="empty-state" style="color:#ff4444">Erreur.</p>'; }
 }
-
 document.getElementById('add-faq-btn').addEventListener('click', async () => {
     const question = document.getElementById('faq-question').value.trim();
     const reponse  = document.getElementById('faq-reponse').value.trim();
     if (!question || !reponse) { showStatus('status-faq', '⚠️ Question et réponse requises.', 'err'); return; }
-    showStatus('status-faq', 'Ajout en cours…', 'loading');
+    showStatus('status-faq', 'Ajout…', 'loading');
     try {
         await addDoc(collection(db, 'faq'), { question, reponse, createdAt: Date.now() });
         document.getElementById('faq-question').value = '';
         document.getElementById('faq-reponse').value = '';
         showStatus('status-faq', '✅ Question ajoutée !', 'ok');
         await loadFaq();
-    } catch(e) {
-        showStatus('status-faq', '❌ Erreur : ' + e.message, 'err');
-    }
+    } catch(e) { showStatus('status-faq', '❌ Erreur : ' + e.message, 'err'); }
 });
 
 // ════════════════════════════════════════════════════════════
@@ -805,18 +885,14 @@ async function deleteItem(colName, id, reloadFn, statusId) {
         await deleteDoc(doc(db, colName, id));
         showStatus(statusId, '✅ Supprimé.', 'ok');
         await reloadFn();
-    } catch(e) {
-        showStatus(statusId, '❌ Erreur : ' + e.message, 'err');
-    }
+    } catch(e) { showStatus(statusId, '❌ Erreur : ' + e.message, 'err'); }
 }
 
 // ════════════════════════════════════════════════════════════
 //  EDIT MODAL GÉNÉRIQUE
 // ════════════════════════════════════════════════════════════
 let _editSaveFn = null;
-
 function openEditModal(title, fields, saveFn) {
-    // fields = [{id, label, type, value, options?}]
     document.getElementById('edit-modal-title').textContent = '✏️ Modifier — ' + title;
     const container = document.getElementById('edit-modal-fields');
     container.innerHTML = '';
@@ -843,7 +919,6 @@ function openEditModal(title, fields, saveFn) {
             input.value = f.value || '';
         }
         input.id = 'edit-field-' + f.id;
-        input.style.marginBottom = '4px';
         if (f.maxlength) input.maxLength = f.maxlength;
         container.appendChild(input);
     });
@@ -851,15 +926,16 @@ function openEditModal(title, fields, saveFn) {
     _editSaveFn = saveFn;
     document.getElementById('edit-modal').classList.add('open');
 }
-
 function closeEditModal() {
     document.getElementById('edit-modal').classList.remove('open');
     _editSaveFn = null;
 }
-
 document.getElementById('edit-modal-cancel').addEventListener('click', closeEditModal);
 document.getElementById('edit-modal').addEventListener('click', e => {
     if (e.target === document.getElementById('edit-modal')) closeEditModal();
+});
+document.addEventListener('keydown', e => {
+    if (e.key === 'Escape') closeEditModal();
 });
 document.getElementById('edit-modal-save').addEventListener('click', async () => {
     if (!_editSaveFn) return;
@@ -868,119 +944,88 @@ document.getElementById('edit-modal-save').addEventListener('click', async () =>
         await _editSaveFn();
         showStatus('status-edit', '✅ Modifié !', 'ok');
         setTimeout(closeEditModal, 1200);
-    } catch(e) {
-        showStatus('status-edit', '❌ Erreur : ' + e.message, 'err');
-    }
+    } catch(e) { showStatus('status-edit', '❌ Erreur : ' + e.message, 'err'); }
 });
-
 function getEditVal(id) {
     const el = document.getElementById('edit-field-' + id);
     return el ? el.value.trim() : '';
 }
 
-// ── Boutons ✏️ sur chaque section ──
-
-// GALERIE edit
+// ── Boutons ✏️ sections existantes ──
 function addGalerieEditBtn(row, docId, data) {
     const btn = document.createElement('button');
-    btn.className = 'btn btn-outline';
-    btn.style.cssText = 'padding:8px 12px;font-size:0.85em;';
-    btn.textContent = '✏️';
+    btn.className = 'btn btn-outline btn-sm'; btn.textContent = '✏️';
     btn.addEventListener('click', () => {
         openEditModal('Photo', [
-            { id: 'url',  label: 'URL de la photo', type: 'url',  value: data.url,  maxlength: 500 },
-            { id: 'alt',  label: 'Description',     type: 'text', value: data.alt,  maxlength: 100 }
+            { id:'url', label:'URL', type:'url',  value:data.url, maxlength:500 },
+            { id:'alt', label:'Description', type:'text', value:data.alt, maxlength:100 }
         ], async () => {
-            await updateDoc(doc(db, 'galerie', docId), { url: getEditVal('url'), alt: getEditVal('alt') });
+            await updateDoc(doc(db,'galerie',docId), { url:getEditVal('url'), alt:getEditVal('alt') });
             await loadGalerie();
         });
     });
     row.querySelector('.item-actions').insertBefore(btn, row.querySelector('.item-actions').firstChild);
 }
-
-// ACTUALITÉS edit
 function addActuEditBtn(row, docId, data) {
     const btn = document.createElement('button');
-    btn.className = 'btn btn-outline';
-    btn.style.cssText = 'padding:8px 12px;font-size:0.85em;';
-    btn.textContent = '✏️';
+    btn.className = 'btn btn-outline btn-sm'; btn.textContent = '✏️';
     btn.addEventListener('click', () => {
         openEditModal('Actualité', [
-            { id: 'imgUrl', label: 'URL image',  type: 'url',      value: data.imgUrl, maxlength: 500 },
-            { id: 'titre',  label: 'Titre vert', type: 'text',     value: data.titre,  maxlength: 100 },
-            { id: 'texte',  label: 'Texte',      type: 'textarea', value: data.texte }
+            { id:'imgUrl', label:'URL image',  type:'url',      value:data.imgUrl, maxlength:500 },
+            { id:'titre',  label:'Titre',      type:'text',     value:data.titre,  maxlength:100 },
+            { id:'texte',  label:'Texte',      type:'textarea', value:data.texte }
         ], async () => {
-            await updateDoc(doc(db, 'actualites', docId), { imgUrl: getEditVal('imgUrl'), titre: getEditVal('titre'), texte: getEditVal('texte') });
+            await updateDoc(doc(db,'actualites',docId), { imgUrl:getEditVal('imgUrl'), titre:getEditVal('titre'), texte:getEditVal('texte') });
             await loadActus();
         });
     });
     row.querySelector('.item-actions').insertBefore(btn, row.querySelector('.item-actions').firstChild);
 }
-
-// CLASSEMENT edit
 function addClEditBtn(row, docId, data) {
     const btn = document.createElement('button');
-    btn.className = 'btn btn-outline';
-    btn.style.cssText = 'padding:8px 12px;font-size:0.85em;';
-    btn.textContent = '✏️';
+    btn.className = 'btn btn-outline btn-sm'; btn.textContent = '✏️';
     btn.addEventListener('click', () => {
         openEditModal('Joueur', [
-            { id: 'nom',    label: 'Nom',      type: 'text',   value: data.nom,    maxlength: 50 },
-            { id: 'prenom', label: 'Prénom',   type: 'text',   value: data.prenom, maxlength: 50 },
-            { id: 'pts',    label: 'Points',   type: 'number', value: data.pts },
-            { id: 'cat',    label: 'Catégorie',type: 'select', value: data.cat,
-              options: ['Non-classé','Promotion','Honneur','Excellence'] }
+            { id:'nom',    label:'Nom',       type:'text',   value:data.nom,    maxlength:50 },
+            { id:'prenom', label:'Prénom',    type:'text',   value:data.prenom, maxlength:50 },
+            { id:'pts',    label:'Points',    type:'number', value:data.pts },
+            { id:'cat',    label:'Catégorie', type:'select', value:data.cat,
+              options:['Non-classé','Promotion','Honneur','Excellence'] }
         ], async () => {
-            await updateDoc(doc(db, 'classement', docId), {
-                nom: getEditVal('nom'), prenom: getEditVal('prenom'),
-                pts: parseInt(getEditVal('pts')) || 0, cat: getEditVal('cat')
-            });
+            await updateDoc(doc(db,'classement',docId), { nom:getEditVal('nom'), prenom:getEditVal('prenom'), pts:parseInt(getEditVal('pts'))||0, cat:getEditVal('cat') });
             await loadClassement();
         });
     });
     row.querySelector('.item-actions').insertBefore(btn, row.querySelector('.item-actions').firstChild);
 }
-
-// CALENDRIER edit
 function addCalEditBtn(row, docId, data) {
     const btn = document.createElement('button');
-    btn.className = 'btn btn-outline';
-    btn.style.cssText = 'padding:8px 12px;font-size:0.85em;';
-    btn.textContent = '✏️';
+    btn.className = 'btn btn-outline btn-sm'; btn.textContent = '✏️';
     btn.addEventListener('click', () => {
         openEditModal('Événement', [
-            { id: 'nom',    label: 'Nom',    type: 'text',   value: data.nom,    maxlength: 100 },
-            { id: 'type',   label: 'Type',   type: 'select', value: data.type,
-              options: ['concours','interne','champ'] },
-            { id: 'mois',   label: 'Mois',   type: 'number', value: data.mois },
-            { id: 'jour',   label: 'Jour',   type: 'number', value: data.jour },
-            { id: 'heure',  label: 'Heure',  type: 'text',   value: data.heure,  maxlength: 30 },
-            { id: 'lieu',   label: 'Lieu',   type: 'text',   value: data.lieu,   maxlength: 100 },
-            { id: 'limite', label: 'Limite', type: 'text',   value: data.limite, maxlength: 60 }
+            { id:'nom',    label:'Nom',    type:'text',   value:data.nom,    maxlength:100 },
+            { id:'type',   label:'Type',   type:'select', value:data.type,   options:['concours','interne','champ'] },
+            { id:'mois',   label:'Mois',   type:'number', value:data.mois },
+            { id:'jour',   label:'Jour',   type:'number', value:data.jour },
+            { id:'heure',  label:'Heure',  type:'text',   value:data.heure,  maxlength:30 },
+            { id:'lieu',   label:'Lieu',   type:'text',   value:data.lieu,   maxlength:100 },
+            { id:'limite', label:'Limite', type:'text',   value:data.limite, maxlength:60 }
         ], async () => {
-            await updateDoc(doc(db, 'calendrier', docId), {
-                nom: getEditVal('nom'), type: getEditVal('type'),
-                mois: parseInt(getEditVal('mois')), jour: parseInt(getEditVal('jour')),
-                heure: getEditVal('heure'), lieu: getEditVal('lieu'), limite: getEditVal('limite')
-            });
+            await updateDoc(doc(db,'calendrier',docId), { nom:getEditVal('nom'), type:getEditVal('type'), mois:parseInt(getEditVal('mois')), jour:parseInt(getEditVal('jour')), heure:getEditVal('heure'), lieu:getEditVal('lieu'), limite:getEditVal('limite') });
             await loadCalendrier();
         });
     });
     row.querySelector('.item-actions').insertBefore(btn, row.querySelector('.item-actions').firstChild);
 }
-
-// FAQ edit
 function addFaqEditBtn(row, docId, data) {
     const btn = document.createElement('button');
-    btn.className = 'btn btn-outline';
-    btn.style.cssText = 'padding:8px 12px;font-size:0.85em;';
-    btn.textContent = '✏️';
+    btn.className = 'btn btn-outline btn-sm'; btn.textContent = '✏️';
     btn.addEventListener('click', () => {
         openEditModal('Question FAQ', [
-            { id: 'question', label: 'Question', type: 'text',     value: data.question, maxlength: 200 },
-            { id: 'reponse',  label: 'Réponse',  type: 'textarea', value: data.reponse }
+            { id:'question', label:'Question', type:'text',     value:data.question, maxlength:200 },
+            { id:'reponse',  label:'Réponse',  type:'textarea', value:data.reponse }
         ], async () => {
-            await updateDoc(doc(db, 'faq', docId), { question: getEditVal('question'), reponse: getEditVal('reponse') });
+            await updateDoc(doc(db,'faq',docId), { question:getEditVal('question'), reponse:getEditVal('reponse') });
             await loadFaq();
         });
     });
@@ -1002,18 +1047,14 @@ async function loadPrix() {
         });
     } catch(e) {}
 }
-
 document.getElementById('save-prix-btn').addEventListener('click', async () => {
     const unitaire = parseInt(document.getElementById('prix-unitaire').value) || 30;
     const offre4   = parseInt(document.getElementById('prix-offre4').value)   || 100;
     showStatus('status-prix', 'Enregistrement…', 'loading');
     try {
-        const { setDoc } = await import("https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore.js");
         await setDoc(doc(db, 'config', 'prix'), { unitaire, offre4 });
         showStatus('status-prix', '✅ Prix enregistrés !', 'ok');
-    } catch(e) {
-        showStatus('status-prix', '❌ Erreur : ' + e.message, 'err');
-    }
+    } catch(e) { showStatus('status-prix', '❌ Erreur : ' + e.message, 'err'); }
 });
 
 // ════════════════════════════════════════════════════════════
@@ -1032,176 +1073,364 @@ async function loadVetements() {
             const row = document.createElement('div');
             row.className = 'item-row';
             row.innerHTML = `
-                <div class="item-content">
-                    <div class="item-title">${esc(d.emoji || '')} ${esc(d.nom || '')}</div>
-                </div>
+                <div class="item-content"><div class="item-title">${esc(d.emoji||'')} ${esc(d.nom||'')}</div></div>
                 <div class="item-actions">
-                    <button class="btn btn-outline" style="padding:8px 12px;font-size:0.85em;">✏️</button>
+                    <button class="btn btn-outline btn-sm">✏️</button>
                     <button class="btn btn-red">🗑 Supprimer</button>
                 </div>`;
             row.querySelectorAll('button')[0].addEventListener('click', () => {
                 openEditModal('Vêtement', [
-                    { id: 'nom',   label: 'Nom',   type: 'text', value: d.nom,   maxlength: 50 },
-                    { id: 'emoji', label: 'Emoji', type: 'text', value: d.emoji, maxlength: 5  }
+                    { id:'nom',   label:'Nom',   type:'text', value:d.nom,   maxlength:50 },
+                    { id:'emoji', label:'Emoji', type:'text', value:d.emoji, maxlength:5  }
                 ], async () => {
-                    await updateDoc(doc(db, 'vetements', docSnap.id), { nom: getEditVal('nom'), emoji: getEditVal('emoji') });
+                    await updateDoc(doc(db,'vetements',docSnap.id), { nom:getEditVal('nom'), emoji:getEditVal('emoji') });
                     await loadVetements();
                 });
             });
             row.querySelectorAll('button')[1].addEventListener('click', () => deleteItem('vetements', docSnap.id, loadVetements, 'status-vet'));
             list.appendChild(row);
         });
-    } catch(e) {
-        list.innerHTML = '<p class="empty-state" style="color:#ff4444">Erreur de chargement.</p>';
-    }
+    } catch(e) { list.innerHTML = '<p class="empty-state" style="color:#ff4444">Erreur.</p>'; }
 }
-
 document.getElementById('add-vet-btn').addEventListener('click', async () => {
     const nom   = document.getElementById('vet-nom').value.trim();
     const emoji = document.getElementById('vet-emoji').value.trim();
     if (!nom) { showStatus('status-vet', '⚠️ Nom requis.', 'err'); return; }
-    showStatus('status-vet', 'Ajout en cours…', 'loading');
+    showStatus('status-vet', 'Ajout…', 'loading');
     try {
-        await addDoc(collection(db, 'vetements'), { nom, emoji: emoji || '🎽', createdAt: Date.now() });
-        document.getElementById('vet-nom').value   = '';
+        await addDoc(collection(db, 'vetements'), { nom, emoji: emoji||'🎽', createdAt: Date.now() });
+        document.getElementById('vet-nom').value = '';
         document.getElementById('vet-emoji').value = '';
         showStatus('status-vet', '✅ Vêtement ajouté !', 'ok');
         await loadVetements();
-    } catch(e) {
-        showStatus('status-vet', '❌ Erreur : ' + e.message, 'err');
-    }
+    } catch(e) { showStatus('status-vet', '❌ Erreur : ' + e.message, 'err'); }
 });
 
-  
 // ════════════════════════════════════════════════════════════
 //  NOTIFICATIONS PUSH
 // ════════════════════════════════════════════════════════════
- 
-// Compte les abonnés au chargement
 async function loadNotifsCount() {
     try {
         const snap = await getDocs(collection(db, 'fcm_tokens'));
-        const countEl = document.getElementById('notif-count');
-        if (countEl) countEl.textContent = snap.size + ' abonné(s)';
+        const el = document.getElementById('notif-count');
+        if (el) el.textContent = snap.size + ' abonné(s)';
     } catch(e) {}
 }
- 
 document.getElementById('send-notif-btn').addEventListener('click', async () => {
     const titre = document.getElementById('notif-titre').value.trim();
     const corps  = document.getElementById('notif-corps').value.trim();
     const ancre  = document.getElementById('notif-ancre').value;
- 
     if (!titre) { showStatus('status-notif', '⚠️ Le titre est requis.', 'err'); return; }
     if (!corps)  { showStatus('status-notif', '⚠️ Le message est requis.', 'err'); return; }
- 
     showStatus('status-notif', '⏳ Récupération des abonnés…', 'loading');
- 
     try {
-        // Récupérer tous les tokens FCM
         const snap = await getDocs(collection(db, 'fcm_tokens'));
-        if (snap.empty) {
-            showStatus('status-notif', '⚠️ Aucun abonné enregistré.', 'err');
-            return;
-        }
- 
+        if (snap.empty) { showStatus('status-notif', '⚠️ Aucun abonné enregistré.', 'err'); return; }
         const tokens = [];
-        snap.forEach(docSnap => {
-            const t = docSnap.data().token;
-            if (t) tokens.push(t);
-        });
- 
+        snap.forEach(docSnap => { const t = docSnap.data().token; if (t) tokens.push(t); });
         showStatus('status-notif', `⏳ Envoi à ${tokens.length} abonné(s)…`, 'loading');
- 
-        // Obtenir un token d'accès OAuth2 via l'API Firebase
-        // On utilise l'API FCM HTTP v1 via fetch
         const url = `https://fcm.googleapis.com/v1/projects/petanqueboves-54950/messages:send`;
- 
-        // Récupérer le token Firebase Auth de l'admin connecté
-        const { getAuth } = await import("https://www.gstatic.com/firebasejs/10.7.0/firebase-auth.js");
-        const authInstance = getAuth();
-        const idToken = await authInstance.currentUser.getIdToken();
- 
-        let succes = 0;
-        let echecs = 0;
+        const { getAuth: gA } = await import("https://www.gstatic.com/firebasejs/10.7.0/firebase-auth.js");
+        const idToken = await gA().currentUser.getIdToken();
+        let succes = 0, echecs = 0;
         const tokensInvalides = [];
- 
-        // Envoyer à chaque token un par un (FCM v1 ne supporte pas le multicast depuis le client)
         for (const token of tokens) {
             try {
-                const body = {
-                    message: {
-                        token: token,
-                        notification: {
-                            title: titre,
-                            body: corps
-                        },
-                        webpush: {
-                            notification: {
-                                icon: 'https://lukasprn2.github.io/petanque80/logo.png',
-                                badge: 'https://lukasprn2.github.io/petanque80/logo.png',
-                                requireInteraction: false,
-                                vibrate: [200, 100, 200]
-                            },
-                            fcm_options: {
-                                link: 'https://lukasprn2.github.io/petanque80/' + (ancre ? '#' + ancre : '')
-                            }
-                        },
-                        data: {
-                            ancre: ancre,
-                            url: 'https://lukasprn2.github.io/petanque80/'
-                        }
-                    }
-                };
- 
-                const res = await fetch(url, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': 'Bearer ' + idToken
-                    },
-                    body: JSON.stringify(body)
-                });
- 
-                if (res.ok) {
-                    succes++;
-                } else {
+                const body = { message: { token, notification: { title: titre, body: corps }, webpush: { notification: { icon:'https://lukasprn2.github.io/petanque80/logo.png', badge:'https://lukasprn2.github.io/petanque80/logo.png', requireInteraction:false, vibrate:[200,100,200] }, fcm_options: { link:'https://lukasprn2.github.io/petanque80/'+(ancre?'#'+ancre:'') } }, data:{ ancre, url:'https://lukasprn2.github.io/petanque80/' } } };
+                const res = await fetch(url, { method:'POST', headers:{ 'Content-Type':'application/json', 'Authorization':'Bearer '+idToken }, body:JSON.stringify(body) });
+                if (res.ok) { succes++; } else {
                     const errData = await res.json();
                     const errCode = errData?.error?.details?.[0]?.errorCode || '';
-                    if (errCode === 'UNREGISTERED' || errCode === 'INVALID_ARGUMENT') {
-                        tokensInvalides.push(token);
-                    }
+                    if (errCode === 'UNREGISTERED' || errCode === 'INVALID_ARGUMENT') tokensInvalides.push(token);
                     echecs++;
                 }
-            } catch(e) {
-                echecs++;
-            }
+            } catch(e) { echecs++; }
         }
- 
-        // Supprimer les tokens invalides
         if (tokensInvalides.length > 0) {
             const allDocs = await getDocs(collection(db, 'fcm_tokens'));
             for (const docSnap of allDocs.docs) {
-                if (tokensInvalides.includes(docSnap.data().token)) {
-                    await deleteDoc(doc(db, 'fcm_tokens', docSnap.id));
-                }
+                if (tokensInvalides.includes(docSnap.data().token)) await deleteDoc(doc(db,'fcm_tokens',docSnap.id));
             }
         }
- 
         if (succes > 0) {
-            showStatus('status-notif', `✅ Envoyé à ${succes} abonné(s) !${echecs > 0 ? ` (${echecs} échec(s))` : ''}`, 'ok');
+            showStatus('status-notif', `✅ Envoyé à ${succes} abonné(s) !${echecs>0?' ('+echecs+' échec(s))':''}`, 'ok');
             document.getElementById('notif-titre').value = '';
             document.getElementById('notif-corps').value = '';
             document.getElementById('notif-ancre').value = '';
             await loadNotifsCount();
-        } else {
-            showStatus('status-notif', `❌ Échec de l'envoi (${echecs} erreur(s)). Vérifiez les permissions FCM.`, 'err');
-        }
- 
-    } catch(e) {
-        showStatus('status-notif', '❌ Erreur : ' + e.message, 'err');
-    }
+        } else { showStatus('status-notif', `❌ Échec de l'envoi (${echecs} erreur(s)).`, 'err'); }
+    } catch(e) { showStatus('status-notif', '❌ Erreur : ' + e.message, 'err'); }
 });
-</script>
 
+// ════════════════════════════════════════════════════════════
+//  LICENCIÉS — chiffrés AES, déverrouillage obligatoire
+// ════════════════════════════════════════════════════════════
+
+// Taux de blocage anti-brute-force
+let _licFailCount   = 0;
+let _licLockedUntil = 0;
+
+// --- Déverrouillage ---
+document.getElementById('lic-unlock-btn').addEventListener('click', unlockLicencies);
+document.getElementById('lic-unlock-pwd').addEventListener('keydown', e => { if (e.key === 'Enter') unlockLicencies(); });
+
+function unlockLicencies() {
+    if (Date.now() < _licLockedUntil) {
+        const wait = Math.ceil((_licLockedUntil - Date.now()) / 1000);
+        showStatus('status-lic-unlock', `⛔ Bloqué. Réessayez dans ${wait}s.`, 'err'); return;
+    }
+    const pwd = document.getElementById('lic-unlock-pwd').value;
+    if (!pwd) { showStatus('status-lic-unlock', '⚠️ Entrez le mot de passe.', 'err'); return; }
+    if (typeof CryptoJS === 'undefined') { showStatus('status-lic-unlock', '❌ CryptoJS non chargé.', 'err'); return; }
+
+    try {
+        // 1. Déchiffrement de la base embarquée dans le code
+        const bytes = CryptoJS.AES.decrypt(LICENCIES_CHIFFRE_ADMIN, pwd);
+        const plain = bytes.toString(CryptoJS.enc.Utf8);
+        if (!plain) throw new Error('empty');
+        const base = JSON.parse(plain);
+        if (!Array.isArray(base)) throw new Error('invalid');
+
+        // 2. Charger les enrichissements Firebase (tel + licence) et fusionner
+        showStatus('status-lic-unlock', '⏳ Chargement des données Firebase…', 'loading');
+        loadLicenciesFromFirebase(base, pwd);
+
+    } catch(e) {
+        _licFailCount++;
+        const delay = Math.min(2000 * Math.pow(2, _licFailCount - 1), 60000);
+        _licLockedUntil = Date.now() + delay;
+        let msg = '❌ Mot de passe incorrect.';
+        if (_licFailCount >= 3) msg += ` Prochain essai dans ${Math.ceil(delay/1000)}s.`;
+        showStatus('status-lic-unlock', msg, 'err');
+        document.getElementById('lic-unlock-pwd').value = '';
+    }
+}
+
+async function loadLicenciesFromFirebase(base, pwd) {
+    try {
+        // Charger les enrichissements depuis Firebase (collection 'licencies_extra')
+        // Keyed par "NOM_PRENOM" normalisé
+        const snap = await getDocs(collection(db, 'licencies_extra'));
+        const extras = {};
+        snap.forEach(docSnap => {
+            const d = docSnap.data();
+            extras[docSnap.id] = { tel: d.tel || '', licence: d.licence || '', firebaseId: docSnap.id };
+        });
+
+        // Fusionner : base (liste chiffrée) + extras Firebase
+        LIC_DATA = base.map(m => {
+            const key = licKey(m.nom, m.prenom);
+            const extra = extras[key] || {};
+            return {
+                prenom:    m.prenom,
+                nom:       m.nom,
+                tel:       extra.tel       || m.tel       || '',
+                licence:   extra.licence   || m.licence   || '',
+                firebaseId: extra.firebaseId || null
+            };
+        });
+
+        // Trier par nom puis prénom
+        LIC_DATA.sort((a,b) => a.nom.localeCompare(b.nom) || a.prenom.localeCompare(b.prenom));
+
+        LIC_UNLOCKED = true;
+        _licFailCount = 0;
+        _licLockedUntil = 0;
+
+        // Basculer l'interface
+        document.getElementById('lic-lock-zone').style.display = 'none';
+        document.getElementById('lic-manage-zone').style.display = 'block';
+        document.getElementById('lic-unlock-pwd').value = '';
+        document.getElementById('status-lic-unlock').className = 'status-msg';
+
+        // Pré-remplir le champ mot de passe export avec le même mdp
+        document.getElementById('lic-export-pwd').value = pwd;
+
+        renderLicList(LIC_DATA);
+        updateLicStats();
+
+    } catch(e) {
+        showStatus('status-lic-unlock', '❌ Erreur Firebase : ' + e.message, 'err');
+    }
+}
+
+// Clé d'identification : NOM_PRENOM normalisé (sans accent, majuscules)
+function licKey(nom, prenom) {
+    return (nom.trim() + '_' + prenom.trim())
+        .normalize('NFD').replace(/[\u0300-\u036f]/g,'')
+        .toUpperCase().replace(/[^A-Z0-9_]/g,'_');
+}
+
+// --- Rendu liste ---
+function renderLicList(data) {
+    LIC_FILTERED = data;
+    const container = document.getElementById('lic-list');
+    container.innerHTML = '';
+    if (!data.length) {
+        container.innerHTML = '<p class="empty-state">Aucun licencié trouvé.</p>';
+        return;
+    }
+    data.forEach((m, i) => {
+        const initials = ((m.prenom[0]||'') + (m.nom[0]||'')).toUpperCase();
+        const row = document.createElement('div');
+        row.className = 'lic-row';
+        row.innerHTML = `
+            <div class="lic-avatar">${esc(initials)}</div>
+            <div class="lic-info">
+                <div class="lic-name">${i+1}. ${esc(m.prenom)} ${esc(m.nom)}</div>
+                <div class="lic-meta">
+                    ${m.tel     ? `<span>📞 ${esc(m.tel)}</span>`     : '<span style="color:#444">Pas de tél.</span>'}
+                    ${m.licence ? `<span>🪪 ${esc(m.licence)}</span>` : '<span style="color:#444">Pas de n° licence</span>'}
+                </div>
+            </div>
+            <div class="lic-actions">
+                <button class="btn btn-outline btn-sm" data-action="edit" data-idx="${i}">✏️ Modifier</button>
+                <button class="btn btn-red btn-sm"     data-action="del"  data-idx="${i}">🗑</button>
+            </div>`;
+        row.querySelector('[data-action="edit"]').addEventListener('click', () => openLicEdit(LIC_FILTERED[i]));
+        row.querySelector('[data-action="del"]').addEventListener('click',  () => deleteLic(LIC_FILTERED[i]));
+        container.appendChild(row);
+    });
+}
+
+// --- Stats ---
+function updateLicStats() {
+    const total   = LIC_DATA.length;
+    const avecTel = LIC_DATA.filter(m => m.tel && m.tel.trim()).length;
+    const avecLic = LIC_DATA.filter(m => m.licence && m.licence.trim()).length;
+    document.getElementById('lic-stat-total').textContent = total;
+    document.getElementById('lic-stat-tel').textContent   = avecTel;
+    document.getElementById('lic-stat-lic').textContent   = avecLic;
+    document.getElementById('lic-stat-sans').textContent  = total - Math.min(avecTel, avecLic);
+}
+
+// --- Recherche ---
+document.getElementById('lic-search').addEventListener('input', function() {
+    if (!LIC_UNLOCKED) return;
+    const q = this.value.trim().toLowerCase();
+    const filtered = !q ? LIC_DATA : LIC_DATA.filter(m =>
+        (m.nom + ' ' + m.prenom).toLowerCase().includes(q) ||
+        (m.prenom + ' ' + m.nom).toLowerCase().includes(q) ||
+        (m.licence || '').toLowerCase().includes(q)
+    );
+    renderLicList(filtered);
+});
+
+// --- Ajouter ---
+document.getElementById('lic-add-btn').addEventListener('click', async () => {
+    if (!LIC_UNLOCKED) return;
+    const prenom  = document.getElementById('lic-add-prenom').value.trim();
+    const nom     = document.getElementById('lic-add-nom').value.trim();
+    const tel     = document.getElementById('lic-add-tel').value.trim();
+    const licence = document.getElementById('lic-add-licence').value.trim();
+
+    if (!valPrenom(prenom)) { showStatus('status-lic-add', '⚠️ Prénom invalide (2-50 lettres).', 'err'); return; }
+    if (!valNom(nom))       { showStatus('status-lic-add', '⚠️ Nom invalide (2-50 lettres).', 'err'); return; }
+    if (!valTel(tel))       { showStatus('status-lic-add', '⚠️ Téléphone invalide.', 'err'); return; }
+    if (!valLicence(licence)){ showStatus('status-lic-add', '⚠️ N° de licence trop long.', 'err'); return; }
+
+    // Doublon
+    const dup = LIC_DATA.find(m => m.nom.toLowerCase() === nom.toLowerCase() && m.prenom.toLowerCase() === prenom.toLowerCase());
+    if (dup && !confirm(`⚠️ ${prenom} ${nom} existe déjà. Confirmer quand même ?`)) return;
+
+    showStatus('status-lic-add', '⏳ Ajout…', 'loading');
+    try {
+        const key = licKey(nom, prenom);
+        // Sauvegarder les extras (tel + licence) dans Firebase
+        await setDoc(doc(db, 'licencies_extra', key), { tel, licence, prenom, nom, updatedAt: Date.now() });
+
+        // Ajouter en mémoire
+        LIC_DATA.push({ prenom, nom, tel, licence, firebaseId: key });
+        LIC_DATA.sort((a,b) => a.nom.localeCompare(b.nom) || a.prenom.localeCompare(b.prenom));
+
+        document.getElementById('lic-add-prenom').value  = '';
+        document.getElementById('lic-add-nom').value     = '';
+        document.getElementById('lic-add-tel').value     = '';
+        document.getElementById('lic-add-licence').value = '';
+
+        showStatus('status-lic-add', '✅ Licencié ajouté !', 'ok');
+        renderLicList(LIC_DATA);
+        updateLicStats();
+    } catch(e) { showStatus('status-lic-add', '❌ Erreur : ' + e.message, 'err'); }
+});
+
+// --- Modifier (via modal générique) ---
+function openLicEdit(m) {
+    openEditModal(m.prenom + ' ' + m.nom, [
+        { id:'prenom',  label:'Prénom *',       type:'text', value:m.prenom,  maxlength:50 },
+        { id:'nom',     label:'Nom *',           type:'text', value:m.nom,     maxlength:50 },
+        { id:'tel',     label:'Téléphone',       type:'tel',  value:m.tel,     maxlength:20 },
+        { id:'licence', label:'N° de licence',   type:'text', value:m.licence, maxlength:30 }
+    ], async () => {
+        const newPrenom  = getEditVal('prenom');
+        const newNom     = getEditVal('nom');
+        const newTel     = getEditVal('tel');
+        const newLicence = getEditVal('licence');
+
+        if (!valPrenom(newPrenom)) throw new Error('Prénom invalide');
+        if (!valNom(newNom))       throw new Error('Nom invalide');
+        if (!valTel(newTel))       throw new Error('Téléphone invalide');
+
+        const key = licKey(newNom, newPrenom);
+        const oldKey = licKey(m.nom, m.prenom);
+
+        // Sauvegarder dans Firebase (collection extras)
+        await setDoc(doc(db, 'licencies_extra', key), { tel:newTel, licence:newLicence, prenom:newPrenom, nom:newNom, updatedAt:Date.now() });
+        // Si la clé a changé (renommage), supprimer l'ancienne
+        if (key !== oldKey && m.firebaseId) {
+            try { await deleteDoc(doc(db, 'licencies_extra', oldKey)); } catch(_) {}
+        }
+
+        // Mettre à jour en mémoire
+        const idx = LIC_DATA.findIndex(x => licKey(x.nom,x.prenom) === oldKey);
+        if (idx !== -1) LIC_DATA[idx] = { prenom:newPrenom, nom:newNom, tel:newTel, licence:newLicence, firebaseId:key };
+        LIC_DATA.sort((a,b) => a.nom.localeCompare(b.nom) || a.prenom.localeCompare(b.prenom));
+        renderLicList(LIC_DATA);
+        updateLicStats();
+    });
+}
+
+// --- Supprimer ---
+async function deleteLic(m) {
+    if (!confirm(`Supprimer ${m.prenom} ${m.nom} de la liste ?`)) return;
+    try {
+        const key = licKey(m.nom, m.prenom);
+        // Supprimer les extras Firebase s'ils existent
+        try { await deleteDoc(doc(db, 'licencies_extra', key)); } catch(_) {}
+        // Supprimer en mémoire
+        const idx = LIC_DATA.findIndex(x => licKey(x.nom,x.prenom) === key);
+        if (idx !== -1) LIC_DATA.splice(idx, 1);
+        renderLicList(LIC_DATA);
+        updateLicStats();
+    } catch(e) { alert('❌ Erreur suppression : ' + e.message); }
+}
+
+// --- Générer chaîne chiffrée pour index.html ---
+document.getElementById('lic-export-btn').addEventListener('click', () => {
+    if (!LIC_UNLOCKED) return;
+    const pwd = document.getElementById('lic-export-pwd').value;
+    if (!pwd) { showStatus('status-lic-export', '⚠️ Entrez le mot de passe AES.', 'err'); return; }
+    if (typeof CryptoJS === 'undefined') { showStatus('status-lic-export', '❌ CryptoJS non chargé.', 'err'); return; }
+
+    try {
+        // Sérialiser uniquement prenom/nom/tel pour index.html (pas de n° licence pour minimiser)
+        const exportData = LIC_DATA.map(m => ({ prenom:m.prenom, nom:m.nom, tel:m.tel||'' }));
+        const encrypted = CryptoJS.AES.encrypt(JSON.stringify(exportData), pwd).toString();
+
+        document.getElementById('lic-export-output').textContent = encrypted;
+        document.getElementById('lic-export-box').style.display = 'block';
+        showStatus('status-lic-export', `✅ Chaîne générée (${exportData.length} licenciés). Copiez-la dans index.html.`, 'ok');
+    } catch(e) { showStatus('status-lic-export', '❌ Erreur : ' + e.message, 'err'); }
+});
+
+document.getElementById('lic-copy-btn').addEventListener('click', () => {
+    const text = document.getElementById('lic-export-output').textContent;
+    if (!text) return;
+    navigator.clipboard.writeText(text)
+        .then(() => showStatus('status-lic-export', '📋 Copié dans le presse-papier !', 'ok'))
+        .catch(() => showStatus('status-lic-export', '⚠️ Copie manuelle requise.', 'err'));
+});
+
+</script>
 </body>
 </html>
