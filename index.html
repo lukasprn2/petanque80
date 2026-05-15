@@ -340,6 +340,31 @@ body.ready { overflow: auto; }
         .licencie-tel:hover { background: rgba(11,255,4,0.2); }
         .modal-empty { text-align: center; color: #555; font-size: 0.9em; padding: 30px; }
         .lockout-msg { text-align: center; padding: 20px; color: #ff6666; font-weight: 700; font-size: 0.9em; }
+        .licencie-expandable { transition: background 0.15s; }
+.licencie-expandable:hover { background: rgba(11,255,4,0.04); border-radius: 10px; }
+.lic-chevron { color: var(--vert); font-size: 1.3em; line-height: 1; transition: transform 0.2s; flex-shrink: 0; }
+.licencie-expandable.open .lic-chevron { transform: rotate(90deg); }
+.lic-details {
+    display: none;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 8px;
+    padding: 10px 0 4px 56px;
+}
+.licencie-expandable.open .lic-details { display: flex; }
+.licencie-licence {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: rgba(59,158,255,0.08);
+    border: 1.5px solid rgba(59,158,255,0.3);
+    color: #3b9eff;
+    padding: 8px 13px;
+    border-radius: 8px;
+    font-size: 0.82em;
+    font-weight: 700;
+    white-space: nowrap;
+}
 
         #pwd-modal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.85); z-index: 10000; align-items: center; justify-content: center; padding: 20px; }
         #pwd-modal.open { display: flex; }
@@ -640,40 +665,80 @@ function renderLicencies(list) {
     }
     var fragment = document.createDocumentFragment();
     list.forEach(function(m) {
-        var prenom   = String(m.prenom || '').trim().substring(0, 50);
-        var nom      = String(m.nom    || '').trim().substring(0, 50);
-        var tel      = String(m.tel || '').replace(/\s/g, '');
-        var telSafe  = /^(\+33|0)[1-9]\d{8}$/.test(tel) ? tel : '';
-        var telDisplay = String(m.tel || '').trim().substring(0, 20);
-        var initials = (prenom.charAt(0) + nom.charAt(0)).toUpperCase();
+        var prenom      = String(m.prenom   || '').trim().substring(0, 50);
+        var nom         = String(m.nom      || '').trim().substring(0, 50);
+        var tel         = String(m.tel      || '').replace(/\s/g, '');
+        var telDisplay  = String(m.tel      || '').trim().substring(0, 20);
+        var licenceDisp = String(m.licence  || '').trim().substring(0, 30);
+        var telSafe     = /^(\+33|0)[1-9]\d{8}$/.test(tel) ? tel : '';
+        var initials    = (prenom.charAt(0) + nom.charAt(0)).toUpperCase();
+        var hasDetails  = telSafe || licenceDisp;
 
         var row = document.createElement('div');
-        row.className = 'licencie-row';
+        row.className = 'licencie-row' + (hasDetails ? ' licencie-expandable' : '');
+        row.style.flexDirection = 'column';
+        row.style.alignItems    = 'stretch';
+        row.style.cursor        = hasDetails ? 'pointer' : 'default';
+
+        /* — Ligne principale (avatar + nom + chevron) — */
+        var top = document.createElement('div');
+        top.style.cssText = 'display:flex;align-items:center;gap:14px;';
 
         var avatar = document.createElement('div');
-        avatar.className = 'licencie-avatar';
+        avatar.className   = 'licencie-avatar';
         avatar.textContent = initials;
 
         var nomEl = document.createElement('div');
         nomEl.className = 'licencie-nom';
+        nomEl.style.flex = '1';
         nomEl.textContent = prenom + ' ' + nom;
 
-        row.appendChild(avatar);
-        row.appendChild(nomEl);
+        top.appendChild(avatar);
+        top.appendChild(nomEl);
 
-        if (telSafe) {
-            var telLink = document.createElement('a');
-            telLink.className = 'licencie-tel';
-            telLink.href = 'tel:' + telSafe;
-            telLink.textContent = '📞 ' + telDisplay;
-            row.appendChild(telLink);
+        if (hasDetails) {
+            var chevron = document.createElement('span');
+            chevron.className = 'lic-chevron';
+            chevron.textContent = '›';
+            top.appendChild(chevron);
         }
+
+        row.appendChild(top);
+
+        /* — Zone dépliable (tél + licence) — */
+        if (hasDetails) {
+            var details = document.createElement('div');
+            details.className = 'lic-details';
+
+            if (telSafe) {
+                var telLink = document.createElement('a');
+                telLink.className = 'licencie-tel';
+                telLink.href      = 'tel:' + telSafe;
+                telLink.textContent = '📞 ' + telDisplay;
+                telLink.addEventListener('click', function(e) { e.stopPropagation(); });
+                details.appendChild(telLink);
+            }
+
+            if (licenceDisp) {
+                var licSpan = document.createElement('span');
+                licSpan.className   = 'licencie-licence';
+                licSpan.textContent = '🪪 ' + licenceDisp;
+                details.appendChild(licSpan);
+            }
+
+            row.appendChild(details);
+
+            row.addEventListener('click', function() {
+                var open = this.classList.toggle('open');
+                this.querySelector('.lic-chevron').textContent = open ? '⌄' : '›';
+            });
+        }
+
         fragment.appendChild(row);
     });
     container.innerHTML = '';
     container.appendChild(fragment);
 }
-
 function filterLicencies() {
     var q = document.getElementById('licencies-search').value.trim().toLowerCase().substring(0, 50);
     renderLicencies(LICENCIES.filter(function(m) {
