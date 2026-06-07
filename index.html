@@ -5,14 +5,19 @@
     <title>Club de Pétanque de Boves</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <meta http-equiv="Content-Security-Policy"
-          content="
-            default-src 'self';
-            script-src 'self' 'unsafe-inline' https://cdnjs.cloudflare.com https://www.gstatic.com https://*.firebaseapp.com;
-            style-src  'self' 'unsafe-inline' https://fonts.googleapis.com;
-            font-src   'self' https://fonts.gstatic.com;
-           img-src 'self' https://lukasprn2.github.io https://i.imgur.com https://i.postimg.cc data:;
-          <!-- APRÈS -->
+   <meta http-equiv="Content-Security-Policy"
+      content="
+        default-src 'self';
+        script-src 'self' 'unsafe-inline' https://cdnjs.cloudflare.com https://www.gstatic.com https://*.firebaseapp.com;
+        style-src 'self' 'unsafe-inline' https://fonts.googleapis.com;
+        font-src 'self' https://fonts.gstatic.com;
+        img-src 'self' https://lukasprn2.github.io https://i.imgur.com https://i.postimg.cc data:;
+        connect-src 'self' https://api.web3forms.com https://*.firebaseio.com https://*.googleapis.com https://identitytoolkit.googleapis.com https://securetoken.googleapis.com https://firestore.googleapis.com https://www.gstatic.com https://cdnjs.cloudflare.com;
+        object-src 'none';
+        base-uri 'self';
+        form-action 'self' https://api.web3forms.com;
+      ">
+      
 connect-src 'self' https://api.web3forms.com https://*.firebaseio.com https://*.googleapis.com https://identitytoolkit.googleapis.com https://securetoken.googleapis.com https://firestore.googleapis.com https://www.gstatic.com https://cdnjs.cloudflare.com;  object-src 'none';
             base-uri   'self';
             form-action 'self' https://api.web3forms.com;
@@ -1172,6 +1177,12 @@ document.getElementById('clSearch').addEventListener('input', function() {
         window.location.href = '/petanque80/admin.html';
         return;
     }
+    // Ne rien afficher tant que Firebase n'a pas chargé
+if (clData.length === 0) {
+    var tbody = document.getElementById('clBody');
+    tbody.innerHTML = '<tr><td colspan="5" style="text-align:center;color:#555;padding:30px">Chargement du classement…</td></tr>';
+    return;
+}
     filterClassement();
 });
 filterClassement();
