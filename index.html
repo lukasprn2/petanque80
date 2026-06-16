@@ -988,9 +988,13 @@ document.addEventListener('keydown', function(e) {
         var eventMonths = getEventMonths();
         if (eventMonths.length === 0) return;
 
-        if (curMonth === null || eventMonths.indexOf(curMonth) === -1) {
-            curMonth = eventMonths[0];
-        }
+       if (curMonth === null || eventMonths.indexOf(curMonth) === -1) {
+    var today = new Date();
+    var todayMonth = today.getMonth(); // mois actuel (0-11)
+    // Cherche le mois actuel, sinon le plus proche dans le futur
+    var found = eventMonths.find(m => m >= todayMonth);
+    curMonth = (found !== undefined) ? found : eventMonths[0];
+}
 
         var year = 2026;
         document.getElementById('calMonthLabel').textContent = MONTHS[curMonth] + ' 2026';
@@ -1014,7 +1018,10 @@ document.addEventListener('keydown', function(e) {
         var total     = daysInMonth(curMonth, year);
         var firstDay  = firstDayOfMonth(curMonth, year);
         var eventDays = getDaysWithEvents(curMonth);
-
+if (selectedDay === null && curMonth === new Date().getMonth()) {
+    var todayDay = new Date().getDate();
+    if (eventDays[todayDay]) selectedDay = todayDay;
+}
         for (var i = 0; i < firstDay; i++) {
             var empty = document.createElement('div');
             empty.className = 'cal-day empty';
