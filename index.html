@@ -11,19 +11,19 @@
    <meta http-equiv="Content-Security-Policy"
       content="
        default-src 'self';
-        script-src 'self' 'unsafe-inline' https://cdnjs.cloudflare.com https://www.gstatic.com https://*.firebaseapp.com;
+        script-src 'self' 'unsafe-inline' https://cdnjs.cloudflare.com https://www.gstatic.com https://*.firebaseapp.com https://cdn.jsdelivr.net;
         style-src 'self' 'unsafe-inline' https://fonts.googleapis.com;
         font-src 'self' https://fonts.gstatic.com;
         img-src 'self' https://lukasprn2.github.io https://i.imgur.com https://i.postimg.cc data:;
-        connect-src 'self' https://api.web3forms.com https://*.firebaseio.com https://*.googleapis.com https://identitytoolkit.googleapis.com https://securetoken.googleapis.com https://firestore.googleapis.com https://www.gstatic.com https://cdnjs.cloudflare.com;
+        connect-src 'self' https://api.emailjs.com https://*.firebaseio.com https://*.googleapis.com https://identitytoolkit.googleapis.com https://securetoken.googleapis.com https://firestore.googleapis.com https://www.gstatic.com https://cdnjs.cloudflare.com;
         object-src 'none';
         base-uri 'self';
-        form-action 'self' https://api.web3forms.com;
+        form-action 'self';
       ">
       
-<connect-src 'self' https://api.web3forms.com https://*.firebaseio.com https://*.googleapis.com https://identitytoolkit.googleapis.com https://securetoken.googleapis.com https://firestore.googleapis.com https://www.gstatic.com https://cdnjs.cloudflare.com;  object-src 'none';
+<connect-src 'self' https://api.emailjs.com https://*.firebaseio.com https://*.googleapis.com https://identitytoolkit.googleapis.com https://securetoken.googleapis.com https://firestore.googleapis.com https://www.gstatic.com https://cdnjs.cloudflare.com;  object-src 'none';
             base-uri   'self';
-            form-action 'self' https://api.web3forms.com;
+            form-action 'self';
           ">
 
     <meta http-equiv="X-Content-Type-Options" content="nosniff">
@@ -233,7 +233,7 @@ body.ready { overflow: auto; }
         .faq details[open] summary::after { content: '－'; }
         .faq p { color: #c0c0c0; margin-top: 10px; font-size: 0.91em; }
 
-        #commande-wrap { background: linear-gradient(160deg, #0a0a0a 0%, #0e140e 100%); border-top: 1px solid #333; border-bottom: 1px solid #333; }
+        #licence-wrap { background: linear-gradient(160deg, #0a0a0a 0%, #0e140e 100%); border-top: 1px solid #333; border-bottom: 1px solid #333; }
         .commande-intro { position: relative; overflow: hidden; background: #181818; border-radius: 14px; padding: 22px 20px 22px 24px; margin-bottom: 14px; border: 1px solid #363636; display: flex; gap: 18px; align-items: center; transition: box-shadow 0.25s; }
         .commande-intro:hover { box-shadow: 0 6px 24px rgba(11,255,4,0.25); }
         .commande-intro::before { content: ''; position: absolute; top: 0; left: 0; width: 5px; height: 100%; background: linear-gradient(to bottom, var(--vert), #05a802); border-radius: 14px 0 0 14px; }
@@ -563,7 +563,7 @@ var CsrfToken = (function() {
         <a href="#contact"       ><span class="nav-icon">📞</span>Contacts</a>
         <a href="#calendrier"    ><span class="nav-icon">📅</span>Calendrier</a>
         <a href="#classement"    ><span class="nav-icon">🥇</span>Classement</a>
-        <a href="#commande-wrap" ><span class="nav-icon">🎽</span>Commande Vêtements</a>
+        <a href="#licence-wrap" ><span class="nav-icon">🎫</span>Licence Sportive</a>
         <a href="#galerie"       ><span class="nav-icon">📸</span>Galerie</a>
         <a href="#partenaires"   ><span class="nav-icon">🤝</span>Partenaires</a>
         <a href="#bureau"        ><span class="nav-icon">👥</span>Conseil</a>
@@ -1201,214 +1201,319 @@ if (clData.length === 0) {
 filterClassement();
 </script>
 
-<!-- ===================== COMMANDE VÊTEMENTS ===================== -->
-<div id="commande-wrap">
+<!-- ===================== PRISE / REPRISE DE LICENCE ===================== -->
+<div id="licence-wrap">
 <section style="max-width:1100px; margin:0 auto; padding:34px 16px;">
-    <h2>Commande de Vêtements</h2>
+    <h2>Prise ou Reprise de Licence</h2>
     <div class="commande-intro">
-        <span class="icon">🎽</span>
+        <span class="icon">🎫</span>
         <div class="commande-intro-text">
-            <strong>Commandez vos vêtements aux couleurs du club !</strong>
-            <p>Remplissez le formulaire ci-dessous et le bureau vous recontactera pour confirmer votre commande.</p>
+            <strong>Prenez ou renouvelez votre licence FFPJP au club !</strong>
+            <p>Remplissez le formulaire ci-dessous, un membre du bureau vous recontactera pour finaliser votre inscription et le règlement.</p>
         </div>
     </div>
     <div class="prix-banner">
-        <div class="prix-badge" id="prix-total" style="opacity:0.4;">0 €</div>
+        <div class="prix-badge" id="prix-total-licence" style="opacity:0.4;">-- €</div>
         <div class="prix-banner-text">
-            <strong>Total de votre commande</strong>
-            <p>30 € / vêtement — Offre 4 vêtements : 100 € — Le règlement s'effectue auprès d'un membre du bureau.</p>
+            <strong>Montant de votre licence</strong>
+            <p>Benjamin(e) à Junior : Gratuit — Sénior (homme) : 45 € — Vétéran(e) (homme) : 25 € — Femmes : Gratuit, quelle que soit la catégorie.</p>
         </div>
     </div>
-    <div class="order-form" id="orderForm">
+    <div class="order-form" id="licenceForm">
         <div class="form-grid">
+            <div class="form-group full-width">
+                <label for="lic-type">Type de demande *</label>
+                <select name="type_demande" id="lic-type" required>
+                    <option value="">-- Sélectionner --</option>
+                    <option value="Prise de licence (nouveau licencié)">Prise de licence (nouveau licencié)</option>
+                    <option value="Reprise / renouvellement de licence">Reprise / renouvellement de licence</option>
+                </select>
+                <span class="field-error" id="err-lic-type">Veuillez choisir une option</span>
+            </div>
+            <div class="form-group full-width" id="wrap-numlicence" style="display:none;">
+                <label for="lic-numlicence">Numéro de licence précédent</label>
+                <input type="text" name="numero_licence" id="lic-numlicence" placeholder="Ex : 8012345" maxlength="20">
+            </div>
+
             <div class="form-group">
-                <label for="nom">Nom *</label>
-                <input type="text" name="nom" id="nom" placeholder="Votre nom"
+                <label for="lic-nom">Nom *</label>
+                <input type="text" name="nom" id="lic-nom" placeholder="Votre nom"
                        autocomplete="family-name" maxlength="50" required>
-                <span class="field-error" id="err-nom">Nom invalide (2-50 lettres)</span>
+                <span class="field-error" id="err-lic-nom">Nom invalide (2-50 lettres)</span>
             </div>
             <div class="form-group">
-                <label for="prenom">Prénom *</label>
-                <input type="text" name="prenom" id="prenom" placeholder="Votre prénom"
+                <label for="lic-prenom">Prénom *</label>
+                <input type="text" name="prenom" id="lic-prenom" placeholder="Votre prénom"
                        autocomplete="given-name" maxlength="50" required>
-                <span class="field-error" id="err-prenom">Prénom invalide (2-50 lettres)</span>
+                <span class="field-error" id="err-lic-prenom">Prénom invalide (2-50 lettres)</span>
             </div>
             <div class="form-group">
-                <label for="codepostal">Code Postal *</label>
-                <input type="text" name="code_postal" id="codepostal" placeholder="Ex : 80440"
-                       maxlength="5" inputmode="numeric" required>
-                <span class="field-error" id="err-cp">Code postal invalide (5 chiffres)</span>
+                <label for="lic-naissance">Date de naissance *</label>
+                <input type="date" name="date_naissance" id="lic-naissance" required>
+                <span class="field-error" id="err-lic-naissance">Date de naissance requise</span>
             </div>
             <div class="form-group">
-                <label for="telephone">Téléphone *</label>
-                <input type="tel" name="telephone" id="telephone" placeholder="06 xx xx xx xx"
-                       autocomplete="tel" maxlength="20" required>
-                <span class="field-error" id="err-tel">Numéro invalide</span>
+                <label for="lic-sexe">Sexe *</label>
+                <select name="sexe" id="lic-sexe" required>
+                    <option value="">-- Sélectionner --</option>
+                    <option value="Femme">Femme</option>
+                    <option value="Homme">Homme</option>
+                </select>
+                <span class="field-error" id="err-lic-sexe">Veuillez choisir une option</span>
+            </div>
+            <div class="form-group">
+                <label for="lic-categorie">Catégorie *</label>
+                <select name="categorie" id="lic-categorie" required>
+                    <option value="">-- Sélectionner --</option>
+                    <option value="Benjamin(e)">Benjamin(e)</option>
+                    <option value="Minime">Minime</option>
+                    <option value="Cadet(te)">Cadet(te)</option>
+                    <option value="Junior">Junior</option>
+                    <option value="Sénior">Sénior</option>
+                    <option value="Vétéran(e)">Vétéran(e)</option>
+                </select>
+                <span class="field-error" id="err-lic-categorie">Veuillez choisir une catégorie</span>
+            </div>
+            <div class="form-group">
+                <label for="lic-lieunaissance">Lieu de naissance *</label>
+                <input type="text" name="lieu_naissance" id="lic-lieunaissance" placeholder="Ville de naissance" maxlength="60" required>
+                <span class="field-error" id="err-lic-lieunaissance">Lieu de naissance requis</span>
             </div>
             <div class="form-group full-width">
-                <label for="email">Adresse email *</label>
-                <input type="email" name="email" id="email" placeholder="exemple@mail.com"
-                       autocomplete="email" maxlength="254" required>
-                <span class="field-error" id="err-email">Email invalide</span>
+                <label for="lic-adresse">Adresse *</label>
+                <input type="text" name="adresse" id="lic-adresse" placeholder="N° et nom de rue" maxlength="100" required>
+                <span class="field-error" id="err-lic-adresse">Adresse invalide</span>
             </div>
-            <div class="tailles-section">
-    <h4>Tailles souhaitées — laisser vide si non commandé</h4>
-    <div class="tailles-grid" id="tailles-grid-dynamic"></div>
-</div>
-            <input type="hidden" name="csrf_token" id="csrf_token">
-            <input type="hidden" name="montant" id="montant-hidden" value="0 euros">
-            <button type="button" class="submit-btn" id="submitBtn">✅ Envoyer ma commande</button>
+            <div class="form-group">
+                <label for="lic-cp">Code Postal *</label>
+                <input type="text" name="code_postal" id="lic-cp" placeholder="Ex : 80440"
+                       maxlength="5" inputmode="numeric" required>
+                <span class="field-error" id="err-lic-cp">Code postal invalide (5 chiffres)</span>
+            </div>
+            <div class="form-group">
+                <label for="lic-ville">Ville *</label>
+                <input type="text" name="ville" id="lic-ville" placeholder="Votre ville" maxlength="50" required>
+                <span class="field-error" id="err-lic-ville">Ville invalide</span>
+            </div>
+            <div class="form-group">
+                <label for="lic-tel">Téléphone *</label>
+                <input type="tel" name="telephone" id="lic-tel" placeholder="06 xx xx xx xx"
+                       autocomplete="tel" maxlength="20" required>
+                <span class="field-error" id="err-lic-tel">Numéro invalide</span>
+            </div>
+            <div class="form-group">
+                <label for="lic-email">Adresse email *</label>
+                <input type="email" name="email" id="lic-email" placeholder="exemple@mail.com"
+                       autocomplete="email" maxlength="254" required>
+                <span class="field-error" id="err-lic-email">Email invalide</span>
+            </div>
+            <div class="form-group full-width" id="wrap-lic-representant" style="display:none;">
+                <label for="lic-representant">Nom du représentant légal (mineur) *</label>
+                <input type="text" name="representant_legal" id="lic-representant" placeholder="Nom et prénom du parent / tuteur" maxlength="100">
+                <span class="field-error" id="err-lic-representant">Nom du représentant légal requis pour un mineur</span>
+            </div>
+            <div class="form-group full-width">
+                <label style="display:flex;align-items:flex-start;gap:10px;font-size:0.85em;color:#ccc;text-transform:none;letter-spacing:normal;font-weight:600;cursor:pointer;">
+                    <input type="checkbox" id="lic-certificat" style="width:auto;margin-top:3px;" required>
+                    Je m'engage à fournir un certificat médical de non contre-indication à la pratique de la pétanque (ou une attestation de renouvellement valide) lors de la remise de ma licence. *
+                </label>
+                <span class="field-error" id="err-lic-certificat">Cette confirmation est requise</span>
+            </div>
+            <input type="hidden" name="montant" id="montant-hidden-licence" value="">
+            <button type="button" class="submit-btn" id="submitBtnLicence">✅ Envoyer ma demande de licence</button>
         </div>
     </div>
-    <div class="confirmation" id="confirmation">
+    <div class="confirmation" id="confirmationLicence">
         <div class="checkmark">✅</div>
-        <h3>Commande envoyée !</h3>
-        <p>Merci <strong id="conf-prenom" style="color:var(--vert)"></strong>, votre demande est bien enregistrée.<br>
-        <span style="color:var(--vert); font-weight:700;">Montant à régler : <span id="conf-montant">0 €</span></span> auprès du bureau.</p>
-        <div class="recap" id="conf-recap"></div>
-        <button class="new-order-btn" id="newOrderBtn">Nouvelle commande</button>
+        <h3>Demande envoyée !</h3>
+        <p>Merci <strong id="conf-prenom-licence" style="color:var(--vert)"></strong>, votre demande est bien enregistrée.<br>
+        <span style="color:var(--vert); font-weight:700;">Montant à régler : <span id="conf-montant-licence">-- €</span></span> auprès du bureau.</p>
+        <div class="recap" id="conf-recap-licence"></div>
+        <button class="new-order-btn" id="newLicenceBtn">Nouvelle demande</button>
     </div>
 </section>
 </div>
 
 <script>
-document.getElementById('csrf_token').value = CsrfToken.get();
+document.getElementById('lic-type').addEventListener('change', function() {
+    document.getElementById('wrap-numlicence').style.display = this.value.indexOf('Reprise') !== -1 ? 'block' : 'none';
+});
 
-function calculerTotal() {
-    var allowed = ['', 'XS', 'S', 'M', 'L', 'XL', 'XXL', '3XL', '4XL'];
-    var nbVetements = 0;
-    var selects = document.querySelectorAll('#tailles-grid-dynamic select');
-    if (selects.length === 0) {
-        var badge = document.getElementById('prix-total');
-        if (badge) { badge.textContent = '0 €'; badge.style.opacity = '0.4'; }
-        return { nb: 0, total: 0 };
-    }
-    selects.forEach(function(sel) {
-        var val = sel.value;
-        if (allowed.indexOf(val) !== -1 && val !== '') nbVetements++;
-    });
-    var total = 0;
-    if (nbVetements === 1) total = 30;
-    else if (nbVetements === 2) total = 60;
-    else if (nbVetements === 3) total = 90;
-    else if (nbVetements === 4) total = 100;
-
-    var badge = document.getElementById('prix-total');
-    badge.textContent = total + ' €';
-    badge.style.opacity = total > 0 ? '1' : '0.4';
-    document.getElementById('montant-hidden').value = total + ' euros';
-    return { nb: nbVetements, total: total };
+function ageAPartirDate(dateStr) {
+    if (!dateStr) return null;
+    var naissance = new Date(dateStr);
+    if (isNaN(naissance.getTime())) return null;
+    var aujourdhui = new Date();
+    var age = aujourdhui.getFullYear() - naissance.getFullYear();
+    var m = aujourdhui.getMonth() - naissance.getMonth();
+    if (m < 0 || (m === 0 && aujourdhui.getDate() < naissance.getDate())) age--;
+    return age;
 }
 
-['taille-pantalon','taille-polo','taille-veste','taille-manteau'].forEach(function(id) {
-    document.getElementById(id).addEventListener('change', calculerTotal);
+document.getElementById('lic-naissance').addEventListener('change', function() {
+    var age = ageAPartirDate(this.value);
+    document.getElementById('wrap-lic-representant').style.display = (age !== null && age < 18) ? 'block' : 'none';
 });
-calculerTotal();
 
-function showFieldError(id, show) {
+function calculerMontantLicence() {
+    var sexe = document.getElementById('lic-sexe').value;
+    var cat  = document.getElementById('lic-categorie').value;
+    var badge = document.getElementById('prix-total-licence');
+    if (!sexe || !cat) {
+        badge.textContent = '-- €';
+        badge.style.opacity = '0.4';
+        document.getElementById('montant-hidden-licence').value = '';
+        return null;
+    }
+    var jeunes = ['Benjamin(e)', 'Minime', 'Cadet(te)', 'Junior'];
+    var montant = 0;
+    if (sexe === 'Femme') {
+        montant = 0;
+    } else if (jeunes.indexOf(cat) !== -1) {
+        montant = 0;
+    } else if (cat === 'Sénior') {
+        montant = 45;
+    } else if (cat === 'Vétéran(e)') {
+        montant = 25;
+    }
+    badge.textContent = montant + ' €';
+    badge.style.opacity = '1';
+    document.getElementById('montant-hidden-licence').value = montant + ' euros';
+    return montant;
+}
+document.getElementById('lic-sexe').addEventListener('change', calculerMontantLicence);
+document.getElementById('lic-categorie').addEventListener('change', calculerMontantLicence);
+calculerMontantLicence();
+
+function showFieldErrorLicence(id, show) {
     var el = document.getElementById(id);
     if (el) el.classList.toggle('show', show);
 }
 
-document.getElementById('submitBtn').addEventListener('click', function() {
-    if (!RateLimit.check('commande-submit', 3, 5 * 60 * 1000)) {
+document.getElementById('submitBtnLicence').addEventListener('click', function() {
+    if (!RateLimit.check('licence-submit', 3, 5 * 60 * 1000)) {
         alert('⛔ Trop de soumissions. Veuillez patienter 5 minutes.');
         return;
     }
-    var nom      = document.getElementById('nom').value.trim();
-    var prenom   = document.getElementById('prenom').value.trim();
-    var cp       = document.getElementById('codepostal').value.trim();
-    var tel      = document.getElementById('telephone').value.trim();
-    var email    = document.getElementById('email').value.trim();
-    var pantalon = document.getElementById('taille-pantalon').value;
-    var polo     = document.getElementById('taille-polo').value;
-    var veste    = document.getElementById('taille-veste').value;
-    var manteau  = document.getElementById('taille-manteau').value;
 
-    var nomOk    = Validator.nom(nom)    && Validator.maxLen(nom, 50);
-    var prenomOk = Validator.prenom(prenom) && Validator.maxLen(prenom, 50);
-    var cpOk     = Validator.cp(cp);
-    var telOk    = Validator.tel(tel);
-    var emailOk  = Validator.email(email);
+    var typeDemande = document.getElementById('lic-type').value;
+    var numLicence  = document.getElementById('lic-numlicence').value.trim().substring(0, 20);
+    var nom         = document.getElementById('lic-nom').value.trim();
+    var prenom      = document.getElementById('lic-prenom').value.trim();
+    var naissance   = document.getElementById('lic-naissance').value;
+    var sexe        = document.getElementById('lic-sexe').value;
+    var categorie   = document.getElementById('lic-categorie').value;
+    var lieuNaiss   = document.getElementById('lic-lieunaissance').value.trim();
+    var adresse     = document.getElementById('lic-adresse').value.trim();
+    var cp          = document.getElementById('lic-cp').value.trim();
+    var ville       = document.getElementById('lic-ville').value.trim();
+    var tel         = document.getElementById('lic-tel').value.trim();
+    var email       = document.getElementById('lic-email').value.trim();
+    var certifOk    = document.getElementById('lic-certificat').checked;
 
-    showFieldError('err-nom',    !nomOk);
-    showFieldError('err-prenom', !prenomOk);
-    showFieldError('err-cp',     !cpOk);
-    showFieldError('err-tel',    !telOk);
-    showFieldError('err-email',  !emailOk);
+    var age = ageAPartirDate(naissance);
+    var estMineur = age !== null && age < 18;
+    var representant = document.getElementById('lic-representant').value.trim();
 
-    if (!nomOk || !prenomOk || !cpOk || !telOk || !emailOk) {
+    var typeOk       = !!typeDemande;
+    var nomOk        = Validator.nom(nom) && Validator.maxLen(nom, 50);
+    var prenomOk     = Validator.prenom(prenom) && Validator.maxLen(prenom, 50);
+    var naissanceOk  = !!naissance && age !== null && age >= 0 && age <= 110;
+    var sexeOk       = !!sexe;
+    var categorieOk  = !!categorie;
+    var lieuNaissOk  = lieuNaiss.length >= 2 && Validator.maxLen(lieuNaiss, 60);
+    var adresseOk    = adresse.length >= 4 && Validator.maxLen(adresse, 100);
+    var cpOk         = Validator.cp(cp);
+    var villeOk      = Validator.nom(ville) && Validator.maxLen(ville, 50);
+    var telOk        = Validator.tel(tel);
+    var emailOk      = Validator.email(email);
+    var representantOk = !estMineur || (representant.length >= 2 && Validator.maxLen(representant, 100));
+
+    showFieldErrorLicence('err-lic-type', !typeOk);
+    showFieldErrorLicence('err-lic-nom', !nomOk);
+    showFieldErrorLicence('err-lic-prenom', !prenomOk);
+    showFieldErrorLicence('err-lic-naissance', !naissanceOk);
+    showFieldErrorLicence('err-lic-sexe', !sexeOk);
+    showFieldErrorLicence('err-lic-categorie', !categorieOk);
+    showFieldErrorLicence('err-lic-lieunaissance', !lieuNaissOk);
+    showFieldErrorLicence('err-lic-adresse', !adresseOk);
+    showFieldErrorLicence('err-lic-cp', !cpOk);
+    showFieldErrorLicence('err-lic-ville', !villeOk);
+    showFieldErrorLicence('err-lic-tel', !telOk);
+    showFieldErrorLicence('err-lic-email', !emailOk);
+    showFieldErrorLicence('err-lic-representant', !representantOk);
+    showFieldErrorLicence('err-lic-certificat', !certifOk);
+
+    if (!typeOk || !nomOk || !prenomOk || !naissanceOk || !sexeOk || !categorieOk || !lieuNaissOk
+        || !adresseOk || !cpOk || !villeOk || !telOk || !emailOk || !representantOk || !certifOk) {
         alert('⚠️ Veuillez corriger les champs en rouge.');
         return;
     }
 
-    var allowed = ['', 'XS', 'S', 'M', 'L', 'XL', 'XXL', '3XL', '4XL'];
-    if ([pantalon, polo, veste, manteau].some(function(v) { return allowed.indexOf(v) === -1; })) {
-        alert('⚠️ Taille invalide détectée.');
-        return;
-    }
-    if (!pantalon && !polo && !veste && !manteau) {
-        alert('⚠️ Veuillez sélectionner au moins une taille de vêtement.');
-        return;
-    }
+    var montant = calculerMontantLicence();
 
-    var calc = calculerTotal();
-    var nbVetements  = calc.nb;
-    var montantTotal = calc.total;
-
-    var btn = document.getElementById('submitBtn');
+    var btn = document.getElementById('submitBtnLicence');
     btn.textContent = 'Envoi en cours...';
     btn.disabled = true;
 
-    var formData = new FormData();
-    formData.append('access_key',  '132fc66b-24a9-4fc1-8d3e-6d2816dc978c');
-    formData.append('subject',     'Nouvelle commande – ' + prenom + ' ' + nom + ' (' + montantTotal + ' €)');
-    formData.append('from_name',   'Site Pétanque Boves');
-    formData.append('email',       email);
-    formData.append('csrf_token',  CsrfToken.get());
-    formData.append('message',
-        '--- INFORMATIONS ---\n'
-        + 'Nom : '        + prenom + ' ' + nom + '\n'
-        + 'Email : '      + email + '\n'
-        + 'Telephone : '  + tel + '\n'
-        + 'Code postal : ' + cp + '\n\n'
-        + '--- COMMANDE ---\n'
-        + 'Pantalon : ' + (pantalon || 'Non commandé') + '\n'
-        + 'Polo : '     + (polo     || 'Non commandé') + '\n'
-        + 'Veste : '    + (veste    || 'Non commandé') + '\n'
-        + 'Manteau : '  + (manteau  || 'Non commandé') + '\n\n'
-        + 'Nb vêtements : ' + nbVetements + '\n'
-        + 'Montant total : ' + montantTotal + ' euros'
-    );
+    var templateParams = {
+        subject:            'Nouvelle demande de licence – ' + prenom + ' ' + nom + ' (' + montant + ' €)',
+        type_demande:       typeDemande,
+        numero_licence:     numLicence || 'N/A',
+        nom:                nom,
+        prenom:             prenom,
+        date_naissance:     naissance,
+        lieu_naissance:     lieuNaiss,
+        sexe:               sexe,
+        categorie:          categorie,
+        mineur:             estMineur ? 'Oui' : 'Non',
+        representant_legal: estMineur ? representant : 'N/A',
+        adresse:            adresse,
+        code_postal:        cp,
+        ville:              ville,
+        telephone:          tel,
+        email:              email,
+        montant:            montant + ' euros'
+    };
 
-    fetch('https://api.web3forms.com/submit', {
-        method: 'POST',
-        body: formData,
-        headers: { 'Accept': 'application/json' },
-        mode: 'cors',
-        credentials: 'omit'
-    })
-    .then(function(response) {
-        btn.textContent = '✅ Envoyer ma commande';
+    if (typeof emailjs === 'undefined') {
+        btn.textContent = '✅ Envoyer ma demande de licence';
         btn.disabled = false;
-        if (response.ok) {
-            document.getElementById('csrf_token').value = CsrfToken.renew();
-            afficherConfirmation(prenom, nom, cp, email, tel, pantalon, polo, veste, manteau, nbVetements, montantTotal);
-        } else {
-            alert('❌ Une erreur est survenue. Veuillez réessayer ou contacter le club par email.');
-        }
-    })
-    .catch(function() {
-        btn.textContent = '✅ Envoyer ma commande';
-        btn.disabled = false;
-        alert('❌ Impossible d\'envoyer la commande. Vérifiez votre connexion internet.');
-    });
+        alert('❌ Le service d\'envoi n\'est pas disponible. Veuillez contacter le club par téléphone.');
+        return;
+    }
+
+    /* ⚠️ Remplacez VOTRE_SERVICE_ID et VOTRE_TEMPLATE_ID par les identifiants
+       de votre compte EmailJS (https://www.emailjs.com/ → Email Services / Email Templates) */
+    emailjs.send('VOTRE_SERVICE_ID', 'VOTRE_TEMPLATE_ID', templateParams)
+        .then(function() {
+            btn.textContent = '✅ Envoyer ma demande de licence';
+            btn.disabled = false;
+            afficherConfirmationLicence(prenom, nom, montant, {
+                'Type de demande : ':   typeDemande,
+                'N° licence précédent : ': numLicence || 'N/A',
+                'Date de naissance : ': naissance,
+                'Lieu de naissance : ': lieuNaiss,
+                'Sexe : ':              sexe,
+                'Catégorie : ':         categorie,
+                'Représentant légal : ': estMineur ? representant : 'N/A',
+                'Adresse : ':           adresse + ', ' + cp + ' ' + ville,
+                'Téléphone : ':         tel,
+                'Email : ':             email
+            });
+        })
+        .catch(function(err) {
+            btn.textContent = '✅ Envoyer ma demande de licence';
+            btn.disabled = false;
+            console.warn('[EmailJS]', err);
+            alert('❌ Une erreur est survenue lors de l\'envoi. Veuillez réessayer ou contacter le club par téléphone.');
+        });
 });
 
-function afficherConfirmation(prenom, nom, cp, email, tel, pantalon, polo, veste, manteau, nbVetements, montantTotal) {
-    document.getElementById('conf-prenom').textContent = prenom;
-    document.getElementById('conf-montant').textContent = montantTotal + ' €';
-    var recap = document.getElementById('conf-recap');
+function afficherConfirmationLicence(prenom, nom, montant, details) {
+    document.getElementById('conf-prenom-licence').textContent = prenom;
+    document.getElementById('conf-montant-licence').textContent = montant + ' €';
+    var recap = document.getElementById('conf-recap-licence');
     recap.innerHTML = '';
     function addLine(label, value) {
         var p = document.createElement('p');
@@ -1418,49 +1523,29 @@ function afficherConfirmation(prenom, nom, cp, email, tel, pantalon, polo, veste
         p.appendChild(document.createTextNode(value));
         recap.appendChild(p);
     }
-    addLine('Nom : ',        prenom + ' ' + nom);
-    addLine('Email : ',      email);
-    addLine('Téléphone : ',  tel);
-    addLine('Code postal : ', cp);
-
-    var vetements = [
-        { label: '👖 Pantalon', taille: pantalon },
-        { label: '👕 Polo',     taille: polo     },
-        { label: '🧥 Veste',    taille: veste    },
-        { label: '🧣 Kway',     taille: manteau  }
-    ].filter(function(v) { return v.taille; });
-
-    vetements.forEach(function(v) {
-        var suffix = nbVetements < 4 ? ' — 30 €' : '';
-        addLine(v.label + ' : ', v.taille + suffix);
-    });
-
-    var total = document.createElement('p');
-    total.setAttribute('style','margin-top:10px;padding-top:10px;border-top:1px solid #333;');
-    var ts = document.createElement('strong');
-    ts.setAttribute('style','color:var(--vert)');
-    if (nbVetements === 4) {
-        ts.textContent = 'Total : ' + montantTotal + ' € (offre 4 vêtements)';
-    } else {
-        ts.textContent = 'Total : ' + montantTotal + ' € (' + nbVetements + ' vêtement(s) × 30 €)';
-    }
-    total.appendChild(ts);
-    recap.appendChild(total);
-    document.getElementById('orderForm').style.display = 'none';
-    var conf = document.getElementById('confirmation');
+    addLine('Nom : ', prenom + ' ' + nom);
+    Object.keys(details).forEach(function(k) { addLine(k, details[k]); });
+    document.getElementById('licenceForm').style.display = 'none';
+    var conf = document.getElementById('confirmationLicence');
     conf.style.display = 'block';
     conf.scrollIntoView({ behavior: 'smooth', block: 'center' });
 }
 
-document.getElementById('newOrderBtn').addEventListener('click', function() {
-    document.getElementById('orderForm').style.display = 'block';
-    document.getElementById('confirmation').style.display = 'none';
-    ['nom','prenom','codepostal','telephone','email'].forEach(function(id) { document.getElementById(id).value = ''; });
-    ['taille-pantalon','taille-polo','taille-veste','taille-manteau'].forEach(function(id) { document.getElementById(id).value = ''; });
-    document.querySelectorAll('.field-error').forEach(function(el) { el.classList.remove('show'); });
-    document.getElementById('csrf_token').value = CsrfToken.renew();
-    calculerTotal();
-    document.getElementById('orderForm').scrollIntoView({ behavior: 'smooth' });
+document.getElementById('newLicenceBtn').addEventListener('click', function() {
+    document.getElementById('licenceForm').style.display = 'block';
+    document.getElementById('confirmationLicence').style.display = 'none';
+    ['lic-type','lic-numlicence','lic-nom','lic-prenom','lic-naissance','lic-sexe','lic-categorie',
+     'lic-lieunaissance','lic-adresse','lic-cp','lic-ville','lic-tel','lic-email','lic-representant'
+    ].forEach(function(id) {
+        var el = document.getElementById(id);
+        if (el) el.value = '';
+    });
+    document.getElementById('lic-certificat').checked = false;
+    document.getElementById('wrap-numlicence').style.display = 'none';
+    document.getElementById('wrap-lic-representant').style.display = 'none';
+    document.querySelectorAll('#licenceForm .field-error').forEach(function(el) { el.classList.remove('show'); });
+    calculerMontantLicence();
+    document.getElementById('licenceForm').scrollIntoView({ behavior: 'smooth' });
 });
 </script>
 
@@ -1707,6 +1792,17 @@ document.getElementById('newOrderBtn').addEventListener('click', function() {
         </div>
     </div>
 </div>
+
+<!-- ===================== EMAILJS ===================== -->
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+<script>
+(function() {
+    if (typeof emailjs === 'undefined') { return; }
+    /* ⚠️ Remplacez VOTRE_PUBLIC_KEY par votre clé publique EmailJS
+       (Compte EmailJS → Account → General → Public Key) */
+    emailjs.init({ publicKey: "VOTRE_PUBLIC_KEY" });
+})();
+</script>
 
 <script>
 /* ===== HAMBURGER ===== */
